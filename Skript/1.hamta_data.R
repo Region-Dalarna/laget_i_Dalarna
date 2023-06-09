@@ -32,6 +32,16 @@ hamta_data_konjunkturbarometern(output_mapp_excel = here("Data"),
                                 skapa_figur=TRUE,
                                 spara_data=TRUE)
 
+# BNP
+source(here("Skript","BNP.R"), encoding="UTF-8")
+hamta_data_BNP(spara_data=TRUE,
+               output_mapp_excel = here("Data"))
+
+# KPI 
+source(here("Skript","KPI.R"), encoding="UTF-8")
+hamta_data_kpi(spara_data=TRUE,
+               output_mapp_excel = here("Data"))
+
 # Småhuspriser
 source(here("Skript","smahuspriser.R"), encoding="UTF-8")
 hamta_data_smahuspriser(output_mapp_excel = here("Data"),
@@ -74,10 +84,7 @@ hamta_data_arbetsloshet(vald_region="20",
                         spara_data=TRUE,
                         output_mapp_excel = here("Data"))
 
-# KPI 
-source(here("Skript","KPI.R"), encoding="UTF-8")
-hamta_data_kpi(spara_data=TRUE,
-               output_mapp_excel = here("Data"))
+
 
 # Byggande
 source(here("Skript","Byggande.R"), encoding="UTF-8")

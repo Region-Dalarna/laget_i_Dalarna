@@ -36,6 +36,8 @@ output_mapp <- here("Figurer","/")
 
 # Läser in data
 barometern_df <- read.xlsx(here("Data","konjunkturbarometern.xlsx"),sheet=1)
+BNP_df <- read.xlsx(here("Data","BNP.xlsx"),sheet=1)
+KPI_df <- read.xlsx(here("Data","KPI.xlsx"))
 varsel_manad_df <- read.xlsx(here("Data","varsel_manad.xlsx"),sheet=1)
 varsel_bransch_df <- read.xlsx(here("Data","varsel_bransch_manad.xlsx"),sheet=1)
 priser_df <- read.xlsx(here("Data","smahuspriser.xlsx"))
@@ -43,7 +45,7 @@ konkurser_df <- read.xlsx(here("Data","konkurser_korrekt.xlsx"),sheet=2)
 arbetsmarknadsstatus_lan <- read.xlsx(here("Data","arbetsmarknadsstatus_lan.xlsx"))
 arbetsmarknadsstatus_tidsserie <- read.xlsx(here("Data","arbetsmarknadsstatus_tidsserie.xlsx"))
 arbetsloshet_kommun <-  read.xlsx(here("Data","arbetsloshet_kommun.xlsx"))
-KPI_df <- read.xlsx(here("Data","KPI.xlsx"))
+
 Husbyggande_df <- read.xlsx(here("Data","byggande.xlsx"),sheet=1)%>% 
     mutate(kvartal=ifelse(kvartal=="K1","kvartal ett",
                           ifelse(kvartal=="K2","kvartal två",
@@ -60,12 +62,56 @@ Bygglov_df <- read.xlsx(here("Data","byggande.xlsx"),sheet=2)%>%
 Senast uppdaterad: `r Sys.Date()`</i>
 </p>
 <br>
-Syftet med den här rapporten är att göra kvartalsvisa uppdateringar av läget i Dalarna. Fokus ligger i första hand på områden som rör Dalarnas ekonomi, såsom arbetsmarknad och bostadsbyggande, men initialt kommer vi även att diskutera läget i Sverige i stort. Detta eftersom vissa variabler, exempelvis konjunkturbarometern och inflation, bara mäts på nationell nivå, men ändå är relevanta för Dalarna som län. I de flesta fall uppdateras data antingen varje månad eller varje kvartal, men i vissa undantagsfall (arbetslöshet exempelvis) uppdateras data enbart årligen.
+Det ekonomiska läget i Sverige och Dalarna kan under senare år beskrivas som besvärligt. Först drabbades samhället av den pandemi som orsakades av Covid-19. Denna ledde till omfattande mänskliga förluster, men vid sidan om stora effekter under första halvan av 2020, blev de negativa effekterna på Sveriges ekonomi mindre än befarat. Pandemin följdes dock ganska snart av Rysslands Invasion av Ukraina, vilket, vid sidan om mänskligt lidande, även påverkat Sveriges ekonomi på olika sätt. Syftet med den här rapporten är att göra kvartalsvisa uppdateringar av läget i Dalarna. Fokus ligger i första hand på områden som rör Dalarnas ekonomi, såsom arbetsmarknad och bostadsbyggande, men initialt kommer vi även att diskutera läget i Sverige i stort. Detta eftersom vissa variabler, exempelvis konjunkturbarometern och inflation, bara mäts på nationell nivå, men ändå är relevanta för Dalarna som län.
 <br>
 
 ## Det allmänna läget i Ekonomin
 <br>
-Att beskriva läget i ekonomin kan göras på flera sätt. I detta första avsnitt har vi valt att fokusera på tre variabler som antingen bara mäts på nationell nivå (konjunkturbarometern och inflation) eller publiceras med relativt lång fördröjning regionalt (BNP).  
+Att beskriva läget i ekonomin kan göras på flera sätt. I detta första avsnitt har vi valt att fokusera på tre variabler som antingen inte mäts på länsnivå, konjunkturbarometern och inflation, eller mäts med för lång fördröjning, bruttonationalprodukt (hädanefter BNP). Eftersom förändring i BNP ger en bra "temperaturmätare" på läget i ekonomin, så fokuserar vi först på denna.
+
+### BNP
+<br>
+<details>
+
+  <summary>Mer information om statistiken</summary>
+
+<div title="Källa: SCB">BNP till marknadspris från användningssidan (ENS2010). Data är säsongsrensad och på kvartalsbasis</div>
+ 
+</details>
+<br>
+
+
+```{r, include = FALSE}
+
+  diagram_capt <- "Källa: SCBs öppna statistikdatabas.\nBearbetning: Samhällsanalys, Region Dalarna."
+
+  diagramtitel <- paste0("Procentuell förändring i Sveriges BNP jämfört med samma kvartal föregående år")
+  diagramtitel <- str_wrap(diagramtitel,40)
+  diagramfilnamn <- paste0("BNP.png")
+
+  BNP_stapel <- SkapaStapelDiagram(skickad_df = BNP_df %>% 
+                                     filter(ar>"2015") %>% 
+                                      filter(användning =="- BNP till marknadspris"),
+                                   skickad_x_var = "ar_kvartal", 
+                                   skickad_y_var = "Sasongsransad_forandring",
+                                   manual_x_axis_text_vjust=1,
+                                   manual_x_axis_text_hjust=1,
+                                   stodlinjer_avrunda_fem = TRUE,
+                                   manual_color = diagramfarger("rus_sex")[1],
+                                   diagram_titel = diagramtitel,
+                                   x_axis_sort_value = FALSE,
+                                   manual_y_axis_title = "procent",
+                                   diagram_capt =  diagram_capt,
+                                   diagram_facet = FALSE,
+                                   output_mapp = "",
+                                   filnamn_diagram = diagramfilnamn,
+                                   skriv_till_diagramfil = FALSE)
+  
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+BNP_stapel
+```
 
 ### Konjunkturbarometern{.tabset}
 <br>
