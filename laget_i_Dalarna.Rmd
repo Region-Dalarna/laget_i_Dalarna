@@ -75,11 +75,11 @@ Att beskriva läget i ekonomin kan göras på flera sätt. I detta första avsni
 
   <summary>Mer information om statistiken</summary>
 
-<div title="Källa: SCB">BNP till marknadspris från användningssidan (ENS2010). Data är säsongsrensad och på kvartalsbasis</div>
+<div title="Källa: SCB">BNP till marknadspris från användningssidan (ENS2010). Data är säsongsrensad och på kvartalsbasis (i fasta priser).</div>
  
 </details>
 <br>
-
+Genom att titta på förändring i BNP, kan man få en uppfattning om hur värdet av Sveriges ekonomi förändras över tid (i reala termer). Eftersom ekonomin i Sverige, och i de flesta andra länder, växer över tid, är förändring i BNP positiv i en majoritet av kvartalen. Vissa större nedgångar kan dock skönjas i figuren, då framförallt nedgången under andra kvartalet 2020 (Corona-pandemin), när Sveriges ekonomi minskade med nästan 8 procent jämfört med samma kvartal föregående år. Återhämtningen gick dock snabbt och redan i kvartalet efter så ökade BNP med nästan lika mycket som minskningen i kvartal två. Därefter följde ett par år när läget i Sveriges ekonomi kan beskrivas som gott, innan ekonomin återigen krympte i kvartal ett 2022. Därefter har läget varit mer skakigt och i `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$kvartal` `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$ar` förändrades BNP med `r gsub("\\.",",",BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Sasongsransad_forandring)` procent.
 
 ```{r, include = FALSE}
 
