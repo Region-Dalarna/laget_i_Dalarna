@@ -1,0 +1,86 @@
+---
+title: "Untitled"
+author: "Jon Frank"
+date: "2023-05-12"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+<p style = "font-size:10px">
+<i>Skapad av: Samhällsanalys, Region Dalarna<br>
+Senast uppdaterad: `r Sys.Date()`</i>
+</p>
+
+<p>Hello World</p>
+<div>Hello World</div>
+
+<span>Hello World</span>
+
+
+<style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+}
+
+li a:hover {
+  background-color: #111111;
+}
+</style>
+</head>
+<body>
+
+<ul>
+  <li><a href="#home">Home</a></li>
+  <li><a href="#news">News</a></li>
+  <li><a href="#contact">Contact</a></li>
+  <li><a href="#about">About</a></li>
+</ul>
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+<details>
+
+  <summary>Mer information om statistiken</summary>
+
+<div title="Källa: Konjunkturinstitutet">Barometerindikatorn sammanfattar konfidensindikatorerna för industri, tjänster, bygg, detaljhandel och hushåll, som baseras på företagens och hushållens svar från enkäterna i Konjunkturbarometern. Barometerindikatorn kan närmast jämföras med EU-kommissionens Economic Sentiment Indicator (ESI) och har ett medelvärde på 100 och en standardavvikelse på 10. Värden över 100 motsvarar en starkare ekonomi än normalt och värden över 110 en mycket starkare ekonomi än normalt. Värden under 100 respektive under 90 visar en svagare respektive mycket svagare ekonomi än normalt (Källa: Konjunkturinstitutet).</div>
+ 
+</details>
+
+<div title="This is a mouseover text!">Hover this text to see the result.</div>
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

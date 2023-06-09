@@ -1,0 +1,744 @@
+---
+title: ""
+author: ""
+date: ""
+output: 
+  html_document:
+    toc: yes
+    toc_float: yes
+    toc_depth: 6
+    css: "styles.css"
+---
+:::{#header}
+<img src="G:/skript/projekt/laget_i_Dalarna/logo_liggande_platta_farg.png" height="50" width="100" margin="0 auto"/>
+:::
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, fig.height=5, fig.width=8, fig.align='center')
+
+# Paket som används
+if (!require("pacman")) install.packages("pacman")
+p_load(sf,
+       here,
+       openxlsx,
+       tidyverse,
+       mapview,
+       leafpop,
+       plotly,
+       tidytext)
+
+# Läser in funktioner
+source("G:/skript/func/func_SkapaDiagram.R", encoding = "utf-8", echo = FALSE)
+source("G:/skript/func/func_API.R", encoding = "utf-8", echo = FALSE)
+
+# Skapar en mapp för att 
+output_mapp <- here("Figurer","/")
+
+# Läser in data
+barometern_df <- read.xlsx(here("Data","konjunkturbarometern.xlsx"),sheet=1)
+varsel_manad_df <- read.xlsx(here("Data","varsel_manad.xlsx"),sheet=1)
+varsel_bransch_df <- read.xlsx(here("Data","varsel_bransch_manad.xlsx"),sheet=1)
+priser_df <- read.xlsx(here("Data","smahuspriser.xlsx"))
+konkurser_df <- read.xlsx(here("Data","konkurser_korrekt.xlsx"),sheet=2)
+arbetsmarknadsstatus_lan <- read.xlsx(here("Data","arbetsmarknadsstatus_lan.xlsx"))
+arbetsmarknadsstatus_tidsserie <- read.xlsx(here("Data","arbetsmarknadsstatus_tidsserie.xlsx"))
+arbetsloshet_kommun <-  read.xlsx(here("Data","arbetsloshet_kommun.xlsx"))
+KPI_df <- read.xlsx(here("Data","KPI.xlsx"))
+Husbyggande_df <- read.xlsx(here("Data","byggande.xlsx"),sheet=1)%>% 
+    mutate(kvartal=ifelse(kvartal=="K1","kvartal ett",
+                          ifelse(kvartal=="K2","kvartal två",
+                                 ifelse(kvartal=="K3","kvartal tre","kvartal fyra"))))
+Bygglov_df <- read.xlsx(here("Data","byggande.xlsx"),sheet=2)%>% 
+    mutate(kvartal=ifelse(kvartal=="K1","kvartal ett",
+                          ifelse(kvartal=="K2","kvartal två",
+                                 ifelse(kvartal=="K3","kvartal tre","kvartal fyra"))))
+```
+
+# Läget i Dalarna
+<p style = "font-size:12px">
+<i>Skapad av: Samhällsanalys, Region Dalarna<br>
+Senast uppdaterad: `r Sys.Date()`</i>
+</p>
+<br>
+Syftet med den här rapporten är att göra kvartalsvisa uppdateringar av läget i Dalarna. Fokus ligger i första hand på områden som rör Dalarnas ekonomi, såsom arbetsmarknad och bostadsbyggande, men initialt kommer vi även att diskutera läget i Sverige i stort. Detta eftersom vissa variabler, exempelvis konjunkturbarometern och inflation, bara mäts på nationell nivå, men ändå är relevanta för Dalarna som län. I de flesta fall uppdateras data antingen varje månad eller varje kvartal, men i vissa undantagsfall (arbetslöshet exempelvis) uppdateras data enbart årligen.
+<br>
+
+## Det allmänna läget i Ekonomin
+<br>
+Att beskriva läget i ekonomin kan göras på flera sätt. I detta första avsnitt har vi valt att fokusera på tre variabler som antingen bara mäts på nationell nivå (konjunkturbarometern och inflation) eller publiceras med relativt lång fördröjning regionalt (BNP).  
+
+### Konjunkturbarometern{.tabset}
+<br>
+<details>
+
+  <summary>Mer information om statistiken</summary>
+
+<div title="Källa: Konjunkturinstitutet">Barometerindikatorn sammanfattar konfidensindikatorerna för industri, tjänster, bygg, detaljhandel och hushåll, som baseras på företagens och hushållens svar från enkäterna i Konjunkturbarometern. Barometerindikatorn kan närmast jämföras med EU-kommissionens Economic Sentiment Indicator (ESI) och har ett medelvärde på 100 och en standardavvikelse på 10. Värden över 100 motsvarar en starkare ekonomi än normalt och värden över 110 en mycket starkare ekonomi än normalt. Värden under 100 respektive under 90 visar en svagare respektive mycket svagare ekonomi än normalt.</div>
+ 
+</details>
+<br>
+
+#### Generellt
+<br>
+I `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$manad_long` `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$ar` var barometerindikatorn `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$Barometerindikatorn.och.andra.indikatorer`, vilket indikerar att ekonomin i Sverige var mycket svagare än normalt. Detta kan delvis förklaras av Rysslands invasion av Ukraina och de effekter denna haft på bland annat tillgången på råvaror. Historiskt varierar barometerindikatorn med konjunkturen och större kriser i samhället, såsom finanskrisen 2008/2009 och Coronapandemin 2020/2021, syns tydligt i diagrammet.
+
+```{r, include = FALSE}
+  diagram_capt <- "Källa: Konjunkturinstitutet.\nBearbetning: Samhällsanalys, Region Dalarna.\nDiagramförklaring: En indikator över 100 motsvarar en starkare ekonomi än normalt och värden över 110 en mycket starkare ekonomi än normalt.\nEn indikator under 100 respektive under 90 visar en svagare respektive mycket svagare ekonomi än normalt."
+# barometern_df[substr(barometern_df$Period,6,7)==last(substr(barometern_df$Period,6,7)),]
+
+  # skapar dataframe vars syfte är att skapa en svart linje i diagrammet
+  barometern_jmf_df <- barometern_df %>%
+    filter(Indikator == "Barometerindikatorn") %>% 
+      mutate(Barometerindikatorn.och.andra.indikatorer = 100,
+             "Indikator"="Normalt läge i ekonomin")
+    
+  barometern_gen_utskrift <- rbind(barometern_df %>% filter(Indikator == "Barometerindikatorn"),barometern_jmf_df)
+
+  diagramtitel <- paste0("Företagen och hushållens syn på ekonomin i Sverige")
+  diagramfilnamn <- paste0("barometern.png")
+    
+   konj <- SkapaLinjeDiagram(skickad_df = barometern_gen_utskrift,
+                              skickad_x_var = "Period", 
+                              skickad_y_var = "Barometerindikatorn.och.andra.indikatorer",
+                              skickad_x_grupp ="Indikator",
+                              berakna_index=FALSE,
+                              manual_color = c(diagramfarger("rus_sex")[1],"#000000"),
+                              stodlinjer_avrunda_fem = TRUE,
+                              manual_y_axis_title="Indikatorvärde",
+                              diagram_titel = diagramtitel,
+                              diagram_capt =  diagram_capt,
+                              output_mapp = output_mapp,
+                              visa_var_x_xlabel=24,
+                              filnamn_diagram = diagramfilnamn,
+                              skriv_till_diagramfil = TRUE)
+  
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+konj
+```
+
+#### Bransch
+<br>
+Hur läget i ekonomin uppfattas varierar beroende på om det är företagen eller hushållen som tillfrågas. Hushållen hade en pessimistisk syn på ekonomin i `r last(barometern_df$manad_long)` `r last(barometern_df$ar)`, med en barometerindikator på `r last(barometern_df$Barometerindikatorn.och.andra.indikatorer[barometern_df$Indikator=="Konfidensindikator hushåll"])`. Bland större branschgrupper var synen på ekonomin i `r last(barometern_df$manad_long)` `r last(barometern_df$ar)` mest positiv inom `r tolower(gsub( " .*$", "", barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(Barometerindikatorn.och.andra.indikatorer==max(Barometerindikatorn.och.andra.indikatorer)) %>% .$Indikator))`, medan företag inom `r tolower(gsub( " .*$", "", barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(Barometerindikatorn.och.andra.indikatorer==min(Barometerindikatorn.och.andra.indikatorer)) %>% .$Indikator))` uppfattar ekonomin som mest negativ. Tjänstesektorn drabbades värst under pandemin (mars/april 2020), medan tillverkningsindustrin uppfattade ekonomin som starkare än normalt från slutet av 2020 fram till mitten av 2022.
+```{r, include = FALSE}
+
+    barometern_jmf_df<- barometern_df %>%
+      filter(Period>"2019-12",Indikator=="Tillverkningsindustri (SNI 10-33)") %>% 
+        mutate("Barometerindikatorn.och.andra.indikatorer"=100,
+               "Indikator"="Normalt läge i ekonomin")
+    
+    barometern_bransch_utskrift<-rbind(barometern_df %>% filter(Indikator!="Barometerindikatorn",Period>"2019-12"),barometern_jmf_df)
+
+    diagramtitel <- paste0("Företagen och hushållens syn på ekonomin i Sverige")
+
+    diagramfilnamn <- paste0("barometern_bransch.png")
+    
+    konj_bransch <- SkapaLinjeDiagram(skickad_df = barometern_bransch_utskrift ,
+                              skickad_x_var = "Period", 
+                              skickad_y_var = "Barometerindikatorn.och.andra.indikatorer",
+                              skickad_x_grupp ="Indikator",
+                              berakna_index=FALSE,
+                              manual_color = c(diagramfarger("rus_sex")[1:3],"#000000",diagramfarger("rus_sex")[4:5]),
+                              manual_y_axis_title="Indikatorvärde",
+                              stodlinjer_avrunda_fem = TRUE,
+                              diagram_titel = diagramtitel,
+                              diagram_capt =  diagram_capt,
+                              output_mapp = output_mapp,
+                              visa_var_x_xlabel=12,
+                              filnamn_diagram = diagramfilnamn,
+                              skriv_till_diagramfil = TRUE)
+  
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+konj_bransch
+```
+
+### Inflation
+
+<br>
+<details>
+
+  <summary>Mer information om statistiken</summary>
+
+<div title="Källa: Riksbanken">Det vanligaste och mest kända sättet att mäta inflationen på i Sverige är titta på förändringen i konsumentprisindex, KPI. Indexet visar hur mycket det kostar att leva i Sverige och hur denna kostnad har utvecklats över tid. Målet för Riksbankens penningpolitik är att inflationen ska vara 2 procent, och inflationen mäts som förändringen i konsumentprisindex med fast ränta, KPIF. KPIF beräknas med samma data och på samma sätt som KPI, men utan att effekten av ändrade boräntor räknas med.</div>
+ 
+</details>
+<br>
+
+Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF (se "mer information om statistiken" ovan), legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 har inflationen dock ökat avsevärt och var som högst i `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar)`, då den i Sverige uppgick till `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF` procent. Därefter har inflationstakten sjunkit något och var i `r KPI_df %>% filter(KPIF==last(KPIF)) %>% select(manad_long,ar)`, `r KPI_df %>% filter(KPIF==last(KPIF)) %>% .$KPIF` procent. Den höga inflationstakten på senare år har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på Wikipedia^[https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge].
+
+```{r, include = FALSE}
+
+ diagram_capt <- "Källa: SCBs öppna statistikdatabas.\nBearbetning: Samhällsanalys, Region Dalarna."
+
+  KPI_df<-KPI_df %>%
+    mutate("variabel"="Inflation")
+
+  # skapar dataframe vars syfte är att skapa en svart linje i diagrammet
+
+  KPI_df_mal<- KPI_df %>%
+    select(KPIF,manad_long,Period,variabel) %>%
+      mutate("KPIF"=2,
+              "variabel" = "Riksbankens inflationsmål")
+  
+  KPI_utskrift <- rbind(KPI_df %>% select(KPIF,manad_long,Period,variabel),KPI_df_mal)
+
+  
+  diagramtitel <- paste0("Inflation (årsförändring i KPIF) i Sverige")
+  diagramfilnamn <- paste0("inflation.png")
+
+  inflation_linje <- SkapaLinjeDiagram(skickad_df = KPI_utskrift %>%
+                                            filter(Period>"1993-01"),
+                                          skickad_x_var = "Period",
+                                          skickad_y_var = "KPIF",
+                                          skickad_x_grupp = "variabel",
+                                          berakna_index=FALSE,
+                                          stodlinjer_avrunda_fem = FALSE,
+                                          manual_color = c(diagramfarger("rus_sex")[1],"#000000"),
+                                          diagram_titel = diagramtitel,
+                                          diagram_capt =  diagram_capt,
+                                          output_mapp = output_mapp,
+                                          manual_y_axis_title = "procent",
+                                          visa_var_x_xlabel=24,
+                                          filnamn_diagram = diagramfilnamn,
+                                          skriv_till_diagramfil = TRUE)
+  
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+inflation_linje
+```
+
+## Bostadsmarknaden
+
+2010-talet kännetecknades av en bostadsmarknad där det mesta pekade uppåt. Låg inflation och låga räntor, i kombination med fördelaktiga skatteregler, medförde att såväl byggandet av bostäder, som bostadspriserna ökade kraftigt. Även bostadslånen har ökat under en lång period och uppgick 2022 till ca 170 procent av hushållens disponibla inkomst, vilket är ungefär dubbelt så stor andel som under mitten av 90-talet. Samtidigt har hushållens finansiella tillgångar ökat, vilket medfört att skulderna i relation till de finansiella tillgångarna minskat något under samma tidsperiod^[https://www.scb.se/hitta-statistik/statistik-efter-amne/finansmarknad/finansrakenskaper/finansrakenskaper-kvartal-och-ar/pong/tabell-och-diagram/arstabeller/hushallens-laneskulder-i-procent-av-justerad-disponibel-inkomst-och-av-hushallens-finansiella-tillgangar/]. 
+
+### Bostadsbyggande{.tabset}
+
+<br>
+<details>
+
+  <summary>Mer information om statistiken</summary>
+
+<div title="Källa: SCB">Statistiken omfattar alla nybyggnadsprojekt som kräver bygglov. Bygglovsstatistik för bostäder visar antal bygglov och lägenheter. Nybyggnad av bostäder visar bostadsbyggandets omfattning och inriktning av bostadslägenheter. Data i figurerna nedan visar bygglov och nybyggnad av bostäder på kvartalsbasis.</div>
+ 
+</details>
+<br>
+
+#### Bygglov
+Antalet godkända bygglov för småhus varierar mellan kvartalen, men en tydlig trend är att de har börjat minska de senaste kvartalen. Sedan toppen i  `r Bygglov_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Antal==max(Antal)) %>% select(kvartal,ar) %>% .[1,]`, då `r Bygglov_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Antal==max(Antal)) %>% .$Antal %>% .[1]` bygglov godkändes, har antalet godkända bygglov minskat och i `r Bygglov_df %>%filter(hustyp=="småhus") %>% filter(Antal==last(Antal)) %>% select(kvartal,ar)`, godkändes `r Bygglov_df %>%filter(,hustyp=="småhus") %>% filter(Antal==last(Antal)) %>% .$Antal` bygglov. För flerbostadshus är trenden relativt likvärdig, men variationen är större från år till år. Under `r Bygglov_df %>%filter(ar>"2009",hustyp=="småhus") %>% filter(Antal==last(Antal)) %>% select(kvartal,ar)`, godkändes bygglov för blott `r Bygglov_df %>%filter(ar>"2009",hustyp=="flerbostadshus exkl. specialbostäder") %>% filter(Antal==last(Antal)) %>% .$Antal` bostadslägenheter i Dalarna.
+
+```{r, include = FALSE}
+
+  diagram_capt <- "Källa: SCBs öppna statistikdatabas.\nBearbetning: Samhällsanalys, Region Dalarna."
+
+  diagramtitel <- paste0("Antal godkända bygglov i Dalarna")
+  diagramfilnamn <- paste0("bygglov.png")
+
+  bygglov_linje <- SkapaLinjeDiagram(skickad_df = Bygglov_df %>%
+                                              filter(ar>"2019") %>%
+                                                filter(hustyp%in%c("småhus","flerbostadshus exkl. specialbostäder")), 
+                                          skickad_x_var = "ar_kvartal",
+                                          skickad_y_var = "Antal",
+                                          skickad_x_grupp = "hustyp",
+                                          berakna_index=FALSE,
+                                          manual_color = c(diagramfarger("rus_sex")),
+                                          stodlinjer_avrunda_fem = TRUE,
+                                          diagram_titel = diagramtitel,
+                                          diagram_capt =  diagram_capt,
+                                          output_mapp = output_mapp,
+                                          manual_y_axis_title = "Antal",
+                                          visa_var_x_xlabel=1,
+                                          filnamn_diagram = diagramfilnamn,
+                                          skriv_till_diagramfil = TRUE)
+
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+bygglov_linje
+```
+
+#### Nybyggnation
+Precis som byggloven, varierar byggandet av småhus mellan kvartalen, men en tydlig trend är att byggandet har börjat minska på senare tid. Sedan toppen i  `r Husbyggande_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Paborjade==max(Paborjade)) %>% select(kvartal,ar) %>% .[1,]`, då `r Husbyggande_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Paborjade==max(Paborjade)) %>% .$Paborjade %>% .[1]` småhus påbörjades, har antalet minskat och i `r Husbyggande_df %>%filter(hustyp=="småhus") %>% filter(ar_kvartal==last(ar_kvartal)) %>% select(kvartal,ar)`, påbörjades `r Husbyggande_df %>%filter(hustyp=="småhus") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Paborjade` bygglov. För flerbostadshus är trenden relativt likvärdig, men variationen är större från år till år. Under `r Husbyggande_df %>%filter(hustyp=="flerbostadshus") %>% filter(ar_kvartal==last(ar_kvartal)) %>% select(kvartal,ar)`, påbörjades byggande av `r Husbyggande_df %>%filter(hustyp=="flerbostadshus") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Paborjade` lägenheter i Dalarna.
+
+```{r, include = FALSE}
+
+  diagram_capt <- "Källa: SCBs öppna statistikdatabas.\nBearbetning: Samhällsanalys, Region Dalarna."
+
+  diagramtitel <- paste0("Nybyggnad av bostäder i Dalarna")
+  diagramfilnamn <- paste0("nybyggnation.png")
+
+  Nybyggnation_linje <- SkapaLinjeDiagram(skickad_df = Husbyggande_df %>%
+                                              filter(ar>"2019"),
+                                          skickad_x_var = "ar_kvartal",
+                                          skickad_y_var = "Paborjade",
+                                          skickad_x_grupp = "hustyp",
+                                          berakna_index=FALSE,
+                                          stodlinjer_avrunda_fem = TRUE,
+                                          manual_color = c(diagramfarger("rus_sex")),
+                                          diagram_titel = diagramtitel,
+                                          diagram_capt =  diagram_capt,
+                                          output_mapp = output_mapp,
+                                          manual_y_axis_title = "Antal",
+                                          visa_var_x_xlabel=1,
+                                          filnamn_diagram = diagramfilnamn,
+                                          skriv_till_diagramfil = TRUE)
+  
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+Nybyggnation_linje
+```
+
+### Bostadspriser{.tabset}
+
+<br>
+<details>
+
+  <summary>Mer information om statistiken</summary>
+
+<div title="Källa: SCB">Noteringen om månad avser i själva verket en tremånadersperiod, där noteringen avser den sista månaden i perioden.</div> 
+ 
+</details>
+<br>
+
+
+#### Historisk jämförelse
+
+Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige. Efter toppen i `r priser_df %>% filter(Medelpris==(max(priser_df %>% filter(Period>2010,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% select(manad_long,ar)`, har dock det genomsnittliga priset på småhus i Dalarna minskat med ungefär `r (round((priser_df %>% filter(Medelpris==(max(priser_df %>% filter(Period>2010,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% select(Medelpris))/(priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(Medelpris)),2)-1)*100` procent. Minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medfört en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkar efterfrågan på bostäder. 
+
+```{r, include = FALSE}
+# Skapar ett linjediagram för förändring i priser. Blir något fel när man skapar index via funktionen, 
+  # så jag gör det på egen hand
+  diagram_capt <- "Källa: SCB:s öppna statistikdatabas.\nBearbetning: Samhällsanalys, Region Dalarna.\nDiagramförklaring: Noteringen om månad avser i själva verket en tremånadersperiod, där noteringen avser den sista månaden i perioden."
+
+  region_vekt="20"
+  jmf_vekt="00"
+  ValdGeografi <- skapa_kortnamn_lan(hamtaregion_kod_namn(region_vekt)$region,byt_ut_riket_mot_sverige = TRUE)
+  jmf_geografi <- skapa_kortnamn_lan(hamtaregion_kod_namn(jmf_vekt)$region,byt_ut_riket_mot_sverige = TRUE) 
+  
+  diagramtitel <- paste0("Förändring i priser på småhus")
+  diagramfilnamn <- paste0("smahuspriser_tidserie.png")
+  
+  smahuspriser_linje <- SkapaLinjeDiagram(skickad_df = priser_df %>% 
+                                          filter(Period>2010,region%in%c(jmf_geografi,ValdGeografi))%>%
+                                            group_by(region)%>% 
+                                                mutate("Index (startvärde 100)"=(Medelpris/first(Medelpris))*100),
+                                         skickad_x_var = "Period", 
+                                         skickad_y_var = "Index (startvärde 100)", 
+                                         skickad_x_grupp = "region",
+                                         berakna_index=FALSE,
+                                         stodlinjer_avrunda_fem = TRUE,
+                                         manual_color = diagramfarger("rus_sex"),
+                                         diagram_titel = diagramtitel,
+                                         diagram_capt =  diagram_capt,
+                                         output_mapp = output_mapp,
+                                         visa_var_x_xlabel=24,
+                                         filnamn_diagram = diagramfilnamn,
+                                         skriv_till_diagramfil = TRUE)
+  
+  
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+smahuspriser_linje
+
+```
+
+#### Län
+Det genomsnittliga priset på ett småhus varierar mellan Sveriges län och var i `r priser_df %>%filter(Period==max(Period),region=="Sverige") %>% select(manad_long,ar)`, högst i `r priser_df %>%filter(Period==max(Period)) %>% filter(Medelpris==max(Medelpris)) %>% .$region`, där ett småhus i genomsnitt kostade `r round(priser_df %>%filter(Period==max(Period)) %>% filter(Medelpris==max(Medelpris)) %>% select(Medelpris)/1000,1)` miljoner kronor. I Dalarna är priset klart lägre, ett småhus kostade i genomsnitt `r round(priser_df %>%filter(Period==max(Period)) %>% filter(region=="Dalarna") %>% select(Medelpris)/1000,1)` miljoner kronor i länet.
+```{r, include = FALSE}
+# Skapar ett linjediagram för förändring i priser. Blir något fel när man skapar index via funktionen, 
+  # så jag gör det på egen hand
+  diagram_capt <- "Källa: SCB:s öppna statistikdatabas.\nBearbetning: Samhällsanalys, Region Dalarna.\nDiagramförklaring: Noteringen om månad avser i själva verket en tremånadersperiod, där noteringen avser den sista månaden i perioden."
+
+  region_vekt="20"
+  jmf_vekt="00"
+  
+  ValdGeografi <- skapa_kortnamn_lan(hamtaregion_kod_namn(region_vekt)$region,byt_ut_riket_mot_sverige = TRUE)
+  jmf_geografi <- skapa_kortnamn_lan(hamtaregion_kod_namn(jmf_vekt)$region,byt_ut_riket_mot_sverige = TRUE) 
+  
+  diagramtitel <- paste0("Småhuspriser i Sveriges län, ",last(priser_df$manad_long)," ",max(priser_df$ar))
+  diagramfilnamn <- paste0("smahuspriser_lan.png")
+  
+  smahuspriser_län <- SkapaStapelDiagram(skickad_df = priser_df %>%
+                                           filter(Period == last(Period)) %>% 
+                                             mutate(fokus=ifelse(region == ValdGeografi,1,
+                                                                 ifelse(region == jmf_geografi,2,0))),
+                                       skickad_x_var = "region", 
+                                       skickad_y_var = "Medelpris",
+                                       x_var_fokus = "fokus",
+                                       manual_x_axis_text_vjust=1,
+                                       manual_x_axis_text_hjust=1,
+                                       stodlinjer_avrunda_fem = TRUE,
+                                       manual_color = diagramfarger("rus_tre_fokus")[1:3],
+                                       diagram_titel = diagramtitel,
+                                       x_axis_sort_value = TRUE,
+                                       diagram_capt =  diagram_capt,
+                                       diagram_facet = FALSE,
+                                       output_mapp = output_mapp,
+                                       filnamn_diagram = diagramfilnamn,
+                                       skriv_till_diagramfil = TRUE)
+  
+  
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+smahuspriser_län
+
+```
+
+## Företagandet
+<br>
+ 
+### Varsel{.tabset}
+
+<br>
+<details>
+
+  <summary>Mer information om statistiken</summary>
+
+<div title="Källa: Arbetsförmedlingen">Varsel innebär att en arbetsgivare förvarnar om en större mängd uppsägningar. Varsel och uppsägning förekommer ofta vid arbetsbrist, men behöver inte leda till att den varslade blir uppsagd.</div> 
+ 
+</details>
+<br>
+
+#### Månad
+Antalet varsel i Dalarna på månadsbasis varierar över mycket tid. Ofta varslas inga anställda alls, men ibland uppgår antalet varsel till 100-tals personer. Under senare år lades flest varsel i `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==max(antal)) %>% .$manad_ar_long`, då `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==max(antal)) %>% .$antal` personer berördes. Detta hängde samman med pandemin kopplad till Covid-19, som startade i början av 2020. Som jämförelse varslades `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==last(antal)) %>% .$antal` personer i `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==last(antal)) %>% .$manad_ar_long`.
+```{r, include = FALSE}
+    diagram_capt <- "Källa: Arbetsförmedlingen.\nBearbetning: Samhällsanalys, Region Dalarna."
+
+    diagramtitel <- paste0("Antal personer berörda av varsel i ",unique(varsel_manad_df$region))
+    diagramfilnamn <- paste0("varsel_manad.png")
+    
+    varsel_manad <- SkapaStapelDiagram(skickad_df = varsel_manad_df %>% 
+                                         filter(ar>2019),
+                                       skickad_x_var = "tid", 
+                                       skickad_y_var = "antal",
+                                       manual_x_axis_text_vjust=1,
+                                       manual_x_axis_text_hjust=1,
+                                       manual_color = diagramfarger("rus_sex")[1],
+                                       manual_y_axis_title="",
+                                       stodlinjer_avrunda_fem = TRUE,
+                                       diagram_titel = diagramtitel,
+                                       diagram_capt =  diagram_capt,
+                                       output_mapp = output_mapp,
+                                       x_axis_sort_value = FALSE,
+                                       diagram_facet = FALSE,
+                                       filnamn_diagram = diagramfilnamn,
+                                       skriv_till_diagramfil = TRUE)
+  
+  
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+varsel_manad
+
+```
+
+#### Bransch
+Den bransch där flest drabbades av varsel i `r tolower(unique(varsel_bransch_df$Månad))` `r unique(varsel_bransch_df$År)` var "`r varsel_bransch_df %>% filter(Antal_varslade==max(Antal_varslade)) %>% .$Näringsgren`", där `r varsel_bransch_df %>% filter(Antal_varslade==max(Antal_varslade)) %>% .$Antal` personer varslades om uppsägning.
+
+```{r, include = FALSE}
+# Skapar ett linjediagram för förändring i priser. Blir något fel när man skapar index via funktionen,
+  # så jag gör det på egen hand
+  diagram_capt <- "Källa: Arbetsförmedlingen.\nBearbetning: Samhällsanalys, Region Dalarna."
+# 
+#   senaste_manad <- last(unique(varsel_bransch_df$Månad))
+# 
+#   # gruppera per månad för senaste året och för året innan det
+#   varsel_bransch_10 <- varsel_bransch_df %>% 
+#       filter(Månad%in%senaste_manad) %>% 
+#         slice_max(antal,n=10) %>% 
+#           filter(antal>0) 
+  
+  varsel_bransch_df$Näringsgren <- str_wrap(varsel_bransch_df$Näringsgren,40)
+
+  diagram_titel <- paste0("Antal personer berörda av varsel i ",unique(varsel_bransch_df$Region)," i ",tolower(unique(varsel_bransch_df$Månad))," ",unique(varsel_bransch_df$År))
+  diagramfilnamn <- paste0("varsel_bransch_manad.png")
+  
+  varsel_branch_manad <- SkapaStapelDiagram(skickad_df = varsel_bransch_df ,
+                                                       skickad_x_var = "Näringsgren",
+                                                       skickad_y_var = "Antal_varslade",
+                                                       diagram_titel = diagram_titel,
+                                                       diagram_capt = diagram_capt,
+                                                       manual_x_axis_text_vjust = 1,
+                                                       stodlinjer_avrunda_fem = TRUE,
+                                                       #manual_x_axis_text_hjust = 1,
+                                                       #diagram_facet = jmfr_riket,
+                                                       manual_y_axis_title = "",
+                                                       facet_legend_bottom = TRUE,
+                                                       manual_color = diagramfarger("rus_sex")[1],
+                                                       x_axis_lutning = 0,
+                                                       output_mapp = output_mapp,
+                                                       x_axis_sort_value = TRUE,
+                                                       diagram_liggande = TRUE,
+                                                       filnamn_diagram = diagramfilnamn,
+                                                       skriv_till_diagramfil = TRUE)
+
+  
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+varsel_branch_manad
+
+```
+
+### Konkurser {.tabset}
+<br>
+
+#### Konkurser per månad
+
+```{r, include = FALSE}
+# Skapar ett linjediagram för förändring i priser. Blir något fel när man skapar index via funktionen, 
+  # så jag gör det på egen hand
+  diagram_capt = "Källa: Näringsverksamhet, Konkurser och ackord, SCB:s öppna statistikdatabas\nBearbetning: Samhällsanalys, Region Dalarna"
+
+  senaste_ar <- max(konkurser_df$år)
+  senaste_manad <- last(konkurser_df$manad_long)
+  senaste_ar_num <- senaste_ar %>% as.numeric()
+  
+    # gruppera per månad för senaste året och för året innan det
+  konkurser_jmfr <- konkurser_df %>% 
+    filter(år %in% c(senaste_ar, as.character(as.numeric(senaste_ar) -1))) %>% 
+    group_by(år, månad,manad_long, regionkod, region) %>%
+    summarize(Antal_berorda = sum(Antal_berorda)) %>% 
+    ungroup()
+  
+  # konkurser_fem_senaste2 <- konkurser_df %>% 
+  #   filter(år %in% as.character(c(senaste_ar_num:(senaste_ar_num -4)))) %>% 
+  #   group_by(månad, regionkod, region) %>% summarise(tot = sum(Konkurser, na.rm = TRUE))
+  
+  jmfr_varnamn <- paste0("genomsnitt år ", as.character((senaste_ar_num-5)), "-", as.character((as.numeric(senaste_ar)-1)))
+  
+  antal_ar <- length(as.character(c(senaste_ar_num-1):(senaste_ar_num -5)))
+  # gruppera fem senaste år
+  konkurser_fem_senaste <- konkurser_df %>% 
+    filter(år %in% as.character(c((senaste_ar_num-1):(senaste_ar_num -5)))) %>% 
+    group_by(månad,manad_long, regionkod, region) %>%
+    summarize(Berorda_tot = sum(Antal_berorda, na.rm = TRUE),
+              Antal_berorda = Berorda_tot/antal_ar) %>% 
+    ungroup() %>% 
+    mutate(år = jmfr_varnamn)
+  
+  konkurser_jmfr <- konkurser_jmfr %>% 
+    bind_rows(konkurser_fem_senaste) %>% 
+    mutate(år = factor(år, levels = c(jmfr_varnamn, as.character(senaste_ar_num-1), senaste_ar)))
+  
+  # skapa månader med NA-värde för de månader som vi saknar värde för, så att
+  # staplarna inte blir tjocka utan att vi får ett tomrum där istället
+  konkurser_jmfr <- konkurser_jmfr %>%
+    group_by(år, regionkod, region) %>%
+    complete(månad)
+   
+  konkurser_jmfr <- konkurser_jmfr %>% 
+  mutate(månad = factor(månad, levels = c("jan", "feb", "mar", "apr", "maj", 
+                                          "jun", "jul", "aug", "sep", "okt",
+                                          "nov", "dec")))
+  
+  # Ser till att vi fyller på 2023 med de månader som saknas (för att undvika tjocka staplar) - lite oklart varför koden ovan inte gör det?
+  konkurser_jmfr <- konkurser_jmfr %>% 
+    complete(månad)
+    
+  diagram_titel <- str_wrap("Antal personer berörda av konkurser i Dalarnas län")
+
+  diagramfilnamn <- paste0("konkurser_lan.png")
+  
+  konkurser_lan <- SkapaStapelDiagram(skickad_df = konkurser_jmfr %>% 
+                                       filter(år != "2021"), 
+                                     skickad_x_var = "månad", 
+                                     skickad_y_var = "Antal_berorda",
+                                     skickad_x_grupp = "år",
+                                     diagram_titel = diagram_titel,
+                                     diagram_capt = diagram_capt,
+                                     manual_x_axis_text_vjust = 1,
+                                     manual_x_axis_text_hjust = 1,
+                                     stodlinjer_avrunda_fem = TRUE,
+                                     #diagram_facet = jmfr_riket,
+                                     manual_y_axis_title = "Antal berörda personer",
+                                     facet_grp = "region",
+                                     facet_legend_bottom = TRUE,
+                                     manual_color = diagramfarger("bla_gra_tre")[c(2,1,3)],
+                                     output_mapp = output_mapp,
+                                     filnamn_diagram = diagramfilnamn,
+                                     skriv_till_diagramfil = TRUE)
+
+  
+```
+
+Precis som var fallet med varsel, tenderar antalet personer som berörs av konkurser att variera relativt mycket från år till år. Detta medför att det är svårt att se någon trend kopplad till exempelvis Rysslands invasion av Ukraina. I `r senaste_manad` `r senaste_ar` berördes `r konkurser_jmfr %>% filter(år==senaste_ar,manad_long==senaste_manad) %>% .$Antal_berorda` personer av konkurser i Dalarna, att jämföra med `r konkurser_jmfr %>% filter(år==as.character(senaste_ar_num-1),manad_long==senaste_manad) %>% .$Antal_berorda` berörda motsvarande månad `r as.character(senaste_ar_num-1)`.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+konkurser_lan
+
+```
+
+#### Konkurser per bransch
+
+```{r, include = FALSE}
+# Skapar ett linjediagram för förändring i priser. Blir något fel när man skapar index via funktionen,
+  # så jag gör det på egen hand
+  diagram_capt = "Källa: Näringsverksamhet, Konkurser och ackord, SCB:s öppna statistikdatabas\nBearbetning: Samhällsanalys, Region Dalarna"
+
+  senaste_ar <- last(unique(konkurser_df$månad_år))
+  # ett_ar_sedan <- nth(unique(konkurser_df$månad_år),length(unique(konkurser_df$månad_år))-12)
+
+  # gruppera per månad för senaste året och för året innan det
+  konkurser_bransch_10 <- konkurser_df %>%
+    rename("bransch"=näringsgren.SNI.2007) %>%
+      filter(månad_år%in%senaste_ar) %>%
+        slice_max(Antal_berorda,n=10) %>%
+          filter(Antal_berorda>0)
+
+  konkurser_bransch_10$bransch <- str_wrap(konkurser_bransch_10$bransch,40)
+
+  diagram_titel <- paste0("Antal berörda av konkurser i ",unique(konkurser_bransch_10$region)," ",unique(konkurser_bransch_10$månad_år))
+  diagramfilnamn <- paste0("konkurser_bransch.png")
+
+  konkurser_bransch <- SkapaStapelDiagram(skickad_df = konkurser_bransch_10 ,
+                                     skickad_x_var = "bransch",
+                                     skickad_y_var = "Antal_berorda",
+                                     diagram_titel = diagram_titel,
+                                     diagram_capt = diagram_capt,
+                                     manual_x_axis_text_vjust = 1,
+                                     manual_x_axis_text_hjust = 1,
+                                     #diagram_facet = jmfr_riket,
+                                     manual_y_axis_title = "Antal berörda av konkurser",
+                                     facet_grp = "region",
+                                     facet_legend_bottom = TRUE,
+                                     manual_color = diagramfarger("rus_sex")[1],
+                                     stodlinjer_avrunda_fem = TRUE,
+                                     x_axis_lutning = 0,
+                                     output_mapp = output_mapp,
+                                     x_axis_sort_value = TRUE,
+                                     diagram_liggande = TRUE,
+                                     filnamn_diagram = diagramfilnamn,
+                                     skriv_till_diagramfil = TRUE)
+
+  
+```
+Den bransch som drabbades värst av konkurser i `r senaste_manad` `r unique(konkurser_bransch_10$år)` var "`r konkurser_bransch_10 %>% filter(Antal_berorda==max(Antal_berorda)) %>% .$bransch`", där `r konkurser_bransch_10 %>% filter(Antal_berorda==max(Antal_berorda)) %>% .$Antal_berorda` personer berördes av konkurser.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+konkurser_bransch
+```
+
+## Arbetsmarknaden
+<br>
+ 
+### Arbetslöshet {.tabset}
+<br>
+<details>
+
+  <summary>Mer information om statistiken</summary>
+
+Statistik över arbetslöshet och sysselsättning kan tas fram på olika sätt. Det gör att siffror som rör samma referensperiod kan skilja sig åt, beroende på vilken statistikkälla som använts.I den här rapporten används BAS - befolkningsens arbetsmarknadsstatus - som redovisar registerabaserad statistik över utbudet av arbetskraft i Sverige.
+ 
+</details>
+<br>
+
+#### Län
+I `r arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Dalarna") %>% filter(manad_long==max(manad_long)) %>%  .$manad_long` `r arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Dalarna") %>% filter(manad_long==max(manad_long)) %>%  .$ar` hade Dalarna `r gsub("\\.",",",arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Dalarna") %>% filter(manad_long==max(manad_long)) %>%  .$arbetslöshet)` procents arbetslöshet, att jämföra med `r gsub("\\.",",",arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Riket") %>% filter(manad_long==max(manad_long)) %>%  .$arbetslöshet)` procent i Sverige som helhet. Noterbart är även att Dalarna har klart lägre arbetslöshet än näraliggande Gävleborg, där arbetslösheten var `r gsub("\\.",",",arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Gävleborg") %>% filter(manad_long==max(manad_long)) %>%  .$arbetslöshet)` procent under samma tidsperiod. Lägst arbetslös i Sverige hade `r arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar)) %>% filter(manad_long==max(manad_long)) %>% filter(arbetslöshet==min(arbetslöshet)) %>%  .$region`, med `r gsub("\\.",",",arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar)) %>% filter(manad_long==max(manad_long)) %>% filter(arbetslöshet==min(arbetslöshet)) %>%  .$arbetslöshet)` procent.
+```{r, include = FALSE}
+
+  diagramtitel <- paste0("Arbetslöshet i åldersgruppen 20-64 i ",unique(arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar)) %>% filter(manad_long==max(manad_long)) %>%  .$manad_long)," ",unique(arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar)) %>% filter(manad_long==max(manad_long)) %>%  .$ar))
+  diagramfilnamn <- paste0("Arbetslöshet","_lan",".png")
+  diagram_capt = "Källa: SCB:s öppna statistikdatabas, Befolkningens arbetsmarknadsstatus (BAS)\nBearbetning: Samhällsanalys, Region Dalarna" 
+
+ arbetsloshet_lan <- SkapaStapelDiagram(skickad_df = arbetsmarknadsstatus_tidsserie %>% 
+                                           filter(ar == max(ar)) %>%
+                                            filter(manad_long==max(manad_long)) %>% 
+                                              mutate(region = ifelse(region=="Riket","Sverige",region)) %>% 
+                                                mutate("fokus" = ifelse(region=="Dalarna",1,ifelse(region=="Sverige",2,0))),  
+                                         skickad_x_var = "region", 
+                                         skickad_y_var = "arbetslöshet",
+                                         diagram_titel = diagramtitel,
+                                         diagram_capt = diagram_capt,
+                                         stodlinjer_avrunda_fem = TRUE,
+                                         manual_y_axis_title = "procent",
+                                         manual_x_axis_text_vjust = 1,
+                                         manual_x_axis_text_hjust = 1,
+                                         x_var_fokus = "fokus",
+                                         manual_color = diagramfarger("rus_tre_fokus"),
+                                         dataetiketter = FALSE,
+                                         x_axis_sort_value = TRUE,
+                                         skriv_till_diagramfil = TRUE,
+                                         output_mapp = output_mapp,
+                                         filnamn_diagram = diagramfilnamn)
+
+  
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+arbetsloshet_lan
+```
+
+#### Jämförelse över tid
+Arbetslösheten, såväl i Dalarna som Sverige, varierar över tid. I samband med pandemin orsakad av Covid-19, ökade arbetslösheten och var som högst i Dalarna i `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$manad_long %>% .[1]`  `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$ar %>% .[1]`, då den uppgick till `r  gsub("\\.",",", arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$arbetslöshet %>% .[1])` procent. Därefter har arbetslösheten minskat och var i `r arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Dalarna") %>% filter(manad_long==max(manad_long)) %>%  .$manad_long` `r arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Dalarna") %>% filter(manad_long==max(manad_long)) %>%  .$ar` `r gsub("\\.",",",arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Dalarna") %>% filter(manad_long==max(manad_long)) %>%  .$arbetslöshet)` procent i Dalarna. I Sverige har arbetslösheten länge varit högre än i Dalarna, men skillnaden har minskat på senare år. En orsak till detta kan vara att att Sverige överlag har en större andel som arbetar inom tjänstesektorn, branscher som drabbades extra hårt under Coronapandemin.
+
+```{r, include = FALSE}
+ 
+  diagram_capt = "Källa: SCB:s öppna statistikdatabas, Befolkningens arbetsmarknadsstatus (BAS)\nBearbetning: Samhällsanalys, Region Dalarna" 
+
+  diagram_titel <- paste0("Arbetslöshet")
+  diagramfilnamn <- paste0("arbetslöshet_tidsserie.png")
+    
+  arbetslöshet_linje <- SkapaLinjeDiagram(skickad_df = arbetsmarknadsstatus_tidsserie %>% 
+                                            filter(region%in%c("Dalarna","Riket")) %>% 
+                                              mutate(region = ifelse(region=="Riket","Sverige",region)),
+                                         skickad_x_var = "Period", 
+                                         skickad_y_var = "arbetslöshet", 
+                                         skickad_x_grupp = "region",
+                                         berakna_index=FALSE,
+                                         manual_color = diagramfarger("rus_sex"),
+                                         diagram_titel = diagram_titel,
+                                         diagram_capt =  diagram_capt,
+                                         output_mapp = output_mapp,
+                                         stodlinjer_avrunda_fem = TRUE,
+                                         manual_y_axis_title = "procent",
+                                         visa_var_x_xlabel=1,
+                                         filnamn_diagram = diagramfilnamn,
+                                         skriv_till_diagramfil = FALSE)
+
+  
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+arbetslöshet_linje
+```
+
+#### Kommun
+```{r, include = FALSE}
+ 
+mapp_scbadmgranser <- "G:/Samhällsanalys/GIS/grundkartor/KommunerDalarna/"
+#G:\Samhällsanalys\GIS\grundkartor\Adm gränser med kustgränser
+filnamn_kommuner <- "Dalarna_kommuner.shp"
+
+sokvag_kommuner_sv <- paste0(mapp_scbadmgranser, filnamn_kommuner)
+
+kommuner_sv <- st_read(sokvag_kommuner_sv)
+
+# ta ut endast kommuner och för senaste tillgängliga år
+ arbetsloshet_kommun <- arbetsloshet_kommun %>%
+     filter(månad == max(månad)) %>%
+       filter(nchar(regionkod) == 4) %>%
+         mutate(regionkod = as.integer(regionkod))
+
+# lägg ihop kommunpolygonerna med brp per kommun-statistiken
+arblosa_kommun_gis <- left_join(kommuner_sv, arbetsloshet_kommun, by = c("KOMMUNKOD" = "regionkod"))
+
+ karta <- mapview(arblosa_kommun_gis,zcol = c("grupp"),
+           col.regions=diagramfarger("rus_sex")[1:3],
+            popup = popupTable(arblosa_kommun_gis,
+                          zcol = c("region","arbetslöshet")),
+               layer.name = c("Arbetslöshet (%)"))
+
+  
+```
+Arbetslösheten bland Dalarnas kommuner är låg på många håll, där en majoritet av länets kommuner hade mellan 2 och 4 procents arbetslöshet i `r arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Dalarna") %>% filter(manad_long==max(manad_long)) %>%  .$manad_long` `r arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Dalarna") %>% filter(manad_long==max(manad_long)) %>%  .$ar` . Lägst är arbetslösheten i  `r arbetsloshet_kommun %>% filter(arbetslöshet==min(arbetslöshet)) %>% .$region %>% .[1]`, med `r arbetsloshet_kommun %>% filter(arbetslöshet==min(arbetslöshet)) %>% .$arbetslöshet %>% .[1]` procent. I södra delarna av länet är bilden en annan, där flera kommuner har mellan 6 och 8 procents arbetslöshet. Högst är arbetslösheten i  `r arbetsloshet_kommun %>% filter(arbetslöshet==max(arbetslöshet)) %>% .$region %>% .[1]`, där den uppgår `r arbetsloshet_kommun %>% filter(arbetslöshet==max(arbetslöshet)) %>% .$arbetslöshet %>% .[1]` procent. En tänkbar orsak till detta är att de kommuner med högst arbetslöshet också är de kommuner som har högst andel utrikes födda. De sistnämnda tenderar att ha klart högre arbetslöshet än inrikes födda.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+karta
+```
