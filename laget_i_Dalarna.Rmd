@@ -66,13 +66,9 @@ Det ekonomiska läget i Sverige och Dalarna kan på senare år beskrivas som bes
 <br>
 <br>
 
-<<<<<<< HEAD
+
 ## 1 Det allmänna läget i ekonomin
 Det allmänna läget i en ekonomi kan beskrivas på flera sätt. I detta första avsnitt har vi valt att fokusera på tre variabler; BNP, som mäter aktiviteten i ekonomin, konjunkturbarometern, som mäter hur individer och företag uppfattar ekonomin, och slutligen inflationen som mäter prisnivån i ekonomin.
-=======
-## Det allmänna läget i ekonomin
-Att beskriva läget i ekonomin kan göras på flera sätt. I detta första avsnitt har vi valt att fokusera på tre variabler som antingen inte mäts på länsnivå, konjunkturbarometern och inflation, eller mäts med för lång fördröjning, bruttonationalprodukt (hädanefter BNP). Eftersom förändring i BNP ger en bra "temperaturmätare" på läget i ekonomin, så fokuserar vi först på denna variabel.
->>>>>>> 9d91f99c9d33752a4842689666bff2a975a2dd6f
 <br>
 
 ### 1.1 BNP
