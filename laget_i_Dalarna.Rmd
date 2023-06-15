@@ -440,7 +440,7 @@ smahuspriser_län
 ```
 
 ## 3 Företagandet
-Läget för företagen i länet hänger naturligtvis samman med läget i ekonomin i stort. En första indikator på sämre tider är att företag tvingas varsla personal p.g.a. arbetsbrist. Detta behöver inte leda till att de anställda blir uppsagda, men kan vara en indikation på att sämre tider stundar. Nästa steg kan vara att företag tvingas gå i konkurs, vilket vi också undersöker i detta avsnitt.
+Läget för företagen i länet hänger naturligtvis samman med läget i ekonomin i stort. En första indikator på sämre tider är att företag tvingas varsla personal p.g.a. arbetsbrist. Detta behöver inte leda till att de anställda blir uppsagda, men kan ändå vara en indikation på att sämre tider stundar. Ett potentiellt nästa steg är att företag begärs i konkurs, vilket vi också undersöker i detta avsnitt.
  
 ### 3.1 Varsel{.tabset}
 
@@ -675,7 +675,7 @@ konkurser_bransch
 ```
 
 ## 4 Arbetsmarknaden
-<br>
+Som mått på läget i Dalarna, är arbetslösheten sannolikt en mer trögrörlig indikator än exempelvis antalet varsel. Detta eftersom de dröjer minst ett par månader från lagda varsel till eventuella uppsägningar. De är även viktigt att notera att arbetslösheten varierar mellan olika grupper i samhället, exempelvis baserat på personers kön, utbildningsbakgrund eller huruvida de är födda i Sverige. För en fördjupad diskussion runt detta, se exempelvis rapporten "Kvinnor och män i Dalarna^[https://region-dalarna.github.io/kvinnor_man_i_Dalarna/]"
  
 ### 4.1 Arbetslöshet {.tabset}
 <br>
