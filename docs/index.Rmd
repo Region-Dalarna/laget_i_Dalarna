@@ -68,7 +68,10 @@ Det ekonomiska läget i Sverige och Dalarna kan på senare år beskrivas som bes
 
 
 ## 1 Det allmänna läget i ekonomin
-Det allmänna läget i en ekonomi kan beskrivas på flera sätt. I detta första avsnitt har vi valt att fokusera på tre variabler; BNP, som mäter aktiviteten i ekonomin, konjunkturbarometern, som mäter hur individer och företag uppfattar ekonomin, och slutligen inflationen som mäter prisnivån i ekonomin.
+Det allmänna läget i en ekonomi kan beskrivas på flera sätt. I detta första avsnitt har vi valt att fokusera på tre variabler:
+- BNP: mäter aktiviteten i ekonomin
+- Konjunkturbarometern; mäter hur individer och företag uppfattar ekonomin
+- Inflation: mäter prisnivån i ekonomin.
 <br>
 
 ### 1.1 BNP
@@ -204,7 +207,7 @@ konj_bransch
 ```
 
 ### 1.3 Inflation
-Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i den allmänna prisnivån, så kallad inflation. Normalt förknippas hög inflation med problem, eftersom varor och tjänster blir dyrare. Om inte lönerna ökar i samma takt blir människor fattigare i reala termer, vilket har blivit påtagligt i Sverige det senataste året. Även åg, eller negativ, inflation kan vara skadligt för ekonomin. Exempelvis missgynnas låntagare av en sjunkande prisnivå, då deras lån ökar i värde realt. Sveriges Riksbank strävar därför efter att hålla inflationen relativt konstant över tid, runt ett uttalat inflationsmål. 
+Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i den allmänna prisnivån, så kallad inflation. Normalt förknippas hög inflation med problem, eftersom varor och tjänster blir dyrare. Om inte lönerna ökar i samma takt blir människor fattigare i reala termer, vilket har blivit påtagligt i Sverige det senaste året. Även låg, eller negativ, inflation kan vara skadligt. Exempelvis missgynnas låntagare av en sjunkande prisnivå, då deras lån ökar i värde realt. Sveriges Riksbank strävar därför efter att hålla inflationen relativt konstant över tid, runt ett uttalat inflationsmål. 
 <br>
 
 <details>
@@ -455,7 +458,7 @@ Läget för företagen i länet hänger naturligtvis samman med läget i ekonomi
 <br>
 
 #### Månad
-Antalet varsel i Dalarna på månadsbasis varierar mycket över tid. Ofta varslas inga anställda alls, men ibland berörs 100-tals personer under en enskild månad. På senare år lades flest varsel i `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==max(antal)) %>% .$manad_ar_long`, då `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==max(antal)) %>% .$antal` personer berördes. Detta hängde samman med pandemin kopplad till Covid-19, som startade i början av 2020. Som jämförelse varslades `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==last(antal)) %>% .$antal` i `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==last(antal)) %>% .$manad_ar_long`.
+Antalet varsel i Dalarna på månadsbasis varierar mycket över tid. Ofta varslas inga anställda alls, men ibland berörs 100-tals personer under en enskild månad. På senare år lades flest varsel i `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==max(antal)) %>% .$manad_ar_long`, då `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==max(antal)) %>% .$antal` personer berördes. Detta hängde samman med pandemin kopplad till Covid-19, som startade i början av 2020. Som jämförelse varslades `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==last(antal)) %>% .$antal` personer i `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==last(antal)) %>% .$manad_ar_long`.
 ```{r, include = FALSE}
     diagram_capt <- "Källa: Arbetsförmedlingen.\nBearbetning: Samhällsanalys, Region Dalarna."
 
@@ -536,7 +539,6 @@ varsel_branch_manad
 ```
 
 ### 3.2 Konkurser {.tabset}
-<br>
 
 #### Konkurser per månad
 
@@ -617,7 +619,7 @@ varsel_branch_manad
   
 ```
 
-Precis som var fallet med varsel, tenderar antalet personer som berörs av konkurser att variera relativt mycket från år till år. Detta medför att det är svårt att se någon trend kopplad till exempelvis Rysslands invasion av Ukraina. I `r senaste_manad` `r senaste_ar` berördes `r konkurser_jmfr %>% filter(år==senaste_ar,manad_long==senaste_manad) %>% .$Antal_berorda` personer av konkurser i Dalarna, att jämföra med `r konkurser_jmfr %>% filter(år==as.character(senaste_ar_num-1),manad_long==senaste_manad) %>% .$Antal_berorda` berörda motsvarande månad `r as.character(senaste_ar_num-1)`.
+Precis som var fallet med varsel, tenderar antalet personer som berörs av konkurser att variera relativt mycket från år till år. Detta medför att det är svårt att se någon trend kopplad till exempelvis Rysslands invasion av Ukraina. I `r senaste_manad` `r senaste_ar` berördes `r konkurser_jmfr %>% filter(år==senaste_ar,manad_long==senaste_manad) %>% .$Antal_berorda` personer av konkurser i Dalarna, att jämföra med `r konkurser_jmfr %>% filter(år==as.character(senaste_ar_num-1),manad_long==senaste_manad) %>% .$Antal_berorda` berörd motsvarande månad `r as.character(senaste_ar_num-1)`.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 konkurser_lan
@@ -675,7 +677,7 @@ konkurser_bransch
 ```
 
 ## 4 Arbetsmarknaden
-Som mått på läget i Dalarna, är arbetslösheten sannolikt en mer trögrörlig indikator än exempelvis antalet varsel. Detta eftersom de dröjer minst ett par månader från lagda varsel till eventuella uppsägningar. De är även viktigt att notera att arbetslösheten varierar mellan olika grupper i samhället, exempelvis baserat på personers kön, utbildningsbakgrund eller huruvida de är födda i Sverige. För en fördjupad diskussion runt detta, se exempelvis rapporten "Kvinnor och män i Dalarna^[https://region-dalarna.github.io/kvinnor_man_i_Dalarna/]"
+Som mått på läget i Dalarna, är arbetslösheten sannolikt en mer trögrörlig indikator än exempelvis antalet varsel. Detta eftersom de dröjer minst ett par månader från lagda varsel till eventuella uppsägningar. De är även viktigt att notera att arbetslösheten varierar mellan olika grupper i samhället, exempelvis baserat på personers kön, utbildningsbakgrund eller huruvida de är födda i Sverige. För en fördjupad diskussion runt detta, se exempelvis rapporten "Kvinnor och män i Dalarna"^[https://region-dalarna.github.io/kvinnor_man_i_Dalarna/]
  
 ### 4.1 Arbetslöshet {.tabset}
 <br>
@@ -683,7 +685,7 @@ Som mått på läget i Dalarna, är arbetslösheten sannolikt en mer trögrörli
 
   <summary>Mer information om statistiken</summary>
 
-Statistik över arbetslöshet och sysselsättning kan tas fram på olika sätt. Det gör att siffror som rör samma referensperiod kan skilja sig åt, beroende på vilken statistikkälla som använts.I den här rapporten används BAS - befolkningsens arbetsmarknadsstatus - som redovisar registerabaserad statistik över utbudet av arbetskraft i Sverige.
+Statistik över arbetslöshet och sysselsättning kan tas fram på olika sätt. Det gör att siffror som rör samma referensperiod kan skilja sig åt, beroende på vilken statistikkälla som använts.I den här rapporten används BAS - befolkningens arbetsmarknadsstatus - som redovisar registerbaserad statistik över utbudet av arbetskraft i Sverige.
  
 </details>
 <br>
@@ -786,7 +788,7 @@ arblosa_kommun_gis <- left_join(kommuner_sv, arbetsloshet_kommun, by = c("KOMMUN
 
   
 ```
-Arbetslösheten bland Dalarnas kommuner är låg på många håll, där en majoritet av länets kommuner hade mellan 2 och 4 procents arbetslöshet i `r arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Dalarna") %>% filter(manad_long==max(manad_long)) %>%  .$manad_long` `r arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Dalarna") %>% filter(manad_long==max(manad_long)) %>%  .$ar` . Lägst är arbetslösheten i  `r arbetsloshet_kommun %>% filter(arbetslöshet==min(arbetslöshet)) %>% .$region %>% .[1]`, med `r arbetsloshet_kommun %>% filter(arbetslöshet==min(arbetslöshet)) %>% .$arbetslöshet %>% .[1]` procent. I södra delarna av länet är bilden en annan, där flera kommuner har mellan 6 och 8 procents arbetslöshet. Högst är arbetslösheten i  `r arbetsloshet_kommun %>% filter(arbetslöshet==max(arbetslöshet)) %>% .$region %>% .[1]`, där den uppgår `r arbetsloshet_kommun %>% filter(arbetslöshet==max(arbetslöshet)) %>% .$arbetslöshet %>% .[1]` procent. En tänkbar orsak till detta är att de kommuner med högst arbetslöshet också är de kommuner som har högst andel utrikes födda. De sistnämnda tenderar att ha klart högre arbetslöshet än inrikes födda.
+Arbetslösheten bland Dalarnas kommuner är låg på många håll, där en majoritet av länets kommuner hade mellan 2 och 4 procents arbetslöshet i `r arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Dalarna") %>% filter(manad_long==max(manad_long)) %>%  .$manad_long` `r arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Dalarna") %>% filter(manad_long==max(manad_long)) %>%  .$ar` . Lägst är arbetslösheten i  `r arbetsloshet_kommun %>% filter(arbetslöshet==min(arbetslöshet)) %>% .$region %>% .[1]`, med `r arbetsloshet_kommun %>% filter(arbetslöshet==min(arbetslöshet)) %>% .$arbetslöshet %>% .[1]` procent. I södra delarna av länet är bilden en annan, där flera kommuner har mellan 6 och 8 procents arbetslöshet. Högst är arbetslösheten i  `r arbetsloshet_kommun %>% filter(arbetslöshet==max(arbetslöshet)) %>% .$region %>% .[1]`, där den uppgår `r arbetsloshet_kommun %>% filter(arbetslöshet==max(arbetslöshet)) %>% .$arbetslöshet %>% .[1]` procent. En tänkbar orsak till detta mönster är att de kommuner med högst arbetslöshet också är de kommuner som har högst andel utrikes födda. Den sistnämnda  gruppen tenderar att ha klart högre arbetslöshet än inrikes födda.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 karta
