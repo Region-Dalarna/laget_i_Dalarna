@@ -66,7 +66,7 @@ Det ekonomiska läget i Sverige och Dalarna kan under senare år beskrivas som b
 <br>
 <br>
 
-## Det allmänna läget i Ekonomin
+## Det allmänna läget i ekonomin
 Att beskriva läget i ekonomin kan göras på flera sätt. I detta första avsnitt har vi valt att fokusera på tre variabler som antingen inte mäts på länsnivå, konjunkturbarometern och inflation, eller mäts med för lång fördröjning, bruttonationalprodukt (hädanefter BNP). Eftersom förändring i BNP ger en bra "temperaturmätare" på läget i ekonomin, så fokuserar vi först på denna variabel.
 <br>
 
