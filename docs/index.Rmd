@@ -81,7 +81,7 @@ Det allmänna läget i en ekonomi kan beskrivas på flera sätt. I detta första
  
 </details>
 <br>
-Genom att titta på förändring i BNP kan man få en uppfattning om hur aktiviteten i den svenska ekonomin förändras över tid. Eftersom Sveriges ekonomi, precis som de flesta andra länders, växer i normala fall, ökar BNP i en majoritet av kvartalen. Vid större kriser i samhället kan dock BNP minska avsevärt, vilket syns i figuren nedan. Under 2:a kvartalet 2020 minskade aktiviteten i den svenska ekonomin med nästan 8 procent jämfört med samma kvartal året innan, vilket kan tillskrivas Corona-pandemin. Återhämtningen gick dock snabbt och redan i kvartalet efter så ökade BNP med nästan lika mycket som minskningen i kvartal två. Därefter följde ett par år när läget i Sveriges ekonomi kan beskrivas som gott, innan aktiviteten i ekonomin återigen krympte i kvartal ett 2022. Därefter har läget varit mer skakigt och i `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$kvartal` `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$ar` var förändringen i BNP `r gsub("\\.",",",BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Sasongsransad_forandring)` procent.
+Genom att titta på förändring i BNP kan man få en uppfattning om hur aktiviteten i den svenska ekonomin förändras över tid. Eftersom Sveriges ekonomi, precis som de flesta andra länders, växer i normala fall, ökar BNP i en majoritet av kvartalen. Vid större kriser i samhället kan dock BNP minska avsevärt, vilket syns i figuren nedan. Under 2:a kvartalet 2020 minskade aktiviteten i den svenska ekonomin med nästan 8 procent jämfört med samma kvartal året innan, vilket kan tillskrivas Corona-pandemin. Återhämtningen gick dock snabbt och redan i kvartalet efter så ökade BNP med nästan lika mycket som minskningen i kvartal två. Därefter följde ett par år när läget i Sveriges ekonomi kan beskrivas som gott, innan aktiviteten i ekonomin återigen minskade i kvartal ett 2022. Därefter har läget varit mer skakigt och i `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$kvartal` `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$ar` var förändringen i BNP `r gsub("\\.",",",BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Sasongsransad_forandring)` procent.
 
 ```{r, include = FALSE}
 
@@ -204,7 +204,7 @@ konj_bransch
 ```
 
 ### 1.3 Inflation
-Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i den allmänna prisnivån, så kallad inflation. Normalt förknippas hög inflation med problem, eftersom varor och tjänster blir dyrare. Om inte lönerna ökar i samma takt blir människor fattigare i reala termer, vilket har blivit påtagligt i Sverige på senare år. Även för låg, eller negativ, inflation kan vara skadligt för ekonomin. Exempelvis missgynnas låntagare av en sjunkande prisnivå, då deras lån ökar i värde realt. Sveriges Riksbank strävar därför efter att hålla inflationen relativt konstant över tid, runt ett uttalat inflationsmål. 
+Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i den allmänna prisnivån, så kallad inflation. Normalt förknippas hög inflation med problem, eftersom varor och tjänster blir dyrare. Om inte lönerna ökar i samma takt blir människor fattigare i reala termer, vilket har blivit påtagligt i Sverige det senataste året. Även åg, eller negativ, inflation kan vara skadligt för ekonomin. Exempelvis missgynnas låntagare av en sjunkande prisnivå, då deras lån ökar i värde realt. Sveriges Riksbank strävar därför efter att hålla inflationen relativt konstant över tid, runt ett uttalat inflationsmål. 
 <br>
 
 <details>
@@ -216,7 +216,7 @@ Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i
 </details>
 <br>
 
-Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF (se "mer information om statistiken" ovan), legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 har inflationen dock ökat avsevärt och var som högst i `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar)`, då den i Sverige uppgick till `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF` procent. Därefter har inflationstakten sjunkit något och var i `r KPI_df %>% filter(KPIF==last(KPIF)) %>% select(manad_long,ar)`, `r KPI_df %>% filter(KPIF==last(KPIF)) %>% .$KPIF` procent. Den höga inflationstakten på senare år har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på Wikipedia^[https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge].
+Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF (se "mer information om statistiken" ovan), legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 har inflationen dock ökat avsevärt och var som högst i `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar)`, då den i Sverige uppgick till `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF` procent. Därefter har inflationstakten sjunkit och var i `r KPI_df %>% filter(KPIF==last(KPIF)) %>% select(manad_long,ar)`, `r KPI_df %>% filter(KPIF==last(KPIF)) %>% .$KPIF` procent. Den höga inflationstakten på senare år har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på Wikipedia^[https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge].
 
 ```{r, include = FALSE}
 
@@ -440,7 +440,7 @@ smahuspriser_län
 ```
 
 ## 3 Företagandet
-<br>
+Läget för företagen i länet hänger naturligtvis samman med läget i ekonomin i stort. En första indikator på sämre tider är att företag tvingas varsla personal p.g.a. arbetsbrist. Detta behöver inte leda till att de anställda blir uppsagda, men kan vara en indikation på att sämre tider stundar. Nästa steg kan vara att företag tvingas gå i konkurs, vilket vi också undersöker i detta avsnitt.
  
 ### 3.1 Varsel{.tabset}
 
@@ -449,7 +449,7 @@ smahuspriser_län
 
   <summary>Mer information om statistiken</summary>
 
-<div title="Källa: Arbetsförmedlingen">Varsel innebär att en arbetsgivare förvarnar om en större mängd uppsägningar. Varsel och uppsägning förekommer ofta vid arbetsbrist, men behöver inte leda till att den varslade blir uppsagd.</div> 
+<div title="Källa: Arbetsförmedlingen">Varsel innebär att en arbetsgivare förvarnar om en större mängd uppsägningar. Varsel och uppsägning förekommer ofta vid arbetsbrist, men behöver inte leda till att den varslade blir uppsagd. Arbetsgivaren är skyldig att varsla om minst fem personer i samma län riskerar att bli uppsagda på grund av arbetsbrist.</div> 
  
 </details>
 <br>
