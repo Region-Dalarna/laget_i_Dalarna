@@ -62,15 +62,15 @@ Bygglov_df <- read.xlsx(here("Data","byggande.xlsx"),sheet=2)%>%
 Senast uppdaterad: `r Sys.Date()`</i>
 </p>
 <br>
-Det ekonomiska läget i Sverige och Dalarna kan på senare år beskrivas som besvärligt. Först drabbades samhället av den pandemi som orsakades av Covid-19. Denna kris ledde till omfattande mänskliga förluster och fick även stora effekter på den svenska ekonomin under första halvan av 2020. Lyckligtvis återhämtade sig den svenska ekonomin relativt snabbt och pandemin följdes av ett par goda år ekonomiskt. I början av 2022 invaderade dock Ryssland Ukraina, vilket, vid sidan om stort mänskligt lidande i Ukraina, gett stora effekter på världens och Sveriges ekonomi. Med utgångspunkt i den här typen av kriser, är syftet med denna rapport att göra kvartalsvisa uppdateringar av läget i Dalarna. Fokus ligger i första hand på områden som rör Dalarnas ekonomi, såsom arbetsmarknad och bostadsbyggande, men initialt kommer vi även att diskutera läget i Sverige i stort. Detta eftersom vissa variabler som är centrala för att beskriva det ekonomiska läget bara mäts på nationell nivå, alternativt mäts med för lång fördröjning på regional nivå.
+Det ekonomiska läget i Sverige och Dalarna kan på senare år beskrivas som besvärligt. Först drabbades samhället av den pandemi som orsakades av Covid-19. Krisen ledde till omfattande mänskliga förluster och fick även stora effekter på den svenska ekonomin under första halvan av 2020. Lyckligtvis återhämtade sig den svenska ekonomin relativt snabbt och pandemin följdes av ett par goda år ekonomiskt. I början av 2022 invaderade dock Ryssland Ukraina, vilket, vid sidan om stort mänskligt lidande i Ukraina, gett stora effekter på världens och Sveriges ekonomi. Med utgångspunkt i den här typen av kriser, är syftet med denna rapport att göra kvartalsvisa uppdateringar av läget i Dalarna. Fokus ligger i första hand på att synliggöra det ekonomiska läget i Dalarna, vad gäller exempelvis arbetsmarknad och bostadsbyggande men även områden som påverkar Dalarnas ekonomi. Initialt kommer vi därför att diskutera läget i Sverige i stort, och vissa variabler som är centrala för att beskriva det ekonomiska läget bara mäts på nationell nivå, alternativt mäts med relativt lång fördröjning på regional nivå.
 <br>
 <br>
 
 
 ## 1 Det allmänna läget i ekonomin
 Det allmänna läget i en ekonomi kan beskrivas på flera sätt. I detta första avsnitt har vi valt att fokusera på tre variabler:
-- BNP: mäter aktiviteten i ekonomin
-- Konjunkturbarometern; mäter hur individer och företag uppfattar ekonomin
+- BNP: mäter aktiviteten i ekonomin.
+- Konjunkturbarometern: mäter hur individer och företag uppfattar ekonomin.
 - Inflation: mäter prisnivån i ekonomin.
 <br>
 
@@ -84,7 +84,7 @@ Det allmänna läget i en ekonomi kan beskrivas på flera sätt. I detta första
  
 </details>
 <br>
-Genom att titta på förändring i BNP kan man få en uppfattning om hur aktiviteten i den svenska ekonomin förändras över tid. Eftersom Sveriges ekonomi, precis som de flesta andra länders, växer i normala fall, ökar BNP i en majoritet av kvartalen. Vid större kriser i samhället kan dock BNP minska avsevärt, vilket syns i figuren nedan. Under 2:a kvartalet 2020 minskade aktiviteten i den svenska ekonomin med nästan 8 procent jämfört med samma kvartal året innan, vilket kan tillskrivas Corona-pandemin. Återhämtningen gick dock snabbt och redan i kvartalet efter så ökade BNP med nästan lika mycket som minskningen i kvartal två. Därefter följde ett par år när läget i Sveriges ekonomi kan beskrivas som gott, innan aktiviteten i ekonomin återigen minskade i kvartal ett 2022. Därefter har läget varit mer skakigt och i `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$kvartal` `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$ar` var förändringen i BNP `r gsub("\\.",",",BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Sasongsransad_forandring)` procent.
+Genom att titta på förändring i BNP kan man få en uppfattning om hur aktiviteten i den svenska ekonomin förändras över tid. Eftersom Sveriges ekonomi, precis som de flesta andra länders, växer i normala fall, ökar BNP under en majoritet av kvartalen. Vid större kriser i samhället kan dock BNP minska avsevärt, vilket också syns i figuren nedan. Under andra kvartalet 2020 minskade aktiviteten i den svenska ekonomin med nästan 8 procent jämfört med samma kvartal året innan, vilket kan tillskrivas Corona-pandemin. Återhämtningen gick dock snabbt och redan i kvartalet efter så ökade BNP med nästan lika mycket som minskningen i kvartal två. Därefter följde ett par år när läget i Sveriges ekonomi kan beskrivas som gott, innan aktiviteten i ekonomin återigen minskade i kvartal ett, år 2022. Därefter har läget varit relativt skakigt och i `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$kvartal` `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$ar` var förändringen i BNP `r gsub("\\.",",",BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Sasongsransad_forandring)` procent.
 
 ```{r, include = FALSE}
 
@@ -119,14 +119,14 @@ BNP_stapel
 ```
 
 ### 1.2 Konjunkturbarometern{.tabset}
-Ett annat sätt att mäta läget i ekonomin är genom de så kallade konfidensindkatorerna, vilka baseras på en enkät som Konjunkturinstitutet skickar till företag och hushåll i Sverige. Barometerindikatorn, som väger samman konfidensindikatorerna, ger varje månad en bild av konjunkturläget i Sveriges ekonomi. Till skillnad på BNP fokuserar konjunkturbarometern inte enbart på nuläget, utan hushållen och företagen får även svara på frågor som rör framtidsutsikterna.
+Ett annat sätt att mäta läget i ekonomin är genom de olika enkätundersökningar som Konjunkturinstitutet regelbundet skickar till företag och hushåll med frågor om deras uppfattning om nuläge och förväntningar på den ekonomiska utvecklingen. Svaren vägs samman i en indikator som kallas Konjunkturbarometern. Till skillnad från BNP fokuserar konjunkturbarometerindikatorn inte enbart på nuläget, utan hushållen och företagen får även svara på frågor som rör framtidsutsikterna. Barometerindikatorn väger samman konfidensindikatorer från svaren i de olika enkäterna och ger varje månad en bild av konjunkturläget i Sveriges ekonomi.
 <br>
 
 <details>
 
   <summary>Mer information om statistiken</summary>
 
-<div title="Källa: Konjunkturinstitutet">Barometerindikatorn sammanfattar konfidensindikatorerna för industri, tjänster, bygg, detaljhandel och hushåll, som baseras på företagens och hushållens svar från enkäterna i Konjunkturbarometern. Barometerindikatorn kan närmast jämföras med EU-kommissionens Economic Sentiment Indicator (ESI) och har ett medelvärde på 100 och en standardavvikelse på 10. Värden över 100 motsvarar en starkare ekonomi än normalt och värden över 110 en mycket starkare ekonomi än normalt. Värden under 100 respektive under 90 visar en svagare respektive mycket svagare ekonomi än normalt.</div>
+<div title="Källa: Konjunkturinstitutet">Barometerindikatorn sammanfattar konfidensindikatorer för industrisektorn, tjänstesektorn, byggsektorn, detaljhandeln samt hushåll. Indikatorerna baseras på enkätsvar från företag om bland annat deras produktion, investeringar och försäljning, men även företagens planer och förväntningar om framtiden, tillsammans med hushållens svar på enkätfrågor om deras ekonomiska situation nu och deras planer och förväntningar för framtiden. Detta sammanfattas i Konjunkturbarometern. Barometerindikatorn kan närmast jämföras med EU-kommissionens Economic Sentiment Indicator (ESI) och har ett medelvärde på 100 och en standardavvikelse på 10. Värden över 100 motsvarar en starkare ekonomi än normalt och värden över 110 en mycket starkare ekonomi än normalt. Värden under 100 respektive under 90 visar en svagare respektive mycket svagare ekonomi än normalt.</div>
  
 </details>
 <br>
