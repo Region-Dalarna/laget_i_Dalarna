@@ -51,6 +51,13 @@ h3 { /* Header 3 */
   color: #000000;
 }
 
+ul {
+  font-family:'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
 details{
   background-color: #f1f1f1;
   font-size: 0.9rem;

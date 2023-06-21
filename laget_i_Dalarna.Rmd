@@ -69,10 +69,11 @@ Det ekonomiska läget i Sverige och Dalarna kan på senare år beskrivas som bes
 
 ## 1 Det allmänna läget i ekonomin
 Det allmänna läget i en ekonomi kan beskrivas på flera sätt. I detta första avsnitt har vi valt att fokusera på tre variabler:
-- BNP: mäter aktiviteten i ekonomin.
-- Konjunkturbarometern: mäter hur individer och företag uppfattar ekonomin.
-- Inflation: mäter prisnivån i ekonomin.
-<br>
+
+* BNP: mäter aktiviteten i ekonomin.
+* Konjunkturbarometern: mäter hur individer och företag uppfattar ekonomin.
+* Inflation: mäter prisnivån i ekonomin.
+
 
 ### 1.1 BNP
 
@@ -180,15 +181,31 @@ konj
 ```
 
 #### Bransch
+
 Hur läget i ekonomin uppfattas varierar beroende på om det är företagen eller hushållen som tillfrågas. Hushållen hade en pessimistisk syn på ekonomin i `r last(barometern_df$manad_long)` `r last(barometern_df$ar)`, med en barometerindikator på `r gsub("\\.",",",last(barometern_df$Barometerindikatorn.och.andra.indikatorer[barometern_df$Indikator=="Konfidensindikator hushåll"]))`. Bland branschgrupperna i diagrammet nedan hade `r tolower(gsub( " .*$", "", barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(Barometerindikatorn.och.andra.indikatorer==max(Barometerindikatorn.och.andra.indikatorer)) %>% .$Indikator))`n den mest positiva synen på ekonomin i `r last(barometern_df$manad_long)` `r last(barometern_df$ar)`, medan företag inom `r tolower(gsub( " .*$", "", barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(Barometerindikatorn.och.andra.indikatorer==min(Barometerindikatorn.och.andra.indikatorer)) %>% .$Indikator))` uppfattar den ekonomiska utvecklingen som mer negativ. Tjänstesektorn drabbades värst under pandemin (mars/april 2020), medan tillverkningsindustrin uppfattade ekonomin som starkare än normalt från slutet av 2020 fram till mitten av 2022.
+
 ```{r, include = FALSE}
 
-    barometern_jmf_df<- barometern_df %>%
-      filter(Period>"2019-12",Indikator=="Tillverkningsindustri (SNI 10-33)") %>% 
-        mutate("Barometerindikatorn.och.andra.indikatorer"=100,
-               "Indikator"="Normalt läge i ekonomin")
+  barometern_jmf_df<- barometern_df %>%
+    filter(Period>"2019-12",Indikator=="Tillverkningsindustri (SNI 10-33)") %>% 
+      mutate("Barometerindikatorn.och.andra.indikatorer"=100,
+             "Indikator"="Normalt läge i ekonomin")
     
-    barometern_bransch_utskrift<-rbind(barometern_df %>% filter(Indikator!="Barometerindikatorn",Period>"2019-12"),barometern_jmf_df)
+  barometern_bransch_utskrift<-rbind(barometern_df %>% filter(Indikator!="Barometerindikatorn",Period>"2019-12"),barometern_jmf_df)
+
+    
+ barometern_bransch_utskrift <-  barometern_bransch_utskrift %>% 
+  mutate(Indikator = case_when(barometern_bransch_utskrift$Indikator == "Byggindustri (SNI 41-43)" ~ "Byggindustri",
+                                barometern_bransch_utskrift$Indikator == "Detaljhandel (SNI 45 + 47)" ~ "Detaljhandel",
+                                barometern_bransch_utskrift$Indikator == "Tillverkningsindustri (SNI 10-33)" ~ "Tillverkningsindustri",
+                                barometern_bransch_utskrift$Indikator == "Tjänstesektorn (SNI 49-82 + 95-96)" ~ "Tjänstesektorn",
+                                barometern_bransch_utskrift$Indikator == "Konfidensindikator hushåll" ~ "Hushåll",
+                                .default = barometern_bransch_utskrift$Indikator))
+       
+  barometern_bransch_utskrift <- barometern_bransch_utskrift %>% 
+  mutate(Indikator = factor(Indikator, levels = c("Byggindustri", "Detaljhandel", "Tillverkningsindustri",
+                                                  "Tjänstesektorn", "Hushåll", 
+                                                  "Normalt läge i ekonomin")))
 
     diagramtitel <- paste0("Företagen och hushållens syn på ekonomin i Sverige")
 
@@ -199,7 +216,7 @@ Hur läget i ekonomin uppfattas varierar beroende på om det är företagen elle
                               skickad_y_var = "Barometerindikatorn.och.andra.indikatorer",
                               skickad_x_grupp ="Indikator",
                               berakna_index=FALSE,
-                              manual_color = c(diagramfarger("rus_sex")[1:3],"#000000",diagramfarger("rus_sex")[4:5]),
+                              manual_color = c(diagramfarger("rus_sex")[1:5],"#000000"),
                               manual_y_axis_title="Indikatorvärde",
                               stodlinjer_avrunda_fem = TRUE,
                               diagram_titel = diagramtitel,
@@ -281,7 +298,6 @@ inflation_linje
 
 ### 2.1 Bostadsbyggande{.tabset}
 
-<br>
 <details>
 
   <summary>Mer information om statistiken</summary>
@@ -358,7 +374,6 @@ Nybyggnation_linje
 
 ### 2.2 Bostadspriser{.tabset}
 
-<br>
 <details>
 
   <summary>Mer information om statistiken</summary>
@@ -463,7 +478,6 @@ Läget för företagen i länet hänger naturligtvis samman med läget i ekonomi
  
 ### 3.1 Varsel{.tabset}
 
-<br>
 <details>
 
   <summary>Mer information om statistiken</summary>
@@ -696,7 +710,7 @@ konkurser_bransch
 Som mått på läget i Dalarna, är arbetslösheten sannolikt en mer trögrörlig indikator än exempelvis antalet varsel. Detta eftersom de dröjer minst ett par månader från lagda varsel till eventuella uppsägningar. De är även viktigt att notera att arbetslösheten varierar mellan olika grupper i samhället, exempelvis baserat på personers kön, utbildningsbakgrund eller huruvida de är födda i Sverige. För en fördjupad diskussion runt detta, se exempelvis rapporten "Kvinnor och män i Dalarna"^[https://region-dalarna.github.io/kvinnor_man_i_Dalarna/].
  
 ### 4.1 Arbetslöshet {.tabset}
-<br>
+
 <details>
 
   <summary>Mer information om statistiken</summary>
@@ -767,7 +781,7 @@ Arbetslösheten, såväl i Dalarna som Sverige, varierar över tid. I samband me
                                          manual_y_axis_title = "procent",
                                          visa_var_x_xlabel=1,
                                          filnamn_diagram = diagramfilnamn,
-                                         skriv_till_diagramfil = FALSE)
+                                         skriv_till_diagramfil = TRUE)
 
   
 ```
