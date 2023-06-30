@@ -34,6 +34,9 @@ source("https://raw.githubusercontent.com/FaluPeppe/func/main/func_API.R")
 # Skapar en mapp för att 
 output_mapp <- here("Figurer","/")
 
+# Om man vill uppdatera den externa hemsidan sätts denna variabel till TRUE
+uppdatera_hemsida = FALSE
+
 # Läser in data
 barometern_df <- read.xlsx(here("Data","konjunkturbarometern.xlsx"),sheet=1)
 BNP_df <- read.xlsx(here("Data","BNP.xlsx"),sheet=1)
