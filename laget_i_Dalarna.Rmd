@@ -832,11 +832,12 @@ karta
 
 ```{r, include = FALSE}
 
+if(uppdatera_hemsida==TRUE){
 # kopiera html-filen till 
 file.copy(from = "laget_i_Dalarna.html", to = "docs/index.html", overwrite = TRUE)
 file.copy(from = "laget_i_Dalarna.Rmd", to = "docs/index.Rmd", overwrite = TRUE)
 
 # ska vi ta bort html-filen i projektmappen eller ha dubbelt, både där och i docs-mappen?
 #file.remove("laget_i_Dalarna.html")
-
+}
 ```
