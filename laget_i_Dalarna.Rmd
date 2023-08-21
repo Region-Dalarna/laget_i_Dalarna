@@ -31,6 +31,8 @@ p_load(sf,
 source("https://raw.githubusercontent.com/FaluPeppe/func/main/func_SkapaDiagram.R")
 source("https://raw.githubusercontent.com/FaluPeppe/func/main/func_API.R")
 
+# 
+
 # Skapar en mapp för att 
 output_mapp <- here("Figurer","/")
 
@@ -236,6 +238,7 @@ konj_bransch
 ```
 
 ### 1.3 Inflation
+
 Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i den allmänna prisnivån, så kallad inflation. Normalt förknippas hög inflation med problem, eftersom varor och tjänster blir dyrare. Om inte lönerna ökar i samma takt blir människor fattigare i reala termer, vilket har blivit påtagligt i Sverige det senaste året. Även låg, eller negativ, inflation kan vara skadligt för ekonomin. Exempelvis missgynnas låntagare av en sjunkande prisnivå, då deras lån ökar i värde realt. Sveriges Riksbank strävar därför efter att hålla inflationen relativt konstant över tid, runt ett uttalat inflationsmål. 
 <br>
 
@@ -248,7 +251,7 @@ Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i
 </details>
 <br>
 
-Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 har inflationen dock ökat avsevärt och var som högst i `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar)`, då den i Sverige uppgick till `r gsub("\\.",",",KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF)` procent. Därefter har inflationstakten sjunkit och var i `r KPI_df %>% filter(KPIF==last(KPIF)) %>% select(manad_long,ar)`, `r gsub("\\.",",",KPI_df %>% filter(KPIF==last(KPIF)) %>% .$KPIF)` procent. Den höga inflationstakten på senare år har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på Wikipedia^[https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge].
+Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 har inflationen dock ökat avsevärt och var som högst i `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar)`, då den i Sverige uppgick till `r gsub("\\.",",",KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF)` procent. Därefter har inflationstakten sjunkit och var i `r KPI_df %>% filter(månad==last(månad)) %>% select(manad_long,ar)`, `r gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)` procent. Den höga inflationstakten på senare år har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på Wikipedia^[https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge].
 
 ```{r, include = FALSE}
 

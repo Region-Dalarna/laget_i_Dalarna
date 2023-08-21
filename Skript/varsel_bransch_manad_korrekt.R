@@ -23,7 +23,12 @@ hamta_varsel_bransch_manad <- function(vald_region = "20",
   td = tempdir()              # skapa temporär mapp
   varsel_fil <- tempfile(tmpdir=td, fileext = ".xlsx")
   
-  download.file(paste0("https://arbetsformedlingen.se",
+  # Tidigare
+  # download.file(paste0("https://arbetsformedlingen.se",
+  #                      jsonlite::read_json("https://arbetsformedlingen.se/rest/analysportalen/va/sitevision")[[3]]$properties$link),
+  #               destfile = varsel_fil, mode = "wb") 
+  
+  download.file(paste0("https://",
                        jsonlite::read_json("https://arbetsformedlingen.se/rest/analysportalen/va/sitevision")[[3]]$properties$link),
                 destfile = varsel_fil, mode = "wb") 
   
