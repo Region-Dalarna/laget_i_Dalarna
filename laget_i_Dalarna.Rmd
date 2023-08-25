@@ -59,6 +59,10 @@ Bygglov_df <- read.xlsx(here("Data","byggande.xlsx"),sheet=2)%>%
     mutate(kvartal=ifelse(kvartal=="K1","kvartal ett",
                           ifelse(kvartal=="K2","kvartal två",
                                  ifelse(kvartal=="K3","kvartal tre","kvartal fyra"))))
+# Källa: https://sdb.socialstyrelsen.se/if_ekb_manad/resultat.aspx
+# Uppdateras genom att hämta en ny version av data
+ekonomiskt_bistand_df <-  read.xlsx(here("Data","Socialstyrelsen_2023_08_24.xlsx"),startRow = 2) %>% 
+  filter(År>2017,Antal.hushåll>0)
 ```
 
 # Läget i Dalarna
@@ -75,9 +79,21 @@ Det ekonomiska läget i Sverige och Dalarna kan på senare år beskrivas som bes
 ## 1 Det allmänna läget i ekonomin
 Det allmänna läget i en ekonomi kan beskrivas på flera sätt. I detta första avsnitt har vi valt att fokusera på tre variabler:
 
-* BNP: mäter aktiviteten i ekonomin.
-* Konjunkturbarometern: mäter hur individer och företag uppfattar ekonomin.
-* Inflation: mäter prisnivån i ekonomin.
+<ul>
+
+<li>
+BNP: mäter aktiviteten i ekonomin.
+</li>
+
+<li>
+Konjunkturbarometern: mäter hur individer och företag uppfattar ekonomin.
+</li>
+
+<li>
+Inflation: mäter prisnivån i ekonomin.
+</li>
+
+</ul>
 
 
 ### 1.1 BNP
@@ -482,7 +498,7 @@ smahuspriser_län
 ## 3 Företagandet
 Läget för företagen i länet hänger naturligtvis samman med läget i ekonomin i stort. En första indikator på sämre tider är att företag tvingas varsla personal p.g.a. arbetsbrist. Detta behöver inte leda till att de anställda blir uppsagda, men kan ändå vara en indikation på att sämre tider stundar. Ett potentiellt nästa steg är att företag begärs i konkurs, vilket vi också undersöker i detta avsnitt.
  
-### 3.1 Varsel{.tabset}
+### 3.1 Varsel
 
 <details>
 
@@ -493,8 +509,8 @@ Läget för företagen i länet hänger naturligtvis samman med läget i ekonomi
 </details>
 <br>
 
-#### Månad
-Antalet varsel i Dalarna på månadsbasis varierar mycket över tid. Ofta varslas inga anställda alls, men ibland berörs 100-tals personer under en enskild månad. På senare år lades flest varsel i `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==max(antal)) %>% .$manad_ar_long`, då `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==max(antal)) %>% .$antal` personer berördes. Detta hängde samman med pandemin kopplad till Covid-19, som startade i början av 2020. Som jämförelse varslades `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==last(antal)) %>% .$antal` personer i `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==last(antal)) %>% .$manad_ar_long`.
+Antalet varsel i Dalarna på månadsbasis varierar mycket över tid. Ofta varslas inga anställda alls, men ibland berörs 100-tals personer under en enskild månad. På senare år lades flest varsel i `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==max(antal)) %>% .$manad_ar_long`, då `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==max(antal)) %>% .$antal` personer berördes. Detta hängde samman med pandemin kopplad till Covid-19, som startade i början av 2020. Som jämförelse varslades `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==last(antal)) %>% .$antal` personer i `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==last(antal)) %>% .$manad_ar_long`. Den bransch där flest drabbades av varsel i `r tolower(unique(varsel_bransch_df$Månad))` `r unique(varsel_bransch_df$År)` var "`r varsel_bransch_df %>% filter(Antal_varslade==max(Antal_varslade)) %>% .$Näringsgren`", där `r varsel_bransch_df %>% filter(Antal_varslade==max(Antal_varslade)) %>% .$Antal` personer varslades om uppsägning.
+
 ```{r, include = FALSE}
     diagram_capt <- "Källa: Arbetsförmedlingen.\nBearbetning: Samhällsanalys, Region Dalarna."
 
@@ -525,9 +541,6 @@ Antalet varsel i Dalarna på månadsbasis varierar mycket över tid. Ofta varsla
 varsel_manad
 
 ```
-
-#### Bransch
-Den bransch där flest drabbades av varsel i `r tolower(unique(varsel_bransch_df$Månad))` `r unique(varsel_bransch_df$År)` var "`r varsel_bransch_df %>% filter(Antal_varslade==max(Antal_varslade)) %>% .$Näringsgren`", där `r varsel_bransch_df %>% filter(Antal_varslade==max(Antal_varslade)) %>% .$Antal` personer varslades om uppsägning.
 
 ```{r, include = FALSE}
 # Skapar ett linjediagram för förändring i priser. Blir något fel när man skapar index via funktionen,
@@ -569,7 +582,7 @@ Den bransch där flest drabbades av varsel i `r tolower(unique(varsel_bransch_df
   
 ```
 
-```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',include = FALSE}
 varsel_branch_manad
 
 ```
@@ -834,6 +847,73 @@ Arbetslösheten bland Dalarnas kommuner är låg på många håll, där en major
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 karta
+```
+
+## 5 Hushållens ekonomi
+Hushållens ekonomiska situation kan mätas på flera olika sätt. Arbetslösheten, som diskuterades i föregående avsnitt är en indikator på den ekonomiska situationen. En annan indikator är den disponibla inkomsten, dvs. hur mycket varje hushåll har över efter att ha betalat skatt. Eftersom den disponibla inkomsten mäts med en rejäl eftersläpning, har vi i denna rapport istället valt att fokusera på hur många hushåll som har svårt att försörja sig, mätt i antalet hushåll som är i behov av ekonomiskt bistånd. I Dalarna 
+
+```{r, include = FALSE}
+   diagram_capt = "Källa: Socialstyrelsen\nBearbetning: Samhällsanalys, Region Dalarna\nDiagramförklaring: Ekonomiskt bistånd är ett stöd som personer kan ansöka om i sin kommun om de har problem att försörja sig själv och sin familj.\nEkonomiskt bistånd består av försörjningsstöd och bistånd till livsföringen i övrigt."
+
+# Numrerar månadsnamn
+ekonomiskt_bistand_df <- ekonomiskt_bistand_df %>% 
+  mutate(manad = case_when(
+    Månad == "Januari" ~ "01",
+    Månad == "Februari" ~ "02",
+    Månad == "Mars" ~ "03",
+    Månad == "April" ~ "04",
+    Månad == "Maj" ~ "05",
+    Månad == "Juni" ~ "06",
+    Månad == "Juli" ~ "07",
+    Månad == "Augusti" ~ "08",
+    Månad == "September" ~ "09",
+    Månad == "Oktober" ~ "10",
+    Månad == "November" ~ "11",
+    Månad == "December" ~ "12",
+  ))
+
+# Beräknar ett startvärde (för att det skall funka med etiketterna i diagrammet)
+startvarde=paste0("2018","-",last(ekonomiskt_bistand_df$manad))
+
+# Fixar lite med data
+ekonomiskt_bistand_utskrift <- ekonomiskt_bistand_df %>% 
+    mutate(ar_manad = paste0(År,"-",manad),
+           antal_hushall = as.numeric(Antal.hushåll),
+           variabel = "Antal hushåll" ) %>%
+      filter(ar_manad>=startvarde) %>%
+        select(-Antal.hushåll)
+
+ekonomiskt_bistand_jmf <-  ekonomiskt_bistand_utskrift %>% 
+  select(ar_manad,antal_hushall) %>% 
+    mutate(antal_hushall = mean(antal_hushall),
+           variabel = "Genomsnitt under perioden")
+
+ut <- rbind(ekonomiskt_bistand_utskrift %>% select(ar_manad,variabel,antal_hushall),ekonomiskt_bistand_jmf)
+
+  diagram_titel <- paste0("Antal hushåll med ekonomiskt bistånd i Dalarnas län")
+  diagramfilnamn <- paste0("ekonomiskt_bistand.png")
+    
+ eko_bistand_fig <- SkapaLinjeDiagram(skickad_df = ut,
+                                         skickad_x_var = "ar_manad", 
+                                         skickad_y_var = "antal_hushall",
+                                         skickad_x_grupp = "variabel",
+                                         berakna_index=FALSE,
+                                         manual_color = c(diagramfarger("rus_sex")[1],"#000000"),
+                                         diagram_titel = diagram_titel,
+                                         diagram_capt =  diagram_capt,
+                                         output_mapp = output_mapp,
+                                         stodlinjer_avrunda_fem = TRUE,
+                                         manual_y_axis_title = "",
+                                         visa_var_x_xlabel=12,
+                                         filnamn_diagram = diagramfilnamn,
+                                         skriv_till_diagramfil = TRUE)
+
+
+  
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+eko_bistand_fig
 ```
 
 ```{r, include = FALSE}
