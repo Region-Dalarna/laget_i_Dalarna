@@ -31,8 +31,6 @@ p_load(sf,
 source("https://raw.githubusercontent.com/FaluPeppe/func/main/func_SkapaDiagram.R")
 source("https://raw.githubusercontent.com/FaluPeppe/func/main/func_API.R")
 
-# 
-
 # Skapar en mapp för att 
 output_mapp <- here("Figurer","/")
 
@@ -141,7 +139,7 @@ BNP_stapel
 ```
 
 ### 1.2 Konjunkturbarometern{.tabset}
-Ett annat sätt att mäta läget i ekonomin är genom de olika enkätundersökningar som Konjunkturinstitutet regelbundet genomför med frågor till företag och hushåll om deras uppfattning om nuläge och förväntningar på den ekonomiska utvecklingen. Svaren vägs samman i en indikator som kallas Konjunkturbarometern. Till skillnad från BNP fokuserar konjunkturbarometerindikatorn inte enbart på nuläget, utan hushållen och företagen får även svara på frågor som rör framtidsutsikterna. Barometerindikatorn väger samman konfidensindikatorer från svaren i de olika enkäterna och ger varje månad en bild av konjunkturläget i Sveriges ekonomi.
+Ett annat sätt att mäta läget i ekonomin är genom de olika enkätundersökningar som Konjunkturinstitutet regelbundet genomför, med frågor till företag och hushåll om deras uppfattning om nuläge och förväntningar på den ekonomiska utvecklingen. Svaren vägs samman i en indikator som kallas Konjunkturbarometern. Till skillnad från BNP fokuserar konjunkturbarometern inte enbart på nuläget, utan hushållen och företagen får även svara på frågor som rör framtidsutsikterna. Barometerindikatorn väger samman konfidensindikatorer från svaren i de olika enkäterna och ger varje månad en bild av konjunkturläget i Sveriges ekonomi.
 <br>
 
 <details>
@@ -820,6 +818,8 @@ sokvag_kommuner_sv <- paste0(mapp_scbadmgranser, filnamn_kommuner)
 
 kommuner_sv <- st_read(sokvag_kommuner_sv)
 
+#col.regions=colorRampPalette(c('deepskyblue', 'deepskyblue4')),
+
 # ta ut endast kommuner och för senaste tillgängliga år
  arbetsloshet_kommun <- arbetsloshet_kommun %>%
      filter(månad == max(månad)) %>%
@@ -835,7 +835,7 @@ arblosa_kommun_gis <- left_join(kommuner_sv, arbetsloshet_kommun, by = c("KOMMUN
    mutate(arb_region=paste0(region,": ",arbetslöshet," %"))
 
  karta <- mapview(arblosa_kommun_gis,zcol = c("grupp"),
-           col.regions=colorRampPalette(c('deepskyblue', 'deepskyblue4')),
+           col.regions=colorRampPalette(c('green', 'darkgreen')),
             popup = popupTable(arblosa_kommun_gis,
                           zcol = c("region","arbetslöshet")),
                layer.name = c("Arbetslöshet (%)"),
@@ -911,7 +911,7 @@ ut <- rbind(ekonomiskt_bistand_utskrift %>% select(ar_manad,variabel,antal_husha
   
 ```
 
-Hushållens ekonomiska situation kan mätas på flera olika sätt. Arbetslösheten, som diskuterades i föregående avsnitt, är en indikator. Hushåll där fler arbetar har helt enkelt en bättre ekonomi än hushåll där färre gör det. En annan indikator är den disponibla inkomsten, dvs. hur mycket varje hushåll har i plånboken (dvs. inkomst efter skatt och transfereringar). Tyvärr mäts den disponibla inkomsten med en betydande eftersläpning, varför vi i denna rapport istället valt att fokusera på hur många hushåll som har svårt att försörja sig, mätt i antalet hushåll som är i behov av ekonomiskt bistånd. I Dalarna hade runt 4000 hushåll ett sådant behov under åren mellan 2018 och 2021, men därefter har behovet minskat stadigt. I `r last(ekonomiskt_bistand_utskrift$Månad)` `r last(ekonomiskt_bistand_utskrift$År)` var bara `r last(ekonomiskt_bistand_utskrift$antal_hushall)` hushåll i behov av stöd. Anmärkningsvärt är även att behovet av stöd har fortsatt att minska trots att prisnivån i samhället har ökat avsevärt på senare år (se avsnittet om inflation). Detta beror sannolikt på att arbetslösheten, trots den tuffa ekonomiska situationen i samhället, är fortsatt låg. Värt att notera är även att antalet hushåll i Dalarna har ökat på senare år, från drygt 136 000 år 2018 till drygt 139 000 år 2022.   
+Hushållens ekonomiska situation kan mätas på flera olika sätt. Arbetslösheten, som diskuterades i föregående avsnitt, är en indikator. Hushåll där fler arbetar har helt enkelt en bättre ekonomi än hushåll där färre gör det. En annan indikator är den disponibla inkomsten, dvs. hur mycket varje hushåll har i plånboken (dvs. inkomst efter skatt och transfereringar). Tyvärr mäts den disponibla inkomsten med en betydande eftersläpning, varför vi i denna rapport istället valt att fokusera på hur många hushåll som har svårt att försörja sig, mätt i antalet hushåll som är i behov av ekonomiskt bistånd. I Dalarna hade runt 4000 hushåll ett sådant behov under åren mellan 2018 och 2021, men därefter har behovet minskat stadigt. I `r last(ekonomiskt_bistand_utskrift$Månad)` `r last(ekonomiskt_bistand_utskrift$År)` var bara `r last(ekonomiskt_bistand_utskrift$antal_hushall)` hushåll i behov av ekonomiskt bistånd. Anmärkningsvärt är även att behovet av bistånd har fortsatt att minska trots att prisnivån i samhället har ökat avsevärt på senare år (se avsnittet om inflation). Detta beror sannolikt på att arbetslösheten, trots den tuffa ekonomiska situationen i samhället, är fortsatt låg. Värt att notera är även att antalet hushåll i Dalarna har ökat på senare år, från drygt 136 000 år 2018 till drygt 139 000 år 2022.   
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 eko_bistand_fig

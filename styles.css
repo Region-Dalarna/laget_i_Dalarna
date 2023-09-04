@@ -53,9 +53,14 @@ h3 { /* Header 3 */
 
 ul {
   font-family:'Montserrat', sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 400;
   line-height: 1.5;
+}
+
+li{
+  padding-bottom: 5px;
+  padding-left: 5px;
 }
 
 details{
@@ -94,8 +99,4 @@ details{
      color: #fff
      border-color: #000000;
      }
-     
-li{
-  padding-bottom: 5px;
-  padding-left: 5px;
-}
+
