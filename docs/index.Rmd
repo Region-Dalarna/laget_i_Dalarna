@@ -34,6 +34,9 @@ source("https://raw.githubusercontent.com/FaluPeppe/func/main/func_API.R")
 # Skapar en mapp för att 
 output_mapp <- here("Figurer","/")
 
+# Om man vill uppdatera den externa hemsidan sätts denna variabel till TRUE
+uppdatera_hemsida = TRUE
+
 # Läser in data
 barometern_df <- read.xlsx(here("Data","konjunkturbarometern.xlsx"),sheet=1)
 BNP_df <- read.xlsx(here("Data","BNP.xlsx"),sheet=1)
@@ -54,6 +57,10 @@ Bygglov_df <- read.xlsx(here("Data","byggande.xlsx"),sheet=2)%>%
     mutate(kvartal=ifelse(kvartal=="K1","kvartal ett",
                           ifelse(kvartal=="K2","kvartal två",
                                  ifelse(kvartal=="K3","kvartal tre","kvartal fyra"))))
+# Källa: https://sdb.socialstyrelsen.se/if_ekb_manad/resultat.aspx
+# Uppdateras genom att hämta en ny version av data
+ekonomiskt_bistand_df <-  read.xlsx(here("Data","Socialstyrelsen_2023_09_04.xlsx"),startRow = 2) %>% 
+  filter(År>2017,Antal.hushåll>0)
 ```
 
 # Läget i Dalarna
@@ -68,12 +75,7 @@ Det ekonomiska läget i Sverige och Dalarna kan på senare år beskrivas som bes
 
 
 ## 1 Det allmänna läget i ekonomin
-Det allmänna läget i en ekonomi kan beskrivas på flera sätt. I detta första avsnitt har vi valt att fokusera på tre variabler:
-
-* BNP: mäter aktiviteten i ekonomin.
-* Konjunkturbarometern: mäter hur individer och företag uppfattar ekonomin.
-* Inflation: mäter prisnivån i ekonomin.
-
+Det allmänna läget i en ekonomi kan beskrivas på flera sätt. I detta första avsnitt har vi valt att fokusera på tre variabler: BNP, konjunkturbarometern och inflation.
 
 ### 1.1 BNP
 
@@ -120,7 +122,7 @@ BNP_stapel
 ```
 
 ### 1.2 Konjunkturbarometern{.tabset}
-Ett annat sätt att mäta läget i ekonomin är genom de olika enkätundersökningar som Konjunkturinstitutet regelbundet genomför med frågor till företag och hushåll om deras uppfattning om nuläge och förväntningar på den ekonomiska utvecklingen. Svaren vägs samman i en indikator som kallas Konjunkturbarometern. Till skillnad från BNP fokuserar konjunkturbarometerindikatorn inte enbart på nuläget, utan hushållen och företagen får även svara på frågor som rör framtidsutsikterna. Barometerindikatorn väger samman konfidensindikatorer från svaren i de olika enkäterna och ger varje månad en bild av konjunkturläget i Sveriges ekonomi.
+Ett annat sätt att mäta läget i ekonomin är genom de olika enkätundersökningar som Konjunkturinstitutet regelbundet genomför, med frågor till företag och hushåll om deras uppfattning om nuläge och förväntningar på den ekonomiska utvecklingen. Svaren vägs samman i en indikator som kallas Konjunkturbarometern. Till skillnad från BNP fokuserar konjunkturbarometern inte enbart på nuläget, utan hushållen och företagen får även svara på frågor som rör framtidsutsikterna. Barometerindikatorn väger samman konfidensindikatorer från svaren i de olika enkäterna och ger varje månad en bild av konjunkturläget i Sveriges ekonomi.
 <br>
 
 <details>
@@ -233,6 +235,7 @@ konj_bransch
 ```
 
 ### 1.3 Inflation
+
 Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i den allmänna prisnivån, så kallad inflation. Normalt förknippas hög inflation med problem, eftersom varor och tjänster blir dyrare. Om inte lönerna ökar i samma takt blir människor fattigare i reala termer, vilket har blivit påtagligt i Sverige det senaste året. Även låg, eller negativ, inflation kan vara skadligt för ekonomin. Exempelvis missgynnas låntagare av en sjunkande prisnivå, då deras lån ökar i värde realt. Sveriges Riksbank strävar därför efter att hålla inflationen relativt konstant över tid, runt ett uttalat inflationsmål. 
 <br>
 
@@ -245,7 +248,7 @@ Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i
 </details>
 <br>
 
-Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 har inflationen dock ökat avsevärt och var som högst i `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar)`, då den i Sverige uppgick till `r gsub("\\.",",",KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF)` procent. Därefter har inflationstakten sjunkit och var i `r KPI_df %>% filter(KPIF==last(KPIF)) %>% select(manad_long,ar)`, `r gsub("\\.",",",KPI_df %>% filter(KPIF==last(KPIF)) %>% .$KPIF)` procent. Den höga inflationstakten på senare år har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på Wikipedia^[https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge].
+Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 har inflationen dock ökat avsevärt och var som högst i `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar)`, då den i Sverige uppgick till `r gsub("\\.",",",KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF)` procent. Därefter har inflationstakten sjunkit och var i `r KPI_df %>% filter(månad==last(månad)) %>% select(manad_long,ar)`, `r gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)` procent. Den höga inflationstakten på senare år har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på Wikipedia^[https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge].
 
 ```{r, include = FALSE}
 
@@ -476,7 +479,7 @@ smahuspriser_län
 ## 3 Företagandet
 Läget för företagen i länet hänger naturligtvis samman med läget i ekonomin i stort. En första indikator på sämre tider är att företag tvingas varsla personal p.g.a. arbetsbrist. Detta behöver inte leda till att de anställda blir uppsagda, men kan ändå vara en indikation på att sämre tider stundar. Ett potentiellt nästa steg är att företag begärs i konkurs, vilket vi också undersöker i detta avsnitt.
  
-### 3.1 Varsel{.tabset}
+### 3.1 Varsel
 
 <details>
 
@@ -487,8 +490,8 @@ Läget för företagen i länet hänger naturligtvis samman med läget i ekonomi
 </details>
 <br>
 
-#### Månad
-Antalet varsel i Dalarna på månadsbasis varierar mycket över tid. Ofta varslas inga anställda alls, men ibland berörs 100-tals personer under en enskild månad. På senare år lades flest varsel i `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==max(antal)) %>% .$manad_ar_long`, då `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==max(antal)) %>% .$antal` personer berördes. Detta hängde samman med pandemin kopplad till Covid-19, som startade i början av 2020. Som jämförelse varslades `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==last(antal)) %>% .$antal` personer i `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==last(antal)) %>% .$manad_ar_long`.
+Antalet varsel i Dalarna på månadsbasis varierar mycket över tid. Ofta varslas inga anställda alls, men ibland berörs 100-tals personer under en enskild månad. På senare år lades flest varsel i `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==max(antal)) %>% .$manad_ar_long`, då `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==max(antal)) %>% .$antal` personer berördes. Detta hängde samman med pandemin kopplad till Covid-19, som startade i början av 2020. Som jämförelse varslades `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==last(antal)) %>% .$antal` personer i `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==last(antal)) %>% .$manad_ar_long`. Den bransch där flest drabbades av varsel i `r tolower(unique(varsel_bransch_df$Månad))` `r unique(varsel_bransch_df$År)` var "`r varsel_bransch_df %>% filter(Antal_varslade==max(Antal_varslade)) %>% .$Näringsgren`", där `r varsel_bransch_df %>% filter(Antal_varslade==max(Antal_varslade)) %>% .$Antal` personer varslades om uppsägning.
+
 ```{r, include = FALSE}
     diagram_capt <- "Källa: Arbetsförmedlingen.\nBearbetning: Samhällsanalys, Region Dalarna."
 
@@ -519,9 +522,6 @@ Antalet varsel i Dalarna på månadsbasis varierar mycket över tid. Ofta varsla
 varsel_manad
 
 ```
-
-#### Bransch
-Den bransch där flest drabbades av varsel i `r tolower(unique(varsel_bransch_df$Månad))` `r unique(varsel_bransch_df$År)` var "`r varsel_bransch_df %>% filter(Antal_varslade==max(Antal_varslade)) %>% .$Näringsgren`", där `r varsel_bransch_df %>% filter(Antal_varslade==max(Antal_varslade)) %>% .$Antal` personer varslades om uppsägning.
 
 ```{r, include = FALSE}
 # Skapar ett linjediagram för förändring i priser. Blir något fel när man skapar index via funktionen,
@@ -563,7 +563,7 @@ Den bransch där flest drabbades av varsel i `r tolower(unique(varsel_bransch_df
   
 ```
 
-```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',include = FALSE}
 varsel_branch_manad
 
 ```
@@ -721,7 +721,7 @@ Statistik över arbetslöshet och sysselsättning kan tas fram på olika sätt. 
 <br>
 
 #### Län
-I `r arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Dalarna") %>% filter(manad_long==max(manad_long)) %>%  .$manad_long` `r arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Dalarna") %>% filter(manad_long==max(manad_long)) %>%  .$ar` hade Dalarna `r gsub("\\.",",",arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Dalarna") %>% filter(manad_long==max(manad_long)) %>%  .$arbetslöshet)` procents arbetslöshet, att jämföra med `r gsub("\\.",",",arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Riket") %>% filter(manad_long==max(manad_long)) %>%  .$arbetslöshet)` procent i Sverige som helhet. Noterbart är även att Dalarna har klart lägre arbetslöshet än näraliggande Gävleborg, där arbetslösheten var `r gsub("\\.",",",arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Gävleborg") %>% filter(manad_long==max(manad_long)) %>%  .$arbetslöshet)` procent under samma tidsperiod. Lägst arbetslös i Sverige hade `r arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar)) %>% filter(manad_long==max(manad_long)) %>% filter(arbetslöshet==min(arbetslöshet)) %>%  .$region`, med `r gsub("\\.",",",arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar)) %>% filter(manad_long==max(manad_long)) %>% filter(arbetslöshet==min(arbetslöshet)) %>%  .$arbetslöshet)` procent.
+I `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$ar))` hade Dalarna `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$arbetslöshet))` procents arbetslöshet, att jämföra med `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Riket") %>% .$arbetslöshet))` procent i Sverige som helhet. Noterbart är även att Dalarna har klart lägre arbetslöshet än näraliggande Gävleborg, där arbetslösheten var `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Gävleborg") %>% .$arbetslöshet))` procent under samma tidsperiod. Lägst arbetslös i Sverige hade `r arbetsmarknadsstatus_tidsserie %>% filter(manad_long==last(manad_long)) %>% filter(arbetslöshet==min(arbetslöshet)) %>%  .$region`, med `r gsub("\\.",",",arbetsmarknadsstatus_tidsserie %>% filter(manad_long==last(manad_long)) %>% filter(arbetslöshet==min(arbetslöshet)) %>%  .$arbetslöshet)` procent.
 ```{r, include = FALSE}
 
   diagramtitel <- paste0("Arbetslöshet i åldersgruppen 20-64 i ",unique(arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar)) %>% filter(manad_long==max(manad_long)) %>%  .$manad_long)," ",unique(arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar)) %>% filter(manad_long==max(manad_long)) %>%  .$ar))
@@ -757,7 +757,7 @@ arbetsloshet_lan
 ```
 
 #### Jämförelse över tid
-Arbetslösheten, såväl i Dalarna som Sverige, varierar över tid. I samband med pandemin orsakad av Covid-19, ökade arbetslösheten och var som högst i Dalarna i `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$manad_long %>% .[1]`  `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$ar %>% .[1]`, då den uppgick till `r  gsub("\\.",",", arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$arbetslöshet %>% .[1])` procent. Därefter har arbetslösheten minskat och var i `r arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Dalarna") %>% filter(manad_long==max(manad_long)) %>%  .$manad_long` `r arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Dalarna") %>% filter(manad_long==max(manad_long)) %>%  .$ar` `r gsub("\\.",",",arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Dalarna") %>% filter(manad_long==max(manad_long)) %>%  .$arbetslöshet)` procent i Dalarna. I Sverige har arbetslösheten länge varit högre än i Dalarna, men skillnaden har minskat på senare år. En orsak till detta kan vara att Sverige överlag har en större andel som arbetar inom tjänstesektorn, branscher som drabbades extra hårt under Coronapandemin men har återhämtat sig därefter.
+Arbetslösheten, såväl i Dalarna som Sverige, varierar över tid. I samband med pandemin orsakad av Covid-19, ökade arbetslösheten och var som högst i Dalarna i `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$manad_long %>% .[1]`  `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$ar %>% .[1]`, då den uppgick till `r  gsub("\\.",",", arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$arbetslöshet %>% .[1])` procent. Därefter har arbetslösheten minskat och var i `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$ar))` `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$arbetslöshet))` procent i Dalarna. I Sverige har arbetslösheten länge varit högre än i Dalarna, men skillnaden har minskat på senare år. En orsak till detta kan vara att Sverige överlag har en större andel som arbetar inom tjänstesektorn, branscher som drabbades extra hårt under Coronapandemin men har återhämtat sig därefter.
 
 ```{r, include = FALSE}
  
@@ -801,6 +801,8 @@ sokvag_kommuner_sv <- paste0(mapp_scbadmgranser, filnamn_kommuner)
 
 kommuner_sv <- st_read(sokvag_kommuner_sv)
 
+#col.regions=colorRampPalette(c('deepskyblue', 'deepskyblue4')),
+
 # ta ut endast kommuner och för senaste tillgängliga år
  arbetsloshet_kommun <- arbetsloshet_kommun %>%
      filter(månad == max(månad)) %>%
@@ -816,7 +818,7 @@ arblosa_kommun_gis <- left_join(kommuner_sv, arbetsloshet_kommun, by = c("KOMMUN
    mutate(arb_region=paste0(region,": ",arbetslöshet," %"))
 
  karta <- mapview(arblosa_kommun_gis,zcol = c("grupp"),
-           col.regions=colorRampPalette(c('deepskyblue', 'deepskyblue4')),
+           col.regions=colorRampPalette(c('green', 'darkgreen')),
             popup = popupTable(arblosa_kommun_gis,
                           zcol = c("region","arbetslöshet")),
                layer.name = c("Arbetslöshet (%)"),
@@ -824,19 +826,88 @@ arblosa_kommun_gis <- left_join(kommuner_sv, arbetsloshet_kommun, by = c("KOMMUN
 
   
 ```
-Arbetslösheten bland Dalarnas kommuner är låg på många håll, där en majoritet av länets kommuner hade mellan 2 och 4 procents arbetslöshet i `r arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Dalarna") %>% filter(manad_long==max(manad_long)) %>%  .$manad_long` `r arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar),region=="Dalarna") %>% filter(manad_long==max(manad_long)) %>%  .$ar` . Lägst är arbetslösheten i  `r arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==min(arbetslöshet)) %>% .$region %>% .[1]`, med `r gsub("\\.",",",arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==min(arbetslöshet)) %>% .$arbetslöshet %>% .[1])` procent. I södra delarna av länet är bilden en annan, där flera kommuner har mer än 6 procents arbetslöshet. Högst är arbetslösheten i  `r arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==max(arbetslöshet)) %>% .$region %>% .[1]`, där den uppgår till `r gsub("\\.",",",arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==max(arbetslöshet)) %>% .$arbetslöshet %>% .[1])` procent. En tänkbar orsak till detta mönster är att de kommuner med högst arbetslöshet också är de kommuner som har högst andel utrikes födda. Den sistnämnda  gruppen tenderar att hamna i arbetslöshet i högre utsträckning än inrikes födda.
+Arbetslösheten bland Dalarnas kommuner är låg på många håll, där en majoritet av länets kommuner hade mellan 2 och 4 procents arbetslöshet i `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$ar))`. Lägst är arbetslösheten i  `r arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==min(arbetslöshet)) %>% .$region %>% .[1]`, med `r gsub("\\.",",",arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==min(arbetslöshet)) %>% .$arbetslöshet %>% .[1])` procent. I södra delarna av länet är bilden en annan, där flera kommuner har mer än 6 procents arbetslöshet. Högst är arbetslösheten i  `r arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==max(arbetslöshet)) %>% .$region %>% .[1]`, där den uppgår till `r gsub("\\.",",",arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==max(arbetslöshet)) %>% .$arbetslöshet %>% .[1])` procent. En tänkbar orsak till detta mönster är att de kommuner med högst arbetslöshet också är de kommuner som har högst andel utrikes födda. Den sistnämnda  gruppen tenderar att hamna i arbetslöshet i högre utsträckning än inrikes födda.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 karta
 ```
 
+## 5 Hushållens ekonomi
+
+```{r, include = FALSE}
+   diagram_capt = "Källa: Socialstyrelsen\nBearbetning: Samhällsanalys, Region Dalarna\nDiagramförklaring: Ekonomiskt bistånd är ett stöd som personer kan ansöka om i sin kommun om de har problem att försörja sig själva och sin familj.\nEkonomiskt bistånd består av försörjningsstöd och bistånd till livsföringen i övrigt."
+
+# Numrerar månadsnamn
+ekonomiskt_bistand_df <- ekonomiskt_bistand_df %>% 
+  mutate(manad = case_when(
+    Månad == "Januari" ~ "01",
+    Månad == "Februari" ~ "02",
+    Månad == "Mars" ~ "03",
+    Månad == "April" ~ "04",
+    Månad == "Maj" ~ "05",
+    Månad == "Juni" ~ "06",
+    Månad == "Juli" ~ "07",
+    Månad == "Augusti" ~ "08",
+    Månad == "September" ~ "09",
+    Månad == "Oktober" ~ "10",
+    Månad == "November" ~ "11",
+    Månad == "December" ~ "12",
+  ))
+
+# Beräknar ett startvärde (för att det skall funka med etiketterna i diagrammet)
+startvarde=paste0("2018","-",last(ekonomiskt_bistand_df$manad))
+
+# Fixar lite med data
+ekonomiskt_bistand_utskrift <- ekonomiskt_bistand_df %>% 
+    mutate(ar_manad = paste0(År,"-",manad),
+           antal_hushall = as.numeric(Antal.hushåll),
+           variabel = "Antal hushåll" ) %>%
+      filter(ar_manad>=startvarde) %>%
+        select(-Antal.hushåll)
+
+ekonomiskt_bistand_jmf <-  ekonomiskt_bistand_utskrift %>% 
+  select(ar_manad,antal_hushall) %>% 
+    mutate(antal_hushall = mean(antal_hushall),
+           variabel = "Genomsnitt under perioden")
+
+ut <- rbind(ekonomiskt_bistand_utskrift %>% select(ar_manad,variabel,antal_hushall),ekonomiskt_bistand_jmf)
+
+  diagram_titel <- paste0("Antal hushåll med ekonomiskt bistånd i Dalarnas län")
+  diagramfilnamn <- paste0("ekonomiskt_bistand.png")
+    
+ eko_bistand_fig <- SkapaLinjeDiagram(skickad_df = ut,
+                                         skickad_x_var = "ar_manad", 
+                                         skickad_y_var = "antal_hushall",
+                                         skickad_x_grupp = "variabel",
+                                         berakna_index=FALSE,
+                                         manual_color = c(diagramfarger("rus_sex")[1],"#000000"),
+                                         diagram_titel = diagram_titel,
+                                         diagram_capt =  diagram_capt,
+                                         output_mapp = output_mapp,
+                                         stodlinjer_avrunda_fem = TRUE,
+                                         manual_y_axis_title = "",
+                                         visa_var_x_xlabel=12,
+                                         filnamn_diagram = diagramfilnamn,
+                                         skriv_till_diagramfil = TRUE)
+
+
+  
+```
+
+Hushållens ekonomiska situation kan mätas på flera olika sätt. Arbetslösheten, som diskuterades i föregående avsnitt, är en indikator. Hushåll där fler arbetar har helt enkelt en bättre ekonomi än hushåll där färre gör det. En annan indikator är den disponibla inkomsten, dvs. hur mycket varje hushåll har i plånboken (dvs. inkomst efter skatt och transfereringar). Tyvärr mäts den disponibla inkomsten med en betydande eftersläpning, varför vi i denna rapport istället valt att fokusera på hur många hushåll som har svårt att försörja sig, mätt i antalet hushåll som är i behov av ekonomiskt bistånd. I Dalarna hade runt 4000 hushåll ett sådant behov under åren mellan 2018 och 2021, men därefter har behovet minskat stadigt. I `r last(ekonomiskt_bistand_utskrift$Månad)` `r last(ekonomiskt_bistand_utskrift$År)` var bara `r last(ekonomiskt_bistand_utskrift$antal_hushall)` hushåll i behov av ekonomiskt bistånd. Anmärkningsvärt är även att behovet av bistånd har fortsatt att minska trots att prisnivån i samhället har ökat avsevärt på senare år (se avsnittet om inflation). Detta beror sannolikt på att arbetslösheten, trots den tuffa ekonomiska situationen i samhället, är fortsatt låg. Värt att notera är även att antalet hushåll i Dalarna har ökat på senare år, från drygt 136 000 år 2018 till drygt 139 000 år 2022.   
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+eko_bistand_fig
+```
+
 ```{r, include = FALSE}
 
+if(uppdatera_hemsida==TRUE){
 # kopiera html-filen till 
 file.copy(from = "laget_i_Dalarna.html", to = "docs/index.html", overwrite = TRUE)
 file.copy(from = "laget_i_Dalarna.Rmd", to = "docs/index.Rmd", overwrite = TRUE)
 
 # ska vi ta bort html-filen i projektmappen eller ha dubbelt, både där och i docs-mappen?
 #file.remove("laget_i_Dalarna.html")
-
+}
 ```
