@@ -61,6 +61,9 @@ Bygglov_df <- read.xlsx(here("Data","byggande.xlsx"),sheet=2)%>%
 # Uppdateras genom att hämta en ny version av data
 ekonomiskt_bistand_df <-  read.xlsx(here("Data","Socialstyrelsen_2023_09_04.xlsx"),startRow = 2) %>% 
   filter(År>2017,Antal.hushåll>0)
+# Källa: https://statistik.tillvaxtanalys.se/PxWeb/pxweb/sv/Tillv%C3%A4xtanalys%20statistikdatabas/
+# Uppdateras genom att hämta hem ny data
+nystartade_df <-  read.xlsx(here("Data","Tillvaxtananalys_2023_09_08.xlsx"),startRow = 3)
 ```
 
 # Läget i Dalarna
@@ -706,6 +709,66 @@ Den bransch som drabbades värst av konkurser i `r senaste_manad` `r unique(konk
 konkurser_bransch
 ```
 
+### 3.3 Nystartade företag
+
+<details>
+
+  <summary>Mer information om statistiken</summary>
+
+<div title="Källa: Tillväxtanalys">Statistiken beskriver mängden genuint nystartade företag. Med genuint nystartade företag menas företag som är helt nybildade eller har återupptagits efter att ha varit vilande i minst två år. Företag som nyregisteras på grund av ägarskiften, ändring av juridisk form eller annan ombildning exkluderas. Från och med 2011 är statistiken registerbaserad. </div> 
+ 
+</details>
+<br>
+
+
+```{r, include = FALSE}
+    diagram_capt <- "Källa: Tillväxtanalys.\nBearbetning: Samhällsanalys, Region Dalarna."
+    
+    # Diverse justeringar
+    nystartade_df <- nystartade_df %>% 
+      rename(ar_kvartal = X1,
+         lan_nr = X2,
+         antal =`antal.nystartade.företag`) %>% 
+        mutate(ar = substr(ar_kvartal,1,4),
+               kvartal = substr(ar_kvartal,5,6)) %>% 
+          mutate(kvartal_namn = case_when(
+            kvartal == "Q1" ~ "kvartal ett",
+            kvartal == "Q2" ~ "kvartal två",
+            kvartal == "Q3" ~ "kvartal tre",
+            kvartal == "Q4" ~ "kvartal fyra")) %>% 
+            mutate(grupp = "Nystartade företag")
+    
+    # Beräknar medel över perioden (för att stoppa in i diagram)
+    nystartade_df_medel <- nystartade_df %>%
+      mutate(antal = mean(antal),
+             grupp = "Medelvärde")
+    
+    Nystartade_utskrift <- rbind(nystartade_df_medel,nystartade_df)
+
+    diagramtitel <- paste0("Antal nystartade företag per kvartal i Dalarnas län")
+    diagramfilnamn <- paste0("nystartade.png")
+    
+    nystartade_linje <- SkapaLinjeDiagram(skickad_df = Nystartade_utskrift %>% 
+                                          mutate(grupp = factor(grupp,levels = c("Medelvärde","Nystartade företag")[2:1])),
+                                       skickad_x_var = "ar_kvartal",
+                                       skickad_y_var = "antal",
+                                       skickad_x_grupp = "grupp",
+                                       berakna_index = FALSE,
+                                       stodlinjer_avrunda_fem = TRUE,
+                                       manual_color = c(diagramfarger("rus_sex")[1],"#000000"),
+                                       diagram_titel = diagramtitel,
+                                       diagram_capt =  diagram_capt,
+                                       output_mapp = output_mapp,
+                                       manual_y_axis_title = "",
+                                       visa_var_x_xlabel= 4,
+                                       filnamn_diagram = diagramfilnamn,
+                                       skriv_till_diagramfil = TRUE)
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+nystartade_linje
+```
+
 ## 4 Arbetsmarknaden
 Som mått på läget i Dalarna, är arbetslösheten sannolikt en mer trögrörlig indikator än exempelvis antalet varsel. Detta eftersom de dröjer minst ett par månader från lagda varsel till eventuella uppsägningar. De är även viktigt att notera att arbetslösheten varierar mellan olika grupper i samhället, exempelvis baserat på personers kön, utbildningsbakgrund eller huruvida de är födda i Sverige. För en fördjupad diskussion runt detta, se exempelvis rapporten "Kvinnor och män i Dalarna"^[https://region-dalarna.github.io/kvinnor_man_i_Dalarna/].
  
@@ -834,8 +897,17 @@ karta
 
 ## 5 Hushållens ekonomi
 
+<details>
+
+  <summary>Mer information om statistiken</summary>
+
+<div title="Källa: Socialstyrelsen">Ekonomiskt bistånd är ett stöd som personer kan ansöka om i sin kommun om de har problem att försörja sig själva och sin familj. Ekonomiskt bistånd består av försörjningsstöd och bistånd till livsföringen i övrigt.</div> 
+ 
+</details>
+<br>
+
 ```{r, include = FALSE}
-   diagram_capt = "Källa: Socialstyrelsen\nBearbetning: Samhällsanalys, Region Dalarna\nDiagramförklaring: Ekonomiskt bistånd är ett stöd som personer kan ansöka om i sin kommun om de har problem att försörja sig själva och sin familj.\nEkonomiskt bistånd består av försörjningsstöd och bistånd till livsföringen i övrigt."
+   diagram_capt = "Källa: Socialstyrelsen\nBearbetning: Samhällsanalys, Region Dalarna"
 
 # Numrerar månadsnamn
 ekonomiskt_bistand_df <- ekonomiskt_bistand_df %>% 
