@@ -12,7 +12,6 @@ output:
 :::{#header}
 <img src="logo_liggande_platta_farg.png" height="50" width="100" margin="0 auto"/>
 :::
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, fig.height=5, fig.width=8, fig.align='center')
 
@@ -66,7 +65,7 @@ ekonomiskt_bistand_df <-  read.xlsx(here("Data","Socialstyrelsen_2023_09_04.xlsx
 nystartade_df <-  read.xlsx(here("Data","Tillvaxtananalys_2023_09_08.xlsx"),startRow = 3)
 ```
 
-# Läget i Dalarna
+# Läget i Dalarna  
 <p style = "font-size:12px">
 <i>Skapad av: Samhällsanalys, Region Dalarna<br>
 Senast uppdaterad: `r Sys.Date()`</i>
@@ -720,7 +719,6 @@ konkurser_bransch
 </details>
 <br>
 
-
 ```{r, include = FALSE}
     diagram_capt <- "Källa: Tillväxtanalys.\nBearbetning: Samhällsanalys, Region Dalarna."
     
@@ -741,7 +739,7 @@ konkurser_bransch
     # Beräknar medel över perioden (för att stoppa in i diagram)
     nystartade_df_medel <- nystartade_df %>%
       mutate(antal = mean(antal),
-             grupp = "Medelvärde")
+             grupp = "Genomsnitt sedan 2011")
     
     Nystartade_utskrift <- rbind(nystartade_df_medel,nystartade_df)
 
@@ -749,7 +747,7 @@ konkurser_bransch
     diagramfilnamn <- paste0("nystartade.png")
     
     nystartade_linje <- SkapaLinjeDiagram(skickad_df = Nystartade_utskrift %>% 
-                                          mutate(grupp = factor(grupp,levels = c("Medelvärde","Nystartade företag")[2:1])),
+                                          mutate(grupp = factor(grupp,levels = c("Genomsnitt sedan 2011","Nystartade företag")[2:1])),
                                        skickad_x_var = "ar_kvartal",
                                        skickad_y_var = "antal",
                                        skickad_x_grupp = "grupp",
@@ -764,6 +762,9 @@ konkurser_bransch
                                        filnamn_diagram = diagramfilnamn,
                                        skriv_till_diagramfil = TRUE)
 ```
+
+
+Ett tredje sätt att mäta läget för företagen i länet är genom att undersöka hur många nya företag som startas. Historiskt startades väldigt många företag i samband med Coronoa-pandemin 2020-2021. I  `r nystartade_df %>% filter(antal == max(antal)) %>% .$kvartal_namn` `r nystartade_df %>% filter(antal == max(antal)) %>% .$ar` startades exempelvis `r nystartade_df %>% filter(antal == max(antal)) %>% .$antal` företag, vilket är det största antalet sedan åtminstone 2011. Exakt vad detta beror på kan vara svårt att säga, men en potentiell förklaring är att individer som blev uppsagda under pandemin valde att starta egna företag. Någon större trend sedan Rysslands invasion av Ukraina märktes inte initialt för antalet nystartade företag. Under 2022 startades till och med något fler företag än genomsnittet sedan 2011. I början av 2023 märks dock en viss avmattning. I `r nystartade_df %>% filter(ar_kvartal == first(ar_kvartal)) %>% .$kvartal_namn` `r nystartade_df %>% filter(ar_kvartal == first(ar_kvartal)) %>% .$ar`startades `r nystartade_df %>% filter(ar_kvartal == first(ar_kvartal)) %>% .$antal` företag, vilket är klart lägre än genomsnittet det senaste dryga decenniet.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 nystartade_linje
