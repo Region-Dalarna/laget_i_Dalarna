@@ -651,11 +651,10 @@ varsel_branch_manad
   
 ```
 
-Precis som var fallet med varsel, tenderar antalet personer som berörs av konkurser att variera relativt mycket från år till år. Detta medför att det är svårt att se någon trend kopplad till exempelvis Rysslands invasion av Ukraina. I `r senaste_manad` `r senaste_ar` berördes `r konkurser_jmfr %>% filter(år==senaste_ar,manad_long==senaste_manad) %>% .$Antal_berorda` personer av konkurser i Dalarna, att jämföra med `r konkurser_jmfr %>% filter(år==as.character(senaste_ar_num-1),manad_long==senaste_manad) %>% .$Antal_berorda` motsvarande månad `r as.character(senaste_ar_num-1)`.
+Precis som var fallet med varsel, tenderar antalet personer som berörs av konkurser att variera relativt mycket från månad till månad. Detta medför att det är svårt att se någon trend på månadsbasis kopplad till exempelvis Rysslands invasion av Ukraina. I `r senaste_manad` `r senaste_ar` berördes `r konkurser_jmfr %>% filter(år==senaste_ar,manad_long==senaste_manad) %>% .$Antal_berorda` personer av konkurser i Dalarna, att jämföra med `r konkurser_jmfr %>% filter(år==as.character(senaste_ar_num-1),manad_long==senaste_manad) %>% .$Antal_berorda` motsvarande månad `r as.character(senaste_ar_num-1)`. Värt att notera är även att `r konkurser_df %>% filter(år==last(år)) %>% group_by(region,år) %>% .$Antal_berorda %>% sum()` personer har berörts av konkurser i Dalarna hittills i år, vilket är fler än de `r konkurser_df  %>% filter(år==(as.numeric(last(år))-1),månad%in%unique(konkurser_df  %>% filter(år==last(år)) %>% .$månad)) %>% group_by(region,år) %>% .$Antal_berorda %>% sum()` som berördes under motsvarande period föregående år.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 konkurser_lan
-
 ```
 
 #### Konkurser per bransch
