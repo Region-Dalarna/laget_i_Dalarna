@@ -267,7 +267,6 @@ Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsf
               "variabel" = "Riksbankens inflationsmål")
   
   KPI_utskrift <- rbind(KPI_df %>% select(KPIF,manad_long,Period,variabel),KPI_df_mal)
-
     
   # Skapa startvärde. Första värde måste ligga inom marginalen 12 månader från sista värde.
   startvarde <- paste0("1993","-",substr(last(KPI_utskrift$Period),6,7))
@@ -667,12 +666,13 @@ konkurser_lan
   senaste_ar <- last(unique(konkurser_df$månad_år))
   # ett_ar_sedan <- nth(unique(konkurser_df$månad_år),length(unique(konkurser_df$månad_år))-12)
 
-  # gruppera per månad för senaste året och för året innan det
+  # Väljer ut de branscher som har fler än noll antal påverkade av konkurs. Mutate ändrar till stor bokstav.
   konkurser_bransch_10 <- konkurser_df %>%
     rename("bransch"=näringsgren.SNI.2007) %>%
       filter(månad_år%in%senaste_ar) %>%
         slice_max(Antal_berorda,n=10) %>%
-          filter(Antal_berorda>0)
+          filter(Antal_berorda>0) %>% 
+            mutate(bransch = paste0(toupper(substr(bransch, 1, 1)), substr(bransch, 2, nchar(bransch))))
 
   konkurser_bransch_10$bransch <- str_wrap(konkurser_bransch_10$bransch,40)
 
