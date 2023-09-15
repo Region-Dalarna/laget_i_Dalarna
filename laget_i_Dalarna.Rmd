@@ -226,7 +226,8 @@ Hur läget i ekonomin uppfattas varierar beroende på om det är företagen elle
                               diagram_titel = diagramtitel,
                               diagram_capt =  diagram_capt,
                               output_mapp = output_mapp,
-                              visa_var_x_xlabel=12,
+                              x_axis_storlek = 9,
+                              #visa_var_x_xlabel=12,
                               filnamn_diagram = diagramfilnamn,
                               skriv_till_diagramfil = TRUE)
   
@@ -676,7 +677,7 @@ konkurser_lan
 
   konkurser_bransch_10$bransch <- str_wrap(konkurser_bransch_10$bransch,40)
 
-  diagram_titel <- paste0("Antal berörda av konkurser i ",unique(konkurser_bransch_10$region)," ",unique(konkurser_bransch_10$månad_år))
+  diagram_titel <- paste0("Antal personer berörda av konkurser i ",unique(konkurser_bransch_10$region)," ",unique(konkurser_bransch_10$månad_år))
   diagramfilnamn <- paste0("konkurser_bransch.png")
 
   konkurser_bransch <- SkapaStapelDiagram(skickad_df = konkurser_bransch_10 ,
