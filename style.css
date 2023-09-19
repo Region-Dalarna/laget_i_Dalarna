@@ -1,0 +1,127 @@
+html {
+  border-top: 5px solid #158daf;
+  margin: auto;
+
+}
+
+/*Vänster*/
+#box1 { 
+    position: absolute;
+    top: 50%;    
+    left: 15%;
+    bottom: 10%;
+    height: 100%;
+    width: 15%;
+    background: white;
+    padding:20px;
+}
+
+/*Banner*/
+#box2 { 
+    position: absolute;
+    top: 2%;
+    right: 15%;
+    width: 70%;
+    left: 15%;
+    background-color: white;
+    background-image: url(Falun.jpg);
+    height: 45%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.inner-container{
+  text-align: center;
+  position: relative;
+  /*width: 100%;*/
+  height: auto;
+  margin-top: 250px;
+  margin-left: 200px;
+  margin-right: 200px;
+  /*background-color: rgba(0,0,0,.6);*/
+  text-shadow: rgba(34,34,34,.8) 3px 5px 5px;
+}
+
+h1.banner_heading{
+  font-size: 50px;
+  color: white;
+}
+
+img.header-logo{
+  position: absolute;
+  top:30px;
+  left:30px;
+  max-width: 150px;
+}
+
+.report-home-link{
+  position:absolute;
+  top:15px;
+  right:40px;
+  padding:8px;
+  font-weight: 900;
+  color:white;
+  text-decoration: underline;
+}
+
+/*#box2 img{
+object-fit: contain;
+}*/
+
+/*Höger*/
+#box3 { 
+    position: absolute;
+    top: 50%;
+    bottom: 10%;
+    right: 15%;
+    height: 100%;
+    background: white;
+}
+/*Center*/
+#box4 { 
+    position: absolute;
+    top: 50%;
+    right: 30%;
+    left: 30%;
+    width: 40%;
+    height: 100%;
+    background: white;
+    /*padding-left:20px;
+    padding-right: 20px;*/
+
+}
+
+.toc-wrapper{
+  background: white;
+  max-width: 250px;
+  margin:0;
+  padding:0px;
+  border-radius: 5px;
+  border:0.001mm solid;
+  
+}
+
+.toc-header{
+  background-color: red;
+  padding:5px;
+  margin-left: 0px;
+  border-radius: 5px 5px 0 0;
+}
+
+.toc-heading{
+  font-size: 15px;
+  color:white;
+  text-align: center;
+}
+
+.toc-list-wrapper{
+  position: relative;
+  text-align: left;
+  
+  
+}
+
+.toc-list{
+  list-style-type: circle;
+  list-style-position: inside;
+  
