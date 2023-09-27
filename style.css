@@ -4,6 +4,12 @@ html {
 
 }
 
+body{
+  display:block;
+}
+
+
+
 /*Vänster*/
 #box1 { 
     position: absolute;
@@ -30,28 +36,44 @@ html {
     background-repeat: no-repeat;
     background-size: cover;
 }
-.inner-container{
+/*.inner-container{
   text-align: center;
   position: relative;
-  /*width: 100%;*/
+  width: 100%;
   height: auto;
   margin-top: 250px;
   margin-left: 200px;
   margin-right: 200px;
-  /*background-color: rgba(0,0,0,.6);*/
+  background-color: rgba(0,0,0,.6);
   text-shadow: rgba(34,34,34,.8) 3px 5px 5px;
+}*/
+.header-title{
+    position: absolute;
+    bottom: 45px;
+    left: 45px;
+    margin-bottom: 0;
+    color: #fff;
+    text-transform: uppercase;
+    /*background-color: rgba(0,0,0,.6);*/
+    font-size: 2.75em;
+    line-height: 1.2em;
+    text-shadow: rgba(34,34,34,.8) 3px 5px 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    z-index:3;
 }
 
-h1.banner_heading{
+/*h1.banner_heading{
   font-size: 50px;
   color: white;
-}
+}*/
 
 img.header-logo{
   position: absolute;
   top:30px;
   left:30px;
   max-width: 150px;
+  z-index:2;
 }
 
 .report-home-link{
@@ -62,6 +84,7 @@ img.header-logo{
   font-weight: 900;
   color:white;
   text-decoration: underline;
+  z-index:1;
 }
 
 /*#box2 img{
@@ -91,7 +114,7 @@ object-fit: contain;
 
 }
 
-.toc-wrapper{
+.TOC{
   background: white;
   max-width: 250px;
   margin:0;
@@ -101,10 +124,11 @@ object-fit: contain;
   
 }
 
-.toc-header{
-  background-color: red;
+.TOC-header{
+  background-color: rgb(21 141 175);
+  color: white;
   padding:5px;
-  margin-left: 0px;
+  text-align: center;
   border-radius: 5px 5px 0 0;
 }
 
@@ -118,10 +142,26 @@ object-fit: contain;
   position: relative;
   text-align: left;
   
-  
 }
 
 .toc-list{
   list-style-type: circle;
   list-style-position: inside;
+}
+  
+.tocify-header {
+    font-size: 16px;
+    font-weight: 1000;
+}
+
+.tocify-subheader {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.tocify ul, .tocify li { /* Increases spacing between TOC headers*/
+    line-height: 25px !important;
+}
+  
+  
   
