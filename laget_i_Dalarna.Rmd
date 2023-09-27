@@ -75,9 +75,6 @@ Senast uppdaterad: `r Sys.Date()`</i>
 </p>
 <br>
 Det ekonomiska läget i Sverige och Dalarna kan på senare år beskrivas som besvärligt. Först drabbades samhället av den pandemi som orsakades av Covid-19. Krisen ledde till omfattande mänskliga förluster och fick även stora effekter på den svenska ekonomin, främst under första halvan av 2020. Lyckligtvis återhämtade sig den svenska ekonomin relativt snabbt och pandemin följdes av ett par goda år ekonomiskt. I början av 2022 invaderade dock Ryssland Ukraina, vilket, vid sidan om stort mänskligt lidande i Ukraina, gett stora effekter på världens och Sveriges ekonomi. Med utgångspunkt i den här typen av kriser, är syftet med denna rapport att göra regelbundna uppdateringar av läget i Dalarna. Fokus ligger i första hand på att synliggöra det ekonomiska läget i Dalarna, vad gäller exempelvis arbetsmarknad och bostadsbyggande men även faktorer som påverkar Dalarnas ekonomi diskuteras. Initialt kommer vi därför att diskutera läget i Sverige i stort. Vissa variabler som är centrala för att beskriva det ekonomiska läget mäts bara på nationell nivå, alternativt mäts med relativt lång fördröjning på regional nivå.
-<br>
-<br>
-
 
 ## `r i` Det allmänna läget i ekonomin
 ```{r, include = FALSE}
