@@ -94,7 +94,7 @@ k = k+1
 <div title="Källa: SCB">BNP till marknadspris från användningssidan (ENS2010). Data är säsongsrensad och på kvartalsbasis (i fasta priser). BNP är ett mått på den totala ekonomiska aktiviteten i ett land under en tidsperiod.</div>
  
 </details>
-<br>
+
 Genom att titta på förändring i BNP kan man få en uppfattning om hur aktiviteten i den svenska ekonomin förändras över tid. Eftersom Sveriges ekonomi, precis som de flesta andra länders, växer i normala fall, ökar BNP under en majoritet av kvartalen. Vid större kriser i samhället kan dock BNP minska avsevärt, vilket också syns i figuren nedan. Under andra kvartalet 2020 minskade aktiviteten i den svenska ekonomin med nästan 8 procent jämfört med samma kvartal året innan, vilket kan tillskrivas Corona-pandemin. Återhämtningen gick dock snabbt och redan i kvartalet efter så ökade BNP med nästan lika mycket som minskningen i kvartal två. Därefter följde ett par år när läget i Sveriges ekonomi kan beskrivas som gott, innan aktiviteten i ekonomin återigen minskade i kvartal ett, år 2022. Därefter har läget varit relativt skakigt och i `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$kvartal` `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$ar` var förändringen i BNP `r gsub("\\.",",",BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Sasongsransad_forandring)` procent.
 
 ```{r, include = FALSE}
@@ -143,7 +143,6 @@ Ett annat sätt att mäta läget i ekonomin är genom de olika enkätundersökni
 <div title="Källa: Konjunkturinstitutet">Barometerindikatorn sammanfattar konfidensindikatorer för industrisektorn, tjänstesektorn, byggsektorn, detaljhandeln samt hushållen. Indikatorerna baseras på enkätsvar från företag om bland annat deras produktion, investeringar och försäljning, men även företagens planer och förväntningar om framtiden, tillsammans med hushållens svar på enkätfrågor om deras ekonomiska situation nu och deras planer och förväntningar för framtiden. Detta sammanfattas i Konjunkturbarometern. Barometerindikatorn kan närmast jämföras med EU-kommissionens Economic Sentiment Indicator (ESI) och har ett medelvärde på 100 och en standardavvikelse på 10. Värden över 100 motsvarar en starkare ekonomi än normalt och värden över 110 en mycket starkare ekonomi än normalt. Värden under 100 respektive under 90 visar en svagare respektive mycket svagare ekonomi än normalt.</div>
  
 </details>
-<br>
 
 #### Generellt
 I `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$manad_long` `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$ar` var barometerindikatorn `r gsub("\\.",",",last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$Barometerindikatorn.och.andra.indikatorer)`, vilket indikerar att ekonomin i Sverige var mycket svagare än normalt. Detta kan delvis förklaras av Rysslands invasion av Ukraina och de effekter denna haft på bland annat tillgången på råvaror. Historiskt varierar barometerindikatorn med konjunkturen och större kriser i samhället, såsom finanskrisen 2008/2009 och Coronapandemin 2020/2021, syns tydligt i diagrammet.
@@ -262,7 +261,6 @@ Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i
 <div title="Källa: Riksbanken">Det vanligaste och mest kända sättet att mäta inflationen på i Sverige är titta på förändringen i konsumentprisindex, KPI, under senare tid har måttet utvecklats med att hålla räntenivån fast, då kallat KPIF. Anledningen är att räntan kan påverka prisnivån indirekt, framförallt boendekostnader. Konsumentprisindex med fast ränta, KPIF beräknas med samma data och på samma sätt som KPI, men utan att effekten av ändrade räntor räknas med. Indexet visar hur mycket det kostar att leva i Sverige och hur denna kostnad har utvecklats över tid. Målet för Riksbankens penningpolitik är att inflationen ska vara 2 procent. Ett viktigt skäl till den tydliga målsättningen är också att skapa trygghet och långsiktighet för företag och hushåll i deras ekonomiska beslut. </div>
  
 </details>
-<br>
 
 Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 har inflationen dock ökat avsevärt och var som högst i `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar)`, då den i Sverige uppgick till `r gsub("\\.",",",KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF)` procent. Därefter har inflationstakten sjunkit och var i `r KPI_df %>% filter(månad==last(månad)) %>% select(manad_long,ar)`, `r gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)` procent. Den höga inflationstakten på senare år har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på Wikipedia^[https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge].
 
@@ -329,7 +327,6 @@ k = k+1
 <div title="Källa: SCB">Statistiken omfattar alla nybyggnadsprojekt som kräver bygglov. Bygglovsstatistik för bostäder visar antal bygglov och lägenheter. Nybyggnad av bostäder visar bostadsbyggandets omfattning och inriktning av bostadslägenheter. Data i figurerna nedan visar bygglov och nybyggnad av bostäder på kvartalsbasis.</div>
  
 </details>
-<br>
 
 #### Bygglov
 Antalet godkända bygglov för småhus varierar mellan kvartalen, men en tydlig trend är att de har börjat minska på senare tid. Sedan toppen i  `r Bygglov_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Antal==max(Antal)) %>% select(kvartal,ar) %>% .[1,]`, då `r Bygglov_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Antal==max(Antal)) %>% .$Antal %>% .[1]` bygglov godkändes, har antalet godkända bygglov minskat och i `r Bygglov_df %>%filter(hustyp=="småhus") %>% filter(Antal==last(Antal)) %>% select(kvartal,ar)`, godkändes `r Bygglov_df %>%filter(,hustyp=="småhus") %>% filter(Antal==last(Antal)) %>% .$Antal` bygglov. För flerbostadshus är trenden relativt likvärdig, men variationen är större från kvartal till kvartal. Under `r Bygglov_df %>%filter(ar>"2009",hustyp=="småhus") %>% filter(Antal==last(Antal)) %>% select(kvartal,ar)`, godkändes bygglov för blott `r Bygglov_df %>%filter(ar>"2009",hustyp=="flerbostadshus exkl. specialbostäder") %>% filter(Antal==last(Antal)) %>% .$Antal` bostadslägenheter i Dalarna.
@@ -409,8 +406,6 @@ i = i+1
 <div title="Källa: SCB">Noteringen om månad avser i själva verket en tremånadersperiod, där noteringen avser den sista månaden i perioden.</div> 
  
 </details>
-<br>
-
 
 #### Historisk jämförelse
 
@@ -519,7 +514,6 @@ k = k+1
 <div title="Källa: Arbetsförmedlingen">Varsel innebär att en arbetsgivare förvarnar om en större mängd uppsägningar. Varsel och uppsägning förekommer ofta vid arbetsbrist, men behöver inte leda till att den varslade blir uppsagd. Arbetsgivaren är skyldig att varsla om minst fem personer i samma län riskerar att bli uppsagda på grund av arbetsbrist.</div> 
  
 </details>
-<br>
 
 Antalet varsel i Dalarna på månadsbasis varierar mycket över tid. Ofta varslas inga anställda alls, men ibland berörs 100-tals personer under en enskild månad. På senare år lades flest varsel i `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==max(antal)) %>% .$manad_ar_long`, då `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==max(antal)) %>% .$antal` personer berördes. Detta hängde samman med pandemin kopplad till Covid-19, som startade i början av 2020. Som jämförelse varslades `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==last(antal)) %>% .$antal` personer i `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==last(antal)) %>% .$manad_ar_long`. Hittills i år har `r varsel_manad_df %>% filter(ar==last(ar)) %>% group_by(region,ar) %>% .$antal %>% sum()` personer varslats om uppsägning i Dalarna, vilket är fler än de  `r varsel_manad_df %>% filter(ar==(as.numeric(last(ar))-1),manad%in%unique(varsel_manad_df %>% filter(ar==last(ar)) %>% .$manad)) %>% group_by(region,ar) %>% .$antal %>% sum()` personer som varslades om uppsägning under motsvarande period föregående år. Den bransch där flest drabbades av varsel i `r tolower(unique(varsel_bransch_df$Månad))` `r unique(varsel_bransch_df$År)` var "`r varsel_bransch_df %>% filter(Antal_varslade==max(Antal_varslade)) %>% .$Näringsgren`", där `r varsel_bransch_df %>% filter(Antal_varslade==max(Antal_varslade)) %>% .$Antal` personer varslades om uppsägning.
 
@@ -753,7 +747,6 @@ i = i+1
 <div title="Källa: Tillväxtanalys">Statistiken beskriver mängden genuint nystartade företag. Med genuint nystartade företag menas företag som är helt nybildade eller har återupptagits efter att ha varit vilande i minst två år. Företag som nyregisteras på grund av ägarskiften, ändring av juridisk form eller annan ombildning exkluderas. Från och med 2011 är statistiken registerbaserad. </div> 
  
 </details>
-<br>
 
 ```{r, include = FALSE}
     diagram_capt <- "Källa: Tillväxtanalys.\nBearbetning: Samhällsanalys, Region Dalarna."
@@ -826,7 +819,6 @@ i = i+1
 Statistik över arbetslöshet och sysselsättning kan tas fram på olika sätt. Det gör att siffror som rör samma referensperiod kan skilja sig åt, beroende på vilken statistikkälla som använts. I den här rapporten används BAS - befolkningens arbetsmarknadsstatus - som redovisar registerbaserad statistik över utbudet av arbetskraft i Sverige.
  
 </details>
-<br>
 
 #### Län
 I `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$ar))` hade Dalarna `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$arbetslöshet))` procents arbetslöshet, att jämföra med `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Riket") %>% .$arbetslöshet))` procent i Sverige som helhet. Noterbart är även att Dalarna har klart lägre arbetslöshet än näraliggande Gävleborg, där arbetslösheten var `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Gävleborg") %>% .$arbetslöshet))` procent under samma tidsperiod. Lägst arbetslös i Sverige hade `r arbetsmarknadsstatus_tidsserie %>% filter(manad_long==last(manad_long)) %>% filter(arbetslöshet==min(arbetslöshet)) %>%  .$region`, med `r gsub("\\.",",",arbetsmarknadsstatus_tidsserie %>% filter(manad_long==last(manad_long)) %>% filter(arbetslöshet==min(arbetslöshet)) %>%  .$arbetslöshet)` procent.
@@ -1019,7 +1011,6 @@ i = i+1
 <div title="Källa: Socialstyrelsen">Ekonomiskt bistånd är ett stöd som personer kan ansöka om i sin kommun om de har problem att försörja sig själva och sin familj. Ekonomiskt bistånd består av försörjningsstöd och bistånd till livsföringen i övrigt.</div> 
  
 </details>
-<br>
 
 I Dalarna hade runt 4000 hushåll ett sådant behov under åren mellan 2018 och 2021, men därefter har behovet minskat stadigt. I `r last(ekonomiskt_bistand_utskrift$Månad)` `r last(ekonomiskt_bistand_utskrift$År)` var bara `r last(ekonomiskt_bistand_utskrift$antal_hushall)` hushåll i behov av ekonomiskt bistånd. Anmärkningsvärt är även att behovet av bistånd har fortsatt att minska trots att prisnivån i samhället har ökat avsevärt på senare år (se avsnittet om inflation). Detta beror sannolikt på att arbetslösheten, trots den tuffa ekonomiska situationen i samhället, är fortsatt låg. Värt att notera är även att antalet hushåll i Dalarna har ökat på senare år, från drygt 136 000 år 2018 till drygt 139 000 år 2022.   
 

@@ -43,7 +43,6 @@ h1,h2,h3{
   font-family: 'League Spartan'
 }
 
-
 h2 { /* Header 2 */
   margin-top: 2rem;
   font-weight: bold;
@@ -73,6 +72,7 @@ details{
   padding: 10px 10px;
   border-radius: 3px 3px 3px 3px;
   border: 0.1px dotted #000000;
+  margin-bottom: 2rem;
 }
 .list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
     font-size: 1em;
