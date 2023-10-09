@@ -140,7 +140,7 @@ Ett annat sätt att mäta läget i ekonomin är genom de olika enkätundersökni
 
   <summary>Mer information om statistiken</summary>
 
-<div title="Källa: Konjunkturinstitutet">Barometerindikatorn sammanfattar konfidensindikatorer för industrisektorn, tjänstesektorn, byggsektorn, detaljhandeln samt hushållen. Indikatorerna baseras på enkätsvar från företag om bland annat deras produktion, investeringar och försäljning, men även företagens planer och förväntningar om framtiden, tillsammans med hushållens svar på enkätfrågor om deras ekonomiska situation nu och deras planer och förväntningar för framtiden. Detta sammanfattas i Konjunkturbarometern. Barometerindikatorn kan närmast jämföras med EU-kommissionens Economic Sentiment Indicator (ESI) och har ett medelvärde på 100 och en standardavvikelse på 10. Värden över 100 motsvarar en starkare ekonomi än normalt och värden över 110 en mycket starkare ekonomi än normalt. Värden under 100 respektive under 90 visar en svagare respektive mycket svagare ekonomi än normalt.</div>
+<div title="Källa: Konjunkturinstitutet">Barometerindikatorn sammanfattar konfidensindikatorer för industrisektorn, tjänstesektorn, byggsektorn, detaljhandeln samt hushållen i Sverige. Indikatorerna baseras på enkätsvar från företag om bland annat deras produktion, investeringar och försäljning, men även företagens planer och förväntningar om framtiden, tillsammans med hushållens svar på enkätfrågor om deras ekonomiska situation nu och deras planer och förväntningar för framtiden. Detta sammanfattas i Konjunkturbarometern. Barometerindikatorn kan närmast jämföras med EU-kommissionens Economic Sentiment Indicator (ESI) och har ett medelvärde på 100 och en standardavvikelse på 10. Värden över 100 motsvarar en starkare ekonomi än normalt och värden över 110 en mycket starkare ekonomi än normalt. Värden under 100 respektive under 90 visar en svagare respektive mycket svagare ekonomi än normalt.</div>
  
 </details>
 
@@ -160,18 +160,18 @@ I `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$mana
   barometern_gen_utskrift <- rbind(barometern_df %>% filter(Indikator == "Barometerindikatorn"),barometern_jmf_df)
   
   # Skapa startvärde. Första värde måste ligga inom marginalen 12 månader från sista värde.
-  ar = NULL
-  if(substr(last(barometern_gen_utskrift$Period),6,7)<8){
-    ar = "1997"}else{
-      ar = "1996"
-    }
-  startvarde=paste0(ar,"-",substr(last(barometern_gen_utskrift$Period),6,7))
+  # ar = NULL
+  # if(substr(last(barometern_gen_utskrift$Period),6,7)<8){
+  #   ar = "1997"}else{
+  #     ar = "1996"
+  #   }
+  # startvarde=paste0(ar,"-",substr(last(barometern_gen_utskrift$Period),6,7))
 
-  diagramtitel <- paste0("Företagens och hushållens syn på ekonomin i Sverige")
+  diagramtitel <- paste0("Barometerindikatorn mellan ",first(barometern_df$manad_long)," ",first(barometern_df$ar)," och ",last(barometern_df$manad_long)," ",last(barometern_df$ar))
+  diagramtitel = str_wrap(diagramtitel,30)
   diagramfilnamn <- paste0("barometern.png")
     
-   konj <- SkapaLinjeDiagram(skickad_df = barometern_gen_utskrift %>% 
-                               filter(Period >= startvarde),
+   konj <- SkapaLinjeDiagram(skickad_df = barometern_gen_utskrift,
                               skickad_x_var = "Period", 
                               skickad_y_var = "Barometerindikatorn.och.andra.indikatorer",
                               skickad_x_grupp ="Indikator",
@@ -281,13 +281,13 @@ Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsf
   KPI_utskrift <- rbind(KPI_df %>% select(KPIF,manad_long,Period,variabel),KPI_df_mal)
     
   # Skapa startvärde. Första värde måste ligga inom marginalen 12 månader från sista värde.
-  startvarde <- paste0("1993","-",substr(last(KPI_utskrift$Period),6,7))
-
-  diagramtitel <- paste0("Inflation (årsförändring i KPIF) i Sverige")
+  #startvarde <- paste0("1993","-",substr(last(KPI_utskrift$Period),6,7))
+ startvarde <- "1993-01"
+  diagramtitel <- paste0("Inflation i Sverige från januari 1993 till ",last(KPI_df$manad_long)," ",last(KPI_df$ar))
   diagramfilnamn <- paste0("inflation.png")
 
-  inflation_linje <- SkapaLinjeDiagram(skickad_df = KPI_utskrift %>%
-                                            filter(Period >= startvarde),
+  inflation_linje <- SkapaLinjeDiagram(skickad_df = KPI_utskrift %>% 
+                                         filter(Period>=startvarde),
                                           skickad_x_var = "Period",
                                           skickad_y_var = "KPIF",
                                           skickad_x_grupp = "variabel",
@@ -300,7 +300,7 @@ Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsf
                                           manual_y_axis_title = "procent",
                                           visa_var_x_xlabel=24,
                                           filnamn_diagram = diagramfilnamn,
-                                          skriv_till_diagramfil = TRUE)
+                                          skriv_till_diagramfil = FALSE)
   
 ```
 
@@ -824,13 +824,13 @@ Statistik över arbetslöshet och sysselsättning kan tas fram på olika sätt. 
 I `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$ar))` hade Dalarna `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$arbetslöshet))` procents arbetslöshet, att jämföra med `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Riket") %>% .$arbetslöshet))` procent i Sverige som helhet. Noterbart är även att Dalarna har klart lägre arbetslöshet än näraliggande Gävleborg, där arbetslösheten var `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Gävleborg") %>% .$arbetslöshet))` procent under samma tidsperiod. Lägst arbetslös i Sverige hade `r arbetsmarknadsstatus_tidsserie %>% filter(manad_long==last(manad_long)) %>% filter(arbetslöshet==min(arbetslöshet)) %>%  .$region`, med `r gsub("\\.",",",arbetsmarknadsstatus_tidsserie %>% filter(manad_long==last(manad_long)) %>% filter(arbetslöshet==min(arbetslöshet)) %>%  .$arbetslöshet)` procent.
 ```{r, include = FALSE}
 
-  diagramtitel <- paste0("Arbetslöshet i åldersgruppen 20-64 i ",unique(arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar)) %>% filter(manad_long==max(manad_long)) %>%  .$manad_long)," ",unique(arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar)) %>% filter(manad_long==max(manad_long)) %>%  .$ar))
+  diagramtitel <- paste0("Arbetslöshet i åldersgruppen 20-64 i ",unique(arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar)) %>% filter(manad_long==last(manad_long)) %>%  .$manad_long)," ",unique(arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar)) %>% filter(manad_long==max(manad_long)) %>%  .$ar))
   diagramfilnamn <- paste0("Arbetslöshet","_lan",".png")
   diagram_capt = "Källa: SCB:s öppna statistikdatabas, Befolkningens arbetsmarknadsstatus (BAS)\nBearbetning: Samhällsanalys, Region Dalarna" 
 
  arbetsloshet_lan <- SkapaStapelDiagram(skickad_df = arbetsmarknadsstatus_tidsserie %>% 
                                            filter(ar == max(ar)) %>%
-                                            filter(manad_long==max(manad_long)) %>% 
+                                            filter(manad_long==last(manad_long)) %>% 
                                               mutate(region = ifelse(region=="Riket","Sverige",region)) %>% 
                                                 mutate("fokus" = ifelse(region=="Dalarna",1,ifelse(region=="Sverige",2,0))),  
                                          skickad_x_var = "region", 
