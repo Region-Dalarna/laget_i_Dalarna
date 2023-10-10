@@ -34,7 +34,7 @@ source("https://raw.githubusercontent.com/FaluPeppe/func/main/func_API.R")
 output_mapp <- here("Figurer","/")
 
 # Om man vill uppdatera den externa hemsidan sätts denna variabel till TRUE
-uppdatera_hemsida = FALSE
+uppdatera_hemsida = TRUE
 
 # Läser in data
 barometern_df <- read.xlsx(here("Data","konjunkturbarometern.xlsx"),sheet=1)
@@ -167,8 +167,8 @@ I `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$mana
   #   }
   # startvarde=paste0(ar,"-",substr(last(barometern_gen_utskrift$Period),6,7))
 
-  diagramtitel <- paste0("Barometerindikatorns utveckling mellan ",first(barometern_df$manad_long)," ",first(barometern_df$ar)," och ",last(barometern_df$manad_long)," ",last(barometern_df$ar))
-  diagramtitel = str_wrap(diagramtitel,30)
+  diagramtitel <- paste0("Barometerindikatorns utveckling i Sverige mellan ",first(barometern_df$manad_long)," ",first(barometern_df$ar)," och ",last(barometern_df$manad_long)," ",last(barometern_df$ar))
+  diagramtitel = str_wrap(diagramtitel,45)
   diagramfilnamn <- paste0("barometern.png")
     
    konj <- SkapaLinjeDiagram(skickad_df = barometern_gen_utskrift,
@@ -219,7 +219,8 @@ Hur läget i ekonomin uppfattas varierar beroende på om det är företagen elle
                                                   "Tjänstesektorn", "Hushåll", 
                                                   "Normalt läge i ekonomin")))
 
-    diagramtitel <- paste0("Företagen och hushållens syn på ekonomin i Sverige")
+  diagramtitel <- paste0("Barometerindikatorns utveckling i Sverige mellan januari 2020 och ",last(barometern_bransch_utskrift$manad_long)," ",last(barometern_bransch_utskrift$ar))
+  diagramtitel = str_wrap(diagramtitel,45)
 
     diagramfilnamn <- paste0("barometern_bransch.png")
     
@@ -300,7 +301,7 @@ Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsf
                                           manual_y_axis_title = "procent",
                                           visa_var_x_xlabel=24,
                                           filnamn_diagram = diagramfilnamn,
-                                          skriv_till_diagramfil = FALSE)
+                                          skriv_till_diagramfil = TRUE)
   
 ```
 
@@ -409,7 +410,7 @@ i = i+1
 
 #### Historisk jämförelse
 
-Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige. Efter toppen i `r priser_df %>% filter(Medelpris==(max(priser_df %>% filter(Period>2010,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% select(manad_long,ar)`, har dock det genomsnittliga priset på småhus i Dalarna minskat med ungefär `r (round((priser_df %>% filter(Medelpris==(max(priser_df %>% filter(Period>2010,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% select(Medelpris))/(priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(Medelpris)),2)-1)*100` procent. Minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medfört en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkar efterfrågan på bostäder. 
+Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige. Efter toppen i `r priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% select(manad_long,ar)`, har dock det genomsnittliga priset på småhus i Dalarna minskat med ungefär `r (round((priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% select(Medelpris))/(priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(Medelpris)),2)-1)*100` procent. Minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medfört en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkar efterfrågan på bostäder. 
 
 ```{r, include = FALSE}
 # Skapar ett linjediagram för förändring i priser. Blir något fel när man skapar index via funktionen, 
@@ -422,13 +423,14 @@ Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som
   jmf_geografi <- skapa_kortnamn_lan(hamtaregion_kod_namn(jmf_vekt)$region,byt_ut_riket_mot_sverige = TRUE) 
   
     # Skapa startvärde. Första värde måste ligga inom marginalen 12 månader från sista värde.
-  startvarde <- paste0("2010","-",substr(last(KPI_utskrift$Period),6,7))
+  #startvarde <- paste0("2010","-",substr(last(KPI_utskrift$Period),6,7))
   
-  diagramtitel <- paste0("Förändring i priser på småhus")
+  diagramtitel <- paste0("Förändring i priser på småhus mellan januari 2010 och ",last(priser_df$manad_long)," ",last(priser_df$ar))
+  diagramtitel = str_wrap(diagramtitel,40)
   diagramfilnamn <- paste0("smahuspriser_tidserie.png")
   
   smahuspriser_linje <- SkapaLinjeDiagram(skickad_df = priser_df %>% 
-                                          filter(Period >= startvarde,region%in%c(jmf_geografi,ValdGeografi))%>%
+                                          filter(ar > 2009,region%in%c(jmf_geografi,ValdGeografi))%>%
                                             group_by(region)%>% 
                                                 mutate("Index (startvärde 100)"=(Medelpris/first(Medelpris))*100),
                                          skickad_x_var = "Period", 
@@ -772,7 +774,7 @@ i = i+1
     
     Nystartade_utskrift <- rbind(nystartade_df_medel,nystartade_df)
 
-    diagramtitel <- paste0("Antal nystartade företag per kvartal i Dalarnas län")
+    diagramtitel <- paste0("Antal nystartade företag per kvartal i Dalarna")
     diagramfilnamn <- paste0("nystartade.png")
     
     nystartade_linje <- SkapaLinjeDiagram(skickad_df = Nystartade_utskrift %>% 
@@ -793,7 +795,7 @@ i = i+1
 ```
 
 
-En tredje indikator på läget för företagen i länet är hur många nya företag som startas. Historiskt startades väldigt många företag i samband med Coronoa-pandemin 2020-2021. I  `r nystartade_df %>% filter(antal == max(antal)) %>% .$kvartal_namn` `r nystartade_df %>% filter(antal == max(antal)) %>% .$ar` startades exempelvis `r nystartade_df %>% filter(antal == max(antal)) %>% .$antal` företag, vilket är det största antalet sedan åtminstone 2011. Exakt vad detta beror på kan vara svårt att säga, men en potentiell förklaring är att individer som blev uppsagda under pandemin valde att starta egna företag. Någon större trend sedan Rysslands invasion av Ukraina märktes inte initialt för antalet nystartade företag. Under 2022 startades till och med något fler företag än genomsnittet sedan 2011. I början av 2023 märks dock en viss avmattning. I `r nystartade_df %>% filter(ar_kvartal == first(ar_kvartal)) %>% .$kvartal_namn` `r nystartade_df %>% filter(ar_kvartal == first(ar_kvartal)) %>% .$ar` startades `r nystartade_df %>% filter(ar_kvartal == first(ar_kvartal)) %>% .$antal` företag, vilket är klart lägre än genomsnittet det senaste dryga decenniet.
+En tredje indikator på läget för företagen i länet är hur många nya företag som startas. Historiskt startades väldigt många företag i samband med Coronoa-pandemin 2020-2021. I  `r nystartade_df %>% filter(antal == max(antal)) %>% .$kvartal_namn` `r nystartade_df %>% filter(antal == max(antal)) %>% .$ar` startades exempelvis `r nystartade_df %>% filter(antal == max(antal)) %>% .$antal` företag, vilket är det största antalet sedan åtminstone 2011. Exakt vad detta beror på kan vara svårt att säga, men en potentiell förklaring är att individer som blev uppsagda under pandemin valde att starta egna företag. Någon större trend sedan Rysslands invasion av Ukraina märktes inte initialt för antalet nystartade företag. Under 2022 startades till och med något fler företag än genomsnittet sedan 2011. I början av 2023 märks dock en viss avmattning. I `r nystartade_df %>% filter(ar_kvartal == first(ar_kvartal)) %>% .$kvartal_namn` `r nystartade_df %>% filter(ar_kvartal == first(ar_kvartal)) %>% .$ar` startades `r nystartade_df %>% filter(ar_kvartal == first(ar_kvartal)) %>% .$antal` företag, vilket är något lägre än genomsnittet det senaste dryga decenniet.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 nystartade_linje
@@ -824,7 +826,7 @@ Statistik över arbetslöshet och sysselsättning kan tas fram på olika sätt. 
 I `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$ar))` hade Dalarna `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$arbetslöshet))` procents arbetslöshet, att jämföra med `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Riket") %>% .$arbetslöshet))` procent i Sverige som helhet. Noterbart är även att Dalarna har klart lägre arbetslöshet än näraliggande Gävleborg, där arbetslösheten var `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Gävleborg") %>% .$arbetslöshet))` procent under samma tidsperiod. Lägst arbetslös i Sverige hade `r arbetsmarknadsstatus_tidsserie %>% filter(manad_long==last(manad_long)) %>% filter(arbetslöshet==min(arbetslöshet)) %>%  .$region`, med `r gsub("\\.",",",arbetsmarknadsstatus_tidsserie %>% filter(manad_long==last(manad_long)) %>% filter(arbetslöshet==min(arbetslöshet)) %>%  .$arbetslöshet)` procent.
 ```{r, include = FALSE}
 
-  diagramtitel <- paste0("Arbetslöshet i åldersgruppen 20-64 i ",unique(arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar)) %>% filter(manad_long==last(manad_long)) %>%  .$manad_long)," ",unique(arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar)) %>% filter(manad_long==max(manad_long)) %>%  .$ar))
+  diagramtitel <- paste0("Arbetslöshet i åldersgruppen 20-64 år i ",unique(arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar)) %>% filter(manad_long==last(manad_long)) %>%  .$manad_long)," ",unique(arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar)) %>% filter(manad_long==max(manad_long)) %>%  .$ar))
   diagramfilnamn <- paste0("Arbetslöshet","_lan",".png")
   diagram_capt = "Källa: SCB:s öppna statistikdatabas, Befolkningens arbetsmarknadsstatus (BAS)\nBearbetning: Samhällsanalys, Region Dalarna" 
 
@@ -840,7 +842,7 @@ I `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$man
                                          stodlinjer_avrunda_fem = TRUE,
                                          manual_y_axis_title = "procent",
                                          manual_x_axis_text_vjust = 1,
-                                         manual_x_axis_text_hjust = 1,
+                                         manual_x_axis_text_hjust = 0.9,
                                          x_var_fokus = "fokus",
                                          manual_color = diagramfarger("rus_tre_fokus"),
                                          dataetiketter = FALSE,
@@ -863,7 +865,7 @@ Arbetslösheten, såväl i Dalarna som Sverige, varierar över tid. I samband me
  
   diagram_capt = "Källa: SCB:s öppna statistikdatabas, Befolkningens arbetsmarknadsstatus (BAS)\nBearbetning: Samhällsanalys, Region Dalarna" 
 
-  diagram_titel <- paste0("Arbetslöshet")
+  diagram_titel <- paste0("Arbetslöshet i åldersgruppen 20-64 år")
   diagramfilnamn <- paste0("arbetslöshet_tidsserie.png")
     
   arbetslöshet_linje <- SkapaLinjeDiagram(skickad_df = arbetsmarknadsstatus_tidsserie %>% 
@@ -926,7 +928,7 @@ arblosa_kommun_gis <- left_join(kommuner_sv, arbetsloshet_kommun, by = c("KOMMUN
 
   
 ```
-Arbetslösheten bland Dalarnas kommuner är låg på många håll, där en majoritet av länets kommuner hade mellan 2 och 4 procents arbetslöshet i `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$ar))`. Lägst är arbetslösheten i  `r arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==min(arbetslöshet)) %>% .$region %>% .[1]`, med `r gsub("\\.",",",arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==min(arbetslöshet)) %>% .$arbetslöshet %>% .[1])` procent. I södra delarna av länet är bilden en annan, där flera kommuner har mer än 6 procents arbetslöshet. Högst är arbetslösheten i  `r arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==max(arbetslöshet)) %>% .$region %>% .[1]`, där den uppgår till `r gsub("\\.",",",arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==max(arbetslöshet)) %>% .$arbetslöshet %>% .[1])` procent. En tänkbar orsak till detta mönster är att de kommuner med högst arbetslöshet också är de kommuner som har högst andel utrikes födda. Den sistnämnda  gruppen tenderar att hamna i arbetslöshet i högre utsträckning än inrikes födda.
+Arbetslösheten bland Dalarnas kommuner är låg på många håll, där en majoritet av länets kommuner hade mellan 2 och 4 procents arbetslöshet i `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$ar))`. Lägst är arbetslösheten i  `r arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==min(arbetslöshet)) %>% .$region %>% .[1]`, med `r gsub("\\.",",",arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==min(arbetslöshet)) %>% .$arbetslöshet %>% .[1])` procent. I södra delarna av länet är bilden en annan, där flera kommuner har runt 6 procents arbetslöshet. Högst är arbetslösheten i  `r arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==max(arbetslöshet)) %>% .$region %>% .[1]`, där den uppgår till `r gsub("\\.",",",arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==max(arbetslöshet)) %>% .$arbetslöshet %>% .[1])` procent. En tänkbar orsak till detta mönster är att de kommuner med högst arbetslöshet också är de kommuner som har högst andel utrikes födda. Den sistnämnda  gruppen tenderar att hamna i arbetslöshet i högre utsträckning än inrikes födda.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 karta
@@ -958,14 +960,13 @@ ekonomiskt_bistand_df <- ekonomiskt_bistand_df %>%
   ))
 
 # Beräknar ett startvärde (för att det skall funka med etiketterna i diagrammet)
-startvarde=paste0("2018","-",last(ekonomiskt_bistand_df$manad))
+#startvarde=paste0("2018","-",last(ekonomiskt_bistand_df$manad))
 
 # Fixar lite med data
 ekonomiskt_bistand_utskrift <- ekonomiskt_bistand_df %>% 
     mutate(ar_manad = paste0(År,"-",manad),
            antal_hushall = as.numeric(Antal.hushåll),
            variabel = "Antal hushåll" ) %>%
-      filter(ar_manad>=startvarde) %>%
         select(-Antal.hushåll)
 
 ekonomiskt_bistand_jmf <-  ekonomiskt_bistand_utskrift %>% 
@@ -975,7 +976,8 @@ ekonomiskt_bistand_jmf <-  ekonomiskt_bistand_utskrift %>%
 
 ut <- rbind(ekonomiskt_bistand_utskrift %>% select(ar_manad,variabel,antal_hushall),ekonomiskt_bistand_jmf)
 
-  diagram_titel <- paste0("Antal hushåll med ekonomiskt bistånd i Dalarnas län")
+  diagram_titel <- paste0("Antal hushåll med ekonomiskt bistånd i Dalarna, januari 2018 till ",tolower(last(ekonomiskt_bistand_utskrift$Månad))," ",last(ekonomiskt_bistand_utskrift$År))
+  diagram_titel = str_wrap(diagram_titel,40)
   diagramfilnamn <- paste0("ekonomiskt_bistand.png")
     
  eko_bistand_fig <- SkapaLinjeDiagram(skickad_df = ut,
