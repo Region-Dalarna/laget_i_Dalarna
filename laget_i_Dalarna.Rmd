@@ -58,11 +58,11 @@ Bygglov_df <- read.xlsx(here("Data","byggande.xlsx"),sheet=2)%>%
                                  ifelse(kvartal=="K3","kvartal tre","kvartal fyra"))))
 # Källa: https://sdb.socialstyrelsen.se/if_ekb_manad/resultat.aspx
 # Uppdateras genom att hämta en ny version av data
-ekonomiskt_bistand_df <-  read.xlsx(here("Data","Socialstyrelsen_2023_09_04.xlsx"),startRow = 2) %>% 
+ekonomiskt_bistand_df <-  read.xlsx(here("Data","Socialstyrelsen_2023_10_09.xlsx"),startRow = 2) %>% 
   filter(År>2017,Antal.hushåll>0)
 # Källa: https://statistik.tillvaxtanalys.se/PxWeb/pxweb/sv/Tillv%C3%A4xtanalys%20statistikdatabas/
 # Uppdateras genom att hämta hem ny data
-nystartade_df <-  read.xlsx(here("Data","Tillvaxtananalys_2023_09_08.xlsx"),startRow = 3)
+nystartade_df <-  read.xlsx(here("Data","Tillvaxtananalys_2023_10_09.xlsx"),startRow = 3)
 
 i=1
 
@@ -167,7 +167,7 @@ I `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$mana
   #   }
   # startvarde=paste0(ar,"-",substr(last(barometern_gen_utskrift$Period),6,7))
 
-  diagramtitel <- paste0("Barometerindikatorn mellan ",first(barometern_df$manad_long)," ",first(barometern_df$ar)," och ",last(barometern_df$manad_long)," ",last(barometern_df$ar))
+  diagramtitel <- paste0("Barometerindikatorns utveckling mellan ",first(barometern_df$manad_long)," ",first(barometern_df$ar)," och ",last(barometern_df$manad_long)," ",last(barometern_df$ar))
   diagramtitel = str_wrap(diagramtitel,30)
   diagramfilnamn <- paste0("barometern.png")
     
