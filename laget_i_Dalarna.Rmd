@@ -34,7 +34,7 @@ source("https://raw.githubusercontent.com/FaluPeppe/func/main/func_API.R")
 output_mapp <- here("Figurer","/")
 
 # Om man vill uppdatera den externa hemsidan sätts denna variabel till TRUE
-uppdatera_hemsida = TRUE
+uppdatera_hemsida = FALSE
 
 # Läser in data
 barometern_df <- read.xlsx(here("Data","konjunkturbarometern.xlsx"),sheet=1)
