@@ -565,7 +565,7 @@ varsel_manad
   
   varsel_bransch_df$Näringsgren <- str_wrap(varsel_bransch_df$Näringsgren,40)
 
-  diagram_titel <- paste0("Antal personer berörda av varsel i ",unique(varsel_bransch_df$Region)," i ",tolower(unique(varsel_bransch_df$Månad))," ",unique(varsel_bransch_df$År))
+  diagram_titel <- paste0("Antal personer berörda av varsel i Dalarna i",tolower(unique(varsel_bransch_df$Månad))," ",unique(varsel_bransch_df$År))
   diagramfilnamn <- paste0("varsel_bransch_manad.png")
   
   varsel_branch_manad <- SkapaStapelDiagram(skickad_df = varsel_bransch_df ,
@@ -590,7 +590,7 @@ varsel_manad
   
 ```
 
-```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',include = FALSE}
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',include = TRUE}
 varsel_branch_manad
 
 ```
