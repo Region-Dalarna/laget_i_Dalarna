@@ -168,3 +168,30 @@ details{
     max-height: 50px;
 }
 
+.till_startsida{
+   position: absolute;
+   top: 30px;
+   right: 30px;
+   color:white;
+   font-size: 20px;
+   text-shadow: rgba(34,34,34,.8) 3px 5px 5px;
+   
+}
+
+.till_startsida:hover{
+  
+   color:red;
+   
+}
+
+@media (max-width: 600px){
+ .till_startsida{
+   display:none;
+ }
+ .top-text {
+    font-size: 2em;
+}
+   
+}
+
+
