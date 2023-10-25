@@ -70,7 +70,7 @@ i=1
 
 ## Introduktion
 <p style = "font-size:12px">
-<i>Skapad av: Samhällsanalys, Region Dalarna<br>
+<i>Rapporten är skapad av Samhällsanalys, Region Dalarna<br>
 Senast uppdaterad: `r Sys.Date()`</i>
 </p>
 <br>
@@ -121,7 +121,7 @@ Genom att titta på förändring i BNP kan man få en uppfattning om hur aktivit
                                    diagram_facet = FALSE,
                                    output_mapp = "",
                                    filnamn_diagram = diagramfilnamn,
-                                   skriv_till_diagramfil = TRUE)
+                                   skriv_till_diagramfil = FALSE)
   
 ```
 
