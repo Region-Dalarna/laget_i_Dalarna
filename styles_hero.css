@@ -126,24 +126,18 @@ details{
      
 .hero-image{
     position: relative;
-    margin-bottom: 0.5em;
+    margin-bottom: 2em;
     /* liner gradient tints the image darker for readability*/
-    background-image: url(Nipfjallet.jpg); 
+    background-image: url(Dalarna_fran_ovan.jpg); 
     height: 400px;
     max-width: 1200px;
+    margin: 0 auto;
     background-size: cover;
     background-color: #141c25f2;
     background-position: center center;
-    display: flex; /* Change to `display: none` for no hero image */
+    /*display: flex;
     justify-content: center;
-    align-items: center;
-}
-
-@media (min-width: 1400px){
-  .hero-image{
-  margin-left: 18%;
-  margin-right: 18%;
-  }
+    align-items: center;*/
 }
 
 .top-text {
