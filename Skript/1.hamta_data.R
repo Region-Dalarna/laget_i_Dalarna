@@ -6,11 +6,11 @@ Output_mapp = here("Data","/")
 
 # Varsel på månadsbasis
 source("G:/skript/hamta_data/func_hamta_statistik_AF_varsel_manad.R", encoding="UTF-8")
-varsel_manad<-hamta_varsel_per_manad(vald_region = "20",
-                                     filnamn="varsel_manad.xlsx",
-                                     output_mapp = Output_mapp,
-                                     start_tid="1992-01",
-                                     spara_till_excel=TRUE) 
+varsel_manad <- hamta_varsel_per_manad(vald_region = "20",
+                                       filnamn="varsel_manad.xlsx",
+                                       output_mapp = Output_mapp,
+                                       start_tid="1992-01",
+                                       spara_till_excel=TRUE) 
 
 # # Varsel på årsbasis uppdelat på bransch
 # source("G:/skript/hamta_data/func_hamta_statistik_AF_varsel_bransch_ar.R", encoding="UTF-8")
@@ -21,9 +21,9 @@ varsel_manad<-hamta_varsel_per_manad(vald_region = "20",
 
 # Varsel på månadsbasis uppdelat på bransch
 source(here("Skript","varsel_bransch_manad_korrekt.R"), encoding="UTF-8")
-varsel_manad_bransch <- hamta_varsel_bransch_manad(vald_region = "20",
-                                                   filnamn="varsel_bransch_manad.xlsx",
-                                                   output_mapp = Output_mapp)
+hamta_varsel_bransch_manad(vald_region = "20",
+                           filnamn="varsel_bransch_manad.xlsx",
+                           output_mapp = Output_mapp)
 
 # Konjunkturbarometern
 source(here("Skript","barometerindikatorn.R"), encoding="UTF-8")
