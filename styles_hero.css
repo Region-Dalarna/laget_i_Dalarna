@@ -38,17 +38,16 @@ h1,h2,h3{
 }
 
 h1 { /* Header 1 */
-  margin-top: 0rem;
-  font-weight: bold;
-  font-size: 2.4rem;
-  color: #000000;
-}
-
-h2 { /* Header 2 */
-  margin-top: 2rem;
   font-weight: bold;
   font-size: 1.6rem;
   color: #000000;
+  margin-top: 2rem;
+}
+h2 { /* Header 2 */
+  font-weight: bold;
+  font-size: 1.4rem;
+  color: #000000;
+  margin-top: 1.5rem;
 }
 h3 { /* Header 3 */
   font-size: 1.4rem;
@@ -98,11 +97,6 @@ details{
   background-position: center center;
   background-repeat: no-repeat;
 }
-
-/*.tocify-header {
-    font-size: 16px;
-    font-weight: 1000;
-}*/
 
 .tocify-header {
     font-size: 14px;
