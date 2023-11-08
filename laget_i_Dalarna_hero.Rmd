@@ -58,7 +58,7 @@ Bygglov_df <- read.xlsx(here("Data","byggande.xlsx"),sheet=2)%>%
                           ifelse(kvartal=="K2","kvartal två",
                                  ifelse(kvartal=="K3","kvartal tre","kvartal fyra"))))
 
-########### Data som inte uppdateras automagiskt
+########### Data som inte uppdateras automatiskt
 
 # Källa: https://sdb.socialstyrelsen.se/if_ekb_manad/resultat.aspx
 # Uppdateras genom att hämta en ny version av data
@@ -75,6 +75,46 @@ antal_avregistreringar_df<- read.csv("C:/Users/frkjon/Projekt/laget_i_Dalarna/Da
       summarize(antal = sum(value)) %>% 
         mutate(Månad = ifelse(nchar(as.character(Månad)) == 1,paste0("0",Månad),Månad),
                ar_manad = paste0(År,"-",Månad))
+```
+
+```{js}
+// The debounce function receives our function as a parameter
+const debounce = (fn) => {
+
+  // This holds the requestAnimationFrame reference, so we can cancel it if we wish
+  let frame;
+
+  // The debounce function returns a new function that can receive a variable number of arguments
+  return (...params) => {
+    
+    // If the frame variable has been defined, clear it now, and queue for next frame
+    if (frame) { 
+      cancelAnimationFrame(frame);
+    }
+
+    // Queue our function call for the next frame
+    frame = requestAnimationFrame(() => {
+      
+      // Call our function and pass any params we received
+      fn(...params);
+    });
+
+  } 
+};
+
+
+// Reads out the scroll position and stores it in the data attribute
+// so we can use it in our stylesheets
+const storeScroll = () => {
+  document.documentElement.dataset.scroll = window.scrollY;
+}
+
+// Listen for new scroll events, here we debounce our `storeScroll` function
+document.addEventListener('scroll', debounce(storeScroll), { passive: true });
+
+// Update scroll position for first time
+storeScroll();
+
 ```
 
 # Introduktion {-}

@@ -31,6 +31,7 @@ p{
   font-size: 1rem;
 }
 
+
 h1,h2,h3{
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
@@ -52,6 +53,10 @@ h2 { /* Header 2 */
 h3 { /* Header 3 */
   font-size: 1.4rem;
   color: #000000;
+}
+
+.toc-content.col-xs-12.col-sm-8.col-md-9{
+  padding-right: 300px;
 }
 
 ul {
@@ -85,6 +90,22 @@ details{
     padding: 5px 5px 5px 5px;
     margin-bottom: 0px;
     border-radius: 3px 3px 0 0;
+}
+
+/*html:not([data-scroll='0']) .tocify {
+top:5px;
+}*/
+
+html:not([data-scroll='0']) .hero-image {
+/*height: 0;
+transition: height 0.02s linear 0.02s;*/
+height: 0;
+}
+
+html:not([data-scroll='0']) .toc-content.col-xs-12.col-sm-8.col-md-9 {
+/*height: 0;
+transition: height 0.02s linear 0.02s;*/
+top: 5px;
 }
 
 #TOC::before{
@@ -163,6 +184,8 @@ details{
    color:white;
    font-size: 20px;
    text-shadow: rgba(34,34,34,.8) 3px 5px 5px;
+   background-color: rgba(0,0,0,.6);
+   padding:5px;
    
 }
 
