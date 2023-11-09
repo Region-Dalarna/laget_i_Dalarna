@@ -37,6 +37,9 @@ output_mapp <- here("Figurer","/")
 # Om man vill uppdatera den externa hemsidan sätts denna variabel till TRUE
 uppdatera_hemsida = FALSE
 
+# Om man vill att figurerna skall sparas vid "knittning" så sätts variabeln nedan till true
+spara_figur = TRUE
+
 # Läser in data
 barometern_df <- read.xlsx(here("Data","konjunkturbarometern.xlsx"),sheet=1)
 BNP_df <- read.xlsx(here("Data","BNP.xlsx"),sheet=1)
@@ -164,7 +167,7 @@ Genom att titta på förändring i BNP kan man få en uppfattning om hur aktivit
                                    diagram_facet = FALSE,
                                    output_mapp = "",
                                    filnamn_diagram = diagramfilnamn,
-                                   skriv_till_diagramfil = FALSE)
+                                   skriv_till_diagramfil = spara_figur)
   
 ```
 
@@ -224,7 +227,7 @@ I `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$mana
                               output_mapp = output_mapp,
                               visa_var_x_xlabel=24,
                               filnamn_diagram = diagramfilnamn,
-                              skriv_till_diagramfil = FALSE)
+                              skriv_till_diagramfil = spara_figur)
   
 ```
 
@@ -278,7 +281,7 @@ Hur läget i ekonomin uppfattas varierar beroende på om det är företagen elle
                               x_axis_storlek = 9,
                               #visa_var_x_xlabel=12,
                               filnamn_diagram = diagramfilnamn,
-                              skriv_till_diagramfil = FALSE)
+                              skriv_till_diagramfil = spara_figur)
   
 ```
 
@@ -336,7 +339,7 @@ Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsf
                                           manual_y_axis_title = "procent",
                                           visa_var_x_xlabel=24,
                                           filnamn_diagram = diagramfilnamn,
-                                          skriv_till_diagramfil = FALSE)
+                                          skriv_till_diagramfil = spara_figur)
   
 ```
 
@@ -382,7 +385,7 @@ Antalet godkända bygglov för småhus varierar mellan kvartalen, men en tydlig 
                                           manual_y_axis_title = "Antal",
                                           visa_var_x_xlabel=1,
                                           filnamn_diagram = diagramfilnamn,
-                                          skriv_till_diagramfil = FALSE)
+                                          skriv_till_diagramfil = spara_figur)
 
 ```
 
@@ -414,7 +417,7 @@ Precis som byggloven, varierar byggandet av småhus mellan kvartalen, men en tyd
                                           manual_y_axis_title = "Antal",
                                           visa_var_x_xlabel=1,
                                           filnamn_diagram = diagramfilnamn,
-                                          skriv_till_diagramfil = FALSE)
+                                          skriv_till_diagramfil = spara_figur)
   
 ```
 
@@ -468,7 +471,7 @@ Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som
                                          output_mapp = output_mapp,
                                          visa_var_x_xlabel=24,
                                          filnamn_diagram = diagramfilnamn,
-                                         skriv_till_diagramfil = FALSE)
+                                         skriv_till_diagramfil = spara_figur)
   
   
 ```
@@ -512,7 +515,7 @@ Det genomsnittliga priset på ett småhus varierar mellan Sveriges län och var 
                                        diagram_facet = FALSE,
                                        output_mapp = output_mapp,
                                        filnamn_diagram = diagramfilnamn,
-                                       skriv_till_diagramfil = FALSE)
+                                       skriv_till_diagramfil = spara_figur)
   
   
 ```
@@ -564,7 +567,7 @@ Antalet varsel i Dalarna på månadsbasis varierar mycket över tid. Ofta varsla
                                        x_axis_sort_value = FALSE,
                                        diagram_facet = FALSE,
                                        filnamn_diagram = diagramfilnamn,
-                                       skriv_till_diagramfil = FALSE)
+                                       skriv_till_diagramfil = spara_figur)
   
   
 ```
@@ -609,7 +612,7 @@ varsel_manad
                                                        x_axis_sort_value = TRUE,
                                                        diagram_liggande = TRUE,
                                                        filnamn_diagram = diagramfilnamn,
-                                                       skriv_till_diagramfil = FALSE)
+                                                       skriv_till_diagramfil = spara_figur)
 
   
 ```
@@ -639,7 +642,7 @@ varsel_branch_manad
                                        x_axis_sort_value = FALSE,
                                        diagram_facet = FALSE,
                                        filnamn_diagram = diagramfilnamn,
-                                       skriv_till_diagramfil = FALSE)
+                                       skriv_till_diagramfil = spara_figur)
   
   
 ```
@@ -729,7 +732,7 @@ k = k+1
                                      manual_color = diagramfarger("bla_gra_tre")[c(2,1,3)],
                                      output_mapp = output_mapp,
                                      filnamn_diagram = diagramfilnamn,
-                                     skriv_till_diagramfil = FALSE)
+                                     skriv_till_diagramfil = spara_figur)
 
   
 ```
@@ -781,7 +784,7 @@ konkurser_lan
                                      x_axis_sort_value = TRUE,
                                      diagram_liggande = TRUE,
                                      filnamn_diagram = diagramfilnamn,
-                                     skriv_till_diagramfil = FALSE)
+                                     skriv_till_diagramfil = spara_figur)
 
   
 ```
@@ -842,7 +845,7 @@ konkurser_bransch
                                        manual_y_axis_title = "",
                                        visa_var_x_xlabel= 4,
                                        filnamn_diagram = diagramfilnamn,
-                                       skriv_till_diagramfil = FALSE)
+                                       skriv_till_diagramfil = spara_figur)
 ```
 
 
@@ -890,7 +893,7 @@ I `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$man
                                          manual_color = diagramfarger("rus_tre_fokus"),
                                          dataetiketter = FALSE,
                                          x_axis_sort_value = TRUE,
-                                         skriv_till_diagramfil = FALSE,
+                                         skriv_till_diagramfil = spara_figur,
                                          output_mapp = output_mapp,
                                          filnamn_diagram = diagramfilnamn)
 
@@ -926,7 +929,7 @@ Arbetslösheten, såväl i Dalarna som Sverige, varierar över tid. I samband me
                                          manual_y_axis_title = "procent",
                                          visa_var_x_xlabel=1,
                                          filnamn_diagram = diagramfilnamn,
-                                         skriv_till_diagramfil = FALSE)
+                                         skriv_till_diagramfil = spara_figur)
 
   
 ```
@@ -1033,7 +1036,7 @@ ut <- rbind(ekonomiskt_bistand_utskrift %>% select(ar_manad,variabel,antal_husha
                                          manual_y_axis_title = "",
                                          visa_var_x_xlabel=12,
                                          filnamn_diagram = diagramfilnamn,
-                                         skriv_till_diagramfil = FALSE)
+                                         skriv_till_diagramfil = spara_figur)
 
 
   

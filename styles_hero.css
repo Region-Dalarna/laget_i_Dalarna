@@ -202,6 +202,10 @@ top: 5px;
  .top-text {
     font-size: 2em;
 }
+
+.toc-content.col-xs-12.col-sm-8.col-md-9{
+  padding-right: 20px;
+}
    
 }
 
