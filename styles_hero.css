@@ -99,7 +99,7 @@ top:5px;
 html:not([data-scroll='0']) .hero-image {
 /*height: 0;
 transition: height 0.02s linear 0.02s;*/
-height: 0;
+display:none;
 }
 
 html:not([data-scroll='0']) .toc-content.col-xs-12.col-sm-8.col-md-9 {
