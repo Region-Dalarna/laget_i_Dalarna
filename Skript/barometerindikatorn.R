@@ -28,7 +28,7 @@ hamta_data_konjunkturbarometern <- function(output_mapp_excel = "G:/Samhällsana
   set_config(config(ssl_verifypeer = 0L))
   # =============================================== API-uttag ===============================================
   # "Adresser" till SCBs databas
-  url1 <- "http://statistik.konj.se/PXWeb/api/v1/sv/KonjBar/indikatorer/Indikatorm.px"
+  url1 <- "https://statistik.konj.se/PXWeb/api/v1/sv/KonjBar/indikatorer/Indikatorm.px"
   
   # Variabelnamn
   # "Indikator"=c("KIFI") Barometerindikatorn generellt
