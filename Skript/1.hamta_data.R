@@ -29,7 +29,7 @@ hamta_varsel_bransch_manad(vald_region = "20",
 source(here("Skript","barometerindikatorn.R"), encoding="UTF-8")
 hamta_data_konjunkturbarometern(output_mapp_excel = here("Data"),
                                 output_mapp_figur = here("Output","/"),
-                                skapa_figur=TRUE,
+                                skapa_figur=FALSE,
                                 spara_data=TRUE)
 
 # BNP
@@ -46,7 +46,7 @@ hamta_data_kpi(spara_data=TRUE,
 source(here("Skript","smahuspriser.R"), encoding="UTF-8")
 hamta_data_smahuspriser(output_mapp_excel = here("Data"),
                         output_mapp_figur = here("Output","/"),
-                        skapa_figur=TRUE,
+                        skapa_figur=FALSE,
                         spara_data=TRUE)
 # Konkurser
 source(here("Skript","konkurser.R"), encoding="UTF-8")

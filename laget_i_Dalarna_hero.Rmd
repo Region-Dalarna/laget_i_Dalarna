@@ -529,129 +529,7 @@ smahuspriser_län
 ```{r, include = FALSE}
 k=1
 ```
-Läget för företagen i länet hänger naturligtvis samman med läget i ekonomin i stort. En första indikator på sämre tider är att företag tvingas varsla personal p.g.a. arbetsbrist. Detta behöver inte leda till att de anställda blir uppsagda, men kan ändå vara en indikation på att sämre tider stundar. Ett potentiellt nästa steg är att företag begärs i konkurs, vilket vi också undersöker i detta avsnitt.
- 
-## Varsel
-```{r, include = FALSE}
-k = k+1
-```
-
-<details>
-
-  <summary>Mer information om statistiken</summary>
-
-<div title="Källa: Arbetsförmedlingen">Varsel innebär att en arbetsgivare förvarnar om en större mängd uppsägningar. Varsel och uppsägning förekommer ofta vid arbetsbrist, men behöver inte leda till att den varslade blir uppsagd. Arbetsgivaren är skyldig att varsla om minst fem personer i samma län riskerar att bli uppsagda på grund av arbetsbrist. Notera även att data för varsel gäller för det län där företaget har sitt huvudkontor. Om ett företag med huvudkontor i Dalarna varslar i andra län räknas dessa varsel under Dalarna. Detta gäller även omvänt: om ett företag varslar anställda om uppsägning i Dalarna men har sitt huvudkontor i ett annat län syns dessa inte i statistiken nedan.</div> 
- 
-</details>
-
-Antalet varsel i Dalarna på månadsbasis varierar mycket över tid. Ofta varslas inga anställda alls, men ibland berörs 100-tals personer under en enskild månad. På senare år lades flest varsel i `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==max(antal)) %>% .$manad_ar_long`, då `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==max(antal)) %>% .$antal` personer berördes. Detta hängde samman med pandemin kopplad till Covid-19, som startade i början av 2020. Som jämförelse varslades `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==last(antal)) %>% .$antal` personer i `r varsel_manad_df %>% filter(ar>2019) %>% filter(antal==last(antal)) %>% .$manad_ar_long`. Hittills i år har `r varsel_manad_df %>% filter(ar==last(ar)) %>% group_by(region,ar) %>% .$antal %>% sum()` personer varslats om uppsägning i Dalarna, vilket är fler än de  `r varsel_manad_df %>% filter(ar==(as.numeric(last(ar))-1),manad%in%unique(varsel_manad_df %>% filter(ar==last(ar)) %>% .$manad)) %>% group_by(region,ar) %>% .$antal %>% sum()` personer som varslades om uppsägning under motsvarande period föregående år. Den bransch där flest drabbades av varsel i `r tolower(unique(varsel_bransch_df$Månad))` `r unique(varsel_bransch_df$År)` var "`r varsel_bransch_df %>% filter(Antal_varslade==max(Antal_varslade)) %>% .$Näringsgren`", där `r varsel_bransch_df %>% filter(Antal_varslade==max(Antal_varslade)) %>% .$Antal` personer varslades om uppsägning.
-
-```{r, include = FALSE}
-    diagram_capt <- "Källa: Arbetsförmedlingen.\nBearbetning: Samhällsanalys, Region Dalarna."
-
-    diagramtitel <- paste0("Antal personer berörda av varsel i ",unique(varsel_manad_df$region))
-    diagramfilnamn <- paste0("varsel_manad.png")
-    
-    varsel_manad <- SkapaStapelDiagram(skickad_df = varsel_manad_df %>% 
-                                         filter(ar>2019),
-                                       skickad_x_var = "tid", 
-                                       skickad_y_var = "antal",
-                                       manual_x_axis_text_vjust=1,
-                                       manual_x_axis_text_hjust=1,
-                                       manual_color = diagramfarger("rus_sex")[1],
-                                       manual_y_axis_title="",
-                                       stodlinjer_avrunda_fem = TRUE,
-                                       diagram_titel = diagramtitel,
-                                       diagram_capt =  diagram_capt,
-                                       output_mapp = output_mapp,
-                                       x_axis_sort_value = FALSE,
-                                       diagram_facet = FALSE,
-                                       filnamn_diagram = diagramfilnamn,
-                                       skriv_till_diagramfil = spara_figur)
-  
-  
-```
-
-```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
-varsel_manad
-
-```
-
-```{r, include = FALSE}
-# Skapar ett linjediagram för förändring i priser. Blir något fel när man skapar index via funktionen,
-  # så jag gör det på egen hand
-  diagram_capt <- "Källa: Arbetsförmedlingen.\nBearbetning: Samhällsanalys, Region Dalarna."
-# 
-#   senaste_manad <- last(unique(varsel_bransch_df$Månad))
-# 
-#   # gruppera per månad för senaste året och för året innan det
-#   varsel_bransch_10 <- varsel_bransch_df %>% 
-#       filter(Månad%in%senaste_manad) %>% 
-#         slice_max(antal,n=10) %>% 
-#           filter(antal>0) 
-  
-  varsel_bransch_df$Näringsgren <- str_wrap(varsel_bransch_df$Näringsgren,40)
-
-  diagram_titel <- paste0("Antal personer berörda av varsel i Dalarna i",tolower(unique(varsel_bransch_df$Månad))," ",unique(varsel_bransch_df$År))
-  diagramfilnamn <- paste0("varsel_bransch_manad.png")
-  
-  varsel_branch_manad <- SkapaStapelDiagram(skickad_df = varsel_bransch_df ,
-                                                       skickad_x_var = "Näringsgren",
-                                                       skickad_y_var = "Antal_varslade",
-                                                       diagram_titel = diagram_titel,
-                                                       diagram_capt = diagram_capt,
-                                                       manual_x_axis_text_vjust = 1,
-                                                       stodlinjer_avrunda_fem = TRUE,
-                                                       #manual_x_axis_text_hjust = 1,
-                                                       #diagram_facet = jmfr_riket,
-                                                       manual_y_axis_title = "",
-                                                       facet_legend_bottom = TRUE,
-                                                       manual_color = diagramfarger("rus_sex")[1],
-                                                       x_axis_lutning = 0,
-                                                       output_mapp = output_mapp,
-                                                       x_axis_sort_value = TRUE,
-                                                       diagram_liggande = TRUE,
-                                                       filnamn_diagram = diagramfilnamn,
-                                                       skriv_till_diagramfil = spara_figur)
-
-  
-```
-
-```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',include = TRUE}
-varsel_branch_manad
-
-```
-
-```{r, include = FALSE}
-    diagram_capt <- "Källa: Bolagsverket.\nBearbetning: Samhällsanalys, Region Dalarna."
-
-    diagramtitel <- paste0("Antal avregistrerade företag i Dalarna")
-    diagramfilnamn <- paste0("avreg_manad.png")
-    
-    avreg_manad <- SkapaStapelDiagram(skickad_df = antal_avregistreringar_df,
-                                       skickad_x_var = "ar_manad", 
-                                       skickad_y_var = "antal",
-                                       manual_x_axis_text_vjust=1,
-                                       manual_x_axis_text_hjust=1,
-                                       manual_color = diagramfarger("rus_sex")[1],
-                                       manual_y_axis_title="",
-                                       stodlinjer_avrunda_fem = TRUE,
-                                       diagram_titel = diagramtitel,
-                                       diagram_capt =  diagram_capt,
-                                       output_mapp = output_mapp,
-                                       x_axis_sort_value = FALSE,
-                                       diagram_facet = FALSE,
-                                       filnamn_diagram = diagramfilnamn,
-                                       skriv_till_diagramfil = spara_figur)
-  
-  
-```
-
-```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
-avreg_manad
-```
-
-
+Läget för företagen i länet hänger naturligtvis samman med läget i ekonomin i stort. En indikator på sämre tider är att företag tvingas gå i konkurs. En annan potentiellt indikator är att färre nya företag startas, vilket vi också undersöker i detta avsnitt.
 
 ## Konkurser {.tabset}
 ```{r, include = FALSE}
@@ -794,6 +672,37 @@ Den bransch som drabbades värst av konkurser i `r senaste_manad` `r unique(konk
 konkurser_bransch
 ```
 
+## Avregistrerade företag
+
+```{r, include = FALSE}
+    diagram_capt <- "Källa: Bolagsverket.\nBearbetning: Samhällsanalys, Region Dalarna."
+
+    diagramtitel <- paste0("Antal avregistrerade företag i Dalarna")
+    diagramfilnamn <- paste0("avreg_manad.png")
+    
+    avreg_manad <- SkapaStapelDiagram(skickad_df = antal_avregistreringar_df,
+                                       skickad_x_var = "ar_manad", 
+                                       skickad_y_var = "antal",
+                                       manual_x_axis_text_vjust=1,
+                                       manual_x_axis_text_hjust=1,
+                                       manual_color = diagramfarger("rus_sex")[1],
+                                       manual_y_axis_title="",
+                                       stodlinjer_avrunda_fem = TRUE,
+                                       diagram_titel = diagramtitel,
+                                       diagram_capt =  diagram_capt,
+                                       output_mapp = output_mapp,
+                                       x_axis_sort_value = FALSE,
+                                       diagram_facet = FALSE,
+                                       filnamn_diagram = diagramfilnamn,
+                                       skriv_till_diagramfil = spara_figur)
+  
+  
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+avreg_manad
+```
+
 ## Nystartade företag
 
 <details>
@@ -905,7 +814,7 @@ arbetsloshet_lan
 ```
 
 ### Jämförelse över tid {-}
-Arbetslösheten, såväl i Dalarna som Sverige, varierar över tid. I samband med pandemin orsakad av Covid-19, ökade arbetslösheten och var som högst i Dalarna i `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$manad_long %>% .[1]`  `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$ar %>% .[1]`, då den uppgick till `r  gsub("\\.",",", arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$arbetslöshet %>% .[1])` procent. Därefter har arbetslösheten minskat och var i `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$ar))` `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$arbetslöshet))` procent i Dalarna. I Sverige har arbetslösheten länge varit högre än i Dalarna, men skillnaden har minskat på senare år. En orsak till detta kan vara att Sverige överlag har en större andel som arbetar inom tjänstesektorn, branscher som drabbades extra hårt under Coronapandemin men har återhämtat sig därefter.
+Arbetslösheten, såväl i Dalarna som Sverige, varierar över tid. I samband med pandemin orsakad av Covid-19, ökade arbetslösheten och var som högst i Dalarna i `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$manad_long %>% .[1]`  `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$ar %>% .[1]`, då den uppgick till `r  gsub("\\.",",", arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$arbetslöshet %>% .[1])` procent. Därefter har arbetslösheten minskat och var i `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$ar))` `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$arbetslöshet))` procent i Dalarna. Värt att notera är dock att arbetslösheten för första gången på ett tag ökade något i Dalarna från juli 2023 till augusti 2023. I Sverige har arbetslösheten länge varit högre än i Dalarna, men skillnaden har minskat på senare år. En orsak till detta kan vara att Sverige överlag har en större andel som arbetar inom tjänstesektorn, branscher som drabbades extra hårt under Coronapandemin men har återhämtat sig därefter.
 
 ```{r, include = FALSE}
  
