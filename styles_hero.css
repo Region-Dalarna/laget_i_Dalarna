@@ -111,9 +111,11 @@ top: 5px;
 #TOC::before{
   content: "";
   display: block;
-  height: 30px;
-  margin: 0;
-  background: #db3747;
+  height: 40px;
+  padding: 5px 5px 5px 5px;
+  background: rgba(239,41,60);
+  /*background: #db3747;*/
+  background-image: url(logo_liggande_platta_farg.png);
   background-size: contain;
   background-position: center center;
   background-repeat: no-repeat;
@@ -143,7 +145,7 @@ top: 5px;
     position: relative;
     margin-bottom: 2em;
     /* liner gradient tints the image darker for readability*/
-    background-image: url(Dalarna_fran_ovan.jpg); 
+    background-image: url(Dalastrategin.jpg); 
     height: 400px;
     max-width: 1200px;
     margin: 0 auto;
@@ -160,11 +162,10 @@ top: 5px;
     bottom: 45px;
     left: 50px;
     color: #fff;
-    text-transform: uppercase;
-    /*background-color: rgba(0,0,0,.6);*/
     font-size: 3.75em;
     line-height: 1.2em;
     text-shadow: rgba(34,34,34,.8) 3px 5px 5px;
+    background-color: rgba(84,161,189,.8);
     padding-left: 10px;
     padding-right: 10px;
 }
@@ -184,7 +185,7 @@ top: 5px;
    color:white;
    font-size: 20px;
    text-shadow: rgba(34,34,34,.8) 3px 5px 5px;
-   background-color: rgba(0,0,0,.6);
+   background-color: rgba(84,161,189,.8);
    padding:5px;
    
 }
@@ -193,6 +194,10 @@ top: 5px;
   
    color:red;
    
+}
+
+.header-logo:active{
+  background-color: rgba(84,161,189,.8);
 }
 
 @media (max-width: 600px){

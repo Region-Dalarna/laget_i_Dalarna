@@ -847,6 +847,41 @@ Arbetslösheten, såväl i Dalarna som Sverige, varierar över tid. I samband me
 arbetslöshet_linje
 ```
 
+```{r, include = FALSE}
+ 
+  diagram_capt = "Källa: SCB:s öppna statistikdatabas, Befolkningens arbetsmarknadsstatus (BAS)\nBearbetning: Samhällsanalys, Region Dalarna" 
+
+  diagram_titel <- paste0("Arbetslöshet i åldersgruppen 20-64 år i Dalarna")
+  diagramfilnamn <- paste0("arbetslöshet_tidsserie.png")
+  
+  arbetsmarknadsstatus_tidsserie$manad_long <- factor(arbetsmarknadsstatus_tidsserie$manad_long,levels  =c("januari","februari","mars","april","maj","juni","juli","augusti","september","oktober","november","december"))
+    
+  arbetslöshet_linje <- SkapaLinjeDiagram(skickad_df = arbetsmarknadsstatus_tidsserie %>% 
+                                            filter(region%in%c("Dalarna")) %>% 
+                                              mutate(region = ifelse(region=="Riket","Sverige",region),
+                                                     manad_long = str_to_title(manad_long)) %>% 
+                                                mutate(manad_long = factor(.$manad_long,levels  =c("Januari","Februari","Mars","April","Maj","Juni","Juli","Augusti","September","Oktober","November","December"))),
+                                         skickad_x_var = "manad_long", 
+                                         skickad_y_var = "arbetslöshet", 
+                                         skickad_x_grupp = "ar",
+                                         berakna_index=FALSE,
+                                         manual_color = diagramfarger("rus_sex"),
+                                         diagram_titel = diagram_titel,
+                                         diagram_capt =  diagram_capt,
+                                         output_mapp = output_mapp,
+                                         stodlinjer_avrunda_fem = TRUE,
+                                         manual_y_axis_title = "procent",
+                                         visa_var_x_xlabel=1,
+                                         filnamn_diagram = diagramfilnamn,
+                                         skriv_till_diagramfil = FALSE)
+
+  
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+arbetslöshet_linje
+```
+
 ### Kommun {-}
 ```{r, include = FALSE}
  
