@@ -864,7 +864,7 @@ arbetslöshet_linje
                                          skickad_x_var = "manad_long", 
                                          skickad_y_var = "arbetslöshet", 
                                          skickad_x_grupp = "ar",
-                                         berakna_index=FALSE,
+                                         berakna_index = FALSE,
                                          manual_color = diagramfarger("rus_sex"),
                                          diagram_titel = diagram_titel,
                                          diagram_capt =  diagram_capt,
@@ -873,7 +873,7 @@ arbetslöshet_linje
                                          manual_y_axis_title = "procent",
                                          visa_var_x_xlabel=1,
                                          filnamn_diagram = diagramfilnamn,
-                                         skriv_till_diagramfil = FALSE)
+                                         skriv_till_diagramfil = TRUE)
 
   
 ```
