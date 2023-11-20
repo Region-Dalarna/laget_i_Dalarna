@@ -6,17 +6,19 @@ html {
 
 }
 
+/* Det som gäller för dokumentet generellt, typografi m.m.*/
 body {
   border-top: 5px solid #158daf;
   margin: 0;
-  font-family:'Montserrat', sans-serif;
+  font-family:'Poppins', sans-serif;
   font-size: 1rem;
-  font-weight: 400;
+  /*font-weight: 400;*/
   line-height: 1.5;
-  color: #212529;
+  /*color: #212529;*/
   text-align: left;
-  background-color: #fff; }
+  /*background-color: #fff;*/ }
 
+/* Ytan ovanför introduktion. Används enbart för att undvika att det blir en stor vit yta där*/ 
 #header{
   background-repeat: no-repeat;
   height: 0px;
@@ -26,38 +28,43 @@ body {
   z-index:1;
 }  
  
-p{
-  font-family: 'Montserrat';
+/*Segment med p - ta eventuellt bort*/
+/*p{
+  font-family:'Poppins', sans-serif;
   font-size: 1rem;
-}
+}*/
 
-
+/* Rubriker mm följer nedan */
 h1,h2,h3{
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
-  font-family: 'League Spartan'
+  font-family:'Poppins', sans-serif;
 }
 
 h1 { /* Header 1 */
-  font-weight: bold;
+  font-weight: 600;
   font-size: 1.6rem;
   color: #000000;
   margin-top: 2rem;
 }
 h2 { /* Header 2 */
-  font-weight: bold;
+  font-weight: 400;
   font-size: 1.4rem;
   color: #000000;
   margin-top: 1.5rem;
 }
 h3 { /* Header 3 */
+  font-weight: 400;
   font-size: 1.4rem;
   color: #000000;
 }
 
+/* Liten speciallösning som gör att bröd-texten inte blir så bred*/
 .toc-content.col-xs-12.col-sm-8.col-md-9{
   padding-right: 300px;
 }
+
+/*Punktlistor*/
 
 ul {
   font-size: 0.9rem;
@@ -71,6 +78,7 @@ li{
   padding-left: 5px;
 }
 
+/*Ytan som rymmer "Mer info om statistiken*/
 details{
   background-color: #f1f1f1;
   font-size: 0.9rem;
@@ -80,6 +88,7 @@ details{
   margin-bottom: 2rem;
 }
 
+/* Ta bort? Oklart om detta används här*/
 .list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
     font-size: 1em;
     font-weight: 800;
@@ -96,6 +105,8 @@ details{
 top:5px;
 }*/
 
+/* Kod som ser till att bannern försvinner vid scrollning.*/
+
 html:not([data-scroll='0']) .hero-image {
 /*height: 0;
 transition: height 0.02s linear 0.02s;*/
@@ -108,6 +119,7 @@ transition: height 0.02s linear 0.02s;*/
 top: 5px;
 }
 
+/*Lägger en liten röd yta ovanför table of contents. Denna innehåller en logga*/
 #TOC::before{
   content: "";
   display: block;
@@ -121,6 +133,7 @@ top: 5px;
   background-repeat: no-repeat;
 }
 
+/*Nedan styr hur table of contents ser ut och beter sig*/
 .tocify-header {
     font-size: 14px;
     font-weight: 500;
@@ -141,6 +154,9 @@ top: 5px;
      border-color: #000000;
 }
      
+/*Bannern längst upp. Är kopplad till ett htm dokument som heter here_image. Kort fungerar så att ett objekt
+i HTML läses in i Headern (i sektionen längst upp i R-markdowndokumentet). Detta heter hero_image.html. Koden Nedan
+stilsätter det i CSS*/     
 .hero-image{
     position: relative;
     margin-bottom: 2em;
@@ -157,6 +173,7 @@ top: 5px;
     align-items: center;*/
 }
 
+/*Rubriken*/
 .top-text {
     position: absolute;
     bottom: 45px;
@@ -170,6 +187,7 @@ top: 5px;
     padding-right: 10px;
 }
 
+/* Logga vänster*/
 .header-logo {
     position: absolute;
     top: 30px;
@@ -178,7 +196,16 @@ top: 5px;
     max-height: 50px;
 }
 
-.till_startsida{
+/* Logga höger*/
+.header-logo_right {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    max-width: 200px;
+    max-height: 100px;
+}
+
+/*.till_startsida{
    position: absolute;
    top: 30px;
    right: 30px;
@@ -188,18 +215,25 @@ top: 5px;
    background-color: rgba(84,161,189,.8);
    padding:5px;
    
-}
+}*/
 
+/*
 .till_startsida:hover{
   
    color:red;
    
-}
+}*/
 
+/* Om vi klickar på loggor (vilka är länkar) så skapas en liten tonad ruta runt objektet*/
 .header-logo:active{
   background-color: rgba(84,161,189,.8);
 }
 
+.header-logo_right:active{
+  background-color: rgba(84,161,189,.8);
+}
+
+/* Gör vissa justeringar av dokumentet när fönstret minskar, en så kallad media query*/
 @media (max-width: 600px){
  .till_startsida{
    display:none;

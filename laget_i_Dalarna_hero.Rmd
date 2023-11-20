@@ -278,7 +278,7 @@ Hur läget i ekonomin uppfattas varierar beroende på om det är företagen elle
                               diagram_titel = diagramtitel,
                               diagram_capt =  diagram_capt,
                               output_mapp = output_mapp,
-                              x_axis_storlek = 9,
+                              x_axis_storlek = 7,
                               #visa_var_x_xlabel=12,
                               filnamn_diagram = diagramfilnamn,
                               skriv_till_diagramfil = spara_figur)
@@ -558,12 +558,12 @@ k = k+1
   #   filter(år %in% as.character(c(senaste_ar_num:(senaste_ar_num -4)))) %>% 
   #   group_by(månad, regionkod, region) %>% summarise(tot = sum(Konkurser, na.rm = TRUE))
   
-  jmfr_varnamn <- paste0("genomsnitt år ", as.character((senaste_ar_num-5)), "-", as.character((as.numeric(senaste_ar)-1)))
+  jmfr_varnamn <- paste0("genomsnitt år ", as.character((senaste_ar_num-6)), "-", as.character((as.numeric(senaste_ar)-2)))
   
-  antal_ar <- length(as.character(c(senaste_ar_num-1):(senaste_ar_num -5)))
+  antal_ar <- length(as.character(c(senaste_ar_num-2):(senaste_ar_num -6)))
   # gruppera fem senaste år
   konkurser_fem_senaste <- konkurser_df %>% 
-    filter(år %in% as.character(c((senaste_ar_num-1):(senaste_ar_num -5)))) %>% 
+    filter(år %in% as.character(c((senaste_ar_num-2):(senaste_ar_num -6)))) %>% 
     group_by(månad,manad_long, regionkod, region) %>%
     summarize(Berorda_tot = sum(Antal_berorda, na.rm = TRUE),
               Antal_berorda = Berorda_tot/antal_ar) %>% 
@@ -586,31 +586,46 @@ k = k+1
                                           "nov", "dec")))
   
   # Ser till att vi fyller på 2023 med de månader som saknas (för att undvika tjocka staplar) - lite oklart varför koden ovan inte gör det?
-  konkurser_jmfr <- konkurser_jmfr %>% 
-    complete(månad)
+  # konkurser_jmfr <- konkurser_jmfr %>% 
+  #   complete(månad)
     
   diagram_titel <- str_wrap("Antal personer berörda av konkurser i Dalarnas län")
 
   diagramfilnamn <- paste0("konkurser_lan.png")
   
-  konkurser_lan <- SkapaStapelDiagram(skickad_df = konkurser_jmfr %>% 
-                                       filter(år != "2021"), 
-                                     skickad_x_var = "månad", 
-                                     skickad_y_var = "Antal_berorda",
-                                     skickad_x_grupp = "år",
-                                     diagram_titel = diagram_titel,
-                                     diagram_capt = diagram_capt,
-                                     manual_x_axis_text_vjust = 1,
-                                     manual_x_axis_text_hjust = 1,
-                                     stodlinjer_avrunda_fem = TRUE,
-                                     #diagram_facet = jmfr_riket,
-                                     manual_y_axis_title = "Antal berörda personer",
-                                     facet_grp = "region",
-                                     facet_legend_bottom = TRUE,
-                                     manual_color = diagramfarger("bla_gra_tre")[c(2,1,3)],
-                                     output_mapp = output_mapp,
-                                     filnamn_diagram = diagramfilnamn,
-                                     skriv_till_diagramfil = spara_figur)
+  # konkurser_lan <- SkapaStapelDiagram(skickad_df = konkurser_jmfr %>% 
+  #                                      filter(år != "2021"), 
+  #                                    skickad_x_var = "månad", 
+  #                                    skickad_y_var = "Antal_berorda",
+  #                                    skickad_x_grupp = "år",
+  #                                    diagram_titel = diagram_titel,
+  #                                    diagram_capt = diagram_capt,
+  #                                    manual_x_axis_text_vjust = 1,
+  #                                    manual_x_axis_text_hjust = 1,
+  #                                    stodlinjer_avrunda_fem = TRUE,
+  #                                    #diagram_facet = jmfr_riket,
+  #                                    manual_y_axis_title = "Antal berörda personer",
+  #                                    facet_grp = "region",
+  #                                    facet_legend_bottom = TRUE,
+  #                                    manual_color = diagramfarger("bla_gra_tre")[c(2,1,3)],
+  #                                    output_mapp = output_mapp,
+  #                                    filnamn_diagram = diagramfilnamn,
+  #                                    skriv_till_diagramfil = spara_figur)
+  
+    konkurser_lan <- SkapaLinjeDiagram(skickad_df = konkurser_jmfr ,
+                                         skickad_x_var = "månad", 
+                                         skickad_y_var = "Antal_berorda", 
+                                         skickad_x_grupp = "år",
+                                         berakna_index = FALSE,
+                                         manual_color = diagramfarger("rus_sex"),
+                                         diagram_titel = diagram_titel,
+                                         diagram_capt =  diagram_capt,
+                                         output_mapp = output_mapp,
+                                         stodlinjer_avrunda_fem = TRUE,
+                                         manual_y_axis_title = "Antal",
+                                         visa_var_x_xlabel=1,
+                                         filnamn_diagram = diagramfilnamn,
+                                         skriv_till_diagramfil = TRUE)
 
   
 ```
@@ -679,28 +694,46 @@ konkurser_bransch
 
     diagramtitel <- paste0("Antal avregistrerade företag i Dalarna")
     diagramfilnamn <- paste0("avreg_manad.png")
+
+    antal_avregistreringar_df <- antal_avregistreringar_df %>% 
+      mutate(manad_long = case_when(
+        Månad == "01" ~ "Januari",
+         Månad == "02" ~ "Februari",
+         Månad == "03" ~ "Mars",
+         Månad == "04" ~ "April",
+         Månad == "05" ~ "Maj",
+         Månad == "06" ~ "Juni",
+         Månad == "07" ~ "Juli",
+         Månad == "08" ~ "Augusti",
+         Månad == "09" ~ "September",
+         Månad == "10" ~ "Oktober",
+         Månad == "11" ~ "November",
+         Månad == "12" ~ "December",
+      ))
     
-    avreg_manad <- SkapaStapelDiagram(skickad_df = antal_avregistreringar_df,
-                                       skickad_x_var = "ar_manad", 
-                                       skickad_y_var = "antal",
-                                       manual_x_axis_text_vjust=1,
-                                       manual_x_axis_text_hjust=1,
-                                       manual_color = diagramfarger("rus_sex")[1],
-                                       manual_y_axis_title="",
-                                       stodlinjer_avrunda_fem = TRUE,
-                                       diagram_titel = diagramtitel,
-                                       diagram_capt =  diagram_capt,
-                                       output_mapp = output_mapp,
-                                       x_axis_sort_value = FALSE,
-                                       diagram_facet = FALSE,
-                                       filnamn_diagram = diagramfilnamn,
-                                       skriv_till_diagramfil = spara_figur)
+    antal_avregistreringar_df$manad_long = factor(antal_avregistreringar_df$manad_long,levels=c("Januari","Februari","Mars","April","Maj","Juni","Juli","Augusti","September","Oktober","November","December"))
+      
+avregistrerade_linje <- SkapaLinjeDiagram(skickad_df = antal_avregistreringar_df %>% 
+                                             mutate(År = as.character(År)),
+                                           skickad_x_var = "manad_long", 
+                                           skickad_y_var = "antal", 
+                                           skickad_x_grupp = "År",
+                                           berakna_index = FALSE,
+                                           manual_color = diagramfarger("rus_sex"),
+                                           diagram_titel = diagramtitel,
+                                           diagram_capt =  diagram_capt,
+                                           output_mapp = output_mapp,
+                                           stodlinjer_avrunda_fem = TRUE,
+                                           manual_y_axis_title = "Antal",
+                                           #visa_var_x_xlabel=1,
+                                           filnamn_diagram = diagramfilnamn,
+                                           skriv_till_diagramfil = TRUE)
   
   
 ```
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
-avreg_manad
+avregistrerade_linje
 ```
 
 ## Nystartade företag
@@ -731,17 +764,16 @@ avreg_manad
             mutate(grupp = "Nystartade företag")
     
     # Beräknar medel över perioden (för att stoppa in i diagram)
-    nystartade_df_medel <- nystartade_df %>%
-      mutate(antal = mean(antal),
-             grupp = "Genomsnitt sedan 2011")
+    # nystartade_df_medel <- nystartade_df %>%
+    #   mutate(antal = mean(antal),
+    #          grupp = "Genomsnitt sedan 2011")
     
-    Nystartade_utskrift <- rbind(nystartade_df_medel,nystartade_df)
+    #ystartade_utskrift <- rbind(nystartade_df_medel,nystartade_df)
 
     diagramtitel <- paste0("Antal nystartade företag per kvartal i Dalarna")
     diagramfilnamn <- paste0("nystartade.png")
     
-    nystartade_linje <- SkapaLinjeDiagram(skickad_df = Nystartade_utskrift %>% 
-                                          mutate(grupp = factor(grupp,levels = c("Genomsnitt sedan 2011","Nystartade företag")[2:1])),
+    nystartade_linje <- SkapaLinjeDiagram(skickad_df = nystartade_df,
                                        skickad_x_var = "ar_kvartal",
                                        skickad_y_var = "antal",
                                        skickad_x_grupp = "grupp",
@@ -751,7 +783,8 @@ avreg_manad
                                        diagram_titel = diagramtitel,
                                        diagram_capt =  diagram_capt,
                                        output_mapp = output_mapp,
-                                       manual_y_axis_title = "",
+                                       manual_y_axis_title = "Antal nystartade företag",
+                                       legend_tabort = TRUE,
                                        visa_var_x_xlabel= 4,
                                        filnamn_diagram = diagramfilnamn,
                                        skriv_till_diagramfil = spara_figur)
@@ -843,7 +876,7 @@ Arbetslösheten, såväl i Dalarna som Sverige, varierar över tid. I samband me
   
 ```
 
-```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',include = FALSE}
 arbetslöshet_linje
 ```
 
@@ -854,7 +887,7 @@ arbetslöshet_linje
   diagram_titel <- paste0("Arbetslöshet i åldersgruppen 20-64 år i Dalarna")
   diagramfilnamn <- paste0("arbetslöshet_tidsserie.png")
   
-  arbetsmarknadsstatus_tidsserie$manad_long <- factor(arbetsmarknadsstatus_tidsserie$manad_long,levels  =c("januari","februari","mars","april","maj","juni","juli","augusti","september","oktober","november","december"))
+  # arbetsmarknadsstatus_tidsserie$manad_long <- factor(arbetsmarknadsstatus_tidsserie$manad_long,levels  =c("januari","februari","mars","april","maj","juni","juli","augusti","september","oktober","november","december"))
     
   arbetslöshet_linje <- SkapaLinjeDiagram(skickad_df = arbetsmarknadsstatus_tidsserie %>% 
                                             filter(region%in%c("Dalarna")) %>% 
@@ -956,18 +989,18 @@ ekonomiskt_bistand_utskrift <- ekonomiskt_bistand_df %>%
            variabel = "Antal hushåll" ) %>%
         select(-Antal.hushåll)
 
-ekonomiskt_bistand_jmf <-  ekonomiskt_bistand_utskrift %>% 
-  select(ar_manad,antal_hushall) %>% 
-    mutate(antal_hushall = mean(antal_hushall),
-           variabel = "Genomsnitt under perioden")
-
-ut <- rbind(ekonomiskt_bistand_utskrift %>% select(ar_manad,variabel,antal_hushall),ekonomiskt_bistand_jmf)
+# ekonomiskt_bistand_jmf <-  ekonomiskt_bistand_utskrift %>% 
+#   select(ar_manad,antal_hushall) %>% 
+#     mutate(antal_hushall = mean(antal_hushall),
+#            variabel = "Genomsnitt under perioden")
+# 
+# ut <- rbind(ekonomiskt_bistand_utskrift %>% select(ar_manad,variabel,antal_hushall),ekonomiskt_bistand_jmf)
 
   diagram_titel <- paste0("Antal hushåll med ekonomiskt bistånd i Dalarna, jan 2018 till ",tolower(substr(last(ekonomiskt_bistand_utskrift$Månad),1,3))," ",last(ekonomiskt_bistand_utskrift$År))
   diagram_titel = str_wrap(diagram_titel,40)
   diagramfilnamn <- paste0("ekonomiskt_bistand.png")
     
- eko_bistand_fig <- SkapaLinjeDiagram(skickad_df = ut,
+ eko_bistand_fig <- SkapaLinjeDiagram(skickad_df = ekonomiskt_bistand_utskrift,
                                          skickad_x_var = "ar_manad", 
                                          skickad_y_var = "antal_hushall",
                                          skickad_x_grupp = "variabel",
@@ -977,7 +1010,8 @@ ut <- rbind(ekonomiskt_bistand_utskrift %>% select(ar_manad,variabel,antal_husha
                                          diagram_capt =  diagram_capt,
                                          output_mapp = output_mapp,
                                          stodlinjer_avrunda_fem = TRUE,
-                                         manual_y_axis_title = "",
+                                         manual_y_axis_title = "Antal hushåll",
+                                         legend_tabort = TRUE,
                                          visa_var_x_xlabel=12,
                                          filnamn_diagram = diagramfilnamn,
                                          skriv_till_diagramfil = spara_figur)
