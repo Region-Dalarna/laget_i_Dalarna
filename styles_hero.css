@@ -60,7 +60,7 @@ h3 { /* Header 3 */
   color: #000000;
 }
 
-/* Liten speciallösning som gör att bröd-texten inte blir så bred*/
+/* Liten speciallösning som gör att brödtexten inte blir så bred*/
 .toc-content.col-xs-12.col-sm-8.col-md-9{
   padding-right: 300px;
 }
