@@ -38,7 +38,7 @@ output_mapp <- here("Figurer","/")
 uppdatera_hemsida = FALSE
 
 # Om man vill att figurerna skall sparas vid "knittning" så sätts variabeln nedan till true
-spara_figur = TRUE
+spara_figur = FALSE
 
 # Läser in data
 barometern_df <- read.xlsx(here("Data","konjunkturbarometern.xlsx"),sheet=1)
@@ -580,10 +580,11 @@ k = k+1
     group_by(år, regionkod, region) %>%
     complete(månad)
    
-  konkurser_jmfr <- konkurser_jmfr %>% 
-  mutate(månad = factor(månad, levels = c("jan", "feb", "mar", "apr", "maj", 
-                                          "jun", "jul", "aug", "sep", "okt",
-                                          "nov", "dec")))
+  konkurser_jmfr <- konkurser_jmfr %>%
+    mutate(manad_long = str_to_title(manad_long)) %>% 
+      mutate(manad_long = factor(manad_long, levels = c("Januari", "Februari", "Mars", "April", "Maj", 
+                                                        "Juni", "Juli", "Augusti", "September", "Oktober",
+                                                        "November", "December")))
   
   # Ser till att vi fyller på 2023 med de månader som saknas (för att undvika tjocka staplar) - lite oklart varför koden ovan inte gör det?
   # konkurser_jmfr <- konkurser_jmfr %>% 
@@ -613,7 +614,7 @@ k = k+1
   #                                    skriv_till_diagramfil = spara_figur)
   
     konkurser_lan <- SkapaLinjeDiagram(skickad_df = konkurser_jmfr ,
-                                         skickad_x_var = "månad", 
+                                         skickad_x_var = "manad_long", 
                                          skickad_y_var = "Antal_berorda", 
                                          skickad_x_grupp = "år",
                                          berakna_index = FALSE,
@@ -625,12 +626,12 @@ k = k+1
                                          manual_y_axis_title = "Antal",
                                          visa_var_x_xlabel=1,
                                          filnamn_diagram = diagramfilnamn,
-                                         skriv_till_diagramfil = TRUE)
+                                         skriv_till_diagramfil = spara_figur)
 
   
 ```
 
-Precis som var fallet med varsel, tenderar antalet personer som berörs av konkurser att variera relativt mycket från månad till månad. Detta medför att det är svårt att se någon trend på månadsbasis kopplad till exempelvis Rysslands invasion av Ukraina. I `r senaste_manad` `r senaste_ar` berördes `r konkurser_jmfr %>% filter(år==senaste_ar,manad_long==senaste_manad) %>% .$Antal_berorda` personer av konkurser i Dalarna, att jämföra med `r konkurser_jmfr %>% filter(år==as.character(senaste_ar_num-1),manad_long==senaste_manad) %>% .$Antal_berorda` motsvarande månad `r as.character(senaste_ar_num-1)`. Värt att notera är även att `r konkurser_df %>% filter(år==last(år)) %>% group_by(region,år) %>% .$Antal_berorda %>% sum()` personer har berörts av konkurser i Dalarna hittills i år, vilket är klart fler än de `r konkurser_df  %>% filter(år==(as.numeric(last(år))-1),månad%in%unique(konkurser_df  %>% filter(år==last(år)) %>% .$månad)) %>% group_by(region,år) %>% .$Antal_berorda %>% sum()` som berördes under motsvarande period föregående år.
+Precis som var fallet med varsel, tenderar antalet personer som berörs av konkurser att variera relativt mycket från månad till månad. Detta medför att det är svårt att se någon trend på månadsbasis kopplad till exempelvis Rysslands invasion av Ukraina. I `r senaste_manad` `r senaste_ar` berördes `r konkurser_jmfr %>% filter(år==senaste_ar,manad_long==str_to_title(senaste_manad)) %>% .$Antal_berorda` personer av konkurser i Dalarna, att jämföra med `r konkurser_jmfr %>% filter(år==as.character(senaste_ar_num-1),manad_long==str_to_title(senaste_manad)) %>% .$Antal_berorda` motsvarande månad `r as.character(senaste_ar_num-1)`. Värt att notera är även att `r konkurser_df %>% filter(år==last(år)) %>% group_by(region,år) %>% .$Antal_berorda %>% sum()` personer har berörts av konkurser i Dalarna hittills i år, vilket är klart fler än de `r konkurser_df  %>% filter(år==(as.numeric(last(år))-1),månad%in%unique(konkurser_df  %>% filter(år==last(år)) %>% .$månad)) %>% group_by(region,år) %>% .$Antal_berorda %>% sum()` som berördes under motsvarande period föregående år.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 konkurser_lan
@@ -727,7 +728,7 @@ avregistrerade_linje <- SkapaLinjeDiagram(skickad_df = antal_avregistreringar_df
                                            manual_y_axis_title = "Antal",
                                            #visa_var_x_xlabel=1,
                                            filnamn_diagram = diagramfilnamn,
-                                           skriv_till_diagramfil = TRUE)
+                                           skriv_till_diagramfil = spara_figur)
   
   
 ```
@@ -906,7 +907,7 @@ arbetslöshet_linje
                                          manual_y_axis_title = "procent",
                                          visa_var_x_xlabel=1,
                                          filnamn_diagram = diagramfilnamn,
-                                         skriv_till_diagramfil = TRUE)
+                                         skriv_till_diagramfil = spara_figur)
 
   
 ```
