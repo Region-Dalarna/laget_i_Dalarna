@@ -50,9 +50,18 @@ hamta_data_konkurser <- function(vald_region="20",
 
     flik_lista[[i]]$månad_år_sort <- reorder(flik_lista[[i]]$månad_år_sort, flik_lista[[i]]$sort)
     
+    flik_lista[[i]] <- flik_lista[[i]] %>% 
+      mutate(`näringsgren SNI 2007` = case_when(
+        `näringsgren SNI 2007` == "el-, gas- och värmeverk; vatten- och reningsverk; anläggningar för avfallshantering, återvinning och sanering" ~ "el-, gas- och värmeverk m.m.",
+        `näringsgren SNI 2007` == "uthyrningsfirmor, arbetsförmedlingar, rekryteringsföretag, personaluthyrningsföretag o.d." ~ "uthyrningsfirmor, arbetsförmedlingar m.m.",
+        `näringsgren SNI 2007` == "andra serviceföretag och företag för personliga tjänster, civila myndigheter och försvaret" ~ "andra serviceföretag m.m.",
+        `näringsgren SNI 2007` == "övrig tillverkningsindustri, reparationsverkstäder och installationsföretag" ~ "övrig tillverkningsindustri m.m.",
+        .default = `näringsgren SNI 2007`
+      ))
+    
     i=i+1
   }
-  
+
   # Namnger lista (ger fliknamn i Exceldokument)
   names(flik_lista) <- c("Antal konkurser","Antal berörda")
   
