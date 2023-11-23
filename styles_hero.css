@@ -108,17 +108,13 @@ top:5px;
 
 /* Kod som ser till att bannern försvinner vid scrollning.*/
 
-html:not([data-scroll='0']) .hero-image {
-/*height: 0;
-transition: height 0.02s linear 0.02s;*/
+/*html:not([data-scroll='0']) .hero-image {
 display:none;
-}
+}*/
 
-html:not([data-scroll='0']) .toc-content.col-xs-12.col-sm-8.col-md-9 {
-/*height: 0;
-transition: height 0.02s linear 0.02s;*/
+/*html:not([data-scroll='0']) .toc-content.col-xs-12.col-sm-8.col-md-9 {
 top: 5px;
-}
+}*/
 
 /*Lägger en liten röd yta ovanför table of contents. Denna innehåller en logga*/
 #TOC::before{
@@ -163,24 +159,24 @@ stilsätter det i CSS*/
     margin-bottom: 2em;
     /* liner gradient tints the image darker for readability*/
     background-image: url(Dalastrategin.jpg); 
-    height: 400px;
+    height: 150px;
     max-width: 1200px;
     margin: 0 auto;
     background-size: cover;
     background-color: #141c25f2;
     background-position: center center;
-    /*display: flex;
-    justify-content: center;
-    align-items: center;*/
 }
 
 /*Rubriken*/
 .top-text {
     position: absolute;
-    bottom: 45px;
-    left: 50px;
+    bottom: 35px;
+    /*left: 150px;*/
+    margin-left: 25%;
+    width: 50%;
     color: #fff;
     font-size: 3.75em;
+    text-align: center;
     line-height: 1.2em;
     text-shadow: rgba(34,34,34,.8) 3px 5px 5px;
     background-color: rgba(84,161,189,.8);
@@ -234,19 +230,27 @@ stilsätter det i CSS*/
   background-color: rgba(84,161,189,.8);
 }
 
-/* Gör vissa justeringar av dokumentet när fönstret minskar, en så kallad media query*/
-@media (max-width: 600px){
- .till_startsida{
-   display:none;
- }
+/* Gör vissa justeringar av dokumentet när fönstret minskar, så kallad media query*/
+@media (max-width: 970px){
+ 
  .top-text {
-    font-size: 2em;
+    font-size: 2.5em;
 }
 
 .toc-content.col-xs-12.col-sm-8.col-md-9{
   padding-right: 20px;
 }
    
+}
+
+@media(max-width: 700px){
+  .header-logo{
+  display:none;
+}
+
+ .header-logo_right {
+   display:none;
+  
 }
 
 
