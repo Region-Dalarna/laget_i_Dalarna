@@ -38,7 +38,7 @@ output_mapp <- here("Figurer","/")
 uppdatera_hemsida = FALSE
 
 # Om man vill att figurerna skall sparas vid "knittning" så sätts variabeln nedan till true
-spara_figur = FALSE
+spara_figur = TRUE
 
 # Läser in data
 barometern_df <- read.xlsx(here("Data","konjunkturbarometern.xlsx"),sheet=1)
