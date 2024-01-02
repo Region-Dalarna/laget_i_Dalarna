@@ -3,7 +3,7 @@
 
 pacman::p_load(tidyverse,openxlsx)
 
-source("G:/skript/func/func_API.R", encoding = "utf-8", echo = FALSE)
+source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R")
 options(dplyr.summarise.inform = FALSE)
 
 #test=hamta_varsel_bransch_ar(output_mapp="G:/skript/projekt/laget_i_Dalarna/Data/",spara_till_excel=FALSE)

@@ -5,8 +5,8 @@
 pacman::p_load(pxweb,httr,tidyverse,keyring,openxlsx)
 
 # Laddar in de funktioner som används för att ta hem data ochskapa diagram
-source("G:/skript/func/func_SkapaDiagram.R", encoding = "utf-8", echo = FALSE)
-source("G:/skript/func/func_API.R", encoding = "utf-8", echo = FALSE)
+source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_SkapaDiagram.R")
+source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R")
 
 #test_list=hamta_data_konjunkturbarometern(skapa_figur=TRUE)
 hamta_data_konjunkturbarometern <- function(output_mapp_excel = "G:/Samhällsanalys/Statistik/Näringsliv/basfakta/",

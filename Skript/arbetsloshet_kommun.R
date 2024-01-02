@@ -1,7 +1,7 @@
 # Hämtar data för konkurser från SCBs hemsida
 pacman::p_load(pxweb,tidyverse,openxlsx)
-source("G:/skript/func/func_SkapaDiagram.R", encoding = "utf-8", echo = FALSE)
-source("G:/skript/func/func_API.R", encoding = "utf-8", echo = FALSE)
+source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_SkapaDiagram.R")
+source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R")
 
 #hamta_data_arbetsloshet()
 hamta_data_arbetsloshet <- function(vald_region="20",

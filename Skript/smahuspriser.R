@@ -3,8 +3,8 @@
 pacman::p_load(pxweb,tidyverse)
 
 # Laddar in de funktioner som används för att skapa diagram
-source("G:/skript/func/func_SkapaDiagram.R", encoding = "utf-8", echo = FALSE)
-source("G:/skript/func/func_API.R", encoding = "utf-8", echo = FALSE)
+source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_SkapaDiagram.R")
+source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R")
 
 #test_list=hamta_data_smahuspriser(skapa_figur=TRUE)
 hamta_data_smahuspriser <- function(region_vekt="20",

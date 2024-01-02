@@ -7,8 +7,8 @@ pacman::p_load(pxweb,
                openxlsx)
 
 # Läser in funktioner
-source("G:/skript/func/func_SkapaDiagram.R", encoding = "utf-8", echo = FALSE)
-source("G:/skript/func/func_API.R", encoding = "utf-8", echo = FALSE)
+source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_SkapaDiagram.R")
+source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R")
 
 #hamta_data_kpi()
 hamta_data_BNP <- function(spara_data = TRUE,

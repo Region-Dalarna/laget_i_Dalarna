@@ -28,8 +28,8 @@ p_load(sf,
        tidytext)
 
 # Läser in funktioner
-source("https://raw.githubusercontent.com/FaluPeppe/func/main/func_SkapaDiagram.R")
-source("https://raw.githubusercontent.com/FaluPeppe/func/main/func_API.R")
+source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_SkapaDiagram.R")
+source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R")
 
 # Skapar en mapp för att 
 output_mapp <- here("Figurer","/")
