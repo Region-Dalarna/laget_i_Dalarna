@@ -125,7 +125,7 @@ storeScroll();
 <i>Rapporten är skapad av Samhällsanalys, Region Dalarna<br>
 Senast uppdaterad: `r Sys.Date()`</i>
 </p>
-<br>
+
 I Sverige har vi tillgång till mycket god statistik om både våra levnadsförhållanden och vår ekonomi. Det innebär att vi också kan följa upp bland annat den ekonomiska utvecklingen i närtid både regionalt och nationellt till exempel vad gäller sysselsättning, bostadsbyggande och företagsetableringar.
 De senaste årens omvälvande händelser i världen med Covid-19-pandemin, det ofattbara kriget i Ukraina, och nu kriget mellan Israel och Hamas är förödande för dem som står i händelsernas centrum, men de drabbar även oss. Dessa händelser sätter prägel på både vår ekonomi och våra levnadsförhållanden, och gör det än mer angeläget att följa den ekonomiska utvecklingen regionalt och nationellt. <br>
 <br>
