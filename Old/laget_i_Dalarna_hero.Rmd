@@ -305,7 +305,7 @@ Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i
  
 </details>
 
-Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 har inflationen dock ökat avsevärt och var som högst i `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar)`, då den i Sverige uppgick till `r gsub("\\.",",",KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF)` procent. Därefter har inflationstakten sjunkit och var i `r KPI_df %>% filter(månad==last(månad)) %>% select(manad_long,ar)`, `r gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)` procent. Den höga inflationstakten på senare år har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på Wikipedia^[https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge].
+Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 har inflationen dock ökat avsevärt och var som högst i `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar)`, då den i Sverige uppgick till `r gsub("\\.",",",KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF)` procent. Därefter har inflationstakten sjunkit och var i `r KPI_df %>% filter(månad==last(månad)) %>% select(manad_long,ar)`, `r gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)` procent. Den höga inflationstakten på senare år har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på  [Wikipedia](https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge){target="_blank"}.
 
 ```{r, include = FALSE}
 
@@ -352,7 +352,7 @@ inflation_linje
 ```
 
 # Bostadsmarknaden
-2010-talet kännetecknades av en bostadsmarknad där det mesta pekade uppåt. Låg inflation och låga räntor i kombination med fördelaktiga skatteregler medförde att såväl byggandet av bostäder, som bostadspriserna ökade kraftigt. Även bostadslånen har ökat under en lång period och uppgick 2022 till ca 170 procent av hushållens disponibla inkomst, vilket är ungefär dubbelt så stor andel som under mitten av 1990-talet. Samtidigt har hushållens finansiella tillgångar ökat, vilket medfört att skulderna i relation till de finansiella tillgångarna minskat något under samma tidsperiod^[https://www.scb.se/hitta-statistik/statistik-efter-amne/finansmarknad/finansrakenskaper/finansrakenskaper-kvartal-och-ar/pong/tabell-och-diagram/arstabeller/hushallens-laneskulder-i-procent-av-justerad-disponibel-inkomst-och-av-hushallens-finansiella-tillgangar/]. 
+2010-talet kännetecknades av en bostadsmarknad där det mesta pekade uppåt. Låg inflation och låga räntor i kombination med fördelaktiga skatteregler medförde att såväl byggandet av bostäder, som bostadspriserna ökade kraftigt. Även bostadslånen har ökat under en lång period och uppgick 2022 till ca 170 procent av hushållens disponibla inkomst, vilket är ungefär dubbelt så stor andel som under mitten av 1990-talet. Samtidigt har hushållens finansiella tillgångar ökat, vilket medfört att skulderna i relation till de finansiella tillgångarna minskat något under samma tidsperiod [(SCB)](https://www.scb.se/hitta-statistik/statistik-efter-amne/finansmarknad/finansrakenskaper/finansrakenskaper-kvartal-och-ar/pong/tabell-och-diagram/arstabeller/hushallens-laneskulder-i-procent-av-justerad-disponibel-inkomst-och-av-hushallens-finansiella-tillgangar/){target="_blank"}. 
 
 ## Bostadsbyggande{.tabset}
 
@@ -805,7 +805,7 @@ nystartade_linje
 ```
 
 # Arbetsmarknaden
-Som mått på läget i Dalarna, är arbetslösheten sannolikt en relativt trögrörlig indikator. Detta eftersom företag i första läget varslar personal, för att därefter eventuellt göra större uppsägningar. De är även viktigt att notera att arbetslösheten varierar mellan olika grupper i samhället, exempelvis baserat på personers kön, utbildningsbakgrund eller huruvida de är födda i Sverige. För en fördjupad diskussion runt detta, se exempelvis rapporten "Kvinnor och män i Dalarna"^[https://region-dalarna.github.io/kvinnor_man_i_Dalarna/].
+Som mått på läget i Dalarna, är arbetslösheten sannolikt en relativt trögrörlig indikator. Detta eftersom företag i första läget varslar personal, för att därefter eventuellt göra större uppsägningar. De är även viktigt att notera att arbetslösheten varierar mellan olika grupper i samhället, exempelvis baserat på personers kön, utbildningsbakgrund eller huruvida de är födda i Sverige. För en fördjupad diskussion runt detta, se exempelvis Region Dalarnas rapport ["Kvinnor och män i Dalarna"](https://region-dalarna.github.io/kvinnor_man_i_Dalarna/){target="_blank"}.
  
 ## Arbetslöshet {.tabset}
 
