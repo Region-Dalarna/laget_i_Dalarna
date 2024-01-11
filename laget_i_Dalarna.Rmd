@@ -65,14 +65,14 @@ Bygglov_df <- read.xlsx(here("Data","byggande.xlsx"),sheet=2)%>%
 
 # Källa: https://sdb.socialstyrelsen.se/if_ekb_manad/resultat.aspx
 # Uppdateras genom att hämta en ny version av data
-ekonomiskt_bistand_df <-  read.xlsx(here("Data","Socialstyrelsen_2023_11_07.xlsx"),startRow = 2) %>% 
+ekonomiskt_bistand_df <-  read.xlsx(here("Data","Socialstyrelsen_2024_01_11.xlsx"),startRow = 2) %>% 
   filter(År>2017,Antal.hushåll>0)
 # Källa: https://statistik.tillvaxtanalys.se/PxWeb/pxweb/sv/Tillv%C3%A4xtanalys%20statistikdatabas/
 # Uppdateras genom att hämta hem ny data
-nystartade_df <-  read.xlsx(here("Data","Tillvaxtananalys_2023_10_09.xlsx"),startRow = 3)
+nystartade_df <-  read.xlsx(here("Data","Tillvaxtananalys_2024_01_11.xlsx"),startRow = 3)
 
 # Källa: https://foretagsinfo.bolagsverket.se/sok-foretagsinformation-web/statistik
-antal_avregistreringar_df<- read.csv("C:/Users/frkjon/Projekt/laget_i_Dalarna/Data/Statistik.csv",encoding="UTF-8") %>% 
+antal_avregistreringar_df <- read.csv("C:/Users/frkjon/Projekt/laget_i_Dalarna/Data/Bolagsverket_2024_01_11.csv",encoding="UTF-8") %>% 
   pivot_longer(4:ncol(.),names_to = "variabel",values_to = "value") %>% 
     group_by(År,Månad) %>% 
       summarize(antal = sum(value)) %>% 
@@ -305,7 +305,7 @@ Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i
  
 </details>
 
-Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationenS avsevärt och var som högst i `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar)`, då den i Sverige uppgick till `r gsub("\\.",",",KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF)` procent. Därefter har inflationstakten sjunkit och var i `r KPI_df %>% filter(månad==last(månad)) %>% select(manad_long,ar)`, `r gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)` procent. Den höga inflationstakten på senare år har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på  [Wikipedia](https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge){target="_blank"}.
+Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar)`, då den i Sverige uppgick till `r gsub("\\.",",",KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF)` procent. Därefter har inflationstakten sjunkit avsevärt och var i `r KPI_df %>% filter(månad==last(månad)) %>% select(manad_long,ar)`, `r gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)` procent. Den höga inflationstakten på senare år har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på  [Wikipedia](https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge){target="_blank"}.
 
 ```{r, include = FALSE}
 
@@ -687,7 +687,7 @@ konkurser_lan
 
   
 ```
-Den bransch som drabbades värst av konkurser i `r senaste_manad` `r unique(konkurser_bransch_10$år)` var "`r konkurser_bransch_10 %>% filter(Antal_berorda==max(Antal_berorda)) %>% .$bransch`", där `r konkurser_bransch_10 %>% filter(Antal_berorda==max(Antal_berorda)) %>% .$Antal_berorda` personer berördes av konkurser. Även inom branscherna "Uthyrningsfirmor" samt "Hotell och restaurang" berördes relativt många anställda av konkurser.
+Den bransch som drabbades värst av konkurser i `r senaste_manad` `r unique(konkurser_bransch_10$år)` var "`r konkurser_bransch_10 %>% filter(Antal_berorda==max(Antal_berorda)) %>% .$bransch`", där `r konkurser_bransch_10 %>% filter(Antal_berorda==max(Antal_berorda)) %>% .$Antal_berorda` personer berördes av konkurser.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 konkurser_bransch
@@ -695,15 +695,10 @@ konkurser_bransch
 
 ## Avregistrerade företag
 
-Ett potentiellt alternativ till att begära ett företag i konkurs är att istället avregistrera det. Antalet avregistrerade företag tenderar att följa ett tydligt säsongsmönster, där klart flest företag avregistreras i januari. Det är dock svårt att se någon långsiktig trend, då ungefär lika många företag avregistreras varje år. I oktober `r max(antal_avregistreringar_df$År)` avregistrerades `r last(antal_avregistreringar_df$antal)` företag i Dalarna, vilket är ungefär lika många som samma månad året innan (`r last(antal_avregistreringar_df %>% filter(Månad == last(antal_avregistreringar_df %>% filter(År == max(.$År)) %>% .$Månad)) %>% filter(År == (max(.$År)-1)) %>% .$antal)`).
-
-```{r, include = FALSE}
-    diagram_capt <- "Källa: Bolagsverket.\nBearbetning: Samhällsanalys, Region Dalarna."
-
-    diagramtitel <- paste0("Antal avregistrerade företag i Dalarna")
-    diagramfilnamn <- paste0("avreg_manad.png")
-
-    antal_avregistreringar_df <- antal_avregistreringar_df %>% 
+```{r, echo = FALSE, message = FALSE, warning = FALSE, include = FALSE}
+  
+# Ger månaderna namn  
+  antal_avregistreringar_df <- antal_avregistreringar_df %>% 
       mutate(manad_long = case_when(
         Månad == "01" ~ "Januari",
          Månad == "02" ~ "Februari",
@@ -718,6 +713,17 @@ Ett potentiellt alternativ till att begära ett företag i konkurs är att istä
          Månad == "11" ~ "November",
          Månad == "12" ~ "December",
       ))
+```
+
+Ett potentiellt alternativ till att begära ett företag i konkurs är att istället avregistrera det. Antalet avregistrerade företag tenderar att följa ett tydligt säsongsmönster, där klart flest företag avregistreras i januari. Det är dock svårt att se någon långsiktig trend, då ungefär lika många företag avregistreras varje år. De senaste månaderna har dock något färre företag avregistreras jämfört med samma period tidigare år. I `r tolower(last(antal_avregistreringar_df$manad_long))` `r max(antal_avregistreringar_df$År)` avregistrerades `r last(antal_avregistreringar_df$antal)` företag i Dalarna, jämfört med `r last(antal_avregistreringar_df %>% filter(Månad == last(antal_avregistreringar_df %>% filter(År == max(.$År)) %>% .$Månad)) %>% filter(År == (max(.$År)-1)) %>% .$antal)` samma månad året innan.
+
+```{r, include = FALSE}
+    diagram_capt <- "Källa: Bolagsverket.\nBearbetning: Samhällsanalys, Region Dalarna."
+
+    diagramtitel <- paste0("Antal avregistrerade företag i Dalarna")
+    diagramfilnamn <- paste0("avreg_manad.png")
+
+
     
     antal_avregistreringar_df$manad_long = factor(antal_avregistreringar_df$manad_long,levels=c("Januari","Februari","Mars","April","Maj","Juni","Juli","Augusti","September","Oktober","November","December"))
       
@@ -799,7 +805,7 @@ avregistrerade_linje
 ```
 
 
-En annan indikator på läget för företagen i länet är hur många nya företag som startas. Historiskt startades väldigt många företag i samband med Corona-pandemin 2020-2021. I  `r nystartade_df %>% filter(antal == max(antal)) %>% .$kvartal_namn` `r nystartade_df %>% filter(antal == max(antal)) %>% .$ar` startades exempelvis `r nystartade_df %>% filter(antal == max(antal)) %>% .$antal` företag, vilket är det största antalet sedan åtminstone 2011. Exakt vad detta beror på kan vara svårt att säga, men en potentiell förklaring är att individer som blev uppsagda under pandemin valde att starta egna företag. Någon större trend sedan Rysslands invasion av Ukraina märktes inte initialt för antalet nystartade företag. Under 2022 startades till och med något fler företag än genomsnittet sedan 2011. I början av 2023 märks dock en viss avmattning. I `r nystartade_df %>% filter(ar_kvartal == first(ar_kvartal)) %>% .$kvartal_namn` `r nystartade_df %>% filter(ar_kvartal == first(ar_kvartal)) %>% .$ar` startades `r nystartade_df %>% filter(ar_kvartal == first(ar_kvartal)) %>% .$antal` företag, vilket är något lägre än genomsnittet det senaste dryga decenniet.
+En annan indikator på läget för företagen i länet är hur många nya företag som startas. Historiskt startades väldigt många företag i samband med Corona-pandemin 2020-2021. I  `r nystartade_df %>% filter(antal == max(antal)) %>% .$kvartal_namn` `r nystartade_df %>% filter(antal == max(antal)) %>% .$ar` startades exempelvis `r nystartade_df %>% filter(antal == max(antal)) %>% .$antal` företag, vilket är det största antalet sedan åtminstone 2011. Exakt vad detta beror på kan vara svårt att säga, men en potentiell förklaring är att individer som blev uppsagda under pandemin valde att starta egna företag. Någon större trend sedan Rysslands invasion av Ukraina märktes inte initialt för antalet nystartade företag. Under 2022 startades till och med något fler företag än genomsnittet sedan 2011. Under första halvan av 2023 märktes en viss avmattning dock, men i `r nystartade_df %>% filter(ar_kvartal == first(ar_kvartal)) %>% .$kvartal_namn` `r nystartade_df %>% filter(ar_kvartal == first(ar_kvartal)) %>% .$ar` startades `r nystartade_df %>% filter(ar_kvartal == first(ar_kvartal)) %>% .$antal` företag, vilket är `r nystartade_df %>% filter(ar_kvartal == first(ar_kvartal)) %>% .$antal - first(nystartade_df %>% filter(ar_kvartal != first(ar_kvartal)) %>% .$antal)` fler än föregående kvartal.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 nystartade_linje
@@ -820,6 +826,7 @@ Statistik över arbetslöshet och sysselsättning kan tas fram på olika sätt. 
 
 ### Län {-}
 I `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$ar))` hade Dalarna `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$arbetslöshet))` procents arbetslöshet, att jämföra med `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Riket") %>% .$arbetslöshet))` procent i Sverige som helhet. Noterbart är även att Dalarna har klart lägre arbetslöshet än näraliggande Gävleborg, där arbetslösheten var `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Gävleborg") %>% .$arbetslöshet))` procent under samma tidsperiod. Lägst arbetslös i Sverige hade `r arbetsmarknadsstatus_tidsserie %>% filter(manad_long == last(manad_long),ar == last(ar)) %>% filter(arbetslöshet==min(arbetslöshet)) %>%  .$region`, med `r (gsub("\\.",",",arbetsmarknadsstatus_tidsserie %>% filter(manad_long == last(manad_long),ar == last(ar)) %>% filter(arbetslöshet==min(arbetslöshet)) %>%  .$arbetslöshet))` procent.
+
 ```{r, include = FALSE}
 
   diagramtitel <- paste0("Arbetslöshet i åldersgruppen 20-64 år i ",unique(arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar)) %>% filter(manad_long==last(manad_long)) %>%  .$manad_long)," ",unique(arbetsmarknadsstatus_tidsserie %>% filter(ar == max(ar)) %>% filter(manad_long==max(manad_long)) %>%  .$ar))
@@ -855,7 +862,7 @@ arbetsloshet_lan
 ```
 
 ### Jämförelse över tid {-}
-Arbetslösheten, såväl i Dalarna som Sverige, varierar över tid. I samband med pandemin orsakad av Covid-19, ökade arbetslösheten och var som högst i Dalarna i `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$manad_long %>% .[1]`  `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$ar %>% .[1]`, då den uppgick till `r  gsub("\\.",",", arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$arbetslöshet %>% .[1])` procent. Därefter har arbetslösheten minskat och var i `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$ar))` `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$arbetslöshet))` procent i Dalarna. 
+Arbetslösheten, såväl i Dalarna som Sverige, varierar över tid. I samband med pandemin orsakad av Covid-19, ökade arbetslösheten och var som högst i Dalarna i `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$manad_long %>% .[1]`  `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$ar %>% .[1]`, då den uppgick till `r  gsub("\\.",",", arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$arbetslöshet %>% .[1])` procent. Därefter har arbetslösheten minskat och var i `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$ar))` `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$arbetslöshet))` procent i Dalarna. Arbetslösheten tenderar att följa ett visst säsongsmönster, där den ökar i augusti (jämfört med månaden innan), minskar i september och återigen ökar i oktober. Samma mönster syns även under 2023, då arbetslösheten ökade något mellan september och oktober. Om detta är en del av en långsiktig trend, där arbetslösheten börjar öka, är för tidigt att säga.
 
 ```{r, include = FALSE}
  
@@ -1040,13 +1047,13 @@ Hushållens ekonomiska situation kan mätas på flera olika sätt. Arbetslöshet
  
 </details>
 
-I Dalarna hade runt 4000 hushåll ett sådant behov under åren mellan 2018 och 2021, men därefter har behovet minskat stadigt. I `r last(ekonomiskt_bistand_utskrift$Månad)` `r last(ekonomiskt_bistand_utskrift$År)` var bara `r last(ekonomiskt_bistand_utskrift$antal_hushall)` hushåll i behov av ekonomiskt bistånd. Anmärkningsvärt är även att behovet av bistånd har fortsatt att minska trots att prisnivån i samhället har ökat avsevärt på senare år (se avsnittet om inflation). Exakt vad den utvecklingen beror på är oklart, men ett antal tänkbara orsaker diskuteras i följande <a href = "https://www.svt.se/nyheter/inrikes/darfor-minskar-antalet-hushall-som-far-socialbidrag-i-sverige-forskare-forklarar-orsaker-bakom" target="_blank">artikel</a>. Värt att notera är även att antalet hushåll i Dalarna har ökat på senare år, från drygt 136 000 år 2018 till drygt 139 000 år 2022.   
+I Dalarna hade runt 4000 hushåll ett sådant behov under åren mellan 2018 och 2021, men därefter minskade behovet stadigt under en längre period. I `r last(ekonomiskt_bistand_utskrift$Månad)` `r last(ekonomiskt_bistand_utskrift$År)` var `r last(ekonomiskt_bistand_utskrift$antal_hushall)` hushåll i behov av ekonomiskt bistånd, vilket är något fler än i oktober 2023. Anmärkningsvärt är även att behovet av bistånd har minskat trots att prisnivån i samhället har ökat avsevärt på senare år (se avsnittet om inflation). Exakt vad den utvecklingen beror på är oklart, men ett antal tänkbara orsaker diskuteras i följande <a href = "https://www.svt.se/nyheter/inrikes/darfor-minskar-antalet-hushall-som-far-socialbidrag-i-sverige-forskare-forklarar-orsaker-bakom" target="_blank">artikel</a>. Värt att notera är även att antalet hushåll i Dalarna har ökat på senare år, från drygt 136 000 år 2018 till drygt 139 000 år 2022.   
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 eko_bistand_fig
 ```
 
-<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 0;"></div>
+<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 10;"></div>
 
 ```{r, include = FALSE}
 
