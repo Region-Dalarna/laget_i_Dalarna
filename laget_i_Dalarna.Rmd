@@ -499,7 +499,7 @@ Det genomsnittliga priset på ett småhus varierar mellan Sveriges län och var 
   ValdGeografi <- skapa_kortnamn_lan(hamtaregion_kod_namn(region_vekt)$region,byt_ut_riket_mot_sverige = TRUE)
   jmf_geografi <- skapa_kortnamn_lan(hamtaregion_kod_namn(jmf_vekt)$region,byt_ut_riket_mot_sverige = TRUE) 
   
-  diagramtitel <- paste0("Småhuspriser i Sveriges län, ",last(priser_df$manad_long)," ",max(priser_df$ar))
+  diagramtitel <- paste0("Småhuspriser i ",last(priser_df$manad_long)," ",max(priser_df$ar))
   diagramfilnamn <- paste0("smahuspriser_lan.png")
   
   smahuspriser_län <- SkapaStapelDiagram(skickad_df = priser_df %>%
