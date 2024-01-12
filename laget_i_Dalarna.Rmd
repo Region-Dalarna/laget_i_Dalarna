@@ -35,7 +35,7 @@ source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_AP
 output_mapp <- here("Figurer","/")
 
 # Om man vill uppdatera den externa hemsidan sätts denna variabel till TRUE
-uppdatera_hemsida = FALSE
+uppdatera_hemsida = TRUE
 
 # Om man vill att figurerna skall sparas vid "knittning" så sätts variabeln nedan till true
 spara_figur = FALSE
@@ -441,7 +441,7 @@ Nybyggnation_linje
 
 ### Historisk jämförelse {-}
 
-Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige. Efter toppen i `r priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% select(manad_long,ar)`, har dock det genomsnittliga priset på småhus i Dalarna minskat med ungefär `r abs((round((priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(Medelpris))/(priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% select(Medelpris)),2)-1)*100)` procent. Minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medfört en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkar efterfrågan på bostäder. 
+Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige. Efter toppen i `r priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% select(manad_long,ar)`, då ett småhus i Dalarna kostade ungefär `r round(priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% .$Medelpris/1000,1)` miljoner kronor, har dock det genomsnittliga priset på småhus i länet minskat avsevärt till `r gsub("\\.",",",(round(priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(Medelpris)/1000,1)))` miljoner kronor i `r priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(manad_long,ar)`. Minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medfört en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkar efterfrågan på bostäder. 
 
 ```{r, include = FALSE}
 # Skapar ett linjediagram för förändring i priser. Blir något fel när man skapar index via funktionen, 
