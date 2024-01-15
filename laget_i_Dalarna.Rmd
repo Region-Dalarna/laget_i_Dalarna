@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "Läget i Dalarna"
 author: ""
 date: ""
 output: 
@@ -35,7 +35,7 @@ source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_AP
 output_mapp <- here("Figurer","/")
 
 # Om man vill uppdatera den externa hemsidan sätts denna variabel till TRUE
-uppdatera_hemsida = FALSE
+uppdatera_hemsida = TRUE
 
 # Om man vill att figurerna skall sparas vid "knittning" så sätts variabeln nedan till true
 spara_figur = FALSE
