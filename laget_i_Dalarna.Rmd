@@ -35,7 +35,7 @@ source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_AP
 output_mapp <- here("Figurer","/")
 
 # Om man vill uppdatera den externa hemsidan sätts denna variabel till TRUE
-uppdatera_hemsida = TRUE
+uppdatera_hemsida = FALSE
 
 # Om man vill att figurerna skall sparas vid "knittning" så sätts variabeln nedan till true
 spara_figur = FALSE
@@ -47,7 +47,8 @@ KPI_df <- read.xlsx(here("Data","KPI.xlsx"))
 varsel_manad_df <- read.xlsx(here("Data","varsel_manad.xlsx"),sheet=1)
 varsel_bransch_df <- read.xlsx(here("Data","varsel_bransch_manad.xlsx"),sheet=1)
 priser_df <- read.xlsx(here("Data","smahuspriser.xlsx"))
-konkurser_df <- read.xlsx(here("Data","konkurser_korrekt.xlsx"),sheet=2)
+konkurser_df <- read.xlsx(here("Data","konkurser_korrekt.xlsx"),sheet=2) %>% 
+  filter(tid != last(tid))
 arbetsmarknadsstatus_lan <- read.xlsx(here("Data","arbetsmarknadsstatus_lan.xlsx"))
 arbetsmarknadsstatus_tidsserie <- read.xlsx(here("Data","arbetsmarknadsstatus_tidsserie.xlsx"))
 arbetsloshet_kommun <-  read.xlsx(here("Data","arbetsloshet_kommun.xlsx"))
@@ -192,7 +193,7 @@ Ett annat sätt att mäta läget i ekonomin är genom de olika enkätundersökni
 </details>
 
 ### Generellt {-}
-I `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$manad_long` `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$ar` var barometerindikatorn `r gsub("\\.",",",last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$Barometerindikatorn.och.andra.indikatorer)`, vilket indikerar att ekonomin i Sverige var mycket svagare än normalt. Detta kan delvis förklaras av Rysslands invasion av Ukraina och de effekter denna haft på bland annat tillgången på råvaror. Historiskt varierar barometerindikatorn med konjunkturen och större kriser i samhället, såsom finanskrisen 2008/2009 och Coronapandemin 2020/2021, syns tydligt i diagrammet.
+I `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$manad_long` `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$ar` var barometerindikatorn `r gsub("\\.",",",last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$Barometerindikatorn.och.andra.indikatorer)`, vilket indikerar att ekonomin i Sverige var svagare än normalt. Barometerindikatorn ökade dock avsevärt jämfört med de senaste månaderna, då den legat stabilt runt 85. Detta är en indikation på att företagens och hushållens syn på sin ekonomin har förbättrats i Sverige på sistone. Att barometerindikatorn länge haft ett lågt värde kan delvis förklaras av Rysslands invasion av Ukraina och de effekter denna haft på bland annat tillgången på råvaror. Historiskt varierar barometerindikatorn med konjunkturen och större kriser i samhället, såsom finanskrisen 2008/2009 och Coronapandemin 2020/2021, syns tydligt i diagrammet.
 
 ```{r, include = FALSE}
   diagram_capt <- "Källa: Konjunkturinstitutet.\nBearbetning: Samhällsanalys, Region Dalarna.\nDiagramförklaring: En indikator över 100 motsvarar en starkare ekonomi än normalt och värden över 110 en mycket starkare ekonomi än normalt.\nEn indikator under 100 respektive under 90 visar en svagare respektive mycket svagare ekonomi än normalt."
@@ -242,6 +243,8 @@ konj
 ### Bransch {-}
 
 Hur läget i ekonomin uppfattas varierar beroende på om det är företagen eller hushållen som tillfrågas. Hushållen hade en mer pessimistisk syn än företagen på ekonomin i `r last(barometern_df$manad_long)` `r last(barometern_df$ar)`, med en barometerindikator på `r gsub("\\.",",",last(barometern_df$Barometerindikatorn.och.andra.indikatorer[barometern_df$Indikator=="Konfidensindikator hushåll"]))`. Bland branschgrupperna i diagrammet nedan hade `r tolower(gsub( " .*$", "", barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(Barometerindikatorn.och.andra.indikatorer==max(Barometerindikatorn.och.andra.indikatorer)) %>% .$Indikator))`n den mest positiva synen på ekonomin i `r last(barometern_df$manad_long)` `r last(barometern_df$ar)`, medan företag inom `r tolower(gsub( " .*$", "", barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(Barometerindikatorn.och.andra.indikatorer==min(Barometerindikatorn.och.andra.indikatorer)) %>% .$Indikator))` uppfattar den ekonomiska utvecklingen som mer negativ. Tjänstesektorn drabbades värst under pandemin (mars/april 2020), medan tillverkningsindustrin uppfattade ekonomin som starkare än normalt från slutet av 2020 fram till mitten av 2022.
+
+Med undantag för branschgruppen byggindustri, har synen på läget i ekonomin förbättrats den senaste månad för såväl företagen som hushållen.
 
 ```{r, include = FALSE}
 
@@ -862,7 +865,9 @@ arbetsloshet_lan
 ```
 
 ### Jämförelse över tid {-}
-Arbetslösheten, såväl i Dalarna som Sverige, varierar över tid. I samband med pandemin orsakad av Covid-19, ökade arbetslösheten och var som högst i Dalarna i `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$manad_long %>% .[1]`  `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$ar %>% .[1]`, då den uppgick till `r  gsub("\\.",",", arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$arbetslöshet %>% .[1])` procent. Därefter har arbetslösheten minskat och var i `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$ar))` `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$arbetslöshet))` procent i Dalarna. Arbetslösheten tenderar att följa ett visst säsongsmönster, där den ökar i augusti (jämfört med månaden innan), minskar i september och återigen ökar i oktober. Samma mönster syns även under 2023, då arbetslösheten ökade något mellan september och oktober. Om detta är en del av en långsiktig trend, där arbetslösheten börjar öka, är för tidigt att säga.
+Arbetslösheten, såväl i Dalarna som Sverige, varierar över tid. I samband med pandemin orsakad av Covid-19, ökade arbetslösheten och var som högst i Dalarna i `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$manad_long %>% .[1]`  `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$ar %>% .[1]`, då den uppgick till `r  gsub("\\.",",", arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$arbetslöshet %>% .[1])` procent. Därefter har arbetslösheten minskat och var i `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$ar))` `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$arbetslöshet))` procent i Dalarna. 
+
+Det finns vissa indikationer på att arbetslösheten har börjat stiga svagt igen, efter att ha minska stadigt under en lång period.  Arbetslösheten tenderar dock att följa ett visst säsongsmönster, vilket gör det svårt att bedöma om den högre arbetslösheten i oktober och november (jämfört med månaderna innan) är en del av en längre trend, eller en följd av säsongsvariationer.
 
 ```{r, include = FALSE}
  
