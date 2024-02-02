@@ -822,9 +822,10 @@ Som mått på läget i Dalarna, är arbetslösheten sannolikt en relativt trögr
 <details>
 
   <summary>Mer information om statistiken</summary>
+  
+Arbetslöshet beräknas som andelen arbetslösa i förhållande till antalet personer i arbetskraften, det vill säga summan av antalet arbetslösa och antalet sysselsatta. Statistik över arbetslöshet och sysselsättning kan tas fram på olika sätt. Det gör att siffror som rör samma referensperiod kan skilja sig åt beroende på vilken statistikkälla som använts. I den här rapporten används BAS - befolkningens arbetsmarknadsstatus - som redovisar registerbaserad statistik över utbudet av arbetskraft i Sverige.
 
-Statistik över arbetslöshet och sysselsättning kan tas fram på olika sätt. Det gör att siffror som rör samma referensperiod kan skilja sig åt beroende på vilken statistikkälla som använts. I den här rapporten används BAS - befolkningens arbetsmarknadsstatus - som redovisar registerbaserad statistik över utbudet av arbetskraft i Sverige.
- 
+
 </details>
 
 ### Län {-}
@@ -867,7 +868,7 @@ arbetsloshet_lan
 ### Jämförelse över tid {-}
 Arbetslösheten, såväl i Dalarna som Sverige, varierar över tid. I samband med pandemin orsakad av Covid-19, ökade arbetslösheten och var som högst i Dalarna i `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$manad_long %>% .[1]`  `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$ar %>% .[1]`, då den uppgick till `r  gsub("\\.",",", arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$arbetslöshet %>% .[1])` procent. Därefter har arbetslösheten minskat och var i `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$ar))` `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$arbetslöshet))` procent i Dalarna. 
 
-Det finns vissa indikationer på att arbetslösheten har börjat stiga svagt igen, efter att ha minska stadigt under en lång period.  Arbetslösheten tenderar dock att följa ett visst säsongsmönster, vilket gör det svårt att bedöma om den högre arbetslösheten i oktober och november (jämfört med månaderna innan) är en del av en längre trend, eller en följd av säsongsvariationer.
+Det finns vissa indikationer på att arbetslösheten har börjat stiga svagt igen, efter att ha minskat stadigt under en lång period.  Arbetslösheten tenderar dock att följa ett visst säsongsmönster, vilket gör det svårt att bedöma om den högre arbetslösheten i oktober och november (jämfört med månaderna innan) är en del av en längre trend, eller en följd av säsongsvariationer.
 
 ```{r, include = FALSE}
  
