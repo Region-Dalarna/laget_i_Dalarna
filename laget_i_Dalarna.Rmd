@@ -66,14 +66,14 @@ Bygglov_df <- read.xlsx(here("Data","byggande.xlsx"),sheet=2)%>%
 
 # Källa: https://sdb.socialstyrelsen.se/if_ekb_manad/resultat.aspx
 # Uppdateras genom att hämta en ny version av data
-ekonomiskt_bistand_df <-  read.xlsx(here("Data","Socialstyrelsen_2024_01_11.xlsx"),startRow = 2) %>% 
+ekonomiskt_bistand_df <-  read.xlsx(here("Data","Socialstyrelsen_2024_02_12.xlsx"),startRow = 2) %>% 
   filter(År>2017,Antal.hushåll>0)
 # Källa: https://statistik.tillvaxtanalys.se/PxWeb/pxweb/sv/Tillv%C3%A4xtanalys%20statistikdatabas/
 # Uppdateras genom att hämta hem ny data
 nystartade_df <-  read.xlsx(here("Data","Tillvaxtananalys_2024_01_11.xlsx"),startRow = 3)
 
 # Källa: https://foretagsinfo.bolagsverket.se/sok-foretagsinformation-web/statistik
-antal_avregistreringar_df <- read.csv("C:/Users/frkjon/Projekt/laget_i_Dalarna/Data/Bolagsverket_2024_01_11.csv",encoding="UTF-8") %>% 
+antal_avregistreringar_df <- read.csv("C:/Users/frkjon/Projekt/laget_i_Dalarna/Data/Bolagsverket_2024_02_12.csv",encoding="UTF-8") %>% 
   pivot_longer(4:ncol(.),names_to = "variabel",values_to = "value") %>% 
     group_by(År,Månad) %>% 
       summarize(antal = sum(value)) %>% 
@@ -725,12 +725,26 @@ Ett potentiellt alternativ till att begära ett företag i konkurs är att istä
 
     diagramtitel <- paste0("Antal avregistrerade företag i Dalarna")
     diagramfilnamn <- paste0("avreg_manad.png")
-
-
     
     antal_avregistreringar_df$manad_long = factor(antal_avregistreringar_df$manad_long,levels=c("Januari","Februari","Mars","April","Maj","Juni","Juli","Augusti","September","Oktober","November","December"))
       
-avregistrerade_linje <- SkapaLinjeDiagram(skickad_df = antal_avregistreringar_df %>% 
+# avregistrerade_linje <- SkapaLinjeDiagram(skickad_df = antal_avregistreringar_df %>% 
+#                                              mutate(År = as.character(År)),
+#                                            skickad_x_var = "manad_long", 
+#                                            skickad_y_var = "antal", 
+#                                            skickad_x_grupp = "År",
+#                                            berakna_index = FALSE,
+#                                            manual_color = diagramfarger("rus_sex"),
+#                                            diagram_titel = diagramtitel,
+#                                            diagram_capt =  diagram_capt,
+#                                            output_mapp = output_mapp,
+#                                            stodlinjer_avrunda_fem = TRUE,
+#                                            manual_y_axis_title = "Antal",
+#                                            #visa_var_x_xlabel=1,
+#                                            filnamn_diagram = diagramfilnamn,
+#                                            skriv_till_diagramfil = spara_figur)
+
+avregistrerade_stapel <- SkapaStapelDiagram(skickad_df = antal_avregistreringar_df %>% 
                                              mutate(År = as.character(År)),
                                            skickad_x_var = "manad_long", 
                                            skickad_y_var = "antal", 
@@ -738,6 +752,8 @@ avregistrerade_linje <- SkapaLinjeDiagram(skickad_df = antal_avregistreringar_df
                                            berakna_index = FALSE,
                                            manual_color = diagramfarger("rus_sex"),
                                            diagram_titel = diagramtitel,
+                                           manual_x_axis_text_vjust = 1,
+                                           manual_x_axis_text_hjust = 1,
                                            diagram_capt =  diagram_capt,
                                            output_mapp = output_mapp,
                                            stodlinjer_avrunda_fem = TRUE,
@@ -750,7 +766,7 @@ avregistrerade_linje <- SkapaLinjeDiagram(skickad_df = antal_avregistreringar_df
 ```
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
-avregistrerade_linje
+avregistrerade_stapel
 ```
 
 ## Nystartade företag
@@ -877,11 +893,11 @@ Det finns vissa indikationer på att arbetslösheten har börjat stiga svagt ige
   diagram_titel <- paste0("Arbetslöshet i åldersgruppen 20-64 år")
   diagramfilnamn <- paste0("arbetslöshet_tidsserie.png")
     
-  arbetslöshet_linje <- SkapaLinjeDiagram(skickad_df = arbetsmarknadsstatus_tidsserie %>% 
-                                            filter(region%in%c("Dalarna","Riket")) %>% 
+  arbetslöshet_linje <- SkapaLinjeDiagram(skickad_df = arbetsmarknadsstatus_tidsserie %>%
+                                            filter(region%in%c("Dalarna","Riket")) %>%
                                               mutate(region = ifelse(region=="Riket","Sverige",region)),
-                                         skickad_x_var = "Period", 
-                                         skickad_y_var = "arbetslöshet", 
+                                         skickad_x_var = "Period",
+                                         skickad_y_var = "arbetslöshet",
                                          skickad_x_grupp = "region",
                                          berakna_index=FALSE,
                                          manual_color = diagramfarger("rus_sex"),
@@ -893,6 +909,24 @@ Det finns vissa indikationer på att arbetslösheten har börjat stiga svagt ige
                                          visa_var_x_xlabel=1,
                                          filnamn_diagram = diagramfilnamn,
                                          skriv_till_diagramfil = spara_figur)
+  
+    # arbetslöshet_stapel <- SkapaStapelDiagram(skickad_df = arbetsmarknadsstatus_tidsserie %>% 
+    #                                         filter(region%in%c("Dalarna","Riket")) %>% 
+    #                                           mutate(region = ifelse(region=="Riket","Sverige",region)),
+    #                                      skickad_x_var = "Period", 
+    #                                      skickad_y_var = "arbetslöshet", 
+    #                                      skickad_x_grupp = "region",
+    #                                      berakna_index=FALSE,
+    #                                      manual_color = diagramfarger("rus_sex"),
+    #                                      manual_x_axis_text_vjust = 1,
+    #                                      manual_x_axis_text_hjust = 1,
+    #                                      diagram_titel = diagram_titel,
+    #                                      diagram_capt =  diagram_capt,
+    #                                      output_mapp = output_mapp,
+    #                                      stodlinjer_avrunda_fem = TRUE,
+    #                                      manual_y_axis_title = "procent",
+    #                                      filnamn_diagram = diagramfilnamn,
+    #                                      skriv_till_diagramfil = spara_figur)
 
   
 ```
