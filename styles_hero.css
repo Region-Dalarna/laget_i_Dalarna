@@ -123,14 +123,21 @@ top: 5px;
   content: "";
   display: block;
   height: 40px;
-  padding: 5px 5px 5px 5px;
+  /*background: rgba(239,41,60);*/
   background: rgba(239,41,60);
   /*background: #db3747;*/
   background-image: url(logo_liggande_platta_farg.png);
   background-size: contain;
   background-position: center center;
   background-repeat: no-repeat;
-}
+  }
+
+/*#TOC:first-child:before{
+  background-image: url(logo_liggande_fri_vit.png);
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+}*/
 
 /*Nedan styr hur table of contents ser ut och beter sig*/
 .tocify-header {
@@ -198,6 +205,7 @@ stilsätter det i CSS*/
 /* Logga höger*/
 .header-logo_right {
     position: absolute;
+    opacity: 0.8;
     top: 30px;
     right: 30px;
     max-width: 200px;
