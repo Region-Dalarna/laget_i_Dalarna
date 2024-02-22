@@ -123,10 +123,10 @@ top: 5px;
   content: "";
   display: block;
   height: 40px;
+  background: rgba(22,141,175);
   /*background: rgba(239,41,60);*/
-  background: rgba(239,41,60);
   /*background: #db3747;*/
-  background-image: url(logo_liggande_platta_farg.png);
+  background-image: url(logga_korrekt.png);
   background-size: contain;
   background-position: center center;
   background-repeat: no-repeat;
@@ -205,7 +205,9 @@ stilsätter det i CSS*/
 /* Logga höger*/
 .header-logo_right {
     position: absolute;
-    opacity: 0.8;
+    opacity: 0.75;
+    /*filter: blur(1px);
+    -webkit-filter: blur(1px);*/
     top: 30px;
     right: 30px;
     max-width: 200px;
