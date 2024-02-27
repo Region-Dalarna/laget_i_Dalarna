@@ -205,7 +205,6 @@ stilsätter det i CSS*/
 /* Logga höger*/
 .header-logo_right {
     position: absolute;
-    opacity: 0.75;
     /*filter: blur(1px);
     -webkit-filter: blur(1px);*/
     top: 30px;
