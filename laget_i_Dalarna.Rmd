@@ -960,12 +960,14 @@ arbetslöshet_linje
   diagramfilnamn <- paste0("arbetslöshet_tidsserie.png")
   
   # arbetsmarknadsstatus_tidsserie$manad_long <- factor(arbetsmarknadsstatus_tidsserie$manad_long,levels  =c("januari","februari","mars","april","maj","juni","juli","augusti","september","oktober","november","december"))
+  
+  arb_df = arbetsmarknadsstatus_tidsserie %>% 
+    filter(region%in%c("Dalarna")) %>% 
+      mutate(region = ifelse(region=="Riket","Sverige",region),
+              manad_long = str_to_title(manad_long)) %>% 
+      mutate(manad_long = factor(.$manad_long,levels =c("Januari","Februari","Mars","April","Maj","Juni","Juli","Augusti","September","Oktober","November","December")))
     
-  arbetslöshet_linje <- SkapaLinjeDiagram(skickad_df = arbetsmarknadsstatus_tidsserie %>% 
-                                            filter(region%in%c("Dalarna")) %>% 
-                                              mutate(region = ifelse(region=="Riket","Sverige",region),
-                                                     manad_long = str_to_title(manad_long)) %>% 
-                                                mutate(manad_long = factor(.$manad_long,levels  =c("Januari","Februari","Mars","April","Maj","Juni","Juli","Augusti","September","Oktober","November","December"))),
+  arbetslöshet_linje <- SkapaLinjeDiagram(skickad_df = arb_df,
                                          skickad_x_var = "manad_long", 
                                          skickad_y_var = "arbetslöshet", 
                                          skickad_x_grupp = "ar",
@@ -977,8 +979,16 @@ arbetslöshet_linje
                                          stodlinjer_avrunda_fem = TRUE,
                                          manual_y_axis_title = "procent",
                                          visa_var_x_xlabel=1,
-                                         filnamn_diagram = diagramfilnamn,
-                                         skriv_till_diagramfil = spara_figur)
+                                         filnamn_diagram = "diagramfilnamn",
+                                         skriv_till_diagramfil = FALSE)
+  
+  # add geom_point to avregistrerade_linje with same colors
+arbetslöshet_linje <- arbetslöshet_linje + geom_point(data = arb_df ,
+                                          aes(x = manad_long,y = arbetslöshet,group=ar,color=ar), size=2.5)
+
+if(spara_figur){
+  ggsave(paste0(output_mapp,diagramfilnamn), plot = arbetslöshet_linje, width = 12, height = 7)
+}
 
   
 ```
