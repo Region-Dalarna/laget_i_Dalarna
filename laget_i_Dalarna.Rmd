@@ -626,22 +626,23 @@ k = k+1
                                          skickad_x_grupp = "år",
                                          berakna_index = FALSE,
                                          manual_color = diagramfarger("rus_sex"),
+                                         lagga_till_punkter = TRUE,
                                          diagram_titel = diagram_titel,
                                          diagram_capt =  diagram_capt,
                                          output_mapp = output_mapp,
                                          stodlinjer_avrunda_fem = TRUE,
                                          manual_y_axis_title = "Antal",
                                          visa_var_x_xlabel=1,
-                                         filnamn_diagram = "diagramfilnamn",
-                                         skriv_till_diagramfil = FALSE)
+                                         filnamn_diagram = diagramfilnamn,
+                                         skriv_till_diagramfil = spara_figur)
     
     # add geom_point to avregistrerade_linje with same colors
-konkurser_lan <- konkurser_lan + geom_point(data = konkurser_jmfr,
-                                          aes(x = manad_long,y = Antal_berorda,group=år,color=år), size=2.5)
-
-if(spara_figur){
-  ggsave(paste0(output_mapp,diagramfilnamn), plot = konkurser_lan, width = 12, height = 7)
-}
+# konkurser_lan <- konkurser_lan + geom_point(data = konkurser_jmfr,
+#                                           aes(x = manad_long,y = Antal_berorda,group=år,color=år), size=2.5)
+# 
+# if(spara_figur){
+#   ggsave(paste0(output_mapp,diagramfilnamn), plot = konkurser_lan, width = 12, height = 7)
+# }
 
   
 ```
@@ -741,6 +742,7 @@ avregistrerade_linje <- SkapaLinjeDiagram(skickad_df = antal_avregistreringar_df
                                            skickad_y_var = "antal",
                                            skickad_x_grupp = "År",
                                            berakna_index = FALSE,
+                                           lagga_till_punkter = TRUE,
                                            manual_color = diagramfarger("rus_sex"),
                                            diagram_titel = diagramtitel,
                                            diagram_capt =  diagram_capt,
@@ -748,17 +750,17 @@ avregistrerade_linje <- SkapaLinjeDiagram(skickad_df = antal_avregistreringar_df
                                            stodlinjer_avrunda_fem = TRUE,
                                            manual_y_axis_title = "Antal",
                                            #visa_var_x_xlabel=1,
-                                           filnamn_diagram = "diagramfilnamn",
-                                           skriv_till_diagramfil = FALSE)
+                                           filnamn_diagram = diagramfilnamn,
+                                           skriv_till_diagramfil = spara_figur)
 
 # add geom_point to avregistrerade_linje with same colors
-avregistrerade_linje <- avregistrerade_linje + geom_point(data = antal_avregistreringar_df %>%
-                                            mutate(År = as.character(År)),
-                                          aes(x = manad_long,y = antal,group=År,color=År), size=2.5)
-
-if(spara_figur){
-  ggsave(paste0(output_mapp,diagramfilnamn), plot = avregistrerade_linje, width = 12, height = 7)
-}
+# avregistrerade_linje <- avregistrerade_linje + geom_point(data = antal_avregistreringar_df %>%
+#                                             mutate(År = as.character(År)),
+#                                           aes(x = manad_long,y = antal,group=År,color=År), size=2.5)
+# 
+# if(spara_figur){
+#   ggsave(paste0(output_mapp,diagramfilnamn), plot = avregistrerade_linje, width = 12, height = 7)
+# }
     
 
 # avregistrerade_stapel <- SkapaStapelDiagram(skickad_df = antal_avregistreringar_df %>% 
@@ -973,22 +975,23 @@ arbetslöshet_linje
                                          skickad_x_grupp = "ar",
                                          berakna_index = FALSE,
                                          manual_color = diagramfarger("rus_sex"),
+                                         lagga_till_punkter = TRUE,
                                          diagram_titel = diagram_titel,
                                          diagram_capt =  diagram_capt,
                                          output_mapp = output_mapp,
                                          stodlinjer_avrunda_fem = TRUE,
                                          manual_y_axis_title = "procent",
                                          visa_var_x_xlabel=1,
-                                         filnamn_diagram = "diagramfilnamn",
-                                         skriv_till_diagramfil = FALSE)
+                                         filnamn_diagram = diagramfilnamn,
+                                         skriv_till_diagramfil = spara_figur)
   
   # add geom_point to avregistrerade_linje with same colors
-arbetslöshet_linje <- arbetslöshet_linje + geom_point(data = arb_df ,
-                                          aes(x = manad_long,y = arbetslöshet,group=ar,color=ar), size=2.5)
-
-if(spara_figur){
-  ggsave(paste0(output_mapp,diagramfilnamn), plot = arbetslöshet_linje, width = 12, height = 7)
-}
+# arbetslöshet_linje <- arbetslöshet_linje + geom_point(data = arb_df ,
+#                                           aes(x = manad_long,y = arbetslöshet,group=ar,color=ar), size=2.5)
+# 
+# if(spara_figur){
+#   ggsave(paste0(output_mapp,diagramfilnamn), plot = arbetslöshet_linje, width = 12, height = 7)
+# }
 
   
 ```
