@@ -145,7 +145,7 @@ Det allmänna läget i en ekonomi kan beskrivas på flera sätt. I detta första
  
 </details>
 
-Genom att titta på förändring i BNP kan man få en uppfattning om hur aktiviteten i den svenska ekonomin förändras över tid. Eftersom Sveriges ekonomi, precis som de flesta andra länders, växer i normala fall, ökar BNP under en majoritet av kvartalen. Vid större kriser i samhället kan dock BNP minska avsevärt, vilket också syns i figuren nedan. Under andra kvartalet 2020 minskade aktiviteten i den svenska ekonomin med nästan 8 procent jämfört med samma kvartal året innan, vilket kan tillskrivas Corona-pandemin. Återhämtningen gick dock snabbt och redan i efteföljande kvartal så ökade BNP med nästan lika mycket som minskningen i kvartal två. Därefter följde ett par år när läget i Sveriges ekonomi kan beskrivas som gott, innan aktiviteten i ekonomin återigen minskade i kvartal ett, år 2022. Därefter har läget varit relativt skakigt och i `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$kvartal` `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$ar` var förändringen i BNP `r gsub("\\.",",",BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Sasongsransad_forandring)` procent. Det innebär att aktiviteten i den svenska ekonomin har minskat två kvartal i rad, något som ibland benämns en recession.
+Genom att titta på förändring i BNP kan man få en uppfattning om hur aktiviteten i den svenska ekonomin förändras över tid. Eftersom Sveriges ekonomi, precis som de flesta andra länders, växer i normala fall, ökar BNP under en majoritet av kvartalen. Vid större kriser i samhället kan dock BNP minska avsevärt, vilket också syns i figuren nedan. Under andra kvartalet 2020 minskade aktiviteten i den svenska ekonomin med nästan 8 procent jämfört med samma kvartal året innan, vilket kan tillskrivas Corona-pandemin. Återhämtningen gick dock snabbt och redan i efteföljande kvartal så ökade BNP med nästan lika mycket som minskningen i kvartal två. Därefter följde ett par år när läget i Sveriges ekonomi kan beskrivas som gott, innan aktiviteten i ekonomin återigen minskade i kvartal ett, år 2022. Därefter har läget varit relativt skakigt och i `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$kvartal` `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$ar` var förändringen i BNP `r gsub("\\.",",",BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Sasongsransad_forandring)` procent. Det innebär att aktiviteten i den svenska ekonomin har minskat tre kvartal i rad, och Sverige kan därför sägas vara i en recession.
 
 ```{r, include = FALSE}
 
@@ -230,9 +230,9 @@ I `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$mana
                               diagram_capt =  diagram_capt,
                               output_mapp = output_mapp,
                               visa_var_x_xlabel=24,
-                              filnamn_diagram = diagramfilnamn,
-                              skriv_till_diagramfil = spara_figur)
-  
+                              filnamn_diagram = "diagramfilnamn",
+                              skriv_till_diagramfil = FALSE)
+   
 ```
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
@@ -903,7 +903,7 @@ arbetsloshet_lan
 ### Jämförelse över tid {-}
 Arbetslösheten, såväl i Dalarna som Sverige, varierar över tid. I samband med pandemin orsakad av Covid-19, ökade arbetslösheten och var som högst i Dalarna i `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$manad_long %>% .[1]`  `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$ar %>% .[1]`, då den uppgick till `r  gsub("\\.",",", arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$arbetslöshet %>% .[1])` procent. Därefter har arbetslösheten minskat och var i `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$ar))` `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$arbetslöshet))` procent i Dalarna. 
 
-Det finns vissa indikationer på att arbetslösheten har börjat stiga svagt igen, efter att ha minskat stadigt under en lång period.  Arbetslösheten tenderar dock att följa ett visst säsongsmönster, vilket gör det svårt att bedöma om den högre arbetslösheten i oktober och november (jämfört med månaderna innan) är en del av en längre trend, eller en följd av säsongsvariationer.
+Det finns vissa indikationer på att arbetslösheten har börjat stiga svagt igen, efter att ha minskat stadigt under en lång period.  Arbetslösheten tenderar dock att följa ett visst säsongsmönster, vilket gör det svårt att bedöma om den högre arbetslösheten de senaste månaderna (jämfört med månaderna innan) är en del av en längre trend, eller en följd av säsongsvariationer. Tydligt är i alla fall att långsiktiga trenden sedan mitten av 2021, med stadigt minskande arbetslöshet, har brutits. Arbetslösheten i Dalarna var i december 2023 på ungefär samma nivå som i december föregående år. 
 
 ```{r, include = FALSE}
  
