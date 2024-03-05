@@ -665,7 +665,7 @@ konkurser_lan
 
   # Väljer ut de branscher som har fler än noll antal påverkade av konkurs. Mutate ändrar till stor bokstav.
   konkurser_bransch_10 <- konkurser_df %>%
-    rename("bransch"= näringsgren.SNI.2007) %>%
+    rename("bransch"= näringslivet) %>%
       filter(månad_år%in%senaste_ar) %>%
         slice_max(Antal_berorda,n=10) %>%
           filter(Antal_berorda>0) %>% 

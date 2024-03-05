@@ -30,7 +30,7 @@ hamta_data_konkurser <- function(vald_region="20",
     px_df <- as.data.frame(px_uttag) %>% 
       cbind(regionkod = as.data.frame(px_uttag, column.name.type = "code", variable.value.type = "code") %>% 
               select(Region, SNI2007)) %>% rename(regionkod = regionkod.Region, SNIkod = regionkod.SNI2007) %>% relocate(regionkod, .before = region) %>% 
-                relocate(SNIkod, .before = `näringsgren SNI 2007`) 
+                relocate(SNIkod, .before = `näringslivet`) 
     
     flik_lista[[i]] <- px_df %>% 
       rename(tid = månad) %>% 
@@ -51,12 +51,12 @@ hamta_data_konkurser <- function(vald_region="20",
     flik_lista[[i]]$månad_år_sort <- reorder(flik_lista[[i]]$månad_år_sort, flik_lista[[i]]$sort)
     
     flik_lista[[i]] <- flik_lista[[i]] %>% 
-      mutate(`näringsgren SNI 2007` = case_when(
-        `näringsgren SNI 2007` == "el-, gas- och värmeverk; vatten- och reningsverk; anläggningar för avfallshantering, återvinning och sanering" ~ "el-, gas- och värmeverk m.m.",
-        `näringsgren SNI 2007` == "uthyrningsfirmor, arbetsförmedlingar, rekryteringsföretag, personaluthyrningsföretag o.d." ~ "uthyrningsfirmor, arbetsförmedlingar m.m.",
-        `näringsgren SNI 2007` == "andra serviceföretag och företag för personliga tjänster, civila myndigheter och försvaret" ~ "andra serviceföretag m.m.",
-        `näringsgren SNI 2007` == "övrig tillverkningsindustri, reparationsverkstäder och installationsföretag" ~ "övrig tillverkningsindustri m.m.",
-        .default = `näringsgren SNI 2007`
+      mutate(`näringslivet` = case_when(
+        `näringslivet` == "el-, gas- och värmeverk; vatten- och reningsverk; anläggningar för avfallshantering, återvinning och sanering" ~ "el-, gas- och värmeverk m.m.",
+        `näringslivet` == "uthyrningsfirmor, arbetsförmedlingar, rekryteringsföretag, personaluthyrningsföretag o.d." ~ "uthyrningsfirmor, arbetsförmedlingar m.m.",
+        `näringslivet` == "andra serviceföretag och företag för personliga tjänster, civila myndigheter och försvaret" ~ "andra serviceföretag m.m.",
+        `näringslivet` == "övrig tillverkningsindustri, reparationsverkstäder och installationsföretag" ~ "övrig tillverkningsindustri m.m.",
+        .default = `näringslivet`
       ))
     
     i=i+1
