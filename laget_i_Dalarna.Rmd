@@ -65,7 +65,7 @@ Bygglov_df <- read.xlsx(here("Data","byggande.xlsx"),sheet=2)%>%
 
 # Källa: https://sdb.socialstyrelsen.se/if_ekb_manad/resultat.aspx
 # Uppdateras genom att hämta en ny version av data
-ekonomiskt_bistand_df <-  read.xlsx(here("Data","Socialstyrelsen_2024_02_12.xlsx"),startRow = 2) %>% 
+ekonomiskt_bistand_df <-  read.xlsx(here("Data","Socialstyrelsen 2024_03_11.xlsx"),startRow = 2) %>% 
   filter(År>2017,Antal.hushåll>0)
 # Källa: https://statistik.tillvaxtanalys.se/PxWeb/pxweb/sv/Tillv%C3%A4xtanalys%20statistikdatabas/
 # Uppdateras genom att hämta hem ny data
@@ -119,12 +119,26 @@ document.addEventListener('scroll', debounce(storeScroll), { passive: true });
 storeScroll();
 
 ```
-
-# Introduktion {-}
 <p style = "font-size:12px">
 <i>Rapporten är skapad av Samhällsanalys, Region Dalarna<br>
 Senast uppdaterad: `r Sys.Date()`</i>
 </p>
+
+# Sammanfattning {-}
+Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvecklingen. Rapporten uppdateras regelbundet och De viktigaste trenderna och mönstren sammanfattas här: 
+
+<ul>
+<li> Mätt som förändring i BNP har Sveriges ekonomi krymt 3 månader i rad och kan sägas vara i en recession. Samtidigt har inflationen gått ned och hushållen och företagens syn på ekonomin har förbättrats på sistone </li>
+<li> Bostadsmarknaden i Dalarna har upplevt en nedgång i både bygglov, nybyggnation och bostadspriser sedan 2022, men bostadspriserna har återigen börjat öka de senaste månaderna. </li>
+<li> Antalet anställda berörda av konkurser i Dalarna har ökat i början av 2024, men samtidigt har antalet avregistrerade företag minskat något. </li>
+<li> Arbetslösheten i Dalarna är under genomsnittet i Sverige, men har, efter en lång period av nedgång, börjat öka något i slutet av 2024</li>
+<li>
+</ul>
+
+
+
+
+# Introduktion {-}
 
 I Sverige har vi tillgång till mycket god statistik om både våra levnadsförhållanden och vår ekonomi. Det innebär att vi också kan följa upp bland annat den ekonomiska utvecklingen i närtid både regionalt och nationellt till exempel vad gäller sysselsättning, bostadsbyggande och företagsetableringar.
 De senaste årens omvälvande händelser i världen med Covid-19-pandemin, det ofattbara kriget i Ukraina, och nu kriget mellan Israel och Hamas är förödande för dem som står i händelsernas centrum, men de drabbar även oss. Dessa händelser sätter prägel på både vår ekonomi och våra levnadsförhållanden, och gör det än mer angeläget att följa den ekonomiska utvecklingen regionalt och nationellt. <br>
