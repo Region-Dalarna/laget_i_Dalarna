@@ -35,7 +35,7 @@ source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_AP
 output_mapp <- here("Figurer","/")
 
 # Om man vill uppdatera den externa hemsidan sätts denna variabel till TRUE
-uppdatera_hemsida = FALSE
+uppdatera_hemsida = TRUE
 
 # Om man vill att figurerna skall sparas vid "knittning" så sätts variabeln nedan till true
 spara_figur = FALSE
@@ -68,16 +68,17 @@ Bygglov_df <- read.xlsx(here("Data","byggande.xlsx"),sheet=2)%>%
 ekonomiskt_bistand_df <-  read.xlsx(here("Data","Socialstyrelsen 2024_03_11.xlsx"),startRow = 2) %>% 
   filter(År>2017,Antal.hushåll>0)
 # Källa: https://statistik.tillvaxtanalys.se/PxWeb/pxweb/sv/Tillv%C3%A4xtanalys%20statistikdatabas/
-# Uppdateras genom att hämta hem ny data
+# Uppdateras genom att hämta hem ny data. Kontrollerad 2024-03-15 - ingen ny data
 nystartade_df <-  read.xlsx(here("Data","Tillvaxtananalys_2024_01_11.xlsx"),startRow = 3)
 
 # Källa: https://foretagsinfo.bolagsverket.se/sok-foretagsinformation-web/statistik
-antal_avregistreringar_df <- read.csv("C:/Users/frkjon/Projekt/laget_i_Dalarna/Data/Bolagsverket_2024_02_12.csv",encoding="UTF-8") %>% 
+antal_avregistreringar_df <- read.csv("C:/Users/frkjon/Projekt/laget_i_Dalarna/Data/Bolagsverket_2024_03_15.csv",encoding="Latin1") %>% 
   pivot_longer(4:ncol(.),names_to = "variabel",values_to = "value") %>% 
-    group_by(År,Månad) %>% 
-      summarize(antal = sum(value)) %>% 
-        mutate(Månad = ifelse(nchar(as.character(Månad)) == 1,paste0("0",Månad),Månad),
-               ar_manad = paste0(År,"-",Månad))
+    rename(År=Ã.r,Månad=MÃ.nad) %>% 
+      group_by(År,Månad) %>% 
+        summarize(antal = sum(value)) %>% 
+          mutate(Månad = ifelse(nchar(as.character(Månad)) == 1,paste0("0",Månad),Månad),
+                 ar_manad = paste0(År,"-",Månad))
 ```
 
 ```{js}
@@ -125,14 +126,14 @@ Senast uppdaterad: `r Sys.Date()`</i>
 </p>
 
 # Sammanfattning {-}
-Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvecklingen. Rapporten uppdateras regelbundet och De viktigaste trenderna och mönstren sammanfattas här: 
+Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvecklingen. Rapporten uppdateras regelbundet och ett antal viktiga trender och mönstren sammanfattas här: 
 
 <ul>
 <li> Inflationen har gått ned och hushållen och företagens syn på ekonomin har förbättrats på sistone, men Sveriges ekonomi har krymt tre kvartal i rad. </li>
 <li> Bostadsmarknaden i Dalarna har upplevt en nedgång i både bygglov, nybyggnation och bostadspriser sedan 2022, men bostadspriserna har återigen börjat öka de senaste månaderna. </li>
 <li> Antalet anställda berörda av konkurser i Dalarna har ökat i början av 2024, men samtidigt har antalet avregistrerade företag minskat något. </li>
-<li> Arbetslösheten i Dalarna är under genomsnittet i Sverige, men har, efter en lång period av nedgång, börjat öka något i slutet av 2024</li>
-<li> Trots en ökande prisnivå i samhället har antalet hushåll i behov av ekonomist stöd minskat i Dalarna under en längre period. En viss ökning av behovet kan dock skönjas de senaste månaderna.</li>
+<li> Arbetslösheten i Dalarna, som är under genomsnittet i Sverige, har efter en lång period av nedgång börjat öka något i slutet av 2023.</li>
+<li> Trots en ökande prisnivå i samhället har antalet hushåll i behov av ekonomiskt bistånd minskat i Dalarna under en längre period. En viss ökning av behovet kan dock skönjas de senaste månaderna.</li>
 </ul>
 
 
@@ -159,7 +160,7 @@ Det allmänna läget i en ekonomi kan beskrivas på flera sätt. I detta första
  
 </details>
 
-Genom att titta på förändring i BNP kan man få en uppfattning om hur aktiviteten i den svenska ekonomin förändras över tid. Eftersom Sveriges ekonomi, precis som de flesta andra länders, växer i normala fall, ökar BNP under en majoritet av kvartalen. Vid större kriser i samhället kan dock BNP minska avsevärt, vilket också syns i figuren nedan. Under andra kvartalet 2020 minskade aktiviteten i den svenska ekonomin med nästan 8 procent jämfört med samma kvartal året innan, vilket kan tillskrivas Corona-pandemin. Återhämtningen gick dock snabbt och redan i efteföljande kvartal så ökade BNP med nästan lika mycket som minskningen i kvartal två. Därefter följde ett par år när läget i Sveriges ekonomi kan beskrivas som gott, innan aktiviteten i ekonomin återigen minskade i kvartal ett, år 2022. Därefter har läget varit relativt skakigt och i `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$kvartal` `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$ar` var förändringen i BNP `r gsub("\\.",",",BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Sasongsransad_forandring)` procent. Det innebär att aktiviteten i den svenska ekonomin har minskat tre kvartal i rad, och Sverige kan därför sägas vara i en recession.
+Genom att titta på förändring i BNP kan man få en uppfattning om hur aktiviteten i den svenska ekonomin förändras över tid. Eftersom Sveriges ekonomi, precis som de flesta andra länders, växer i normala fall, ökar BNP under en majoritet av kvartalen. Vid större kriser i samhället kan dock BNP minska avsevärt, vilket också syns i figuren nedan. Under andra kvartalet 2020 minskade aktiviteten i den svenska ekonomin med nästan 8 procent jämfört med samma kvartal året innan, vilket kan tillskrivas Corona-pandemin. Återhämtningen gick dock snabbt och redan i efteföljande kvartal så ökade BNP med nästan lika mycket som minskningen i kvartal två. Därefter följde ett par år när läget i Sveriges ekonomi kan beskrivas som gott, innan aktiviteten i ekonomin återigen minskade i kvartal ett, år 2022. Därefter har läget varit relativt skakigt och i `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$kvartal` `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$ar` var förändringen i BNP `r gsub("\\.",",",BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Sasongsransad_forandring)` procent. Det innebär att aktiviteten i den svenska ekonomin har minskat tre kvartal i rad, och Sverige kan sägas vara i en recession.
 
 ```{r, include = FALSE}
 
@@ -321,7 +322,7 @@ Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i
  
 </details>
 
-Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar)`, då den i Sverige uppgick till `r gsub("\\.",",",KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF)` procent. Därefter har inflationstakten sjunkit avsevärt och var i `r KPI_df %>% filter(månad==last(månad)) %>% select(manad_long,ar)`, `r gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)` procent, vilket bara är något över med Riksbankens inflationsmål.En förklaring till att inflationen gick ned i februari 2024 är enligt SCB att priserna på mat har stabiliserats.
+Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar)`, då den i Sverige uppgick till `r gsub("\\.",",",KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF)` procent. Därefter har inflationstakten sjunkit avsevärt och var i `r KPI_df %>% filter(månad==last(månad)) %>% select(manad_long,ar)`, `r gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)` procent, vilket bara är något över Riksbankens inflationsmål. En förklaring till att inflationen gick ned i februari 2024 är enligt SCB att priserna på mat har stabiliserats.
 
 Den höga inflationstakten under framförallt 2022 och 2023 har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på  [Wikipedia](https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge){target="_blank"}.
 
@@ -459,7 +460,9 @@ Nybyggnation_linje
 
 ### Historisk jämförelse {-}
 
-Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige. Efter toppen i `r priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% select(manad_long,ar)`, då ett småhus i Dalarna kostade ungefär `r round(priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% .$Medelpris/1000,1)` miljoner kronor, har dock det genomsnittliga priset på småhus i länet minskat avsevärt till `r gsub("\\.",",",(round(priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(Medelpris)/1000,1)))` miljoner kronor i `r priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(manad_long,ar)`. Minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medfört en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkar efterfrågan på bostäder. 
+Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige. Efter toppen i `r priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% select(manad_long,ar)`, då ett småhus i Dalarna kostade ungefär `r round(priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% .$Medelpris/1000,1)` miljoner kronor, har dock det genomsnittliga priset på småhus i länet minskat avsevärt och en botten nåddes i oktober 2023, när ett småhus i Dalarna kostade strax under 2,1 miljoner kronor. Minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medfört en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkar efterfrågan på bostäder. 
+
+På sistone har priserna återigen börjat stiga och var i `r priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(manad_long,ar)` strax över `r gsub("\\.",",",(round(priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(Medelpris)/1000,1)))` miljoner kronor i Dalarna. 
 
 ```{r, include = FALSE}
 # Skapar ett linjediagram för förändring i priser. Blir något fel när man skapar index via funktionen, 
@@ -663,7 +666,7 @@ k = k+1
   
 ```
 
-Antalet personer som berörs av konkurser varierar relativt mycket från månad till månad vilket medför att det är svårt att se någon trend på månadsbasis kopplad till exempelvis Rysslands invasion av Ukraina. I `r senaste_manad` `r senaste_ar` berördes `r konkurser_jmfr %>% filter(år==senaste_ar,manad_long==str_to_title(senaste_manad)) %>% .$Antal_berorda` personer av konkurser i Dalarna, att jämföra med `r konkurser_jmfr %>% filter(år==as.character(senaste_ar_num-1),manad_long==str_to_title(senaste_manad)) %>% .$Antal_berorda` motsvarande månad `r as.character(senaste_ar_num-1)`. Värt att notera är även att `r konkurser_df %>% filter(år==last(år)) %>% group_by(region,år) %>% .$Antal_berorda %>% sum()` personer har berörts av konkurser i Dalarna hittills i år, vilket är klart fler än de `r konkurser_df  %>% filter(år==(as.numeric(last(år))-1),månad%in%unique(konkurser_df  %>% filter(år==last(år)) %>% .$månad)) %>% group_by(region,år) %>% .$Antal_berorda %>% sum()` som berördes under motsvarande period föregående år.
+Antalet personer som berörs av konkurser varierar relativt mycket från månad till månad vilket medför att det är svårt att se någon trend på månadsbasis kopplad till exempelvis Rysslands invasion av Ukraina. I `r senaste_manad` `r senaste_ar` berördes `r konkurser_jmfr %>% filter(år==senaste_ar,manad_long==str_to_title(senaste_manad)) %>% .$Antal_berorda` personer av konkurser i Dalarna, att jämföra med `r konkurser_jmfr %>% filter(år==as.character(senaste_ar_num-1),manad_long==str_to_title(senaste_manad)) %>% .$Antal_berorda` motsvarande månad `r as.character(senaste_ar_num-1)`. Värt att notera är även att `r konkurser_df %>% filter(år==last(år)) %>% group_by(region,år) %>% .$Antal_berorda %>% sum()` personer har berörts av konkurser i Dalarna hittills i år, vilket är fler än de `r konkurser_df  %>% filter(år==(as.numeric(last(år))-1),månad%in%unique(konkurser_df  %>% filter(år==last(år)) %>% .$månad)) %>% group_by(region,år) %>% .$Antal_berorda %>% sum()` som berördes under motsvarande period föregående år.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 konkurser_lan
@@ -714,7 +717,7 @@ konkurser_lan
 
   
 ```
-Den bransch som drabbades värst av konkurser i `r senaste_manad` `r unique(konkurser_bransch_10$år)` var "`r konkurser_bransch_10 %>% filter(Antal_berorda==max(Antal_berorda)) %>% .$bransch`", där `r konkurser_bransch_10 %>% filter(Antal_berorda==max(Antal_berorda)) %>% .$Antal_berorda` personer berördes av konkurser.
+Den bransch som drabbades värst av konkurser i `r senaste_manad` `r unique(konkurser_bransch_10$år)` var "`r konkurser_bransch_10 %>% filter(Antal_berorda==max(Antal_berorda)) %>% .$bransch`", där `r konkurser_bransch_10 %>% filter(Antal_berorda==max(Antal_berorda)) %>% .$Antal_berorda` personer berördes av konkurser. Även inom hotell och restaurang samt byggindustri drabbades relativt många av konkurser.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 konkurser_bransch
@@ -1133,7 +1136,9 @@ Hushållens ekonomiska situation kan mätas på flera olika sätt. Arbetslöshet
  
 </details>
 
-I Dalarna hade runt 4000 hushåll ett sådant behov under åren mellan 2018 och 2021, men därefter minskade behovet stadigt under en längre period. I `r last(ekonomiskt_bistand_utskrift$Månad)` `r last(ekonomiskt_bistand_utskrift$År)` var `r last(ekonomiskt_bistand_utskrift$antal_hushall)` hushåll i behov av ekonomiskt bistånd, vilket är något fler än i oktober 2023. Anmärkningsvärt är även att behovet av bistånd har minskat trots att prisnivån i samhället har ökat avsevärt på senare år (se avsnittet om inflation). Exakt vad den utvecklingen beror på är oklart, men ett antal tänkbara orsaker diskuteras i följande <a href = "https://www.svt.se/nyheter/inrikes/darfor-minskar-antalet-hushall-som-far-socialbidrag-i-sverige-forskare-forklarar-orsaker-bakom" target="_blank">artikel</a>. Värt att notera är även att antalet hushåll i Dalarna har ökat på senare år, från drygt 136 000 år 2018 till drygt 139 000 år 2022.   
+I Dalarna hade runt 4000 hushåll ett sådant behov under åren mellan 2018 och 2021, men därefter minskade behovet stadigt under en längre period. Anmärkningsvärt är även att behovet av bistånd har minskat trots att prisnivån i samhället har ökat avsevärt under samma tidsperiod (se avsnittet om inflation). Exakt vad den utvecklingen beror på är oklart, men ett antal tänkbara orsaker diskuteras i följande <a href = "https://www.svt.se/nyheter/inrikes/darfor-minskar-antalet-hushall-som-far-socialbidrag-i-sverige-forskare-forklarar-orsaker-bakom" target="_blank">artikel</a>. Värt att notera är även att antalet hushåll i Dalarna har ökat på senare år, från drygt 136 000 år 2018 till drygt 139 000 år 2022. 
+
+På sistone har antalet hushåll i behov av ekonomiskt bistånd börjat öka. I `r last(ekonomiskt_bistand_utskrift$Månad)` `r last(ekonomiskt_bistand_utskrift$År)` var `r last(ekonomiskt_bistand_utskrift$antal_hushall)` hushåll i behov av sådant stöd, vilket är ungefär 140 fler än vid den lägsta nivån (oktober 2023).
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 eko_bistand_fig

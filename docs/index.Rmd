@@ -47,8 +47,7 @@ KPI_df <- read.xlsx(here("Data","KPI.xlsx"))
 varsel_manad_df <- read.xlsx(here("Data","varsel_manad.xlsx"),sheet=1)
 varsel_bransch_df <- read.xlsx(here("Data","varsel_bransch_manad.xlsx"),sheet=1)
 priser_df <- read.xlsx(here("Data","smahuspriser.xlsx"))
-konkurser_df <- read.xlsx(here("Data","konkurser_korrekt.xlsx"),sheet=2) %>% 
-  filter(tid != last(tid))
+konkurser_df <- read.xlsx(here("Data","konkurser_korrekt.xlsx"),sheet=2)
 arbetsmarknadsstatus_lan <- read.xlsx(here("Data","arbetsmarknadsstatus_lan.xlsx"))
 arbetsmarknadsstatus_tidsserie <- read.xlsx(here("Data","arbetsmarknadsstatus_tidsserie.xlsx"))
 arbetsloshet_kommun <-  read.xlsx(here("Data","arbetsloshet_kommun.xlsx"))
@@ -66,19 +65,20 @@ Bygglov_df <- read.xlsx(here("Data","byggande.xlsx"),sheet=2)%>%
 
 # Källa: https://sdb.socialstyrelsen.se/if_ekb_manad/resultat.aspx
 # Uppdateras genom att hämta en ny version av data
-ekonomiskt_bistand_df <-  read.xlsx(here("Data","Socialstyrelsen_2024_01_11.xlsx"),startRow = 2) %>% 
+ekonomiskt_bistand_df <-  read.xlsx(here("Data","Socialstyrelsen 2024_03_11.xlsx"),startRow = 2) %>% 
   filter(År>2017,Antal.hushåll>0)
 # Källa: https://statistik.tillvaxtanalys.se/PxWeb/pxweb/sv/Tillv%C3%A4xtanalys%20statistikdatabas/
-# Uppdateras genom att hämta hem ny data
+# Uppdateras genom att hämta hem ny data. Kontrollerad 2024-03-15 - ingen ny data
 nystartade_df <-  read.xlsx(here("Data","Tillvaxtananalys_2024_01_11.xlsx"),startRow = 3)
 
 # Källa: https://foretagsinfo.bolagsverket.se/sok-foretagsinformation-web/statistik
-antal_avregistreringar_df <- read.csv("C:/Users/frkjon/Projekt/laget_i_Dalarna/Data/Bolagsverket_2024_01_11.csv",encoding="UTF-8") %>% 
+antal_avregistreringar_df <- read.csv("C:/Users/frkjon/Projekt/laget_i_Dalarna/Data/Bolagsverket_2024_03_15.csv",encoding="Latin1") %>% 
   pivot_longer(4:ncol(.),names_to = "variabel",values_to = "value") %>% 
-    group_by(År,Månad) %>% 
-      summarize(antal = sum(value)) %>% 
-        mutate(Månad = ifelse(nchar(as.character(Månad)) == 1,paste0("0",Månad),Månad),
-               ar_manad = paste0(År,"-",Månad))
+    rename(År=Ã.r,Månad=MÃ.nad) %>% 
+      group_by(År,Månad) %>% 
+        summarize(antal = sum(value)) %>% 
+          mutate(Månad = ifelse(nchar(as.character(Månad)) == 1,paste0("0",Månad),Månad),
+                 ar_manad = paste0(År,"-",Månad))
 ```
 
 ```{js}
@@ -120,12 +120,26 @@ document.addEventListener('scroll', debounce(storeScroll), { passive: true });
 storeScroll();
 
 ```
-
-# Introduktion {-}
 <p style = "font-size:12px">
 <i>Rapporten är skapad av Samhällsanalys, Region Dalarna<br>
 Senast uppdaterad: `r Sys.Date()`</i>
 </p>
+
+# Sammanfattning {-}
+Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvecklingen. Rapporten uppdateras regelbundet och ett antal viktiga trender och mönstren sammanfattas här: 
+
+<ul>
+<li> Inflationen har gått ned och hushållen och företagens syn på ekonomin har förbättrats på sistone, men Sveriges ekonomi har krymt tre kvartal i rad. </li>
+<li> Bostadsmarknaden i Dalarna har upplevt en nedgång i både bygglov, nybyggnation och bostadspriser sedan 2022, men bostadspriserna har återigen börjat öka de senaste månaderna. </li>
+<li> Antalet anställda berörda av konkurser i Dalarna har ökat i början av 2024, men samtidigt har antalet avregistrerade företag minskat något. </li>
+<li> Arbetslösheten i Dalarna, som är under genomsnittet i Sverige, har efter en lång period av nedgång börjat öka något i slutet av 2023.</li>
+<li> Trots en ökande prisnivå i samhället har antalet hushåll i behov av ekonomiskt bistånd minskat i Dalarna under en längre period. En viss ökning av behovet kan dock skönjas de senaste månaderna.</li>
+</ul>
+
+
+
+
+# Introduktion {-}
 
 I Sverige har vi tillgång till mycket god statistik om både våra levnadsförhållanden och vår ekonomi. Det innebär att vi också kan följa upp bland annat den ekonomiska utvecklingen i närtid både regionalt och nationellt till exempel vad gäller sysselsättning, bostadsbyggande och företagsetableringar.
 De senaste årens omvälvande händelser i världen med Covid-19-pandemin, det ofattbara kriget i Ukraina, och nu kriget mellan Israel och Hamas är förödande för dem som står i händelsernas centrum, men de drabbar även oss. Dessa händelser sätter prägel på både vår ekonomi och våra levnadsförhållanden, och gör det än mer angeläget att följa den ekonomiska utvecklingen regionalt och nationellt. <br>
@@ -146,7 +160,7 @@ Det allmänna läget i en ekonomi kan beskrivas på flera sätt. I detta första
  
 </details>
 
-Genom att titta på förändring i BNP kan man få en uppfattning om hur aktiviteten i den svenska ekonomin förändras över tid. Eftersom Sveriges ekonomi, precis som de flesta andra länders, växer i normala fall, ökar BNP under en majoritet av kvartalen. Vid större kriser i samhället kan dock BNP minska avsevärt, vilket också syns i figuren nedan. Under andra kvartalet 2020 minskade aktiviteten i den svenska ekonomin med nästan 8 procent jämfört med samma kvartal året innan, vilket kan tillskrivas Corona-pandemin. Återhämtningen gick dock snabbt och redan i efteföljande kvartal så ökade BNP med nästan lika mycket som minskningen i kvartal två. Därefter följde ett par år när läget i Sveriges ekonomi kan beskrivas som gott, innan aktiviteten i ekonomin återigen minskade i kvartal ett, år 2022. Därefter har läget varit relativt skakigt och i `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$kvartal` `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$ar` var förändringen i BNP `r gsub("\\.",",",BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Sasongsransad_forandring)` procent. Det innebär att aktiviteten i den svenska ekonomin har minskat två kvartal i rad, något som ibland benämns en recession.
+Genom att titta på förändring i BNP kan man få en uppfattning om hur aktiviteten i den svenska ekonomin förändras över tid. Eftersom Sveriges ekonomi, precis som de flesta andra länders, växer i normala fall, ökar BNP under en majoritet av kvartalen. Vid större kriser i samhället kan dock BNP minska avsevärt, vilket också syns i figuren nedan. Under andra kvartalet 2020 minskade aktiviteten i den svenska ekonomin med nästan 8 procent jämfört med samma kvartal året innan, vilket kan tillskrivas Corona-pandemin. Återhämtningen gick dock snabbt och redan i efteföljande kvartal så ökade BNP med nästan lika mycket som minskningen i kvartal två. Därefter följde ett par år när läget i Sveriges ekonomi kan beskrivas som gott, innan aktiviteten i ekonomin återigen minskade i kvartal ett, år 2022. Därefter har läget varit relativt skakigt och i `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$kvartal` `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$ar` var förändringen i BNP `r gsub("\\.",",",BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Sasongsransad_forandring)` procent. Det innebär att aktiviteten i den svenska ekonomin har minskat tre kvartal i rad, och Sverige kan sägas vara i en recession.
 
 ```{r, include = FALSE}
 
@@ -193,7 +207,7 @@ Ett annat sätt att mäta läget i ekonomin är genom de olika enkätundersökni
 </details>
 
 ### Generellt {-}
-I `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$manad_long` `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$ar` var barometerindikatorn `r gsub("\\.",",",last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$Barometerindikatorn.och.andra.indikatorer)`, vilket indikerar att ekonomin i Sverige var svagare än normalt. Barometerindikatorn ökade dock avsevärt jämfört med de senaste månaderna, då den legat stabilt runt 85. Detta är en indikation på att företagens och hushållens syn på sin ekonomin har förbättrats i Sverige på sistone. Att barometerindikatorn länge haft ett lågt värde kan delvis förklaras av Rysslands invasion av Ukraina och de effekter denna haft på bland annat tillgången på råvaror. Historiskt varierar barometerindikatorn med konjunkturen och större kriser i samhället, såsom finanskrisen 2008/2009 och Coronapandemin 2020/2021, syns tydligt i diagrammet.
+I `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$manad_long` `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$ar` var barometerindikatorn `r gsub("\\.",",",last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$Barometerindikatorn.och.andra.indikatorer)`, vilket är i linje med föregående månad. Detta är en indikation på att ekonomin i Sverige är svagare än normal. Barometerindikatorn har dock avsevärt under 2024 jämfört med de senaste månaderna, då den legat stabilt runt 85. Företagens och hushållens syn på sin ekonomi verkar således ha förbättrats i Sverige på sistone. Att barometerindikatorn länge haft ett lågt värde kan delvis förklaras av Rysslands invasion av Ukraina och de effekter denna haft på bland annat tillgången på råvaror. Historiskt varierar barometerindikatorn med konjunkturen och större kriser i samhället, såsom finanskrisen 2008/2009 och Coronapandemin 2020/2021, syns tydligt i diagrammet.
 
 ```{r, include = FALSE}
   diagram_capt <- "Källa: Konjunkturinstitutet.\nBearbetning: Samhällsanalys, Region Dalarna.\nDiagramförklaring: En indikator över 100 motsvarar en starkare ekonomi än normalt och värden över 110 en mycket starkare ekonomi än normalt.\nEn indikator under 100 respektive under 90 visar en svagare respektive mycket svagare ekonomi än normalt."
@@ -231,9 +245,9 @@ I `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$mana
                               diagram_capt =  diagram_capt,
                               output_mapp = output_mapp,
                               visa_var_x_xlabel=24,
-                              filnamn_diagram = diagramfilnamn,
-                              skriv_till_diagramfil = spara_figur)
-  
+                              filnamn_diagram = "diagramfilnamn",
+                              skriv_till_diagramfil = FALSE)
+   
 ```
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
@@ -244,7 +258,7 @@ konj
 
 Hur läget i ekonomin uppfattas varierar beroende på om det är företagen eller hushållen som tillfrågas. Hushållen hade en mer pessimistisk syn än företagen på ekonomin i `r last(barometern_df$manad_long)` `r last(barometern_df$ar)`, med en barometerindikator på `r gsub("\\.",",",last(barometern_df$Barometerindikatorn.och.andra.indikatorer[barometern_df$Indikator=="Konfidensindikator hushåll"]))`. Bland branschgrupperna i diagrammet nedan hade `r tolower(gsub( " .*$", "", barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(Barometerindikatorn.och.andra.indikatorer==max(Barometerindikatorn.och.andra.indikatorer)) %>% .$Indikator))`n den mest positiva synen på ekonomin i `r last(barometern_df$manad_long)` `r last(barometern_df$ar)`, medan företag inom `r tolower(gsub( " .*$", "", barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(Barometerindikatorn.och.andra.indikatorer==min(Barometerindikatorn.och.andra.indikatorer)) %>% .$Indikator))` uppfattar den ekonomiska utvecklingen som mer negativ. Tjänstesektorn drabbades värst under pandemin (mars/april 2020), medan tillverkningsindustrin uppfattade ekonomin som starkare än normalt från slutet av 2020 fram till mitten av 2022.
 
-Med undantag för branschgruppen byggindustri, har synen på läget i ekonomin förbättrats den senaste månad för såväl företagen som hushållen.
+Med undantag för branschgruppen byggindustri, har synen på läget i ekonomin förbättrats under 2024.
 
 ```{r, include = FALSE}
 
@@ -308,7 +322,9 @@ Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i
  
 </details>
 
-Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar)`, då den i Sverige uppgick till `r gsub("\\.",",",KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF)` procent. Därefter har inflationstakten sjunkit avsevärt och var i `r KPI_df %>% filter(månad==last(månad)) %>% select(manad_long,ar)`, `r gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)` procent, vilket är mer eller mindre i linje med Riksbankens inflationsmål. Den höga inflationstakten under framförallt 2022 och 2023 har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på  [Wikipedia](https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge){target="_blank"}.
+Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar)`, då den i Sverige uppgick till `r gsub("\\.",",",KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF)` procent. Därefter har inflationstakten sjunkit avsevärt och var i `r KPI_df %>% filter(månad==last(månad)) %>% select(manad_long,ar)`, `r gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)` procent, vilket bara är något över Riksbankens inflationsmål. En förklaring till att inflationen gick ned i februari 2024 är enligt SCB att priserna på mat har stabiliserats.
+
+Den höga inflationstakten under framförallt 2022 och 2023 har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på  [Wikipedia](https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge){target="_blank"}.
 
 ```{r, include = FALSE}
 
@@ -368,7 +384,7 @@ inflation_linje
 </details>
 
 ### Bygglov {-}
-Antalet godkända bygglov för småhus varierar mellan kvartalen, men en tydlig trend är att de har börjat minska på senare tid. Sedan toppen i  `r Bygglov_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Antal==max(Antal)) %>% select(kvartal,ar) %>% .[1,]`, då `r Bygglov_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Antal==max(Antal)) %>% .$Antal %>% .[1]` bygglov godkändes, har antalet godkända bygglov minskat och i `r Bygglov_df %>%filter(hustyp=="småhus") %>% filter(Antal==last(Antal)) %>% select(kvartal,ar)`, godkändes `r Bygglov_df %>%filter(,hustyp=="småhus") %>% filter(Antal==last(Antal)) %>% .$Antal` bygglov. För flerbostadshus är trenden relativt likvärdig, men variationen är större från kvartal till kvartal. Under `r Bygglov_df %>%filter(ar>"2009",hustyp=="småhus") %>% filter(Antal==last(Antal)) %>% select(kvartal,ar)`, godkändes bygglov för blott `r Bygglov_df %>%filter(ar>"2009",hustyp=="flerbostadshus exkl. specialbostäder") %>% filter(Antal==last(Antal)) %>% .$Antal` bostadslägenheter i Dalarna.
+Antalet godkända bygglov för småhus varierar mellan kvartalen, men en tydlig trend är att de har börjat minska på senare tid. Sedan toppen i  `r Bygglov_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Antal==max(Antal)) %>% select(kvartal,ar) %>% .[1,]`, då `r Bygglov_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Antal==max(Antal)) %>% .$Antal %>% .[1]` bygglov godkändes, har antalet godkända bygglov minskat och i `r Bygglov_df %>%filter(hustyp=="småhus") %>% filter(Antal==last(Antal)) %>% select(kvartal,ar)`, godkändes `r Bygglov_df %>%filter(,hustyp=="småhus") %>% filter(Antal==last(Antal)) %>% .$Antal` bygglov. För flerbostadshus är trenden relativt likvärdig, men variationen är större från kvartal till kvartal. Under `r Bygglov_df %>%filter(ar>"2009",hustyp=="småhus") %>% filter(Antal==last(Antal)) %>% select(kvartal,ar)`, godkändes bygglov för `r Bygglov_df %>%filter(ar>"2009",hustyp=="flerbostadshus exkl. specialbostäder") %>% filter(Antal==last(Antal)) %>% .$Antal` bostadslägenheter i Dalarna, vilket är fler än kvartalet innan.
 
 ```{r, include = FALSE}
 
@@ -401,7 +417,7 @@ bygglov_linje
 ```
 
 ### Nybyggnation {-}
-Precis som byggloven, varierar byggandet av småhus mellan kvartalen, men en tydlig trend är att byggandet har börjat minska på senare tid. Sedan toppen i  `r Husbyggande_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Paborjade==max(Paborjade)) %>% select(kvartal,ar) %>% .[1,]`, då `r Husbyggande_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Paborjade==max(Paborjade)) %>% .$Paborjade %>% .[1]` småhus påbörjades, har antalet minskat och i `r Husbyggande_df %>%filter(hustyp=="småhus") %>% filter(ar_kvartal==last(ar_kvartal)) %>% select(kvartal,ar)`, påbörjades `r Husbyggande_df %>%filter(hustyp=="småhus") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Paborjade` småhus. För flerbostadshus är trenden relativt likvärdig, men variationen är större från kvartal till kvartal. Under `r Husbyggande_df %>%filter(hustyp=="flerbostadshus") %>% filter(ar_kvartal==last(ar_kvartal)) %>% select(kvartal,ar)`, påbörjades byggande av `r Husbyggande_df %>%filter(hustyp=="flerbostadshus") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Paborjade` lägenheter i Dalarna.
+Precis som byggloven, varierar byggandet av småhus mellan kvartalen, men en tydlig trend är att byggandet har börjat minska på senare tid. Sedan toppen i  `r Husbyggande_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Paborjade==max(Paborjade)) %>% select(kvartal,ar) %>% .[1,]`, då `r Husbyggande_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Paborjade==max(Paborjade)) %>% .$Paborjade %>% .[1]` småhus påbörjades, har antalet minskat och i `r Husbyggande_df %>%filter(hustyp=="småhus") %>% filter(ar_kvartal==last(ar_kvartal)) %>% select(kvartal,ar)`, påbörjades `r Husbyggande_df %>%filter(hustyp=="småhus") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Paborjade` småhus. För flerbostadshus är trenden relativt likvärdig, men variationen är större från kvartal till kvartal. Under andra halvåret 2023 påbörjades byggande av blott 9 lägenheter i Dalarna.
 
 ```{r, include = FALSE}
 
@@ -444,7 +460,9 @@ Nybyggnation_linje
 
 ### Historisk jämförelse {-}
 
-Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige. Efter toppen i `r priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% select(manad_long,ar)`, då ett småhus i Dalarna kostade ungefär `r round(priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% .$Medelpris/1000,1)` miljoner kronor, har dock det genomsnittliga priset på småhus i länet minskat avsevärt till `r gsub("\\.",",",(round(priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(Medelpris)/1000,1)))` miljoner kronor i `r priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(manad_long,ar)`. Minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medfört en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkar efterfrågan på bostäder. 
+Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige. Efter toppen i `r priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% select(manad_long,ar)`, då ett småhus i Dalarna kostade ungefär `r round(priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% .$Medelpris/1000,1)` miljoner kronor, har dock det genomsnittliga priset på småhus i länet minskat avsevärt och en botten nåddes i oktober 2023, när ett småhus i Dalarna kostade strax under 2,1 miljoner kronor. Minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medfört en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkar efterfrågan på bostäder. 
+
+På sistone har priserna återigen börjat stiga och var i `r priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(manad_long,ar)` strax över `r gsub("\\.",",",(round(priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(Medelpris)/1000,1)))` miljoner kronor i Dalarna. 
 
 ```{r, include = FALSE}
 # Skapar ett linjediagram för förändring i priser. Blir något fel när man skapar index via funktionen, 
@@ -627,6 +645,7 @@ k = k+1
                                          skickad_x_grupp = "år",
                                          berakna_index = FALSE,
                                          manual_color = diagramfarger("rus_sex"),
+                                         lagga_till_punkter = TRUE,
                                          diagram_titel = diagram_titel,
                                          diagram_capt =  diagram_capt,
                                          output_mapp = output_mapp,
@@ -635,11 +654,19 @@ k = k+1
                                          visa_var_x_xlabel=1,
                                          filnamn_diagram = diagramfilnamn,
                                          skriv_till_diagramfil = spara_figur)
+    
+    # add geom_point to avregistrerade_linje with same colors
+# konkurser_lan <- konkurser_lan + geom_point(data = konkurser_jmfr,
+#                                           aes(x = manad_long,y = Antal_berorda,group=år,color=år), size=2.5)
+# 
+# if(spara_figur){
+#   ggsave(paste0(output_mapp,diagramfilnamn), plot = konkurser_lan, width = 12, height = 7)
+# }
 
   
 ```
 
-Antalet personer som berörs av konkurser varierar relativt mycket från månad till månad vilket medför att det är svårt att se någon trend på månadsbasis kopplad till exempelvis Rysslands invasion av Ukraina. I `r senaste_manad` `r senaste_ar` berördes `r konkurser_jmfr %>% filter(år==senaste_ar,manad_long==str_to_title(senaste_manad)) %>% .$Antal_berorda` personer av konkurser i Dalarna, att jämföra med `r konkurser_jmfr %>% filter(år==as.character(senaste_ar_num-1),manad_long==str_to_title(senaste_manad)) %>% .$Antal_berorda` motsvarande månad `r as.character(senaste_ar_num-1)`. Värt att notera är även att `r konkurser_df %>% filter(år==last(år)) %>% group_by(region,år) %>% .$Antal_berorda %>% sum()` personer har berörts av konkurser i Dalarna hittills i år, vilket är klart fler än de `r konkurser_df  %>% filter(år==(as.numeric(last(år))-1),månad%in%unique(konkurser_df  %>% filter(år==last(år)) %>% .$månad)) %>% group_by(region,år) %>% .$Antal_berorda %>% sum()` som berördes under motsvarande period föregående år.
+Antalet personer som berörs av konkurser varierar relativt mycket från månad till månad vilket medför att det är svårt att se någon trend på månadsbasis kopplad till exempelvis Rysslands invasion av Ukraina. I `r senaste_manad` `r senaste_ar` berördes `r konkurser_jmfr %>% filter(år==senaste_ar,manad_long==str_to_title(senaste_manad)) %>% .$Antal_berorda` personer av konkurser i Dalarna, att jämföra med `r konkurser_jmfr %>% filter(år==as.character(senaste_ar_num-1),manad_long==str_to_title(senaste_manad)) %>% .$Antal_berorda` motsvarande månad `r as.character(senaste_ar_num-1)`. Värt att notera är även att `r konkurser_df %>% filter(år==last(år)) %>% group_by(region,år) %>% .$Antal_berorda %>% sum()` personer har berörts av konkurser i Dalarna hittills i år, vilket är fler än de `r konkurser_df  %>% filter(år==(as.numeric(last(år))-1),månad%in%unique(konkurser_df  %>% filter(år==last(år)) %>% .$månad)) %>% group_by(region,år) %>% .$Antal_berorda %>% sum()` som berördes under motsvarande period föregående år.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 konkurser_lan
@@ -690,7 +717,7 @@ konkurser_lan
 
   
 ```
-Den bransch som drabbades värst av konkurser i `r senaste_manad` `r unique(konkurser_bransch_10$år)` var "`r konkurser_bransch_10 %>% filter(Antal_berorda==max(Antal_berorda)) %>% .$bransch`", där `r konkurser_bransch_10 %>% filter(Antal_berorda==max(Antal_berorda)) %>% .$Antal_berorda` personer berördes av konkurser.
+Den bransch som drabbades värst av konkurser i `r senaste_manad` `r unique(konkurser_bransch_10$år)` var "`r konkurser_bransch_10 %>% filter(Antal_berorda==max(Antal_berorda)) %>% .$bransch`", där `r konkurser_bransch_10 %>% filter(Antal_berorda==max(Antal_berorda)) %>% .$Antal_berorda` personer berördes av konkurser. Även inom hotell och restaurang samt byggindustri drabbades relativt många av konkurser.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 konkurser_bransch
@@ -725,17 +752,16 @@ Ett potentiellt alternativ till att begära ett företag i konkurs är att istä
 
     diagramtitel <- paste0("Antal avregistrerade företag i Dalarna")
     diagramfilnamn <- paste0("avreg_manad.png")
-
-
     
     antal_avregistreringar_df$manad_long = factor(antal_avregistreringar_df$manad_long,levels=c("Januari","Februari","Mars","April","Maj","Juni","Juli","Augusti","September","Oktober","November","December"))
       
-avregistrerade_linje <- SkapaLinjeDiagram(skickad_df = antal_avregistreringar_df %>% 
+avregistrerade_linje <- SkapaLinjeDiagram(skickad_df = antal_avregistreringar_df %>%
                                              mutate(År = as.character(År)),
-                                           skickad_x_var = "manad_long", 
-                                           skickad_y_var = "antal", 
+                                           skickad_x_var = "manad_long",
+                                           skickad_y_var = "antal",
                                            skickad_x_grupp = "År",
                                            berakna_index = FALSE,
+                                           lagga_till_punkter = TRUE,
                                            manual_color = diagramfarger("rus_sex"),
                                            diagram_titel = diagramtitel,
                                            diagram_capt =  diagram_capt,
@@ -745,6 +771,34 @@ avregistrerade_linje <- SkapaLinjeDiagram(skickad_df = antal_avregistreringar_df
                                            #visa_var_x_xlabel=1,
                                            filnamn_diagram = diagramfilnamn,
                                            skriv_till_diagramfil = spara_figur)
+
+# add geom_point to avregistrerade_linje with same colors
+# avregistrerade_linje <- avregistrerade_linje + geom_point(data = antal_avregistreringar_df %>%
+#                                             mutate(År = as.character(År)),
+#                                           aes(x = manad_long,y = antal,group=År,color=År), size=2.5)
+# 
+# if(spara_figur){
+#   ggsave(paste0(output_mapp,diagramfilnamn), plot = avregistrerade_linje, width = 12, height = 7)
+# }
+    
+
+# avregistrerade_stapel <- SkapaStapelDiagram(skickad_df = antal_avregistreringar_df %>% 
+#                                              mutate(År = as.character(År)),
+#                                            skickad_x_var = "manad_long", 
+#                                            skickad_y_var = "antal", 
+#                                            skickad_x_grupp = "År",
+#                                            berakna_index = FALSE,
+#                                            manual_color = diagramfarger("rus_sex"),
+#                                            diagram_titel = diagramtitel,
+#                                            manual_x_axis_text_vjust = 1,
+#                                            manual_x_axis_text_hjust = 1,
+#                                            diagram_capt =  diagram_capt,
+#                                            output_mapp = output_mapp,
+#                                            stodlinjer_avrunda_fem = TRUE,
+#                                            manual_y_axis_title = "Antal",
+#                                            #visa_var_x_xlabel=1,
+#                                            filnamn_diagram = diagramfilnamn,
+#                                            skriv_till_diagramfil = spara_figur)
   
   
 ```
@@ -822,9 +876,10 @@ Som mått på läget i Dalarna, är arbetslösheten sannolikt en relativt trögr
 <details>
 
   <summary>Mer information om statistiken</summary>
+  
+Arbetslöshet beräknas som andelen arbetslösa i förhållande till antalet personer i arbetskraften, det vill säga summan av antalet arbetslösa och antalet sysselsatta. Statistik över arbetslöshet och sysselsättning kan tas fram på olika sätt. Det gör att siffror som rör samma referensperiod kan skilja sig åt beroende på vilken statistikkälla som använts. I den här rapporten används BAS - befolkningens arbetsmarknadsstatus - som redovisar registerbaserad statistik över utbudet av arbetskraft i Sverige.
 
-Statistik över arbetslöshet och sysselsättning kan tas fram på olika sätt. Det gör att siffror som rör samma referensperiod kan skilja sig åt beroende på vilken statistikkälla som använts. I den här rapporten används BAS - befolkningens arbetsmarknadsstatus - som redovisar registerbaserad statistik över utbudet av arbetskraft i Sverige.
- 
+
 </details>
 
 ### Län {-}
@@ -867,7 +922,7 @@ arbetsloshet_lan
 ### Jämförelse över tid {-}
 Arbetslösheten, såväl i Dalarna som Sverige, varierar över tid. I samband med pandemin orsakad av Covid-19, ökade arbetslösheten och var som högst i Dalarna i `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$manad_long %>% .[1]`  `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$ar %>% .[1]`, då den uppgick till `r  gsub("\\.",",", arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% filter(arbetslöshet==max(arbetslöshet)) %>%  .$arbetslöshet %>% .[1])` procent. Därefter har arbetslösheten minskat och var i `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$ar))` `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$arbetslöshet))` procent i Dalarna. 
 
-Det finns vissa indikationer på att arbetslösheten har börjat stiga svagt igen, efter att ha minska stadigt under en lång period.  Arbetslösheten tenderar dock att följa ett visst säsongsmönster, vilket gör det svårt att bedöma om den högre arbetslösheten i oktober och november (jämfört med månaderna innan) är en del av en längre trend, eller en följd av säsongsvariationer.
+Det finns vissa indikationer på att arbetslösheten har börjat stiga svagt igen, efter att ha minskat stadigt under en lång period.  Arbetslösheten tenderar dock att följa ett visst säsongsmönster, vilket gör det svårt att bedöma om den högre arbetslösheten de senaste månaderna (jämfört med månaderna innan) är en del av en längre trend, eller en följd av säsongsvariationer. Tydligt är i alla fall att långsiktiga trenden sedan mitten av 2021, med stadigt minskande arbetslöshet, har brutits. Arbetslösheten i Dalarna var i december 2023 på ungefär samma nivå som i december föregående år. 
 
 ```{r, include = FALSE}
  
@@ -876,11 +931,11 @@ Det finns vissa indikationer på att arbetslösheten har börjat stiga svagt ige
   diagram_titel <- paste0("Arbetslöshet i åldersgruppen 20-64 år")
   diagramfilnamn <- paste0("arbetslöshet_tidsserie.png")
     
-  arbetslöshet_linje <- SkapaLinjeDiagram(skickad_df = arbetsmarknadsstatus_tidsserie %>% 
-                                            filter(region%in%c("Dalarna","Riket")) %>% 
+  arbetslöshet_linje <- SkapaLinjeDiagram(skickad_df = arbetsmarknadsstatus_tidsserie %>%
+                                            filter(region%in%c("Dalarna","Riket")) %>%
                                               mutate(region = ifelse(region=="Riket","Sverige",region)),
-                                         skickad_x_var = "Period", 
-                                         skickad_y_var = "arbetslöshet", 
+                                         skickad_x_var = "Period",
+                                         skickad_y_var = "arbetslöshet",
                                          skickad_x_grupp = "region",
                                          berakna_index=FALSE,
                                          manual_color = diagramfarger("rus_sex"),
@@ -892,6 +947,24 @@ Det finns vissa indikationer på att arbetslösheten har börjat stiga svagt ige
                                          visa_var_x_xlabel=1,
                                          filnamn_diagram = diagramfilnamn,
                                          skriv_till_diagramfil = spara_figur)
+  
+    # arbetslöshet_stapel <- SkapaStapelDiagram(skickad_df = arbetsmarknadsstatus_tidsserie %>% 
+    #                                         filter(region%in%c("Dalarna","Riket")) %>% 
+    #                                           mutate(region = ifelse(region=="Riket","Sverige",region)),
+    #                                      skickad_x_var = "Period", 
+    #                                      skickad_y_var = "arbetslöshet", 
+    #                                      skickad_x_grupp = "region",
+    #                                      berakna_index=FALSE,
+    #                                      manual_color = diagramfarger("rus_sex"),
+    #                                      manual_x_axis_text_vjust = 1,
+    #                                      manual_x_axis_text_hjust = 1,
+    #                                      diagram_titel = diagram_titel,
+    #                                      diagram_capt =  diagram_capt,
+    #                                      output_mapp = output_mapp,
+    #                                      stodlinjer_avrunda_fem = TRUE,
+    #                                      manual_y_axis_title = "procent",
+    #                                      filnamn_diagram = diagramfilnamn,
+    #                                      skriv_till_diagramfil = spara_figur)
 
   
 ```
@@ -908,17 +981,20 @@ arbetslöshet_linje
   diagramfilnamn <- paste0("arbetslöshet_tidsserie.png")
   
   # arbetsmarknadsstatus_tidsserie$manad_long <- factor(arbetsmarknadsstatus_tidsserie$manad_long,levels  =c("januari","februari","mars","april","maj","juni","juli","augusti","september","oktober","november","december"))
+  
+  arb_df = arbetsmarknadsstatus_tidsserie %>% 
+    filter(region%in%c("Dalarna")) %>% 
+      mutate(region = ifelse(region=="Riket","Sverige",region),
+              manad_long = str_to_title(manad_long)) %>% 
+      mutate(manad_long = factor(.$manad_long,levels =c("Januari","Februari","Mars","April","Maj","Juni","Juli","Augusti","September","Oktober","November","December")))
     
-  arbetslöshet_linje <- SkapaLinjeDiagram(skickad_df = arbetsmarknadsstatus_tidsserie %>% 
-                                            filter(region%in%c("Dalarna")) %>% 
-                                              mutate(region = ifelse(region=="Riket","Sverige",region),
-                                                     manad_long = str_to_title(manad_long)) %>% 
-                                                mutate(manad_long = factor(.$manad_long,levels  =c("Januari","Februari","Mars","April","Maj","Juni","Juli","Augusti","September","Oktober","November","December"))),
+  arbetslöshet_linje <- SkapaLinjeDiagram(skickad_df = arb_df,
                                          skickad_x_var = "manad_long", 
                                          skickad_y_var = "arbetslöshet", 
                                          skickad_x_grupp = "ar",
                                          berakna_index = FALSE,
                                          manual_color = diagramfarger("rus_sex"),
+                                         lagga_till_punkter = TRUE,
                                          diagram_titel = diagram_titel,
                                          diagram_capt =  diagram_capt,
                                          output_mapp = output_mapp,
@@ -927,6 +1003,14 @@ arbetslöshet_linje
                                          visa_var_x_xlabel=1,
                                          filnamn_diagram = diagramfilnamn,
                                          skriv_till_diagramfil = spara_figur)
+  
+  # add geom_point to avregistrerade_linje with same colors
+# arbetslöshet_linje <- arbetslöshet_linje + geom_point(data = arb_df ,
+#                                           aes(x = manad_long,y = arbetslöshet,group=ar,color=ar), size=2.5)
+# 
+# if(spara_figur){
+#   ggsave(paste0(output_mapp,diagramfilnamn), plot = arbetslöshet_linje, width = 12, height = 7)
+# }
 
   
 ```
@@ -1052,7 +1136,9 @@ Hushållens ekonomiska situation kan mätas på flera olika sätt. Arbetslöshet
  
 </details>
 
-I Dalarna hade runt 4000 hushåll ett sådant behov under åren mellan 2018 och 2021, men därefter minskade behovet stadigt under en längre period. I `r last(ekonomiskt_bistand_utskrift$Månad)` `r last(ekonomiskt_bistand_utskrift$År)` var `r last(ekonomiskt_bistand_utskrift$antal_hushall)` hushåll i behov av ekonomiskt bistånd, vilket är något fler än i oktober 2023. Anmärkningsvärt är även att behovet av bistånd har minskat trots att prisnivån i samhället har ökat avsevärt på senare år (se avsnittet om inflation). Exakt vad den utvecklingen beror på är oklart, men ett antal tänkbara orsaker diskuteras i följande <a href = "https://www.svt.se/nyheter/inrikes/darfor-minskar-antalet-hushall-som-far-socialbidrag-i-sverige-forskare-forklarar-orsaker-bakom" target="_blank">artikel</a>. Värt att notera är även att antalet hushåll i Dalarna har ökat på senare år, från drygt 136 000 år 2018 till drygt 139 000 år 2022.   
+I Dalarna hade runt 4000 hushåll ett sådant behov under åren mellan 2018 och 2021, men därefter minskade behovet stadigt under en längre period. Anmärkningsvärt är även att behovet av bistånd har minskat trots att prisnivån i samhället har ökat avsevärt under samma tidsperiod (se avsnittet om inflation). Exakt vad den utvecklingen beror på är oklart, men ett antal tänkbara orsaker diskuteras i följande <a href = "https://www.svt.se/nyheter/inrikes/darfor-minskar-antalet-hushall-som-far-socialbidrag-i-sverige-forskare-forklarar-orsaker-bakom" target="_blank">artikel</a>. Värt att notera är även att antalet hushåll i Dalarna har ökat på senare år, från drygt 136 000 år 2018 till drygt 139 000 år 2022. 
+
+På sistone har antalet hushåll i behov av ekonomiskt bistånd börjat öka. I `r last(ekonomiskt_bistand_utskrift$Månad)` `r last(ekonomiskt_bistand_utskrift$År)` var `r last(ekonomiskt_bistand_utskrift$antal_hushall)` hushåll i behov av sådant stöd, vilket är ungefär 140 fler än vid den lägsta nivån (oktober 2023).
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 eko_bistand_fig
