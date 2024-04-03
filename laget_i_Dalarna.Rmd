@@ -25,7 +25,8 @@ p_load(sf,
        mapview,
        leafpop,
        plotly,
-       tidytext)
+       tidytext,
+       ggiraph)
 
 # Läser in funktioner
 source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_SkapaDiagram.R")
@@ -244,7 +245,7 @@ I `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$mana
                               diagram_titel = diagramtitel,
                               diagram_capt =  diagram_capt,
                               output_mapp = output_mapp,
-                              visa_var_x_xlabel=24,
+                              x_axis_visa_var_xe_etikett = 24,
                               filnamn_diagram = "diagramfilnamn",
                               skriv_till_diagramfil = FALSE)
    
@@ -303,6 +304,10 @@ Med undantag för branschgruppen byggindustri, har synen på läget i ekonomin f
                               #visa_var_x_xlabel=12,
                               filnamn_diagram = diagramfilnamn,
                               skriv_till_diagramfil = spara_figur)
+    
+       test = konj_bransch+geom_line_interactive(aes(tooltip = Indikator,data_id = Indikator))
+   
+   ut = girafe(ggobj = test)
   
 ```
 
@@ -360,7 +365,7 @@ Den höga inflationstakten under framförallt 2022 och 2023 har ett antal olika 
                                           diagram_capt =  diagram_capt,
                                           output_mapp = output_mapp,
                                           manual_y_axis_title = "procent",
-                                          visa_var_x_xlabel=24,
+                                          x_axis_visa_var_xe_etikett = 24,
                                           filnamn_diagram = diagramfilnamn,
                                           skriv_till_diagramfil = spara_figur)
   
@@ -406,7 +411,7 @@ Antalet godkända bygglov för småhus varierar mellan kvartalen, men en tydlig 
                                           diagram_capt =  diagram_capt,
                                           output_mapp = output_mapp,
                                           manual_y_axis_title = "Antal",
-                                          visa_var_x_xlabel=1,
+                                          x_axis_visa_var_xe_etikett = 1,
                                           filnamn_diagram = diagramfilnamn,
                                           skriv_till_diagramfil = spara_figur)
 
@@ -438,7 +443,7 @@ Precis som byggloven, varierar byggandet av småhus mellan kvartalen, men en tyd
                                           diagram_capt =  diagram_capt,
                                           output_mapp = output_mapp,
                                           manual_y_axis_title = "Antal",
-                                          visa_var_x_xlabel=1,
+                                          x_axis_visa_var_xe_etikett = 1,
                                           filnamn_diagram = diagramfilnamn,
                                           skriv_till_diagramfil = spara_figur)
   
@@ -494,7 +499,7 @@ På sistone har priserna återigen börjat stiga och var i `r priser_df %>% filt
                                          diagram_titel = diagramtitel,
                                          diagram_capt =  diagram_capt,
                                          output_mapp = output_mapp,
-                                         visa_var_x_xlabel=24,
+                                         x_axis_visa_var_xe_etikett = 24,
                                          filnamn_diagram = diagramfilnamn,
                                          skriv_till_diagramfil = spara_figur)
   
@@ -651,7 +656,7 @@ k = k+1
                                          output_mapp = output_mapp,
                                          stodlinjer_avrunda_fem = TRUE,
                                          manual_y_axis_title = "Antal",
-                                         visa_var_x_xlabel=1,
+                                         x_axis_visa_var_xe_etikett = 1,
                                          filnamn_diagram = diagramfilnamn,
                                          skriv_till_diagramfil = spara_figur)
     
@@ -856,7 +861,7 @@ avregistrerade_linje
                                        output_mapp = output_mapp,
                                        manual_y_axis_title = "Antal nystartade företag",
                                        legend_tabort = TRUE,
-                                       visa_var_x_xlabel= 4,
+                                       x_axis_visa_var_xe_etikett = 4,
                                        filnamn_diagram = diagramfilnamn,
                                        skriv_till_diagramfil = spara_figur)
 ```
@@ -944,7 +949,7 @@ Det finns vissa indikationer på att arbetslösheten har börjat stiga svagt ige
                                          output_mapp = output_mapp,
                                          stodlinjer_avrunda_fem = TRUE,
                                          manual_y_axis_title = "procent",
-                                         visa_var_x_xlabel=1,
+                                         x_axis_visa_var_xe_etikett = 1,
                                          filnamn_diagram = diagramfilnamn,
                                          skriv_till_diagramfil = spara_figur)
   
@@ -1000,7 +1005,7 @@ arbetslöshet_linje
                                          output_mapp = output_mapp,
                                          stodlinjer_avrunda_fem = TRUE,
                                          manual_y_axis_title = "procent",
-                                         visa_var_x_xlabel=1,
+                                         x_axis_visa_var_xe_etikett = 1,
                                          filnamn_diagram = diagramfilnamn,
                                          skriv_till_diagramfil = spara_figur)
   
@@ -1116,7 +1121,7 @@ ekonomiskt_bistand_utskrift <- ekonomiskt_bistand_df %>%
                                          stodlinjer_avrunda_fem = TRUE,
                                          manual_y_axis_title = "Antal hushåll",
                                          legend_tabort = TRUE,
-                                         visa_var_x_xlabel=12,
+                                         x_axis_visa_var_xe_etikett = 12,
                                          filnamn_diagram = diagramfilnamn,
                                          skriv_till_diagramfil = spara_figur)
 

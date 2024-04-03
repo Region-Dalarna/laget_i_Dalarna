@@ -64,7 +64,7 @@ hamta_data_smahuspriser <- function(region_vekt="20",
                                diagram_titel = diagramtitel,
                                diagram_capt =  diagram_capt,
                                output_mapp = output_mapp_figur,
-                               visa_var_x_xlabel=24,
+                               x_axis_visa_var_xe_etikett=24,
                                filnamn_diagram = diagramfilnamn,
                                skriv_till_diagramfil = skapa_figur)
   

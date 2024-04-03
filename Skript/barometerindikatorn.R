@@ -23,9 +23,9 @@ hamta_data_konjunkturbarometern <- function(output_mapp_excel = "G:/Samhällsana
   objektnamn <- c()
   
   #==========================================================================================================  
-  # För att komma förbi proxyn
-  set_config(use_proxy(url = "http://mwg.ltdalarna.se", port = 9090, username = Sys.info()[["user"]], password = key_get("rd","frkjon")))
-  set_config(config(ssl_verifypeer = 0L))
+  # # För att komma förbi proxyn
+  # set_config(use_proxy(url = "http://mwg.ltdalarna.se", port = 9090, username = Sys.info()[["user"]], password = key_get("rd","frkjon")))
+  # set_config(config(ssl_verifypeer = 0L))
   # =============================================== API-uttag ===============================================
   # "Adresser" till SCBs databas
   url1 <- "https://statistik.konj.se/PXWeb/api/v1/sv/KonjBar/indikatorer/Indikatorm.px"
