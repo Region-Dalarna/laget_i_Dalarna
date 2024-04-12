@@ -327,7 +327,7 @@ Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i
  
 </details>
 
-Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar)`, då den i Sverige uppgick till `r gsub("\\.",",",KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF)` procent. Därefter har inflationstakten sjunkit avsevärt och var i `r KPI_df %>% filter(månad==last(månad)) %>% select(manad_long,ar)`, `r gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)` procent, vilket bara är något över Riksbankens inflationsmål. En förklaring till att inflationen gick ned i februari 2024 är enligt SCB att priserna på mat har stabiliserats.
+Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar)`, då den i Sverige uppgick till `r gsub("\\.",",",KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF)` procent. Därefter har inflationstakten sjunkit avsevärt och var i `r KPI_df %>% filter(månad==last(månad)) %>% select(manad_long,ar)`, `r gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)` procent, vilket bara är något över Riksbankens inflationsmål. En förklaring till att inflationen gick ned i mars 2024 är enligt SCB att priserna på mat sjönk jämfört med månaden innan ([SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/priser-och-konsumtion/konsumentprisindex/konsumentprisindex-kpi/pong/statistiknyhet/konsumentprisindex-kpi-mars-2024/){target="_blank"}). Sammantaget medför detta att många bedömare tror att Riksbanken sänker sin stryrränta i maj, något som påverkar räntorna på bland annat hushållens bostadslån.
 
 Den höga inflationstakten under framförallt 2022 och 2023 har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på  [Wikipedia](https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge){target="_blank"}.
 
@@ -499,7 +499,7 @@ På sistone har priserna återigen börjat stiga och var i `r priser_df %>% filt
                                          diagram_titel = diagramtitel,
                                          diagram_capt =  diagram_capt,
                                          output_mapp = output_mapp,
-                                         x_axis_visa_var_xe_etikett = 24,
+                                         x_axis_visa_var_xe_etikett = 12,
                                          filnamn_diagram = diagramfilnamn,
                                          skriv_till_diagramfil = spara_figur)
   
@@ -722,7 +722,7 @@ konkurser_lan
 
   
 ```
-Den bransch som drabbades värst av konkurser i `r senaste_manad` `r unique(konkurser_bransch_10$år)` var "`r konkurser_bransch_10 %>% filter(Antal_berorda==max(Antal_berorda)) %>% .$bransch`", där `r konkurser_bransch_10 %>% filter(Antal_berorda==max(Antal_berorda)) %>% .$Antal_berorda` personer berördes av konkurser. Även inom hotell och restaurang samt byggindustri drabbades relativt många av konkurser.
+Den bransch som drabbades värst av konkurser i `r senaste_manad` `r unique(konkurser_bransch_10$år)` var "`r konkurser_bransch_10 %>% filter(Antal_berorda==max(Antal_berorda)) %>% .$bransch`", där `r konkurser_bransch_10 %>% filter(Antal_berorda==max(Antal_berorda)) %>% .$Antal_berorda` personer berördes av konkurser. Även inom hotell och restaurang drabbades relativt många av konkurser.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 konkurser_bransch
