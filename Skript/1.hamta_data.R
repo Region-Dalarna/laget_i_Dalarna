@@ -19,36 +19,36 @@ Output_mapp = here("Data","/")
 #                                            output_mapp = Output_mapp,
 #                                            spara_till_excel=TRUE) 
 
-# Varsel på månadsbasis uppdelat på bransch
-source(here("Skript","varsel_bransch_manad_korrekt.R"), encoding="UTF-8")
-hamta_varsel_bransch_manad(vald_region = "20",
-                           filnamn="varsel_bransch_manad.xlsx",
-                           output_mapp = Output_mapp)
+# Varsel på månadsbasis uppdelat på bransch - ANVÄNDS INTE LÄNGRE. BRISTANDE KVALITET
+# source(here("Skript","varsel_bransch_manad_korrekt.R"), encoding="UTF-8")
+# hamta_varsel_bransch_manad(vald_region = "20",
+#                            filnamn="varsel_bransch_manad.xlsx",
+#                            output_mapp = Output_mapp)
 
-# Konjunkturbarometern
+# Konjunkturbarometern - KVAR
 source(here("Skript","barometerindikatorn.R"), encoding="UTF-8")
 hamta_data_konjunkturbarometern(output_mapp_excel = here("Data"),
                                 output_mapp_figur = here("Output","/"),
                                 skapa_figur=FALSE,
                                 spara_data=TRUE)
 
-# BNP
+# BNP - KLAR
 source(here("Skript","BNP.R"), encoding="UTF-8")
 hamta_data_BNP(spara_data=TRUE,
                output_mapp_excel = here("Data"))
 
-# KPI 
+# KPI - KLAR
 source(here("Skript","KPI.R"), encoding="UTF-8")
 hamta_data_kpi(spara_data=TRUE,
                output_mapp_excel = here("Data"))
 
-# Småhuspriser
+# Småhuspriser - KLAR
 source(here("Skript","smahuspriser.R"), encoding="UTF-8")
 hamta_data_smahuspriser(output_mapp_excel = here("Data"),
                         output_mapp_figur = here("Output","/"),
                         skapa_figur=FALSE,
                         spara_data=TRUE)
-# Konkurser
+# Konkurser - KLAR
 source(here("Skript","konkurser.R"), encoding="UTF-8")
 hamta_data_konkurser(vald_region="20",
                      spara_data=TRUE,
@@ -69,7 +69,7 @@ hamta_data_konkurser(vald_region="20",
 #                           diag_arbetskraftsdeltagande = FALSE,
 #                           diag_sysselsattningsgrad = FALSE)
 
-# Arbetslöshet tidsserie
+# Arbetslöshet tidsserie - Kvar
 source(here("Skript","arbetsmarknadsstatus_tidsserie.R"), encoding="UTF-8")
 diag_arbetsmarknadsstatus(region_vekt="20",
                           output_mapp = here("Data"),
@@ -78,7 +78,7 @@ diag_arbetsmarknadsstatus(region_vekt="20",
                           diag_arbetskraftsdeltagande = FALSE,
                           diag_sysselsattningsgrad = FALSE)
 
-# Arbetslöshet kommun
+# Arbetslöshet kommun - Kvar
 source(here("Skript","arbetsloshet_kommun.R"), encoding="UTF-8")
 hamta_data_arbetsloshet(vald_region="20",
                         spara_data=TRUE,
@@ -86,7 +86,7 @@ hamta_data_arbetsloshet(vald_region="20",
 
 
 
-# Byggande
+# Byggande 
 source(here("Skript","Byggande.R"), encoding="UTF-8")
 hamta_data_nybyggnation(vald_region="20",
                         spara_data=TRUE,

@@ -1,4 +1,4 @@
-test  = diagram_smahuspriser(region_vekt = "20",spara_figur = FALSE)
+#test  = diagram_smahuspriser(region_vekt = "20",spara_figur = FALSE)
 diagram_smahuspriser <- function(region_vekt = "20",
                             output_mapp = "G:/Samhällsanalys/Statistik/Näringsliv/basfakta/",
                             spara_figur = TRUE, # Skall diagrammet sparas
