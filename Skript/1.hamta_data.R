@@ -86,7 +86,7 @@ hamta_data_arbetsloshet(vald_region="20",
 
 
 
-# Byggande 
+# Byggande - KLAR
 source(here("Skript","Byggande.R"), encoding="UTF-8")
 hamta_data_nybyggnation(vald_region="20",
                         spara_data=TRUE,

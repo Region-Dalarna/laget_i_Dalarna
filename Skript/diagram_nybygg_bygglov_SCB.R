@@ -1,4 +1,4 @@
-#test  = diagram_nybyggnation_bygglov(region_vekt = "20",spara_figur = FALSE)
+#test  = diagram_nybyggnation_bygglov(region_vekt = "20",spara_figur = FALSE,returnera_data = TRUE)
 diagram_nybyggnation_bygglov <- function(region_vekt = "20",
                                  output_mapp = "G:/Samhällsanalys/Statistik/Näringsliv/basfakta/",
                                  spara_figur = TRUE, # Skall diagrammet sparas
@@ -7,7 +7,8 @@ diagram_nybyggnation_bygglov <- function(region_vekt = "20",
                                  valda_farger = diagramfarger("rus_sex"),
                                  diag_nybyggnation = TRUE,
                                  diag_bygglov = TRUE,
-                                 startar = "2020"){# Startvärde för diagrammet.Finns från 1997
+                                 startar_nybygg = "2020",# Startvärde för diagrammet. Finns från 1975
+                                 startar_bygglov = "2020" ){# Startvärde för diagrammet. Finns från 1996
   
   if (!require("pacman")) install.packages("pacman")
   p_load(tidyverse,
@@ -16,6 +17,7 @@ diagram_nybyggnation_bygglov <- function(region_vekt = "20",
   source("C:/Users/frkjon/Projekt/laget_i_Dalarna/Skript/hamta_nybyggnation_region_hustyp_tid_LagenhetNyKv16_scb.R")
   source("C:/Users/frkjon/Projekt/laget_i_Dalarna/Skript/hamta_bygglov_region_hustyp_tid_LghHustypKv_scb.R")
   source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_SkapaDiagram.R", encoding = "utf-8")
+  source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_text.R", encoding = "utf-8")
   
   diagram_capt <- "Källa: SCB:s öppna statistikdatabas\nBearbetning: Samhällsanalys, Region Dalarna"
   gg_list <- list()
@@ -38,7 +40,12 @@ diagram_nybyggnation_bygglov <- function(region_vekt = "20",
       mutate(ar=substr(kvartal,1,4),
             ar_kvartal = kvartal,
             kvartal=substr(kvartal,5,6)) %>% 
-        filter(variabel == "Färdigställda lägenheter i nybyggda hus")
+        filter(variabel == "Färdigställda lägenheter i nybyggda hus",
+               ar>=startar_nybygg) 
+    
+    if(returnera_data == TRUE){
+      assign("Husbyggande_df", nybyggnation_df, envir = .GlobalEnv)
+    }
     
     diagram_capt <- "Källa: SCBs öppna statistikdatabas.\nBearbetning: Samhällsanalys, Region Dalarna."
     
@@ -46,8 +53,7 @@ diagram_nybyggnation_bygglov <- function(region_vekt = "20",
     diagramfil <- glue("nybyggnation_{unique(nybyggnation_df$regionkod) %>% paste0(collapse = '_')}_ar{min(nybyggnation_df$kvartal)}_{max(nybyggnation_df$kvartal)}.png")
     objektnamn <- c(objektnamn,diagramfil %>% str_remove(".png"))
     
-    gg_obj <- SkapaLinjeDiagram(skickad_df = nybyggnation_df %>%
-                                              filter(ar>=startar),
+    gg_obj <- SkapaLinjeDiagram(skickad_df = nybyggnation_df,
                                             skickad_x_var = "ar_kvartal",
                                             skickad_y_var = "varde",
                                             skickad_x_grupp = "hustyp",
@@ -80,7 +86,12 @@ diagram_nybyggnation_bygglov <- function(region_vekt = "20",
       mutate(ar = substr(kvartal,1,4),
              ar_kvartal = kvartal,
              kvartal=substr(kvartal,5,6)) %>% 
-        rename("Antal" = `Bygglov för nybyggnad, lägenheter`)
+        rename("Antal" = `Bygglov för nybyggnad, lägenheter`) %>%
+          filter(ar>=startar_bygglov)
+    
+    if(returnera_data == TRUE){
+      assign("Bygglov_df", bygglov_df, envir = .GlobalEnv)
+    }
     
     diagram_capt <- "Källa: SCBs öppna statistikdatabas.\nBearbetning: Samhällsanalys, Region Dalarna."
     
@@ -89,7 +100,7 @@ diagram_nybyggnation_bygglov <- function(region_vekt = "20",
     objektnamn <- c(objektnamn,diagramfil %>% str_remove(".png"))
     
     gg_obj <- SkapaLinjeDiagram(skickad_df = bygglov_df %>%
-                                   filter(ar>=startar) %>%
+                                   filter(ar>=startar_bygglov) %>%
                                    filter(hustyp%in%c("småhus","flerbostadshus exkl. specialbostäder")), 
                                  skickad_x_var = "ar_kvartal",
                                  skickad_y_var = "Antal",
