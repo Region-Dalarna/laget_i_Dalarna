@@ -42,6 +42,10 @@ diagram_smahuspriser <- function(region_vekt = "20",
           mutate(region = skapa_kortnamn_lan(region,byt_ut_riket_mot_sverige = TRUE)) %>% 
             filter(ar>=startar)
   
+  if(returnera_data == TRUE){
+    assign("priser_df", priser_df, envir = .GlobalEnv)
+  }
+  
   if(diag_tidsserie==TRUE){
   
     # Skapar ett linjediagram för förändring i priser. Blir något fel när man skapar index via funktionen, 

@@ -1,0 +1,137 @@
+# Uppdaterar data som används i rapporten "Läget i Dalarna" och kör markdown-filen som skapar rapporten.
+# Notera att viss data uppdateras automatiskt, medan annan måste laddas hem från diverse källor (som finns i skripten).
+
+if (!require("pacman")) install.packages("pacman")
+p_load(here)
+
+source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R")
+
+Output_mapp = here("Data","/")
+spara_figur = FALSE
+
+###############################
+### Uppdateras automatiskt ####
+###############################
+
+# BNP - 1 diagram
+source(here("Skript","diagram_BNP_forandring_SCB.R"), encoding="UTF-8")
+gg_BNP <- diagram_BNP_SCB(spara_figur = spara_figur, 
+                          output_mapp = Output_mapp,
+                          returnera_data = TRUE, 
+                          returnera_figur = TRUE)
+
+# Konjunkturbarometern - 2 diagram
+source(here("Skript","diagram_konjunkturbarometern_konj.R"), encoding="UTF-8")
+gg_konjB <- diagram_konjunkturbarometern(spara_figur = spara_figur, 
+                                         output_mapp = Output_mapp,
+                                         returnera_data = TRUE, 
+                                         returnera_figur = TRUE)
+
+# KPI - 1 diagram
+source(here("Skript","diagram_inflation_SCB.R"), encoding="UTF-8")
+gg_infl <- diagram_inflation_SCB(spara_figur = spara_figur, 
+                                 output_mapp = Output_mapp,
+                                 returnera_data = TRUE, 
+                                 returnera_figur = TRUE)
+
+# Småhuspriser - 2 diagram
+source(here("Skript","diagram_smahuspriser_SCB.R"), encoding="UTF-8")
+gg_smahuspriser <- diagram_smahuspriser(spara_figur = spara_figur, 
+                                        output_mapp = Output_mapp,
+                                        returnera_data = TRUE, 
+                                        returnera_figur = TRUE)
+
+# Byggande - 2 figurer
+source(here("Skript","diagram_nybygg_bygglov_SCB.R"), encoding="UTF-8")
+gg_nybygg_bygglov <- diagram_nybyggnation_bygglov(spara_figur = spara_figur, 
+                                                  output_mapp = Output_mapp,
+                                                  returnera_data = TRUE, 
+                                                  returnera_figur = TRUE)
+
+# Konkurser - 2 figurer
+source(here("Skript","diagram_konkurser_SCB.R"), encoding="UTF-8")
+gg_konkurser <- diagram_konkurser_SCB(spara_figur = spara_figur, 
+                                      output_mapp = Output_mapp,
+                                      returnera_data = TRUE, 
+                                      returnera_figur = TRUE)
+
+# Arbetslöshet län - 1 figur
+source("https://raw.githubusercontent.com/Region-Dalarna/diagram/main/diagram_arbetsmarknadsstatus_senastear.R")
+gg_arbetsloshet_lan <- diagram_arbetsmarknadsstatus(region_vekt = hamtaAllaLan(),
+                                                    spara_figur = spara_figur, 
+                                                    output_mapp_figur = Output_mapp,
+                                                    diag_arbetskraftsdeltagande = FALSE, 
+                                                    diag_sysselsattningsgrad = FALSE, 
+                                                    returnera_data = TRUE, 
+                                                    returnera_figur = TRUE)
+
+# Arbetslöshet tidsserie - 1 figur
+source("https://raw.githubusercontent.com/Region-Dalarna/diagram/main/diagram_arbetsmarknadsstatus_tidsserie_SCB.R")
+gg_arbetsloshet_tidsserie <- diagram_arbetsmarknadsstatus_tidsserie (spara_figur = spara_figur, 
+                                                                     output_mapp_figur = Output_mapp,
+                                                                     returnera_data = TRUE, 
+                                                                     returnera_figur = TRUE)
+
+###########################################
+### Kräver manuell nedladdning av data ####
+###########################################
+
+# Nystartade företag - 1 figur
+source(here("Skript","diagram_nystartade_ftg_tillvaxtanalys.R"), encoding="UTF-8")
+gg_nystartade <- diagram_nystartade(spara_figur = spara_figur, 
+                                    output_mapp = Output_mapp,
+                                    returnera_data = TRUE, 
+                                    returnera_figur = TRUE)
+
+# Avregistrerade företag - 1 figur
+source(here("Skript","diagram_avreg_ftg_Bolagsverket.R"), encoding="UTF-8")
+gg_avregistrerade <- diagram_avregistrerade(spara_figur = spara_figur, 
+                                            output_mapp = Output_mapp,
+                                            returnera_data = TRUE, 
+                                            returnera_figur = TRUE)
+
+
+# Ekonomiskt bistånd - 1 figur
+source(here("Skript","diagram_ek_bistand_Socialstyrelsen.R"), encoding="UTF-8")
+gg_ek_bistand <- diagram_ek_bistand(spara_figur = spara_figur, 
+                                    output_mapp = Output_mapp,
+                                    returnera_data = TRUE, 
+                                    returnera_figur = TRUE)
+
+
+# # Arbetslöshet
+# source("G:/skript/diagram/diag_bas_syss_arblosa_inr_utr_fodda_manad.R", encoding="UTF-8")
+# diag_bas_arblosa_inr_utr_fodda_manad(vald_region="20",
+#                                      skriv_excelfil=TRUE,
+#                                      skriv_diagram = FALSE,
+#                                      output_mapp = here("Data","/"))
+
+# # Arbetslöshet län
+# source(here("Skript","arbetsmarknadsstatus_lan.R"), encoding="UTF-8")
+# diag_arbetsmarknadsstatus(output_mapp = here("Data"),
+#                           skapa_fil = TRUE,
+#                           diag_arbetslosthet = TRUE,
+#                           diag_arbetskraftsdeltagande = FALSE,
+#                           diag_sysselsattningsgrad = FALSE)
+
+# Arbetslöshet tidsserie - Kvar
+source(here("Skript","arbetsmarknadsstatus_tidsserie.R"), encoding="UTF-8")
+diag_arbetsmarknadsstatus(region_vekt="20",
+                          output_mapp = here("Data"),
+                          skapa_fil = TRUE,
+                          diag_arbetslosthet = TRUE,
+                          diag_arbetskraftsdeltagande = FALSE,
+                          diag_sysselsattningsgrad = FALSE)
+
+# Arbetslöshet kommun - Kvar
+source(here("Skript","arbetsloshet_kommun.R"), encoding="UTF-8")
+hamta_data_arbetsloshet(vald_region="20",
+                        spara_data=TRUE,
+                        output_mapp_excel = here("Data"))
+
+rmarkdown::render(
+  input = 'laget_i_Dalarna.Rmd',
+  output_file = 'laget_i_Dalarna.html',
+  envir = parent.frame()
+)
+

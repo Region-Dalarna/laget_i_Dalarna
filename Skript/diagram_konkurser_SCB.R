@@ -44,7 +44,8 @@ diagram_konkurser_SCB <- function(region_vekt = "20",
       `näringsgren SNI 2007` == "övrig tillverkningsindustri, reparationsverkstäder och installationsföretag" ~ "övrig tillverkningsindustri m.m.",
       .default = `näringsgren SNI 2007`
     ))  %>% 
-    rename(tid = månad) %>% 
+    rename(tid = månad,
+           "varde" = `Anställda drabbade av konkurser`) %>% 
     mutate(år = str_sub(tid, 1, 4),
            månad = format(as.Date(paste(år, str_sub(tid, 6,7), "1", sep = "-")), "%b"),
            manad_long=format(as.Date(paste(år, str_sub(tid, 6,7),"1", sep = "-")), "%B"),
@@ -77,7 +78,7 @@ diagram_konkurser_SCB <- function(region_vekt = "20",
     konkurser_jmfr <- konkurser_df %>% 
       filter(år %in% c(senaste_ar, as.character(as.numeric(senaste_ar) -1))) %>% 
       group_by(år, månad,manad_long, regionkod, region) %>%
-      summarize(Antal_berorda = sum(`Anställda drabbade av konkurser`)) %>% 
+      summarize(Antal_berorda = sum(varde)) %>% 
       ungroup()
 
     jmfr_varnamn <- paste0("genomsnitt år ", as.character((senaste_ar_num-6)), "-", as.character((as.numeric(senaste_ar)-2)))
@@ -87,7 +88,7 @@ diagram_konkurser_SCB <- function(region_vekt = "20",
     konkurser_fem_senaste <- konkurser_df %>% 
       filter(år %in% as.character(c((senaste_ar_num-2):(senaste_ar_num -6)))) %>% 
       group_by(månad,manad_long, regionkod, region) %>%
-      summarize(Berorda_tot = sum(`Anställda drabbade av konkurser`, na.rm = TRUE),
+      summarize(Berorda_tot = sum(varde, na.rm = TRUE),
                 Antal_berorda = Berorda_tot/antal_ar) %>% 
       ungroup() %>% 
       mutate(år = jmfr_varnamn)
@@ -142,8 +143,8 @@ diagram_konkurser_SCB <- function(region_vekt = "20",
     konkurser_bransch_10 <- konkurser_df %>%
       rename("bransch"= `näringsgren SNI 2007`) %>%
       filter(månad_år%in%senaste_ar) %>%
-      slice_max(`Anställda drabbade av konkurser`,n=10) %>%
-      filter(`Anställda drabbade av konkurser`>0) %>% 
+      slice_max(varde,n=10) %>%
+      filter(varde>0) %>% 
       mutate(bransch = paste0(toupper(substr(bransch, 1, 1)), substr(bransch, 2, nchar(bransch))))
     
     if(returnera_data == TRUE){
@@ -158,7 +159,7 @@ diagram_konkurser_SCB <- function(region_vekt = "20",
     
     gg_obj <- SkapaStapelDiagram(skickad_df = konkurser_bransch_10 ,
                                             skickad_x_var = "bransch",
-                                            skickad_y_var = "Anställda drabbade av konkurser",
+                                            skickad_y_var = "varde",
                                             diagram_titel = diagram_titel,
                                             diagram_capt = diagram_capt,
                                             manual_x_axis_text_vjust = 1,
