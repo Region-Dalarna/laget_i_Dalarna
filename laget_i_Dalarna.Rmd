@@ -982,7 +982,6 @@ Det finns vissa indikationer på att arbetslösheten har börjat stiga svagt ige
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_arbetsloshet_tidsserie$arbetslöshet_tidsserie_totalt_Dalarna
-
 ```
 
 ### Kommun {-}
