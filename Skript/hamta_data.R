@@ -6,7 +6,7 @@ p_load(here)
 
 source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R")
 
-Output_mapp = here("Data","/")
+Output_mapp = here("Figurer","/")
 spara_figur = FALSE
 
 ###############################
@@ -72,6 +72,12 @@ gg_arbetsloshet_tidsserie <- diagram_arbetsmarknadsstatus_tidsserie (spara_figur
                                                                      returnera_data = TRUE, 
                                                                      returnera_figur = TRUE)
 
+# Arbetslöshet kommun - Karta, ej diagramskript (ännu)
+source(here("Skript","arbetsloshet_kommun.R"), encoding="UTF-8")
+hamta_data_arbetsloshet(vald_region="20",
+                        spara_data=TRUE,
+                        output_mapp_excel = here("Data"))
+
 ###########################################
 ### Kräver manuell nedladdning av data ####
 ###########################################
@@ -98,36 +104,6 @@ gg_ek_bistand <- diagram_ek_bistand(spara_figur = spara_figur,
                                     returnera_data = TRUE, 
                                     returnera_figur = TRUE)
 
-
-# # Arbetslöshet
-# source("G:/skript/diagram/diag_bas_syss_arblosa_inr_utr_fodda_manad.R", encoding="UTF-8")
-# diag_bas_arblosa_inr_utr_fodda_manad(vald_region="20",
-#                                      skriv_excelfil=TRUE,
-#                                      skriv_diagram = FALSE,
-#                                      output_mapp = here("Data","/"))
-
-# # Arbetslöshet län
-# source(here("Skript","arbetsmarknadsstatus_lan.R"), encoding="UTF-8")
-# diag_arbetsmarknadsstatus(output_mapp = here("Data"),
-#                           skapa_fil = TRUE,
-#                           diag_arbetslosthet = TRUE,
-#                           diag_arbetskraftsdeltagande = FALSE,
-#                           diag_sysselsattningsgrad = FALSE)
-
-# Arbetslöshet tidsserie - Kvar
-source(here("Skript","arbetsmarknadsstatus_tidsserie.R"), encoding="UTF-8")
-diag_arbetsmarknadsstatus(region_vekt="20",
-                          output_mapp = here("Data"),
-                          skapa_fil = TRUE,
-                          diag_arbetslosthet = TRUE,
-                          diag_arbetskraftsdeltagande = FALSE,
-                          diag_sysselsattningsgrad = FALSE)
-
-# Arbetslöshet kommun - Kvar
-source(here("Skript","arbetsloshet_kommun.R"), encoding="UTF-8")
-hamta_data_arbetsloshet(vald_region="20",
-                        spara_data=TRUE,
-                        output_mapp_excel = here("Data"))
 
 rmarkdown::render(
   input = 'laget_i_Dalarna.Rmd',

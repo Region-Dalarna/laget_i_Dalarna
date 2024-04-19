@@ -373,7 +373,7 @@ Den höga inflationstakten under framförallt 2022 och 2023 har ett antal olika 
 ```
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
-gg_infl
+gg_infl$inflation
 ```
 
 # Bostadsmarknaden
@@ -897,7 +897,7 @@ Arbetslöshet beräknas som andelen arbetslösa i förhållande till antalet per
 </details>
 
 ### Län {-}
-I en nationell jämförelse är arbetslösheten i Dalarna relativt låg. I `r arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$manad_long` `r arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$ar` hade Dalarna `r gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$varde)` procents arbetslöshet, att jämföra med `r gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Sverige") %>% .$varde)` procent i Sverige som helhet. Noterbart är även att Dalarna har klart lägre arbetslöshet än näraliggande Gävleborg, där arbetslösheten var `r gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Gävleborg") %>% .$varde)` procent under samma tidsperiod. Lägst arbetslös i Sverige hade `r arbetsmarknadsstatus %>% filter(varde==min(varde)) %>%  .$region[1]`, med `r gsub("\\.",",",arbetsmarknadsstatus %>% filter(varde==min(varde)) %>% .$varde)[1]` procent.
+I en nationell jämförelse är arbetslösheten i Dalarna relativt låg. I `r arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$manad_long` `r arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$ar` hade Dalarna `r gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$varde)` procents arbetslöshet, att jämföra med `r gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Sverige") %>% .$varde)` procent i Sverige som helhet. Noterbart är även att Dalarna har klart lägre arbetslöshet än näraliggande Gävleborg, där arbetslösheten var `r gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Gävleborg") %>% .$varde)` procent under samma tidsperiod. Lägst arbetslös i Sverige hade `r (arbetsmarknadsstatus %>% filter(varde==min(varde)) %>%  .$region)[1]`, med `r gsub("\\.",",",arbetsmarknadsstatus %>% filter(varde==min(varde)) %>% .$varde)[1]` procent.
 
 ```{r, include = FALSE}
 
@@ -930,7 +930,7 @@ I en nationell jämförelse är arbetslösheten i Dalarna relativt låg. I `r ar
 ```
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
-gg_arbetsloshet_lan
+gg_arbetsloshet_lan$arbetslosthet_senastear
 ```
 
 ### Jämförelse över tid {-}
@@ -993,7 +993,7 @@ filnamn_kommuner <- "Dalarna_kommuner.shp"
 
 sokvag_kommuner_sv <- paste0(mapp_scbadmgranser, filnamn_kommuner)
 
-kommuner_sv <- st_read(sokvag_kommuner_sv)
+kommuner_sv <- st_read(sokvag_kommuner_sv,options = "ENCODING=WINDOWS-1252")
 
 #col.regions=colorRampPalette(c('deepskyblue', 'deepskyblue4')),
 
@@ -1004,26 +1004,57 @@ kommuner_sv <- st_read(sokvag_kommuner_sv)
          mutate(regionkod = as.integer(regionkod))
 
 # lägg ihop kommunpolygonerna med brp per kommun-statistiken
-arblosa_kommun_gis <- left_join(kommuner_sv, arbetsloshet_kommun, by = c("KOMMUNKOD" = "regionkod"))
+arblosa_kommun_gis <- left_join(kommuner_sv, arbetsloshet_kommun, by = c("KOMMUNKOD" = "regionkod")) %>% 
+   mutate(månad = gsub("M","-",månad),
+          år = str_sub(månad, 1, 4),
+          manad = format(as.Date(paste(år, str_sub(månad, 6,7), "1", sep = "-")), "%b"),
+          manad_long=format(as.Date(paste(år, str_sub(månad, 6,7),"1", sep = "-")), "%B"),
+          år_månad = paste0(år, " - ", månad),
+          månad_år = paste0(månad, " ", år))
 
- arblosa_kommun_gis$grupp <- factor(arblosa_kommun_gis$grupp,levels=c("0-1","1-2","2-3","3-4","4-5","5-6","6-7","7+"))
+ arblosa_kommun_gis$grupp <- factor(arblosa_kommun_gis$grupp,levels=c("0-1","1-2","2-3","3-4","4-5","5-6","6-7","7+")) 
  
- arblosa_kommun_gis <- arblosa_kommun_gis %>% 
-   mutate(arb_region=paste0(region,": ",arbetslöshet," %"))
+ # arblosa_kommun_gis <- arblosa_kommun_gis %>%
+ #   mutate(arb_region=paste0(region,": ",arbetslöshet," %"))
+ # 
+ # karta <- mapview(arblosa_kommun_gis,zcol = c("grupp"),
+ #           col.regions=colorRampPalette(c('green', 'darkgreen')),
+ #            popup = popupTable(arblosa_kommun_gis,
+ #                          zcol = c("region","arbetslöshet")),
+ #               layer.name = c("Arbetslöshet (%)"),
+ #                  label = c("arb_region"))
+ 
+ karta <- ggplot(arblosa_kommun_gis,
+       aes(fill = grupp,
+           label = KOMMUNNAMN,tooltip=paste("Kommun:",KOMMUNNAMN,"<br>","Arbetslöshet",arbetslöshet,"%"))) +
+  geom_sf_interactive() +
+  scale_fill_manual(values = colorRampPalette(c("#93cec1", "#0e5a4c"))(8)) +
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.background = element_rect(fill = "white", colour = 'white'),
+        plot.caption = element_text(hjust = 0),
+        legend.position = "right") +
+  labs(title = paste0("Arbetslöshet i åldersgruppen ",unique(arblosa_kommun_gis$ålder)," i Dalarna ",unique(arblosa_kommun_gis$manad_long)," ",unique(arblosa_kommun_gis$år)),
+       subtitle = "",
+       yaxis = "",
+       fill = "Arbetslöshet (%)",
+       caption = "Källa: SCB:s öppna statistikdatabas, Befolkningens arbetsmarknadsstatus (BAS)\nBearbetning: Samhällsanalys, Region Dalarna") 
 
- karta <- mapview(arblosa_kommun_gis,zcol = c("grupp"),
-           col.regions=colorRampPalette(c('green', 'darkgreen')),
-            popup = popupTable(arblosa_kommun_gis,
-                          zcol = c("region","arbetslöshet")),
-               layer.name = c("Arbetslöshet (%)"),
-                  label = c("arb_region"))
+ karta <- girafe(ggobj=karta)
+
+ karta <-girafe_options(karta,opts_tooltip(opacity = 1,css = "padding:4pt;font-size:0.7rem;color:black;background-color:rgba(255,255,255,0.7);border-radius:5pt;font-weight: 600",
+                                           offx = 25,
+                                           use_cursor_pos = TRUE))
 
   
 ```
 Arbetslösheten bland Dalarnas kommuner är låg på många håll, där en majoritet av länets kommuner hade mellan 2 och 4 procents arbetslöshet i `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$ar))`. Lägst är arbetslösheten i  `r arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==min(arbetslöshet)) %>% .$region %>% .[1]`, med `r gsub("\\.",",",arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==min(arbetslöshet)) %>% .$arbetslöshet %>% .[1])` procent. I södra delarna av länet är bilden en annan, där flera kommuner har mer än 6 procents arbetslöshet. Högst är arbetslösheten i  `r arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==max(arbetslöshet)) %>% .$region %>% .[1]`, där den uppgår till `r gsub("\\.",",",arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==max(arbetslöshet)) %>% .$arbetslöshet %>% .[1])` procent. En tänkbar orsak till detta mönster är att de kommuner med högst arbetslöshet också är de kommuner som har högst andel utrikes födda. Den sistnämnda gruppen tenderar att hamna i arbetslöshet i högre utsträckning än inrikes födda.
 
-```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=10, fig.width=10}
 karta
+
 ```
 
 # Hushållens ekonomi
