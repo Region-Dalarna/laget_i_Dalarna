@@ -15,6 +15,7 @@ diagram_nybyggnation_bygglov <- function(region_vekt = "20",
          glue)
   
   source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/main/hamta_nybyggnation_region_hustyp_tid_LagenhetNyKv16_scb.R")
+  source("C:/Users/frkjon/Projekt/laget_i_Dalarna/Old/hamta_nybyggnation_region_hustyp_tid_LagenhetNyKv16_scb.R")
   source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/main/hamta_bygglov_region_hustyp_tid_LghHustypKv_scb.R")
   source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_SkapaDiagram.R", encoding = "utf-8")
   source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_text.R", encoding = "utf-8")
@@ -40,6 +41,7 @@ diagram_nybyggnation_bygglov <- function(region_vekt = "20",
       mutate(ar=substr(kvartal,1,4),
             ar_kvartal = kvartal,
             kvartal=substr(kvartal,5,6)) %>% 
+              rename(variabel = variabelkategori) %>% 
         filter(variabel == "Påbörjade lägenheter i nybyggda hus",
                ar>=startar_nybygg) 
     
