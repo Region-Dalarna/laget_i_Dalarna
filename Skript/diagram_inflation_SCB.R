@@ -13,7 +13,7 @@ diagram_inflation_SCB <- function(output_mapp = "G:/Samhällsanalys/Statistik/N�
   if (!require("pacman")) install.packages("pacman")
   p_load(tidyverse)
   
-  source("C:/Users/frkjon/Projekt/laget_i_Dalarna/Skript/hamta_KPIF_tid_KPIF_scb.R")
+  source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/main/hamta_KPIF_tid_scb.R")
   source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_SkapaDiagram.R", encoding = "utf-8")
   
   diagram_capt <- "Källa: SCB:s öppna statistikdatabas\nBearbetning: Samhällsanalys, Region Dalarna"

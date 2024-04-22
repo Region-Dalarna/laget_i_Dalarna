@@ -17,7 +17,7 @@ diagram_konjunkturbarometern <- function(output_mapp = "G:/Samhällsanalys/Stati
     if (!require("pacman")) install.packages("pacman")
     p_load(tidyverse)
     
-    source("C:/Users/frkjon/Projekt/laget_i_Dalarna/Skript/hamta_konjunkturbarometern_indikator_period_konj.R")
+    source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/main/hamta_konjunkturbarometern_indikator_period_konj.R")
     source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_SkapaDiagram.R", encoding = "utf-8")
     
     diagram_capt <- "Källa: Konjunkturinstitutet.\nBearbetning: Samhällsanalys, Region Dalarna.\nDiagramförklaring: En indikator över 100 motsvarar en starkare ekonomi än normalt och värden över 110 en mycket starkare ekonomi än normalt.\nEn indikator under 100 respektive under 90 visar en svagare respektive mycket svagare ekonomi än normalt."

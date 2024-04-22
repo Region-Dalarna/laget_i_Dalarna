@@ -19,7 +19,7 @@ diagram_konkurser_SCB <- function(region_vekt = "20",
   p_load(tidyverse,
          glue)
   
-  source("C:/Users/frkjon/Projekt/laget_i_Dalarna/Skript/hamta__region_sni2007_foretagsform_tid_KonkurserAnst07_scb.R")
+  source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/main/hamta__region_sni2007_foretagsform_tid_KonkurserAnst07_scb.R")
   source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_SkapaDiagram.R", encoding = "utf-8")
   
   diagram_capt <- "Källa: SCB:s öppna statistikdatabas\nBearbetning: Samhällsanalys, Region Dalarna"

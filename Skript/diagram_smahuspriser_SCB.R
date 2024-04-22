@@ -14,7 +14,7 @@ diagram_smahuspriser <- function(region_vekt = "20",
   p_load(tidyverse,
          glue)
   
-  source("C:/Users/frkjon/Projekt/laget_i_Dalarna/Skript/hamta_smahuspriser_region_tid_SmahusT2M_scb.R")
+  source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/main/hamta_smahuspriser_region_tid_SmahusT2M_scb.R")
   source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_SkapaDiagram.R", encoding = "utf-8")
   
   diagram_capt <- "Källa: SCB:s öppna statistikdatabas\nBearbetning: Samhällsanalys, Region Dalarna"
