@@ -41,7 +41,6 @@ diagram_nybyggnation_bygglov <- function(region_vekt = "20",
       mutate(ar=substr(kvartal,1,4),
             ar_kvartal = kvartal,
             kvartal=substr(kvartal,5,6)) %>% 
-              rename(variabel = variabelkategori) %>% 
         filter(variabel == "Påbörjade lägenheter i nybyggda hus",
                ar>=startar_nybygg) 
     
