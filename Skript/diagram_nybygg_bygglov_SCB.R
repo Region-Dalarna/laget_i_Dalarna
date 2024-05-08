@@ -50,7 +50,7 @@ diagram_nybyggnation_bygglov <- function(region_vekt = "20",
     
     diagram_capt <- "Källa: SCBs öppna statistikdatabas.\nBearbetning: Samhällsanalys, Region Dalarna."
     
-    diagramtitel <- glue("{unique(nybyggnation_df$variabel)} i {unique(nybyggnation_df$region) %>% skapa_kortnamn_lan() %>% list_komma_och()} kvartal {min(nybyggnation_df$kvartal)} - {max(nybyggnation_df$kvartal)}")
+    diagramtitel <- glue("{unique(nybyggnation_df$variabel)} i {unique(nybyggnation_df$region) %>% skapa_kortnamn_lan() %>% list_komma_och()}")
     diagramfil <- glue("nybyggnation_{unique(nybyggnation_df$regionkod) %>% paste0(collapse = '_')}_ar{min(nybyggnation_df$kvartal)}_{max(nybyggnation_df$kvartal)}.png")
     objektnamn <- c(objektnamn,diagramfil %>% str_remove(".png"))
     
@@ -96,7 +96,7 @@ diagram_nybyggnation_bygglov <- function(region_vekt = "20",
     
     diagram_capt <- "Källa: SCBs öppna statistikdatabas.\nBearbetning: Samhällsanalys, Region Dalarna."
     
-    diagramtitel <- glue("Bygglov för nybyggnad, lägenheter i {unique(bygglov_df$region) %>% skapa_kortnamn_lan() %>% list_komma_och()} kvartal {min(bygglov_df$kvartal)} - {max(bygglov_df$kvartal)}")
+    diagramtitel <- glue("Bygglov för nybyggnad, lägenheter i {unique(bygglov_df$region) %>% skapa_kortnamn_lan() %>% list_komma_och()}")
     diagramfil <- glue("bygglov_{unique(bygglov_df$regionkod) %>% paste0(collapse = '_')}_ar{min(bygglov_df$kvartal)}_{max(bygglov_df$kvartal)}.png")
     objektnamn <- c(objektnamn,diagramfil %>% str_remove(".png"))
     

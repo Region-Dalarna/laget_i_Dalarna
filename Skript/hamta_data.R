@@ -69,7 +69,8 @@ gg_arbetsloshet_lan <- diagram_arbetsmarknadsstatus(region_vekt = hamtaAllaLan()
 source("https://raw.githubusercontent.com/Region-Dalarna/diagram/main/diagram_arbetsmarknadsstatus_tidsserie_SCB.R")
 gg_arbetsloshet_tidsserie <- diagram_arbetsmarknadsstatus_tidsserie (spara_figur = spara_figur, 
                                                                      output_mapp_figur = Output_mapp,
-                                                                     returnera_data = TRUE, 
+                                                                     returnera_data = TRUE,
+                                                                     diagram_facet = TRUE,
                                                                      returnera_figur = TRUE)
 
 # Arbetslöshet kommun - Karta, ej diagramskript (ännu)

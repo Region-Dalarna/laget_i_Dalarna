@@ -184,7 +184,7 @@ stilsätter det i CSS*/
     margin-left: 25%;
     width: 50%;
     color: #fff;
-    font-size: 3.75em;
+    font-size: 2.1em;
     text-align: center;
     line-height: 1.2em;
     text-shadow: rgba(34,34,34,.8) 3px 5px 5px;
@@ -245,7 +245,7 @@ stilsätter det i CSS*/
 @media (max-width: 970px){
  
  .top-text {
-    font-size: 2.5em;
+    font-size: 1.5em;
 }
 
 .toc-content.col-xs-12.col-sm-8.col-md-9{
@@ -262,6 +262,12 @@ stilsätter det i CSS*/
  .header-logo_right {
    display:none;
   
+}
+ .top-text {
+    font-size: 1.3em;
+    margin-left: 20%;
+    width: 60%;
+}
 }
 
 
