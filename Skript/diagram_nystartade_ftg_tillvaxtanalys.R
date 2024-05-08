@@ -21,7 +21,7 @@ diagram_nystartade <- function(output_mapp = "G:/Samhällsanalys/Statistik/Näri
   gg_list <- list()
   
   # Källa: https://statistik.tillvaxtanalys.se/PxWeb/pxweb/sv/Tillv%C3%A4xtanalys%20statistikdatabas/
-  # Uppdateras genom att hämta hem ny data. Kontrollerad 2024-03-15 - ingen ny data
+  # Uppdateras genom att hämta hem ny data. Kontrollerad 2024-05-08 - ingen ny data
   nystartade_df <-  read.xlsx(here("Data","Tillvaxtananalys_2024_04_10.xlsx"),startRow = 3)
   
   diagram_capt <- "Källa: Tillväxtanalys.\nBearbetning: Samhällsanalys, Region Dalarna."

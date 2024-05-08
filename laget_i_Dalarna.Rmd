@@ -758,7 +758,7 @@ gg_konkurser$konkurser_bransch
   #     ))
 ```
 
-Ett potentiellt alternativ till att begära ett företag i konkurs är att istället avregistrera det. Antalet avregistrerade företag tenderar att följa ett tydligt säsongsmönster, där klart flest företag avregistreras i januari. Det är dock svårt att se någon långsiktig trend, då ungefär lika många företag avregistreras varje år. De senaste månaderna har dock något färre företag avregistreras jämfört med samma period tidigare år. I `r tolower(last(antal_avregistreringar_df$manad_long))` `r max(antal_avregistreringar_df$År)` avregistrerades `r last(antal_avregistreringar_df$antal)` företag i Dalarna, jämfört med `r last(antal_avregistreringar_df %>% filter(Månad == last(antal_avregistreringar_df %>% filter(År == max(.$År)) %>% .$Månad)) %>% filter(År == (max(.$År)-1)) %>% .$antal)` samma månad året innan.
+Ett potentiellt alternativ till att begära ett företag i konkurs är att istället avregistrera det. Antalet avregistrerade företag tenderar att följa ett tydligt säsongsmönster, där klart flest företag avregistreras i januari. Det är dock svårt att se någon långsiktig trend, då ungefär lika många företag avregistreras varje år. I `r tolower(last(antal_avregistreringar_df$manad_long))` `r max(antal_avregistreringar_df$År)` avregistrerades `r last(antal_avregistreringar_df$antal)` företag i Dalarna, jämfört med `r last(antal_avregistreringar_df %>% filter(Månad == last(antal_avregistreringar_df %>% filter(År == max(.$År)) %>% .$Månad)) %>% filter(År == (max(.$År)-1)) %>% .$antal)` samma månad året innan.
 
 ```{r, include = FALSE}
 #     diagram_capt <- "Källa: Bolagsverket.\nBearbetning: Samhällsanalys, Region Dalarna."
@@ -1134,7 +1134,7 @@ Hushållens ekonomiska situation kan mätas på flera olika sätt. Arbetslöshet
 
 I Dalarna hade runt 4000 hushåll ett sådant behov under åren mellan 2018 och 2021, men därefter minskade behovet stadigt under en längre period. Anmärkningsvärt är även att behovet av bistånd minskade trots att prisnivån i samhället ökade avsevärt under samma tidsperiod (se avsnittet om inflation). Exakt vad den utvecklingen beror på är oklart, men ett antal tänkbara orsaker diskuteras i följande <a href = "https://www.svt.se/nyheter/inrikes/darfor-minskar-antalet-hushall-som-far-socialbidrag-i-sverige-forskare-forklarar-orsaker-bakom" target="_blank">artikel</a>. Värt att notera är även att antalet hushåll i Dalarna har ökat på senare år, från drygt 136 000 år 2018 till drygt 139 000 år 2022. 
 
-På sistone har antalet hushåll i behov av ekonomiskt bistånd börjat öka. I `r last(ekonomiskt_bistand_df$Månad)` `r last(ekonomiskt_bistand_df$År)` var `r last(ekonomiskt_bistand_df$antal_hushall)` hushåll i behov av sådant stöd, vilket är ungefär 140 fler än vid den lägsta nivån (oktober 2023).
+På sistone har antalet hushåll i behov av ekonomiskt bistånd börjat öka. I `r last(ekonomiskt_bistand_df$Månad)` `r last(ekonomiskt_bistand_df$År)` var `r last(ekonomiskt_bistand_df$antal_hushall)` hushåll i behov av sådant stöd, vilket är  `r last(ekonomiskt_bistand_df$antal_hushall) - ekonomiskt_bistand_df %>% filter(antal_hushall==min(antal_hushall)) %>% .$antal_hushall` fler än vid den lägsta nivån (`r tolower(ekonomiskt_bistand_df %>% filter(antal_hushall==min(antal_hushall)) %>% select(Månad,År) %>%  pluck())`).
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_ek_bistand$ekonomiskt_bistand
