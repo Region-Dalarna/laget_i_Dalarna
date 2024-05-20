@@ -19,6 +19,7 @@ knitr::opts_chunk$set(echo = FALSE, fig.height=5, fig.width=8, fig.align='center
 # Paket som används
 if (!require("pacman")) install.packages("pacman")
 p_load(here,
+       sf,
        tidyverse,
        ggiraph)
 
@@ -79,7 +80,7 @@ Senast uppdaterad: `r Sys.Date()`</i>
 </p>
 
 # Sammanfattning {-}
-Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvecklingen. Rapporten uppdateras regelbundet och ett antal viktiga trender och mönstren sammanfattas här: 
+Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvecklingen. Rapporten uppdateras regelbundet och ett antal viktiga trender och mönster sammanfattas här: 
 
 <ul>
 <li> Inflationen har gått ned och hushållen och företagens syn på ekonomin har förbättrats på sistone, men Sveriges ekonomi har krympt tre kvartal i rad. </li>
@@ -163,7 +164,7 @@ Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i
 
 Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar)`, då den i Sverige uppgick till `r gsub("\\.",",",KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF)` procent. Därefter har inflationstakten sjunkit avsevärt och var i `r KPI_df %>% filter(månad==last(månad)) %>% select(manad_long,ar)`, `r gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)` procent, vilket bara är något över Riksbankens inflationsmål. För en mer ingående förklaring av vad som påverkade inflationstakten i april 2024, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/priser-och-konsumtion/konsumentprisindex/konsumentprisindex-kpi/pong/statistiknyhet/konsumentprisindex-kpi-april-2024/){target="_blank"}. 
 
-I början av maj 2024 sänkte Riksbanken sin styrränta för första gången på 8 år, från 4 procent till 3,75 procent, vilket påverkar räntorna på exempelvis bostadslån. Riksbanken flaggade även för att styrräntan kan komma att sänkas två gånger till under andra halvåret 2024, ned till 3.25 procent. Ur ett historiskt perspektiv är dock styrräntan fortfarande hög, senast den var på den nivån var under finanskrisen 2008/2009 (se exempelvis [Ekonomifakta](https://www.ekonomifakta.se/sakomraden/finansiell-ekonomi/inflation-och-styrrantor/styrrantan_1208883.html){target="_blank"}).
+I början av maj 2024 sänkte Riksbanken sin styrränta för första gången på 8 år, från 4 procent till 3,75 procent, vilket påverkar räntorna på exempelvis bostadslån. Riksbanken flaggade även för att styrräntan kan komma att sänkas två gånger till under andra halvåret 2024, ned till 3,25 procent. Ur ett historiskt perspektiv är dock styrräntan fortfarande hög, senast den var på den nivån var under finanskrisen 2008/2009 (se exempelvis [Ekonomifakta](https://www.ekonomifakta.se/sakomraden/finansiell-ekonomi/inflation-och-styrrantor/styrrantan_1208883.html){target="_blank"}).
 
 Den höga inflationstakten under framförallt 2022 och 2023 har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på  [Wikipedia](https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge){target="_blank"}.
 
@@ -225,9 +226,9 @@ gg_nybygg_bygglov$nybyggnation_20_arK1_K4
 
 ### Historisk jämförelse {-}
 
-Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige. Efter toppen i `r priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% select(manad_long,ar)`, då ett småhus i Dalarna kostade ungefär `r round(priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% .$Medelpris/1000,1)` miljoner kronor, har dock det genomsnittliga priset på småhus i länet minskat avsevärt och en botten nåddes i oktober 2023, när ett småhus i Dalarna kostade strax under 2,1 miljoner kronor. Minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medfört en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkar efterfrågan på bostäder. 
+Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige. Efter toppen i `r priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% select(manad_long,ar)`, då ett småhus i Dalarna kostade ungefär `r round(priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% .$Medelpris/1000,1)` miljoner kronor, har dock det genomsnittliga priset på småhus i länet minskat avsevärt och en botten nåddes i oktober 2023, när ett småhus i Dalarna kostade strax under 2,1 miljoner kronor i genomsnitt. Minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medfört en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkar efterfrågan på bostäder. 
 
-På sistone har priserna återigen börjat stiga något och var i `r priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(manad_long,ar)` strax under `r gsub("\\.",",",(round(priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(Medelpris)/1000,1)))` miljoner kronor i Dalarna. 
+På sistone har priserna återigen börjat stiga något och var i `r priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(manad_long,ar)` strax under `r gsub("\\.",",",(round(priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(Medelpris)/1000,1)))` miljoner kronor i Dalarna (i genomsnitt). 
 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
@@ -327,6 +328,12 @@ var arbetslösheten i Dalarna på ungefär samma nivå som motsvarande period f�
 gg_arbetsloshet_tidsserie$arbetslöshet_tidsserie_totalt_Dalarna
 ```
 
+Om arbetslösheten delas upp i inrikes och utrikes födda framträder en delvis annorlunda bild. Bland inrikes födda (det vänstra diagrammet nedan) har  arbetslösheten ökat något de senaste månaderna, jämfört med samma period föregående år. I `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="inrikes född") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="inrikes född") %>% .$ar))` var arbetslösheten bland inrikes födda `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="inrikes född") %>% .$varde))` procent i Dalarna. Bland utrikes födda (det högra diagrammet nedan) har arbetslösheten fortsatt att minska stadigt under samma tidsperiod, men är klart högre än bland inrikes födda (`r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="utrikes född") %>% .$varde))` procent i `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="utrikes född") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="utrikes född") %>% .$ar))`) .  
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+gg_arbetsloshet_tidsserie$arbetslöshet_tidsserie_facet_totalt_Dalarna
+```
+
 ### Kommun {-}
 ```{r, include = FALSE}
  
@@ -369,7 +376,7 @@ arblosa_kommun_gis <- left_join(kommuner_sv, arbetsloshet_kommun, by = c("KOMMUN
  
  karta <- ggplot(arblosa_kommun_gis,
        aes(fill = grupp,
-           label = KOMMUNNAMN,tooltip=paste("Kommun:",KOMMUNNAMN,"<br>","Arbetslöshet",arbetslöshet,"%"))) +
+           label = KOMMUNNAMN,tooltip=paste("Kommun:",KOMMUNNAMN,"<br>","Arbetslöshet:",arbetslöshet,"%"))) +
   geom_sf_interactive() +
   scale_fill_manual(values = colorRampPalette(c("#93cec1", "#0e5a4c"))(8)) +
   theme(axis.text.x = element_blank(),
@@ -383,7 +390,7 @@ arblosa_kommun_gis <- left_join(kommuner_sv, arbetsloshet_kommun, by = c("KOMMUN
        subtitle = "",
        yaxis = "",
        fill = "Arbetslöshet (%)",
-       caption = "Källa: SCB:s öppna statistikdatabas, Befolkningens arbetsmarknadsstatus (BAS)\nBearbetning: Samhällsanalys, Region Dalarna") 
+       caption = "Källa: SCB:s öppna statistikdatabas, Befolkningens arbetsmarknadsstatus (BAS)\nBearbetning: Samhällsanalys, Region Dalarna.\nDiagramförklaring: För ytterligare information, rör muspekaren över kartan.") 
 
  karta <- girafe(ggobj=karta)
 

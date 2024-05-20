@@ -68,6 +68,7 @@ diagram_ek_bistand <- function(output_mapp = "G:/Samhällsanalys/Statistik/Näri
                                        manual_color = c(diagramfarger("rus_sex")[1],"#000000"),
                                        diagram_titel = diagram_titel,
                                        diagram_capt =  diagram_capt,
+                                       inkludera_sista_vardet_var_xe_etikett = FALSE,
                                        output_mapp = output_mapp,
                                        stodlinjer_avrunda_fem = TRUE,
                                        manual_y_axis_title = "",

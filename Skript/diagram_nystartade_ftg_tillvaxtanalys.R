@@ -1,5 +1,5 @@
 
-#test = diagram_nystartade(spara_figur = FALSE,startar=2021)
+#test = diagram_nystartade(spara_figur = FALSE,startar=2011)
 diagram_nystartade <- function(output_mapp = "G:/Samhällsanalys/Statistik/Näringsliv/basfakta/",
                                    foretagsform = "*",			 #  NA = tas inte med i uttaget,  Finns: "aktiebolag", "enskild firma", "handelsbolag m.m."
                                    tid = "*",			 # "*" = alla år eller månader, "9999" = senaste, finns: "2009M01" : "2024M03"
