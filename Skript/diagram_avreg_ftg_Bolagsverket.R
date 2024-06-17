@@ -21,8 +21,8 @@ diagram_avregistrerade <- function(output_mapp = "G:/Samhällsanalys/Statistik/N
   gg_list <- list()
   
   # Källa: https://foretagsinfo.bolagsverket.se/sok-foretagsinformation-web/statistik
-  # Uppdateras genom att hämta en ny version av data. Hämtad senaste 2024-03-15
-  antal_avregistreringar_df <- read.csv("C:/Users/frkjon/Projekt/laget_i_Dalarna/Data/Bolagsverket_2024_05_08.csv",encoding="Latin1") %>% 
+  # Uppdateras genom att hämta en ny version av data. Hämtad senaste 2024-06-17
+  antal_avregistreringar_df <- read.csv("C:/Users/frkjon/Projekt/laget_i_Dalarna/Data/Bolagsverket_2024_06_17.csv",encoding="Latin1") %>% 
     pivot_longer(4:ncol(.),names_to = "variabel",values_to = "value") %>% 
       rename(År=Ã.r,Månad=MÃ.nad) %>% 
         group_by(År,Månad) %>% 

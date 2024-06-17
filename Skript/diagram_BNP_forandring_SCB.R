@@ -1,3 +1,4 @@
+#test = diagram_BNP_SCB(spara_figur = FALSE,startar="1980")
 diagram_BNP_SCB <- function(output_mapp = "G:/Samhällsanalys/Statistik/Näringsliv/basfakta/",
                                   spara_figur = TRUE, # Skall diagrammet sparas
                                   returnera_data = FALSE, # Skall data returneras
@@ -56,6 +57,7 @@ diagram_BNP_SCB <- function(output_mapp = "G:/Samhällsanalys/Statistik/Närings
                                    diagram_titel = diagramtitel,
                                    x_axis_sort_value = FALSE,
                                    manual_y_axis_title = "procent",
+                                   x_axis_visa_var_xe_etikett = 8,
                                    diagram_capt =  diagram_capt,
                                    output_mapp = output_mapp,
                                    filnamn_diagram = diagramfilnamn,
