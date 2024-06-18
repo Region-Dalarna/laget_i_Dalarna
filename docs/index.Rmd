@@ -279,7 +279,7 @@ gg_konkurser$konkurser_lan
 
 ### Konkurser per bransch {-}
 
-Den bransch som drabbades värst av konkurser i `r last(konkurser_df$manad_long)` `r unique(konkurser_branscher_df$år)` var "`r konkurser_branscher_df %>% filter(varde==max(varde)) %>% .$bransch`", där `r konkurser_branscher_df %>% filter(varde==max(varde)) %>% .$varde` personer berördes av konkurser. Även inom "Hotell och restauranger" drabbades relativt många av konkurser.
+Den bransch som drabbades värst av konkurser i `r last(konkurser_df$manad_long)` `r unique(konkurser_branscher_df$år)` var "`r konkurser_branscher_df %>% filter(varde==max(varde)) %>% .$bransch`", där `r konkurser_branscher_df %>% filter(varde==max(varde)) %>% .$varde` personer berördes av konkurser. Detta är sannolikt en följd av att företag i byggbranschen har drabbats extra hårt av stigande kostnader till följd av materialbrist och höga räntor ([SCB](https://www.scb.se/pressmeddelande/jobb-i-byggbranschen-drabbas-av-nedgang-i-ekonomin/){target="_blank"}). Även inom "Hotell och restauranger" drabbades relativt många av konkurser.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_konkurser$konkurser_bransch
