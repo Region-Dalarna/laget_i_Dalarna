@@ -84,8 +84,8 @@ Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvec
 
 <ul>
 <li> Inflationen har gått ned och hushållen och företagens syn på ekonomin har förbättrats på sistone, samtidigt som aktiviteten i ekonomin (BNP) ökade under det senaste kvartalet. </li>
-<li> Bostadsmarknaden i Dalarna har upplevt en nedgång i både bygglov, nybyggnation och bostadspriser sedan 2022, men bostadspriserna har återhämtat sig något de senaste månaderna. Dessutom ökade såväl bygglov för, som nybyggnation av, flerbostadshus tydligt första kvartalet 2024. </li>
-<li> Antalet anställda berörda av konkurser i Dalarna har ökat tydligt mellan januari och maj 2024, jämfört med samma period året innan. </li>
+<li> Bostadsmarknaden i Dalarna har upplevt en nedgång i både bygglov, nybyggnation och bostadspriser sedan 2022, men bostadspriserna har återhämtat sig något de senaste månaderna. Dessutom ökade såväl bygglov för, som nybyggnation av, lägenheter markant första kvartalet 2024. </li>
+<li> Antalet anställda berörda av konkurser i Dalarna har ökat mellan januari och maj 2024, jämfört med samma period året innan. </li>
 <li> Arbetslösheten i Dalarna, som är under genomsnittet i Sverige, har under inledningen av 2024, efter en lång period av nedgång, stabiliserats på ungefär samma nivå som föregående år.</li>
 <li> Trots en ökande prisnivå i samhället har antalet hushåll i behov av ekonomiskt bistånd minskat i Dalarna under en längre period. En viss ökning av behovet kan dock skönjas de senaste månaderna.</li>
 </ul>
@@ -133,7 +133,7 @@ Ett annat sätt att mäta läget i ekonomin är genom de olika enkätundersökni
 </details>
 
 ### Generellt {-}
-I `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$manad_long` `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$ar` var barometerindikatorn `r gsub("\\.",",",last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$varde)`, vilket är något sämre än i april, men en tydlig förbättring jämfört med månaderna innan. Företagens och hushållens syn på sin ekonomi har således förbättrats i Sverige de senaste månaderna, även om läget fortfarande kan beskrivas som svagare än normalt. Att barometerindikatorn länge hade ett lågt värde kan delvis förklaras av Rysslands invasion av Ukraina och de effekter denna haft på bland annat tillgången på råvaror. Historiskt varierar barometerindikatorn med konjunkturen och större kriser i samhället, såsom finanskrisen 2008/2009 och Coronapandemin 2020/2021, syns tydligt i diagrammet.
+I `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$manad_long` `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$ar` var barometerindikatorn `r gsub("\\.",",",last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$varde)`, vilket är något sämre än i april, men en tydlig förbättring jämfört med månaderna dessförinnan. Företagens och hushållens syn på sin ekonomi har således förbättrats i Sverige de senaste månaderna, även om läget fortfarande kan beskrivas som svagare än normalt. Att barometerindikatorn länge hade ett lågt värde kan delvis förklaras av Rysslands invasion av Ukraina och de effekter denna haft på bland annat tillgången på råvaror. Historiskt varierar barometerindikatorn med konjunkturen och större kriser i samhället, såsom finanskrisen 2008/2009 och Coronapandemin 2020/2021, syns tydligt i diagrammet.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 gg_konjB$barometern
@@ -141,7 +141,7 @@ gg_konjB$barometern
 
 ### Bransch {-}
 
-Hur läget i ekonomin uppfattas varierar beroende på om det är företagen eller hushållen som tillfrågas. Hushållen hade en mer pessimistisk syn än företagen i de flesta branscher på ekonomin i `r last(barometern_df$manad_long)` `r last(barometern_df$ar)`, med en barometerindikator på `r gsub("\\.",",",last(barometern_df$varde[barometern_df$Indikator=="Konfidensindikator hushåll"]))`. Bland branschgrupperna i diagrammet nedan hade `r tolower(gsub( " .*$", "", barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(varde==max(varde)) %>% .$Indikator))` den mest positiva synen på ekonomin i `r last(barometern_df$manad_long)` `r last(barometern_df$ar)` (en barometerindikator på `r gsub("\\.",",",barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(varde==max(varde)) %>% .$varde)`), medan företag inom `r tolower(gsub( " .*$", "", barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(varde==min(varde)) %>% .$Indikator))` uppfattar den ekonomiska utvecklingen som mer negativ (en barometerindikator på `r gsub("\\.",",", barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(varde==min(varde)) %>% .$varde)`). Överlag förbättrades synen på ekonomin bland hushållen om man jämför maj med månaden innan, men försämrades i samtliga branschgrupper. Tjänstesektorn drabbades värst under pandemin (mars/april 2020), medan tillverkningsindustrin uppfattade ekonomin som starkare än normalt från slutet av 2020 fram till mitten av 2022.
+Hur läget i ekonomin uppfattas varierar beroende på om det är företagen eller hushållen som tillfrågas. Hushållen hade en mer pessimistisk syn på ekonomin än företagen i de flesta branscher i `r last(barometern_df$manad_long)` `r last(barometern_df$ar)`, med en barometerindikator på `r gsub("\\.",",",last(barometern_df$varde[barometern_df$Indikator=="Konfidensindikator hushåll"]))`. Bland branschgrupperna i diagrammet nedan hade `r tolower(gsub( " .*$", "", barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(varde==max(varde)) %>% .$Indikator))` den mest positiva synen på ekonomin i `r last(barometern_df$manad_long)` `r last(barometern_df$ar)` (en barometerindikator på `r gsub("\\.",",",barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(varde==max(varde)) %>% .$varde)`), medan företag inom `r tolower(gsub( " .*$", "", barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(varde==min(varde)) %>% .$Indikator))` uppfattar den ekonomiska utvecklingen som mer negativ (en barometerindikator på `r gsub("\\.",",", barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(varde==min(varde)) %>% .$varde)`). Överlag förbättrades synen på ekonomin bland hushållen om man jämför maj med månaden innan, men försämrades i samtliga branschgrupper. Tjänstesektorn drabbades värst under pandemin (mars/april 2020), medan tillverkningsindustrin uppfattade ekonomin som starkare än normalt från slutet av 2020 fram till mitten av 2022.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_konjB$barometern_bransch
@@ -184,21 +184,37 @@ gg_infl$inflation
 </details>
 
 ```{r , include = FALSE}
-Bygglov_df <- Bygglov_df %>% 
-    mutate(kvartal=ifelse(kvartal=="K1","kvartal ett",
-                          ifelse(kvartal=="K2","kvartal två",
-                                 ifelse(kvartal=="K3","kvartal tre","kvartal fyra"))))
+# Bygglov_df <- Bygglov_df %>% 
+#     mutate(kvartal=ifelse(kvartal=="K1","kvartal ett",
+#                           ifelse(kvartal=="K2","kvartal två",
+#                                  ifelse(kvartal=="K3","kvartal tre","kvartal fyra"))))
 
-Husbyggande_df <- Husbyggande_df %>%
-  mutate(kvartal=ifelse(kvartal=="K1","kvartal ett",
-                          ifelse(kvartal=="K2","kvartal två",
-                                 ifelse(kvartal=="K3","kvartal tre","kvartal fyra"))))
+Bygglov_df <- Bygglov_df %>% 
+  mutate(kvartal=case_when(
+    kvartal=="K1" ~ "kvartal ett",
+    kvartal=="K2" ~ "kvartal två",
+    kvartal=="K3" ~ "kvartal tre",
+    kvartal=="K4" ~ "kvartal fyra"
+  ))
+
+# Husbyggande_df <- Husbyggande_df %>%
+#   mutate(kvartal=ifelse(kvartal=="K1","kvartal ett",
+#                           ifelse(kvartal=="K2","kvartal två",
+#                                  ifelse(kvartal=="K3","kvartal tre","kvartal fyra"))))
+
+Husbyggande_df <- Husbyggande_df %>% 
+  mutate(kvartal=case_when(
+    kvartal=="K1" ~ "kvartal ett",
+    kvartal=="K2" ~ "kvartal två",
+    kvartal=="K3" ~ "kvartal tre",
+    kvartal=="K4" ~ "kvartal fyra"
+  ))
   
 ```
 
 
 ### Bygglov {-}
-Antalet godkända bygglov för småhus varierar mellan kvartalen, men en tydlig trend är att de har börjat minska på senare tid. Sedan toppen i  `r Bygglov_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Antal==max(Antal)) %>% select(kvartal,ar) %>% .[1,]`, då `r Bygglov_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Antal==max(Antal)) %>% .$Antal %>% .[1]` bygglov godkändes, har antalet godkända bygglov minskat och i `r Bygglov_df %>%filter(hustyp=="småhus") %>% filter(Antal==last(Antal)) %>% select(kvartal,ar)`, godkändes `r Bygglov_df %>%filter(,hustyp=="småhus") %>% filter(Antal==last(Antal)) %>% .$Antal` bygglov. För flerbostadshus är trenden relativt likvärdig, men variationen är större från kvartal till kvartal. Under `r Bygglov_df %>%filter(ar>"2009",hustyp=="småhus") %>% filter(Antal==last(Antal)) %>% select(kvartal,ar)`, godkändes bygglov för `r Bygglov_df %>%filter(ar>"2009",hustyp=="flerbostadshus exkl. specialbostäder") %>% filter(Antal==last(Antal)) %>% .$Antal` bostadslägenheter i Dalarna, vilket är den högsta kvartalssiffran sedan 2022.
+Antalet godkända bygglov för småhus varierar mellan kvartalen, men en tydlig trend är att de har börjat minska på senare tid. Sedan toppen i  `r Bygglov_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Antal==max(Antal)) %>% select(kvartal,ar) %>% .[1,]`, då `r Bygglov_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Antal==max(Antal)) %>% .$Antal %>% .[1]` bygglov godkändes, har antalet godkända bygglov minskat och i `r Bygglov_df %>%filter(hustyp=="småhus") %>% filter(Antal==last(Antal)) %>% select(kvartal,ar)`, godkändes `r Bygglov_df %>%filter(,hustyp=="småhus") %>% filter(Antal==last(Antal)) %>% .$Antal` bygglov. För flerbostadshus är trenden relativt likvärdig, men variationen är större från kvartal till kvartal. Under `r Bygglov_df %>%filter(ar>"2009",hustyp=="småhus") %>% filter(Antal==last(Antal)) %>% select(kvartal,ar)`, godkändes bygglov för `r Bygglov_df %>%filter(ar>"2009",hustyp=="flerbostadshus exkl. specialbostäder") %>% filter(Antal==last(Antal)) %>% .$Antal` lägenheter i Dalarna, vilket är den högsta kvartalssiffran sedan 2022.
 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
