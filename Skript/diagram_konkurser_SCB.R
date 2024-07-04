@@ -1,4 +1,4 @@
-
+############### OBS Funkar inte efter längre (SCB publicerar inte uppdaterad data för konkurser) ################
 #test = diagram_konkurser_SCB(spara_figur = FALSE)
 diagram_konkurser_SCB <- function(region_vekt = "20",
                                   output_mapp = "G:/Samhällsanalys/Statistik/Näringsliv/basfakta/",

@@ -264,25 +264,15 @@ k=1
 ```
 Läget för företagen i länet hänger naturligtvis samman med läget i ekonomin i stort. Vid sämre tider konsumerar hushållen mindre och efterfrågan på många företags produkter och tjänster minskar, vilket i förlängningen kan leda till att företag begärs i konkurs eller avregistreras. Det är även möjligt att sämre tider medför att det blir mindre attraktivt att starta nya företag.
 
-## Konkurser {.tabset}
+## Konkurser 
 ```{r, include = FALSE}
 k = k+1
 ```
 
-### Konkurser per månad {-}
-
-Antalet personer som berörs av konkurser varierar relativt mycket från månad till månad, vilket medför att det kan var svårt att se någon trend på månadsbasis kopplad till Rysslands invasion av Ukraina och dess effekter på Dalarnas ekonomi. Mellan januari och mars 2024 ökade antalet personer berörda av konkurser i Dalarna exempelvis tydligt jämfört med samma period året innan, för att därefter minska påtagligt i april 2024. Hittills i år har `r konkurser_df %>% filter(år==last(år)) %>% group_by(region,år) %>% .$varde %>% sum()` personer berörts av konkurser i Dalarna, vilket är fler än de `r konkurser_df  %>% filter(år==(as.numeric(last(år))-1),månad%in%unique(konkurser_df  %>% filter(år==last(år)) %>% .$månad)) %>% group_by(region,år) %>% .$varde %>% sum()` som berördes under motsvarande period föregående år. I `r last(konkurser_df$manad_long)` `r max(konkurser_df$år)` berördes `r konkurser_df %>% filter(år==last(år),manad_long == last(manad_long)) %>% group_by(region,år) %>% .$varde %>% sum()` personer av konkurser i Dalarna, att jämföra med `r konkurser_df  %>% filter(år==(as.numeric(last(år))-1),manad_long == last(manad_long)) %>% group_by(region,år) %>% .$varde %>% sum()` personer motsvarande månad `r as.character(as.numeric(last(konkurser_df$år))-1)`. 
+Antalet personer som berörs av konkurser varierar relativt mycket från månad till månad, vilket medför att det kan var svårt att se någon trend på månadsbasis kopplad till Rysslands invasion av Ukraina och dess effekter på Dalarnas ekonomi. Mellan januari och mars 2024 ökade antalet personer berörda av konkurser i Dalarna exempelvis tydligt jämfört med samma period året innan, för att därefter minska påtagligt i april 2024. Hittills i år har `r konkurser_df %>% filter(år==first(år)) %>% group_by(region,år) %>% .$varde %>% sum()` personer berörts av konkurser i Dalarna, vilket är fler än de `r konkurser_df  %>% filter(år==(as.numeric(first(år))-1),månad%in%unique(konkurser_df  %>% filter(år==first(år)) %>% .$månad)) %>% group_by(region,år) %>% .$varde %>% sum()` som berördes under motsvarande period föregående år. I `r first(konkurser_df$manad_long)` `r max(konkurser_df$år)` berördes `r konkurser_df %>% filter(år==first(år),manad_long == first(manad_long)) %>% group_by(region,år) %>% .$varde %>% sum()` personer av konkurser i Dalarna, att jämföra med `r konkurser_df  %>% filter(år==(as.numeric(first(år))-1),manad_long == first(manad_long)) %>% group_by(region,år) %>% .$varde %>% sum()` personer motsvarande månad `r as.character(as.numeric(first(konkurser_df$år))-1)`. 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_konkurser$konkurser_lan
-```
-
-### Konkurser per bransch {-}
-
-Den bransch som drabbades värst av konkurser i `r last(konkurser_df$manad_long)` `r unique(konkurser_branscher_df$år)` var "`r konkurser_branscher_df %>% filter(varde==max(varde)) %>% .$bransch`", där `r konkurser_branscher_df %>% filter(varde==max(varde)) %>% .$varde` personer berördes av konkurser. Detta är sannolikt en följd av att företag i byggbranschen har drabbats extra hårt av stigande kostnader till följd av materialbrist och höga räntor ([SCB](https://www.scb.se/pressmeddelande/jobb-i-byggbranschen-drabbas-av-nedgang-i-ekonomin/){target="_blank"}). Även inom "Hotell och restauranger" drabbades relativt många av konkurser.
-
-```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
-gg_konkurser$konkurser_bransch
 ```
 
 ## Avregistrerade företag

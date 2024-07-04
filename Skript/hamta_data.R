@@ -48,12 +48,13 @@ gg_nybygg_bygglov <- diagram_nybyggnation_bygglov(spara_figur = spara_figur,
                                                   returnera_data = TRUE, 
                                                   returnera_figur = TRUE)
 
-# Konkurser - 2 figurer
-source(here("Skript","diagram_konkurser_SCB.R"), encoding="UTF-8")
-gg_konkurser <- diagram_konkurser_SCB(spara_figur = spara_figur, 
-                                      output_mapp = Output_mapp,
-                                      returnera_data = TRUE, 
-                                      returnera_figur = TRUE)
+# # Konkurser - 2 figurer - SCB har inte längre data för konkurser, så vi använder Tillväxtanalys data istället (se längre ned)
+# source(here("Skript","diagram_konkurser_SCB.R"), encoding="UTF-8")
+# gg_konkurser <- diagram_konkurser_SCB(spara_figur = spara_figur, 
+#                                       output_mapp = Output_mapp,
+#                                       returnera_data = TRUE, 
+#                                       returnera_figur = TRUE)
+
 
 # Arbetslöshet län - 1 figur
 source("https://raw.githubusercontent.com/Region-Dalarna/diagram/main/diagram_arbetsmarknadsstatus_senastear.R")
@@ -89,6 +90,13 @@ gg_nystartade <- diagram_nystartade(spara_figur = spara_figur,
                                     output_mapp = Output_mapp,
                                     returnera_data = TRUE, 
                                     returnera_figur = TRUE)
+
+# Konkurser - 1 figur
+source(here("Skript","diagram_konkurser_tillvaxtanalys.R"), encoding="UTF-8")
+gg_konkurser <- diagram_konkurser_TVA(spara_figur = spara_figur,
+                                      output_mapp = Output_mapp,
+                                      returnera_data = TRUE,
+                                      returnera_figur = TRUE)
 
 # Avregistrerade företag - 1 figur
 source(here("Skript","diagram_avreg_ftg_Bolagsverket.R"), encoding="UTF-8")
