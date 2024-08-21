@@ -22,7 +22,7 @@ diagram_nystartade <- function(output_mapp = "G:/Samhällsanalys/Statistik/Näri
   
   # Källa: https://statistik.tillvaxtanalys.se/PxWeb/pxweb/sv/Tillv%C3%A4xtanalys%20statistikdatabas/
   # Uppdateras genom att hämta hem ny data. Kontrollerad 2024-06-17 - ingen ny data
-  nystartade_df <-  read.xlsx(here("Data","Tillvaxtananalys_2024_04_10.xlsx"),startRow = 3)
+  nystartade_df <-  read.xlsx(here("Data","Tillvaxtananalys_2024_08_21.xlsx"),startRow = 3)
   
   diagram_capt <- "Källa: Tillväxtanalys.\nBearbetning: Samhällsanalys, Region Dalarna."
   

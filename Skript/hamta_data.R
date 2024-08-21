@@ -1,5 +1,6 @@
 # Uppdaterar data som används i rapporten "Läget i Dalarna" och kör markdown-filen som skapar rapporten.
 # Notera att viss data uppdateras automatiskt, medan annan måste laddas hem från diverse källor (som finns i skripten).
+# För mer info om källor för data som behöver hämtas, se avsnittet mot slutet av skriptet.
 
 if (!require("pacman")) install.packages("pacman")
 p_load(here)
@@ -83,6 +84,8 @@ hamta_data_arbetsloshet(vald_region="20",
 ###########################################
 ### Kräver manuell nedladdning av data ####
 ###########################################
+
+## OBS! Se respektive skript för mer information om hur data hämtas OBS!
 
 # Nystartade företag - 1 figur
 source(here("Skript","diagram_nystartade_ftg_tillvaxtanalys.R"), encoding="UTF-8")

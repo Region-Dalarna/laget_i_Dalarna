@@ -29,10 +29,10 @@ diagram_konkurser_TVA <- function(region_vekt = "20",
   
   # Källa: https://statistik.tillvaxtanalys.se/PxWeb/pxweb/sv/Tillv%C3%A4xtanalys%20statistikdatabas/
   # Diagram för konkurser i Dalarnas län. Senaste och näst senaste år samt genomsnitt de fem åren dessförrinnan.
-  # Uppdaterad senast 2024-06-27
+  # Uppdaterad senast 2024-08-21
   # SCB har inte längre data för konkurser, så vi använder Tillväxtanalys data istället
   
-  konkurser_df <-  read.xlsx(here("Data","Tillvaxtananalys_Konkurser_2024_06_27.xlsx"),sheet=1,startRow = 3)
+  konkurser_df <-  read.xlsx(here("Data","Tillvaxtananalys_Konkurser_2024_08_21.xlsx"),sheet=1,startRow = 3)
   
   # Diverse justeringar
   konkurser_df <- konkurser_df %>% 
