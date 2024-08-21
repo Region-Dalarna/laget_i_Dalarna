@@ -85,7 +85,7 @@ Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvec
 <ul>
 <li> Inflationen har gått ned och hushållen och företagens syn på ekonomin har förbättrats på sistone, samtidigt som aktiviteten i ekonomin (BNP) ökade under första kvartalet 2024. </li>
 <li> Bostadsmarknaden i Dalarna har upplevt en nedgång i både bygglov, nybyggnation och bostadspriser sedan 2022, men bostadspriserna har återhämtat sig något på sistone. Dessutom ökade såväl bygglov för, som nybyggnation av, lägenheter markant första kvartalet 2024. </li>
-<li> Antalet anställda berörda av konkurser i Dalarna har ökat mellan januari och juli 2024, jämfört med samma period året innan. </li>
+<li> Antalet anställda berörda av konkurser i Dalarna har ökat under 2024, jämfört med samma period året innan. </li>
 <li> Arbetslösheten i Dalarna, som är under genomsnittet i Sverige, har under inledningen av 2024, efter en lång period av nedgång, stabiliserats på ungefär samma nivå som föregående år.</li>
 <li> Trots en ökande prisnivå i samhället har antalet hushåll i behov av ekonomiskt bistånd minskat i Dalarna på senare år.</li>
 </ul>
