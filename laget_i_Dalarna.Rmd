@@ -28,7 +28,7 @@ source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_Sk
 source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R")
 
 # Om man vill uppdatera den externa hemsidan sätts denna variabel till TRUE
-uppdatera_hemsida = TRUE
+uppdatera_hemsida = FALSE
 
 # Den enda av figurerna (kartan) som inte är en funktion
 arbetsloshet_kommun <-  read.xlsx(here("Data","arbetsloshet_kommun.xlsx"))
