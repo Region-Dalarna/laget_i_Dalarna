@@ -433,7 +433,7 @@ Mot slutet av 2023 började antal hushåll i behov av ekonomiskt bistånd att ö
 gg_ek_bistand$ekonomiskt_bistand
 ```
 
-<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 10;"></div>
+<div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 200px;"></div>
 
 ```{r, include = FALSE}
 
