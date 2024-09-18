@@ -194,7 +194,8 @@ Bygglov_df <- Bygglov_df %>%
     kvartal=="K1" ~ "kvartal ett",
     kvartal=="K2" ~ "kvartal två",
     kvartal=="K3" ~ "kvartal tre",
-    kvartal=="K4" ~ "kvartal fyra"
+    kvartal=="K4" ~ "kvartal fyra",
+    TRUE ~ kvartal
   ))
 
 # Husbyggande_df <- Husbyggande_df %>%
@@ -207,7 +208,8 @@ Husbyggande_df <- Husbyggande_df %>%
     kvartal=="K1" ~ "kvartal ett",
     kvartal=="K2" ~ "kvartal två",
     kvartal=="K3" ~ "kvartal tre",
-    kvartal=="K4" ~ "kvartal fyra"
+    kvartal=="K4" ~ "kvartal fyra",
+    TRUE ~ kvartal
   ))
   
 ```
