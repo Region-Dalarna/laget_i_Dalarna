@@ -18,7 +18,8 @@ diagram_konkurser_TVA <- function(region_klartext = "20 Dalarnas län", # Finns:
   p_load(here,
          tidyverse,
          glue,
-         openxlsx)
+         openxlsx,
+         stringr)
   
   source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/refs/heads/main/hamta_konkurser_manad_TVA.R")
   source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_SkapaDiagram.R", encoding = "utf-8")
@@ -48,24 +49,7 @@ diagram_konkurser_TVA <- function(region_klartext = "20 Dalarnas län", # Finns:
                år_månad = paste0(år, " - ", månad),
                månad_år = paste0(månad, " ", år)) %>% 
           select(-tid)
-  
-  
-  
-  konkurser_df <-  read.xlsx(here("Data","Tillvaxtananalys_Konkurser_2024_08_21.xlsx"),sheet=1,startRow = 3)
-  
-  # Diverse justeringar
-  konkurser_df <- konkurser_df %>% 
-    rename(tid = X1,
-           region = X2,
-           varde =`Antal.anställda.berörda.av.konkurser`) %>%
-    mutate("regionkod" = "20",
-           år = str_sub(tid, 1, 4),
-           månad = format(as.Date(paste(år, str_sub(tid, 6,7), "1", sep = "-")), "%b"),
-           manad_long=format(as.Date(paste(år, str_sub(tid, 6,7),"1", sep = "-")), "%B"),
-           år_månad = paste0(år, " - ", månad),
-           månad_år = paste0(månad, " ", år)) 
-  
-  
+
   if(returnera_data == TRUE){
     assign("konkurser_df", konkurser_df, envir = .GlobalEnv)
   }
@@ -79,8 +63,8 @@ diagram_konkurser_TVA <- function(region_klartext = "20 Dalarnas län", # Finns:
   # gruppera per månad för senaste året och för året innan det
   konkurser_jmfr <- konkurser_df %>% 
     filter(år %in% c(senaste_ar, as.character(as.numeric(senaste_ar) -1))) %>% 
-    group_by(år, månad,manad_long, regionkod, region) %>%
-    summarize(antal = sum(antal)) %>% 
+    group_by(år, månad,manad_long, regionkod, region,variabel) %>%
+    summarize(Antal_berorda = sum(antal)) %>% 
     ungroup()
   
   jmfr_varnamn <- paste0("genomsnitt år ", as.character((senaste_ar_num-6)), "-", as.character((as.numeric(senaste_ar)-2)))
@@ -89,9 +73,9 @@ diagram_konkurser_TVA <- function(region_klartext = "20 Dalarnas län", # Finns:
   # gruppera fem senaste år
   konkurser_fem_senaste <- konkurser_df %>% 
     filter(år %in% as.character(c((senaste_ar_num-2):(senaste_ar_num -6)))) %>% 
-    group_by(månad,manad_long, regionkod, region) %>%
-    summarize(antal_tot = sum(varde, na.rm = TRUE),
-              Antal_berorda = Berorda_tot/antal_ar) %>% 
+    group_by(månad,manad_long, regionkod, region,variabel) %>%
+    summarize(antal_tot = sum(antal, na.rm = TRUE),
+              Antal_berorda = antal_tot/antal_ar) %>% 
     ungroup() %>% 
     mutate(år = jmfr_varnamn)
   
@@ -111,29 +95,46 @@ diagram_konkurser_TVA <- function(region_klartext = "20 Dalarnas län", # Finns:
                                                       "Juni", "Juli", "Augusti", "September", "Oktober",
                                                       "November", "December")))
   
+  skapa_diagram <- function(df,vald_variabel){
+    vald_variabel = "Antal anställda berörda av konkurser"
+    df <- konkurser_jmfr %>% 
+      filter(variabel == vald_variabel)
+    df <- df %>% 
+      filter(variabel == vald_variabel)
+    
+    diagram_titel <- paste0(unique(df$variabel), " i ", unique(df$region))
+    if(unique(df$variabel) == "Antal anställda berörda av konkurser"){
+      diagramfilnamn <- paste0("anstalla_berorda_konkurser_",word(df$region, 1))
+    }else{
+      diagramfilnamn <- paste0("antal_konkurser_",word(df$region, 1))
+    }
+    
+    objektnamn <- c(objektnamn,diagramfilnamn %>% str_remove(".png"))
+    
+    gg_obj <- SkapaLinjeDiagram(skickad_df = df %>%
+                                  filter(variabel == "Antal anställda berörda av konkurser"),
+                                skickad_x_var = "manad_long", 
+                                skickad_y_var = "Antal_berorda", 
+                                skickad_x_grupp = "år",
+                                berakna_index = FALSE,
+                                manual_color = diagramfarger("rus_sex"),
+                                lagga_till_punkter = TRUE,
+                                diagram_titel = diagram_titel,
+                                diagram_capt =  diagram_capt,
+                                output_mapp = output_mapp,
+                                stodlinjer_avrunda_fem = TRUE,
+                                manual_y_axis_title = "Antal",
+                                #x_axis_visa_var_xe_etikett = 1,
+                                filnamn_diagram = diagramfilnamn,
+                                skriv_till_diagramfil = spara_figur)
+    
+    gg_list <- c(gg_list, list(gg_obj))
+    names(gg_list) <- objektnamn
+    return(gg_list)
+  }
   
-  diagram_titel <- str_wrap("Antal personer berörda av konkurser i Dalarnas län")
-  diagramfilnamn <- paste0("konkurser_lan.png")
-  objektnamn <- c(objektnamn,diagramfilnamn %>% str_remove(".png"))
+  diag <- map(unique(konkurser_jmfr$variabel), ~skapa_diagram(konkurser_jmfr,.x)) %>% flatten()
   
-  gg_obj <- SkapaLinjeDiagram(skickad_df = konkurser_jmfr ,
-                              skickad_x_var = "manad_long", 
-                              skickad_y_var = "Antal_berorda", 
-                              skickad_x_grupp = "år",
-                              berakna_index = FALSE,
-                              manual_color = diagramfarger("rus_sex"),
-                              lagga_till_punkter = TRUE,
-                              diagram_titel = diagram_titel,
-                              diagram_capt =  diagram_capt,
-                              output_mapp = output_mapp,
-                              stodlinjer_avrunda_fem = TRUE,
-                              manual_y_axis_title = "Antal",
-                              #x_axis_visa_var_xe_etikett = 1,
-                              filnamn_diagram = diagramfilnamn,
-                              skriv_till_diagramfil =spara_figur)
-  
-  gg_list <- c(gg_list, list(gg_obj))
-  names(gg_list) <- objektnamn
   
   if(returnera_figur == TRUE){
     return(gg_list)
