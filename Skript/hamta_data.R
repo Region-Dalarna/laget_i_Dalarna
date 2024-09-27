@@ -102,13 +102,6 @@ hamta_data_arbetsloshet(vald_region="20",
 
 ## OBS! Se respektive skript för mer information om hur data hämtas OBS!
 
-# Nystartade företag - 1 figur
-# source(here("Skript","diagram_nystartade_ftg_tillvaxtanalys.R"), encoding="UTF-8")
-# gg_nystartade <- diagram_nystartade(spara_figur = spara_figur, 
-#                                     output_mapp = Output_mapp,
-#                                     returnera_data = TRUE, 
-#                                     returnera_figur = TRUE)
-
 # Avregistrerade företag - 1 figur
 source(here("Skript","diagram_avreg_ftg_Bolagsverket.R"), encoding="UTF-8")
 gg_avregistrerade <- diagram_avregistrerade(spara_figur = spara_figur, 
