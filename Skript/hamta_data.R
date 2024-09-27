@@ -56,6 +56,21 @@ gg_nybygg_bygglov <- diagram_nybyggnation_bygglov(spara_figur = spara_figur,
 #                                       returnera_data = TRUE, 
 #                                       returnera_figur = TRUE)
 
+# Konkurser - 1 figur - enbart län, inte bransch som tidigare eftersom Tillväxtanalys enbart publicerar branschdata på årsbasis
+source(here("Skript","diagram_konkurser_tillvaxtanalys_korrekt.R"), encoding="UTF-8")
+gg_konkurser <- diagram_konkurser_TVA(spara_figur = spara_figur,
+                                      variabel_klartext = "Antal anställda berörda av konkurser",
+                                      output_mapp = Output_mapp,
+                                      returnera_data = TRUE,
+                                      returnera_figur = TRUE)
+
+# Nystartade företag - 1 figur
+source(here("Skript","diagram_nystartade_ftg_tillvaxtanalys_korrekt.R"), encoding="UTF-8")
+gg_nystartade <- diagram_nystartade(spara_figur = spara_figur, 
+                                    output_mapp = Output_mapp,
+                                    returnera_data = TRUE, 
+                                    returnera_figur = TRUE)
+
 
 # Arbetslöshet län - 1 figur
 source("https://raw.githubusercontent.com/Region-Dalarna/diagram/main/diagram_arbetsmarknadsstatus_senastear.R")
@@ -88,18 +103,11 @@ hamta_data_arbetsloshet(vald_region="20",
 ## OBS! Se respektive skript för mer information om hur data hämtas OBS!
 
 # Nystartade företag - 1 figur
-source(here("Skript","diagram_nystartade_ftg_tillvaxtanalys.R"), encoding="UTF-8")
-gg_nystartade <- diagram_nystartade(spara_figur = spara_figur, 
-                                    output_mapp = Output_mapp,
-                                    returnera_data = TRUE, 
-                                    returnera_figur = TRUE)
-
-# Konkurser - 1 figur
-source(here("Skript","diagram_konkurser_tillvaxtanalys.R"), encoding="UTF-8")
-gg_konkurser <- diagram_konkurser_TVA(spara_figur = spara_figur,
-                                      output_mapp = Output_mapp,
-                                      returnera_data = TRUE,
-                                      returnera_figur = TRUE)
+# source(here("Skript","diagram_nystartade_ftg_tillvaxtanalys.R"), encoding="UTF-8")
+# gg_nystartade <- diagram_nystartade(spara_figur = spara_figur, 
+#                                     output_mapp = Output_mapp,
+#                                     returnera_data = TRUE, 
+#                                     returnera_figur = TRUE)
 
 # Avregistrerade företag - 1 figur
 source(here("Skript","diagram_avreg_ftg_Bolagsverket.R"), encoding="UTF-8")
