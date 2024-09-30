@@ -10,9 +10,9 @@ source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_AP
 Output_mapp = here("Figurer","/")
 spara_figur = FALSE
 
-###############################
-### Uppdateras automatiskt ####
-###############################
+######################################################
+### Uppdateras automatiskt vid körning av skript   ###
+######################################################
 
 # BNP - 1 diagram
 source(here("Skript","diagram_BNP_forandring_SCB.R"), encoding="UTF-8")
@@ -116,6 +116,10 @@ gg_ek_bistand <- diagram_ek_bistand(spara_figur = spara_figur,
                                     output_mapp = Output_mapp,
                                     returnera_data = TRUE, 
                                     returnera_figur = TRUE)
+
+###########################################
+###   "Knittar" Rmarkdown-filen        ####
+###########################################
 
 
 rmarkdown::render(
