@@ -1,0 +1,7 @@
+Hur uppdatera Läget i Dalarna:
+
+- Kör skriptet hamta_data.R
+- Två variabler, ekonomiskt bistånd och avregistrerade företag finns ej som API och måste uppdateras manuellt. Var datakälla finns står längst upp i respektive diagramskript. För att se hur data skall hämtas ned, se någon av de gamla datafilerna (som sparas)
+- Notera att variabeln uppdatera_hemsida  på rad 31 i markdown-filen skall sättas till TRUE om rapporten skall uppdateras på nätet. Det är viktigt att ändra tillbaka den efter, annars publiceras alla ändringar man gör.
+
+Jon, 2024-10-16

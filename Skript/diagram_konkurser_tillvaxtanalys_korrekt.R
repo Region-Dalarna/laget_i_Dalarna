@@ -1,4 +1,5 @@
-diagram_konkurser_TVA <- function(region_klartext = "20 Dalarnas län", # Finns: "01 Stockholms län", "03 Uppsala län", "04 Södermanlands län", "05 Östergötlands län", "06 Jönköpings län", "07 Kronobergs län", "08 Kalmar län", "09 Gotlands län", "10 Blekinge län", "12 Skåne län", "13 Hallands län", "14 Västra Götalands län", "17 Värmlands län", "18 Örebro län", "19 Västmanlands län", "20 Dalarnas län", "21 Gävleborgs län", "22 Västernorrlands län", "23 Jämtlands län", "24 Västerbottens län", "25 Norrbottens län"
+#test <- diagram_konkurser_TVA(spara_figur = FALSE)
+diagram_konkurser_TVA <- function(region_vekt = "20",			   # Val av region. Finns: "01", "03", "04", "05", "06", "07", "08", "09", "10", "12", "13", "14", "17", "18", "19", "20", "21", "22", "23", "24", "25"
                                   variabel_klartext = "*",			 #  Finns: "Antal konkurser", "Antal anställda berörda av konkurser"
                                   output_mapp = "G:/Samhällsanalys/Statistik/Näringsliv/basfakta/",			# Var skall figuren sparas
                                   spara_figur = TRUE, # Skall diagrammet sparas
@@ -18,7 +19,8 @@ diagram_konkurser_TVA <- function(region_klartext = "20 Dalarnas län", # Finns:
          openxlsx,
          stringr)
   
-  source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/refs/heads/main/hamta_konkurser_manad_TVA.R")
+  #source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/refs/heads/main/hamta_konkurser_manad_TVA.R")
+  source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/refs/heads/main/hamta_konkurser_manad_lan_variabel_konk_1996_tva.R")
   source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_SkapaDiagram.R", encoding = "utf-8")
   source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R", encoding = "utf-8")
   
@@ -29,22 +31,34 @@ diagram_konkurser_TVA <- function(region_klartext = "20 Dalarnas län", # Finns:
   # Diagram för konkurser i Dalarnas län. Senaste och näst senaste år samt genomsnitt de fem åren dessförrinnan.
   # SCB har inte längre data för konkurser, så vi använder Tillväxtanalys data istället
   
-  konkurser_df <- hamta_konkurser_TVA(
-    region_klartext = region_klartext, 
+  konkurser_df <- hamta_konkurser_manad_lan_variabel_tva(
+    region_vekt = region_vekt, 
     variabel_klartext = variabel_klartext,
-    period_klartext = "*")
+    manad_klartext = "*")
+  
+  # # Diverse justeringar
+  # konkurser_df <- konkurser_df %>% 
+  #   rename(tid = månad,
+  #          antal = `Konkurser och anställda berörda av konkurs 1996-`) %>% 
+  #     separate(region, into = c("regionkod", "region"), sep = " ", remove = TRUE,extra = "merge") %>% 
+  #       mutate(år = str_sub(tid, 1, 4),
+  #              månad = format(as.Date(paste(år, str_sub(tid, 6,7), "1", sep = "-")), "%b"),
+  #              manad_long=format(as.Date(paste(år, str_sub(tid, 6,7),"1", sep = "-")), "%B"),
+  #              år_månad = paste0(år, " - ", månad),
+  #              månad_år = paste0(månad, " ", år)) %>% 
+  #         select(-tid)
   
   # Diverse justeringar
   konkurser_df <- konkurser_df %>% 
     rename(tid = månad,
            antal = `Konkurser och anställda berörda av konkurs 1996-`) %>% 
-      separate(län, into = c("regionkod", "region"), sep = " ", remove = TRUE,extra = "merge") %>% 
-        mutate(år = str_sub(tid, 1, 4),
-               månad = format(as.Date(paste(år, str_sub(tid, 6,7), "1", sep = "-")), "%b"),
-               manad_long=format(as.Date(paste(år, str_sub(tid, 6,7),"1", sep = "-")), "%B"),
-               år_månad = paste0(år, " - ", månad),
-               månad_år = paste0(månad, " ", år)) %>% 
-          select(-tid)
+    #separate(region, into = c("regionkod", "region"), sep = " ", remove = TRUE,extra = "merge") %>% 
+      mutate(år = str_sub(tid, 1, 4),
+             månad = format(as.Date(paste(år, str_sub(tid, 6,7), "1", sep = "-")), "%b"),
+             manad_long=format(as.Date(paste(år, str_sub(tid, 6,7),"1", sep = "-")), "%B"),
+             år_månad = paste0(år, " - ", månad),
+             månad_år = paste0(månad, " ", år)) %>% 
+        select(-tid)
 
   if(returnera_data == TRUE){
     assign("konkurser_df", konkurser_df, envir = .GlobalEnv)
