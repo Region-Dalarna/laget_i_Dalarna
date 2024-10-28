@@ -1,11 +1,12 @@
 #test = diagram_nystartade(spara_figur = FALSE)
 diagram_nystartade <- function(output_mapp = "G:/Samhällsanalys/Statistik/Näringsliv/basfakta/",
-                               region_klartext = "20 Dalarnas län",			 #  Finns: "01 Stockholms län", "03 Uppsala län", "04 Södermanlands län", "05 Östergötlands län", "06 Jönköpings län", "07 Kronobergs län", "08 Kalmars län", "09 Gotlands län", "10 Blekinges län", "12 Skåne län", "13 Hallands län", "14 Västra Götalands län", "17 Värmlands län", "18 Örebro län", "19 Västmanlands län", "20 Dalarnas län", "21 Gävleborgs län", "22 Västernorrlands län", "23 Jämtlands län", "24 Västerbottens län", "25 Norrbottens län"
+                               region_vekt = "20",			   # Val av region. Finns: "01", "03", "04", "05", "06", "07", "08", "09", "10", "12", "13", "14", "17", "18", "19", "20", "21", "22", "23", "24", "25"
                                spara_figur = TRUE, # Skall diagrammet sparas
                                returnera_data = FALSE, # Skall data returneras
                                returnera_figur = TRUE){# Finns från 2020
   
   # Diagram som skapar en figur för nystartade företag från Tillväxtanalys
+  # 20241017 - uppdaterad
   
   if (!require("pacman")) install.packages("pacman")
   p_load(here,
@@ -13,13 +14,13 @@ diagram_nystartade <- function(output_mapp = "G:/Samhällsanalys/Statistik/Näri
          glue,
          openxlsx,
          stringr)
-  
-  source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/refs/heads/main/hamta_nystartade_ftg_kvartal_lan_TVA.R")
+
+  source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/refs/heads/main/hamta_nystartade_ftg_kvartal_lan_variabel_nyaf_2011_tva.R")
   source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_SkapaDiagram.R", encoding = "utf-8")
   source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R", encoding = "utf-8")
   
-  nystartade_df <- hamta_nystartadeforetag_kvartal_lan_TVA(
-    län_klartext = region_klartext , 
+  nystartade_df <- hamta_nystartade_kvartal_lan_variabel_tva(
+    region_vekt = region_vekt , 
     variabel_klartext = "*",
     kvartal_klartext = "*")
   
@@ -34,7 +35,7 @@ diagram_nystartade <- function(output_mapp = "G:/Samhällsanalys/Statistik/Näri
   nystartade_df <- nystartade_df %>% 
     rename(tid = kvartal,
            antal = `Nystartade företag 2011-`) %>%
-      separate(län, into = c("regionkod", "region"), sep = " ", remove = TRUE,extra = "merge") %>% 
+      #separate(län, into = c("regionkod", "region"), sep = " ", remove = TRUE,extra = "merge") %>% 
         mutate(ar = substr(tid,1,4),
                kvartal = substr(tid,5,6)) %>% 
           mutate(kvartal_namn = case_when(
