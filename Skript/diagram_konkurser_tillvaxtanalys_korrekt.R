@@ -136,7 +136,7 @@ diagram_konkurser_TVA <- function(region_vekt = "20",			   # Val av region. Finn
     return(gg_list)
   }
   
-  diag <- map(unique(konkurser_jmfr$variabel), ~skapa_diagram(konkurser_jmfr,.x)) %>% flatten()
+  diag <- map(unique(konkurser_jmfr$variabel), ~skapa_diagram(konkurser_jmfr,.x)) %>% purrr::flatten()
   
   
   if(returnera_figur == TRUE){
