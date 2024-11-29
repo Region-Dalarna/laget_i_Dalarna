@@ -122,9 +122,9 @@ gg_ek_bistand <- diagram_ek_bistand(spara_figur = spara_figur,
 ###########################################
 
 
-rmarkdown::render(
-  input = 'laget_i_Dalarna.Rmd',
-  output_file = 'laget_i_Dalarna.html',
-  envir = parent.frame()
-)
+# rmarkdown::render(
+#   input = 'laget_i_Dalarna.Rmd',
+#   output_file = 'laget_i_Dalarna.html',
+#   envir = parent.frame()
+# )
 
