@@ -1,7 +1,16 @@
 Hur uppdatera Läget i Dalarna:
+1:
+- Kör skriptet 1_hamta_data.R
+- Två variabler, ekonomiskt bistånd och avregistrerade företag finns ej som API och måste uppdateras manuellt. Var datakälla finns står längst upp i respektive diagramskript. För att se hur data skall hämtas ned, se någon av de gamla datafilerna (som sparas). Notera att texten bör läsas igenom då formuleringar och annat kan vara daterade när data uppdateras.
 
-- Kör skriptet hamta_data.R
-- Två variabler, ekonomiskt bistånd och avregistrerade företag finns ej som API och måste uppdateras manuellt. Var datakälla finns står längst upp i respektive diagramskript. För att se hur data skall hämtas ned, se någon av de gamla datafilerna (som sparas)
-- Notera att variabeln uppdatera_hemsida  på rad 31 i markdown-filen skall sättas till TRUE om rapporten skall uppdateras på nätet. Det är viktigt att ändra tillbaka den efter, annars publiceras alla ändringar man gör.
+2: Kör skriptet 2_knitta rapport, en ny html-fil skapas
 
-Jon, 2024-10-16
+Om fil på internet skall uppdateras, kör steg 3 nedan och därefter steg 3. Om fil på internet inte skall uppdateras, men man vill pusha till GH, kör enbart 4.
+
+3: Kör skriptet 3_kopiera_till_docs_for_publicering_pa_webben.R
+
+4: 4_push_av_hela_repo_till_github.R
+
+
+
+Jon, 2024-11-29

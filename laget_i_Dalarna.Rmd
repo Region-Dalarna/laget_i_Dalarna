@@ -28,7 +28,7 @@ source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_Sk
 source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R")
 
 # Om man vill uppdatera den externa hemsidan sätts denna variabel till TRUE
-uppdatera_hemsida = FALSE
+#uppdatera_hemsida = FALSE
 
 # Den enda av figurerna (kartan) som inte är en funktion
 arbetsloshet_kommun <-  read.xlsx(here("Data","arbetsloshet_kommun.xlsx"))
@@ -439,12 +439,12 @@ gg_ek_bistand$ekonomiskt_bistand
 
 ```{r, include = FALSE}
 
-if(uppdatera_hemsida==TRUE){
-# kopiera html-filen till 
-file.copy(from = "laget_i_Dalarna.html", to = "docs/index.html", overwrite = TRUE)
-file.copy(from = "laget_i_Dalarna.Rmd", to = "docs/index.Rmd", overwrite = TRUE)
-
-# ska vi ta bort html-filen i projektmappen eller ha dubbelt, både där och i docs-mappen?
-#file.remove("laget_i_Dalarna.html")
-}
+# if(uppdatera_hemsida==TRUE){
+# # kopiera html-filen till 
+# file.copy(from = "laget_i_Dalarna.html", to = "docs/index.html", overwrite = TRUE)
+# file.copy(from = "laget_i_Dalarna.Rmd", to = "docs/index.Rmd", overwrite = TRUE)
+# 
+# # ska vi ta bort html-filen i projektmappen eller ha dubbelt, både där och i docs-mappen?
+# #file.remove("laget_i_Dalarna.html")
+# }
 ```
