@@ -312,8 +312,7 @@ Som mått på läget i Dalarna, är arbetslösheten sannolikt en relativt trögr
 
   <summary>Mer information om statistiken</summary>
   
-Arbetslöshet beräknas som andelen arbetslösa i förhållande till antalet personer i arbetskraften, det vill säga summan av antalet arbetslösa och antalet sysselsatta. Statistik över arbetslöshet och sysselsättning kan tas fram på olika sätt. Det gör att siffror som rör samma referensperiod kan skilja sig åt beroende på vilken statistikkälla som använts. I den här rapporten används BAS - befolkningens arbetsmarknadsstatus - som redovisar registerbaserad statistik över utbudet av arbetskraft i Sverige.
-
+Arbetslöshet beräknas som andelen arbetslösa i förhållande till antalet personer i arbetskraften, det vill säga summan av antalet arbetslösa och antalet sysselsatta. Statistik över arbetslöshet och sysselsättning kan tas fram på olika sätt. Det gör att siffror som rör samma referensperiod kan skilja sig åt beroende på vilken statistikkälla som använts. I den här rapporten används BAS - befolkningens arbetsmarknadsstatus - som redovisar registerbaserad statistik över utbudet av arbetskraft i Sverige. För en diskussion runt skillnaderna mellan BAS och Arbetsförmedlingens statstsik, se ["SCB"](https://www.scb.se/contentassets/f5d14c6270b746f6af4e5ef37886704f/en-numerisk-beskrivning-av-relationen-mellan-bas-och-arbetsformedlingens-statistik.pdf){target="_blank"}.
 
 </details>
 
