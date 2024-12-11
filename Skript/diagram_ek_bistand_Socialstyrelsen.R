@@ -29,7 +29,7 @@ diagram_ek_bistand <- function(output_mapp = "G:/Samhällsanalys/Statistik/Näri
   
   file_info <- file.info(files)
   latest_file <- rownames(file_info)[which.max(file_info$mtime)]
-  print(latest_file)
+  cat("Senast uppdaterade fil är:", latest_file, "\n")
   
   ekonomiskt_bistand_df <-  read.xlsx(latest_file,startRow = 2) %>% 
     filter(År >= startar ,Antal.hushåll > 0)

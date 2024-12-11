@@ -29,7 +29,7 @@ diagram_avregistrerade <- function(output_mapp = "G:/Samhällsanalys/Statistik/N
   
   file_info <- file.info(files)
   latest_file <- rownames(file_info)[which.max(file_info$mtime)]
-  print(latest_file)
+  cat("Senast uppdaterade fil är:", latest_file, "\n")
   
   antal_avregistreringar_df <- read.csv(latest_file,encoding="Latin1") %>% 
     pivot_longer(4:ncol(.),names_to = "variabel",values_to = "value") %>% 
