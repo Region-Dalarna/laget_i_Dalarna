@@ -22,8 +22,16 @@ diagram_ek_bistand <- function(output_mapp = "G:/Samhällsanalys/Statistik/Näri
   
   # Källa: https://sdb.socialstyrelsen.se/if_ekb_manad/resultat.aspx
   # Uppdateras normalt den sista i varje månad.
-  # Uppdateras genom att hämta en ny version av data. Hämtad senaste 2024-10-16
-  ekonomiskt_bistand_df <-  read.xlsx(here("Data","Socialstyrelsen_2024_12_03.xlsx"),startRow = 2) %>% 
+  # Uppdateras genom att hämta en ny version av data. Hämtad senaste 2024-12-03
+  # Data skall läggas i mappen Socialstyrelsen, så hämtas den senast uppdaterade filen automatiskt.
+  folder_path <- here("Data","Socialstyrelsen")
+  files <- list.files(folder_path, full.names = TRUE)
+  
+  file_info <- file.info(files)
+  latest_file <- rownames(file_info)[which.max(file_info$mtime)]
+  print(latest_file)
+  
+  ekonomiskt_bistand_df <-  read.xlsx(latest_file,startRow = 2) %>% 
     filter(År >= startar ,Antal.hushåll > 0)
  
   

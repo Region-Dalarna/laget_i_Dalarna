@@ -13,7 +13,8 @@ diagram_avregistrerade <- function(output_mapp = "G:/Samhällsanalys/Statistik/N
   if (!require("pacman")) install.packages("pacman")
   p_load(tidyverse,
          here,
-         openxlsx)
+         openxlsx,
+         readxl)
   
   source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_SkapaDiagram.R", encoding = "utf-8")
   
@@ -21,9 +22,16 @@ diagram_avregistrerade <- function(output_mapp = "G:/Samhällsanalys/Statistik/N
   gg_list <- list()
   
   # Källa: https://foretagsinfo.bolagsverket.se/sok-foretagsinformation-web/statistik
-  # Uppdateras genom att hämta en ny version av data. Hämtad senaste 2024-08-21
+  # Uppdateras genom att hämta en ny version av data. Data bör sedan läggas i foldern Bolagsverket så hämtar R automatiskt den senaste uppdaterade versionen
+  # Data hämtades senast: 2024-12-11
+  folder_path <- here("Data","Bolagsverket")
+  files <- list.files(folder_path, full.names = TRUE)
   
-  antal_avregistreringar_df <- read.csv("C:/Users/frkjon/Projekt/laget_i_Dalarna/Data/Bolagsverket_2024_10_16.csv",encoding="Latin1") %>% 
+  file_info <- file.info(files)
+  latest_file <- rownames(file_info)[which.max(file_info$mtime)]
+  print(latest_file)
+  
+  antal_avregistreringar_df <- read.csv(latest_file,encoding="Latin1") %>% 
     pivot_longer(4:ncol(.),names_to = "variabel",values_to = "value") %>% 
       #rename(År=Ã.r,Månad=MÃ.nad) %>% 
         group_by(År,Månad) %>% 

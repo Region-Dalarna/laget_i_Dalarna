@@ -93,7 +93,7 @@ gg_arbetsloshet_tidsserie <- diagram_arbetsmarknadsstatus_tidsserie (spara_figur
 # Arbetslöshet kommun - Karta, ej diagramskript (ännu)
 source(here("Skript","arbetsloshet_kommun.R"), encoding="UTF-8")
 hamta_data_arbetsloshet(vald_region="20",
-                        spara_data=TRUE,
+                        spara_data=FALSE,
                         output_mapp_excel = here("Data"))
 
 ###########################################
