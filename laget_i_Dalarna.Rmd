@@ -26,6 +26,7 @@ p_load(here,
 # Läser in funktioner
 source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_SkapaDiagram.R")
 source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R")
+source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_text.R")
 
 # Om man vill uppdatera den externa hemsidan sätts denna variabel till TRUE
 #uppdatera_hemsida = FALSE
@@ -317,7 +318,7 @@ Arbetslöshet beräknas som andelen arbetslösa i förhållande till antalet per
 </details>
 
 ### Län {-}
-I en nationell jämförelse är arbetslösheten i Dalarna relativt låg. I `r arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$manad_long` `r arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$ar` hade Dalarna `r gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$varde)` procents arbetslöshet, att jämföra med `r gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Sverige") %>% .$varde)` procent i Sverige som helhet. Noterbart är även att Dalarna har klart lägre arbetslöshet än näraliggande Gävleborg, där arbetslösheten var `r gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Gävleborg") %>% .$varde)` procent under samma tidsperiod. Lägst arbetslöshet i Sverige hade `r (arbetsmarknadsstatus %>% filter(varde==min(varde)) %>%  .$region)[1]`, med `r min(arbetsmarknadsstatus$varde) %>% str_replace("\\.", "\\,")` procent.
+I en nationell jämförelse är arbetslösheten i Dalarna relativt låg. I `r arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$manad_long` `r arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$ar` hade Dalarna `r gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$varde)` procents arbetslöshet, att jämföra med `r gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Sverige") %>% .$varde)` procent i Sverige som helhet. Noterbart är även att Dalarna har klart lägre arbetslöshet än näraliggande Gävleborg, där arbetslösheten var `r gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Gävleborg") %>% .$varde)` procent under samma tidsperiod. Lägst arbetslöshet i Sverige hade `r arbetsmarknadsstatus %>% filter(varde==min(varde)) %>% dplyr::pull(region) %>% list_komma_och()`, med `r min(arbetsmarknadsstatus$varde) %>% str_replace("\\.", "\\,")` procent.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_arbetsloshet_lan$arbetslosthet_senastear
