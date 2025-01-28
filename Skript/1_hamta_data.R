@@ -96,18 +96,18 @@ hamta_data_arbetsloshet(vald_region="20",
                         spara_data=TRUE,
                         output_mapp_excel = here("Data"))
 
-###########################################
-### Kräver manuell nedladdning av data ####
-###########################################
-
-## OBS! Se respektive skript för mer information om hur data hämtas OBS!
-
 # Avregistrerade företag - 1 figur
 source(here("Skript","diagram_avreg_ftg_Bolagsverket.R"), encoding="UTF-8")
 gg_avregistrerade <- diagram_avregistrerade(spara_figur = spara_figur, 
                                             output_mapp = Output_mapp,
                                             returnera_data = TRUE, 
                                             returnera_figur = TRUE)
+
+###########################################
+### Kräver manuell nedladdning av data ####
+###########################################
+
+## OBS! Se respektive skript för mer information om hur data hämtas OBS!
 
 
 # Ekonomiskt bistånd - 1 figur
