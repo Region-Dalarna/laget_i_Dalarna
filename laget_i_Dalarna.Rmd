@@ -436,6 +436,11 @@ Mot slutet av 2023 började antal hushåll i behov av ekonomiskt bistånd att ö
 gg_ek_bistand$ekonomiskt_bistand
 ```
 
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+gg_ek_bistand_SCB$ekonomiskt_bistand_individ_Dalarna
+```
+
+
 <div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 200px;"></div>
 
 ```{r, include = FALSE}

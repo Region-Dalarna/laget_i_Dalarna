@@ -103,6 +103,13 @@ gg_avregistrerade <- diagram_avregistrerade(spara_figur = spara_figur,
                                             returnera_data = TRUE, 
                                             returnera_figur = TRUE)
 
+# Ekonomiskt bistånd SCB - 1 figur
+source(here("Skript","diagram_ek_bistand_SCB.R"), encoding="UTF-8")
+gg_ek_bistand_SCB = diagram_ek_bistand_SCB(spara_figur = spara_figur, 
+                                           output_mapp = Output_mapp,
+                                           returnera_data = TRUE, 
+                                           returnera_figur = TRUE)
+
 ###########################################
 ### Kräver manuell nedladdning av data ####
 ###########################################
