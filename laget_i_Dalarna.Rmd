@@ -172,7 +172,7 @@ gg_infl$inflation
 ```
 
 # Bostadsmarknaden
-2010-talet kännetecknades av en bostadsmarknad där det mesta pekade uppåt. Låg inflation och låga räntor i kombination med fördelaktiga skatteregler medförde att såväl byggandet av bostäder, som bostadspriserna ökade kraftigt. Även bostadslånen har ökat under en lång period och uppgick 2023 till 165 procent av hushållens disponibla inkomst, vilket är ungefär dubbelt så stor andel som under mitten av 1990-talet. Samtidigt har hushållens finansiella tillgångar ökat, vilket medfört att skulderna i relation till de finansiella tillgångarna minskat något under samma tidsperiod [(SCB)](https://www.scb.se/hitta-statistik/statistik-efter-amne/finansmarknad/finansrakenskaper/finansrakenskaper-kvartal-och-ar/pong/tabell-och-diagram/arstabeller/hushallens-laneskulder-i-procent-av-justerad-disponibel-inkomst-och-av-hushallens-finansiella-tillgangar/){target="_blank"}. 
+2010-talet kännetecknades av en bostadsmarknad där det mesta pekade uppåt. Låg inflation och låga räntor i kombination med fördelaktiga skatteregler medförde att såväl byggandet av bostäder, som bostadspriserna ökade kraftigt. Även bostadslånen har ökat under en lång period och uppgick 2023 till 165 procent av hushållens disponibla inkomst, vilket är ungefär dubbelt så stor andel som under mitten av 1990-talet. Samtidigt har hushållens finansiella tillgångar ökat, vilket medfört att skulderna i relation till de finansiella tillgångarna minskat något under samma tidsperiod [(SCB)](https://www.scb.se/hitta-statistik/temaomraden/sveriges-ekonomi/konjunkturindikatorer/finansmarknad/#62307){target="_blank"}. 
 
 ## Bostadsbyggande{.tabset}
 
@@ -180,7 +180,10 @@ gg_infl$inflation
 
   <summary>Mer information om statistiken</summary>
 
-<div title="Källa: SCB">Statistiken omfattar alla nybyggnadsprojekt som kräver bygglov. Bygglovsstatistik för bostäder visar antal bygglov och lägenheter. Nybyggnad av bostäder visar bostadsbyggandets omfattning och inriktning av bostadslägenheter. Data i figurerna nedan visar bygglov och nybyggnad av bostäder på kvartalsbasis.</div>
+<div title="Källa: SCB">Statistiken omfattar alla nybyggnadsprojekt som kräver bygglov. Bygglovsstatistik för bostäder visar antal bygglov och lägenheter. Nybyggnad av bostäder visar bostadsbyggandets omfattning och inriktning av bostadslägenheter. Data i figurerna nedan visar bygglov och nybyggnad av bostäder på kvartalsbasis.
+
+Med bostadslägenhet avses en lägenhet avsedd att helt eller till en inte oväsentlig del användas som bostad, oavsett i vilken hustyp den ligger. Även bostäder i småhus definieras således som lägenheter. Småhus definieras som friliggande en- och tvåbostadshus samt par-, rad- och kedjehus (exklusive fritidshus). Flerbostadshus definieras som bostadsbyggnader innehållande tre eller flera lägenheter inklusive loftgångshus.
+</div>
  
 </details>
 
