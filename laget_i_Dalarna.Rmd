@@ -427,6 +427,8 @@ Hushållens ekonomiska situation kan mätas på flera olika sätt. Arbetslöshet
  
 </details>
 
+<span class = "kommentar">Tidigare avsnitt</span>
+
 I Dalarna hade runt 4000 hushåll ett sådant behov under åren mellan 2018 och 2021, men därefter minskade behovet stadigt under en längre period. Anmärkningsvärt är även att behovet av bistånd minskade trots att prisnivån i samhället ökade avsevärt under samma tidsperiod (se avsnittet om inflation). Exakt vad den utvecklingen beror på är oklart, men ett antal tänkbara orsaker diskuteras i följande <a href = "https://www.svt.se/nyheter/inrikes/darfor-minskar-antalet-hushall-som-far-socialbidrag-i-sverige-forskare-forklarar-orsaker-bakom" target="_blank">artikel</a>. Värt att notera är även att antalet hushåll i Dalarna har ökat på senare år, från drygt 136 000 år 2018 till närmare 140 000 år 2023. 
 
 Mot slutet av 2023 började antal hushåll i behov av ekonomiskt bistånd att öka igen, innan antalet återigen sjönk under april och maj 2024. I `r last(ekonomiskt_bistand_df$Månad)` `r last(ekonomiskt_bistand_df$År)` var `r last(ekonomiskt_bistand_df$antal_hushall)` hushåll i behov av sådant stöd, vilket är  `r abs(last(ekonomiskt_bistand_df$antal_hushall) - last(ekonomiskt_bistand_df %>% filter(ar_manad!=last(ar_manad)))$antal_hushall)` `r ifelse((last(ekonomiskt_bistand_df$antal_hushall) - last(ekonomiskt_bistand_df %>% filter(ar_manad!=last(ar_manad)))$antal_hushall)<0,"färre", "fler")` än månaden innan.
@@ -435,9 +437,24 @@ Mot slutet av 2023 började antal hushåll i behov av ekonomiskt bistånd att ö
 gg_ek_bistand$ekonomiskt_bistand
 ```
 
+<span class = "kommentar">Nytt avsnitt</span>
+
+I Dalarna hade som mest närmare 5000 personer mellan 15 och 74 år ett sådant behov under 2020, men därefter minskade behovet stadigt under en längre period. Anmärkningsvärt är även att behovet av bistånd minskade trots att prisnivån i samhället ökade avsevärt under samma tidsperiod (se avsnittet om inflation). Exakt vad den utvecklingen beror på är oklart, men ett antal tänkbara orsaker diskuteras i följande <a href = "https://www.svt.se/nyheter/inrikes/darfor-minskar-antalet-hushall-som-far-socialbidrag-i-sverige-forskare-forklarar-orsaker-bakom" target="_blank">artikel</a>.
+
+Antalet personer som får bistånd varierar en del mellan månaderna, men under 2024 har trenden varit nedåtgående då färre får bistånd jämfört med föregående år. I `r last(ekonomiskt_bistand_SCB_df$månad_år)` var `r last(ekonomiskt_bistand_SCB_df$antal)` personer i behov av sådant stöd, vilket dock är något fler än månaderna innan.
+
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_ek_bistand_SCB$ekonomiskt_bistand_individ_Dalarna
 ```
+
+Om antalet individer som får ekonomiskt bistånd delas upp i inrikes och utrikes födda, blir det tydligt att nedgången i antalet individer som får bistånd framförallt är koncentrerad till utrikes födda. I `r first(ekonomiskt_bistand_bakgrund_SCB_df$månad_år)` var det `r ekonomiskt_bistand_bakgrund_SCB_df %>% filter(månad_år==first(månad_år)) %>% filter(födelseregion=="utrikes född") %>% .$antal - ekonomiskt_bistand_bakgrund_SCB_df %>% filter(månad_år==first(månad_år)) %>% filter(födelseregion=="inrikes född") %>% .$antal ` fler utrikes födda personer som var i behov av ekonomiskt bistånd i Dalarna, jämfört med inrikes födda. I `r last(ekonomiskt_bistand_bakgrund_SCB_df$månad_år)` var den skillnaden bara `r ekonomiskt_bistand_bakgrund_SCB_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="utrikes född") %>% .$antal - ekonomiskt_bistand_bakgrund_SCB_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="inrikes född") %>% .$antal ` personer.
+
+Ett annat generellt mönster är att det bland inrikes födda är vanligare att män får ekonomiskt bistånd, medan det bland utrikes födda är vanligare att kvinnor får det.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+gg_ek_bistand_bakgrund_SCB$ekonomiskt_bistand_fodelseland_Dalarna
+```
+
 
 
 <div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 200px;"></div>
