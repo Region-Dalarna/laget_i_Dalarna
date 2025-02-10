@@ -85,7 +85,7 @@ Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvec
 
 <ul>
 <li> Inflationen är lägre än Riksbankens inflationsmål och hushållen och företagens syn på ekonomin har förbättrats på sistone, samtidigt som aktiviteten i ekonomin (BNP) ökade under tredje kvartalet 2024. </li>
-<li> Nybyggnation av bostäder har ökat i Dalarna på sistone, samtidigt som priserna på småhus har sjunkit något efter en uppgång under inledningen av 2024. </li>
+<li> Nybyggnation av bostäder har ökat i Dalarna på sistone. Dessutom ökade priserna på småhus något i `r priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(manad_long)` `r priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(ar)` jämfört med månaderna innan.</li>
 <li> Antalet anställda berörda av konkurser i Dalarna har minskat de senaste månaderna, jämfört med samma period året innan. </li>
 <li> Arbetslösheten i Dalarna, som är klart under genomsnittet i Sverige, har under 2024, efter en lång period av nedgång, stabiliserats på ungefär samma nivå som föregående år.</li>
 <li> Trots en ökande prisnivå i samhället har antalet hushåll i behov av ekonomiskt bistånd minskat i Dalarna på senare år.</li>
