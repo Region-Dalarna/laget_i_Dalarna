@@ -70,17 +70,17 @@ diagram_konkurser_TVA <- function(region_vekt = "20",			   # Val av region. Finn
   
   # gruppera per månad för senaste året och för året innan det
   konkurser_jmfr <- konkurser_df %>% 
-    filter(år %in% c(senaste_ar, as.character(as.numeric(senaste_ar) -1))) %>% 
+    filter(år %in% c(senaste_ar, as.character(as.numeric(senaste_ar) -1),as.character(as.numeric(senaste_ar) -2))) %>% 
       group_by(år, månad,manad_long, regionkod, region,variabel) %>%
         summarize(Antal_berorda = sum(antal)) %>% 
           ungroup()
   
-  jmfr_varnamn <- paste0("genomsnitt år ", as.character((senaste_ar_num-6)), "-", as.character((as.numeric(senaste_ar)-2)))
+  jmfr_varnamn <- paste0("genomsnitt år ", as.character((senaste_ar_num-7)), "-", as.character((as.numeric(senaste_ar)-3)))
   
-  antal_ar <- length(as.character(c(senaste_ar_num-2):(senaste_ar_num -6)))
+  antal_ar <- length(as.character(c(senaste_ar_num-3):(senaste_ar_num -7)))
   # gruppera fem senaste år
   konkurser_fem_senaste <- konkurser_df %>% 
-    filter(år %in% as.character(c((senaste_ar_num-2):(senaste_ar_num -6)))) %>% 
+    filter(år %in% as.character(c((senaste_ar_num-3):(senaste_ar_num -7)))) %>% 
       group_by(månad,manad_long, regionkod, region,variabel) %>%
         summarize(antal_tot = sum(antal, na.rm = TRUE),
                   Antal_berorda = antal_tot/antal_ar) %>% 
@@ -89,7 +89,7 @@ diagram_konkurser_TVA <- function(region_vekt = "20",			   # Val av region. Finn
       
   konkurser_jmfr <- konkurser_jmfr %>% 
     bind_rows(konkurser_fem_senaste) %>% 
-      mutate(år = factor(år, levels = c(jmfr_varnamn, as.character(senaste_ar_num-1), senaste_ar)))
+      mutate(år = factor(år, levels = c(jmfr_varnamn,as.character(senaste_ar_num-2) ,as.character(senaste_ar_num-1), senaste_ar)))
   
   # skapa månader med NA-värde för de månader som vi saknar värde för, så att
   # staplarna inte blir tjocka utan att vi får ett tomrum där istället
