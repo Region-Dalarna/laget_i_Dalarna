@@ -87,6 +87,7 @@ source("https://raw.githubusercontent.com/Region-Dalarna/diagram/main/diagram_ar
 gg_arbetsloshet_tidsserie <- diagram_arbetsmarknadsstatus_tidsserie (spara_figur = spara_figur, 
                                                                      output_mapp_figur = Output_mapp,
                                                                      returnera_data = TRUE,
+                                                                     marginal_yaxis_facet = c(0.02,0.02),
                                                                      diagram_facet = TRUE,
                                                                      returnera_figur = TRUE)
 
