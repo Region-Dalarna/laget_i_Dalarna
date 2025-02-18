@@ -65,6 +65,7 @@ diagram_konjunkturbarometern <- function(output_mapp = "G:/Samhällsanalys/Stati
                                   stodlinjer_avrunda_fem = TRUE,
                                   manual_y_axis_title="Indikatorvärde",
                                   inkludera_sista_vardet_var_xe_etikett = FALSE,
+                                  x_axis_var_xe_etikett_ta_bort_nast_sista_vardet = FALSE,
                                   diagram_titel = diagramtitel,
                                   diagram_capt =  diagram_capt,
                                   output_mapp = output_mapp,

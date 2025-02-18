@@ -91,6 +91,23 @@ gg_arbetsloshet_tidsserie <- diagram_arbetsmarknadsstatus_tidsserie (spara_figur
                                                                      diagram_facet = TRUE,
                                                                      returnera_figur = TRUE)
 
+# Hämta antal arbetslösa (till texten enbart)
+source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/refs/heads/main/hamta_bas_arbstatus_region_kon_alder_fodelseregion_prel_manad_ArbStatusM_scb.R")
+arbstatus_df <- hamta_bas_arbstatus_region_kon_alder_fodelseregion_prel_manad_scb(region_vekt = "20",
+                                                                                  alder_klartext = unique(arbetsmarknadsstatus_tidsserie$ålder),
+                                                                                  kon_klartext = "totalt",
+                                                                                  fodelseregion_klartext = unique(arbetsmarknadsstatus_tidsserie$födelseregion),
+                                                                                  cont_klartext = "antal arbetslösa",
+                                                                                  wide_om_en_contvar = FALSE,
+                                                                                  tid_koder = "9999") %>% 
+  manader_bearbeta_scbtabeller()
+
+arblosa_utrikes <- format(arbstatus_df %>% filter(födelseregion == "utrikes född") %>% .$varde,big.mark = " ")
+arblosa_inrikes <- format(arbstatus_df %>% filter(födelseregion == "inrikes född") %>% .$varde,big.mark = " ")
+arblosa_manad <- unique(arbstatus_df$månad)
+arblosa_ar <- unique(arbstatus_df$år)
+arblosa_alder <- unique(arbstatus_df$ålder)
+
 # Arbetslöshet kommun - Karta, ej diagramskript (ännu)
 source(here("Skript","arbetsloshet_kommun.R"), encoding="UTF-8")
 hamta_data_arbetsloshet(vald_region="20",
@@ -119,18 +136,18 @@ gg_ek_bistand_bakgrund_SCB = diagram_ek_bistand_bakgrund_SCB(spara_figur = spara
                                                              returnera_figur = TRUE)
 
 ###########################################
-### Kräver manuell nedladdning av data ####
+### Kräver manuell nedladdning av data #### - Tidigare datahämtning, ej relevant längre
 ###########################################
 
 ## OBS! Se respektive skript för mer information om hur data hämtas OBS!
 
 
 # Ekonomiskt bistånd - 1 figur
-source(here("Skript","diagram_ek_bistand_Socialstyrelsen.R"), encoding="UTF-8")
-gg_ek_bistand <- diagram_ek_bistand(spara_figur = spara_figur, 
-                                    output_mapp = Output_mapp,
-                                    returnera_data = TRUE, 
-                                    returnera_figur = TRUE)
+# source(here("Skript","diagram_ek_bistand_Socialstyrelsen.R"), encoding="UTF-8")
+# gg_ek_bistand <- diagram_ek_bistand(spara_figur = spara_figur, 
+#                                     output_mapp = Output_mapp,
+#                                     returnera_data = TRUE, 
+#                                     returnera_figur = TRUE)
 
 ###########################################
 ###   "Knittar" Rmarkdown-filen        ####
