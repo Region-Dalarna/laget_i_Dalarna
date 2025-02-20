@@ -66,7 +66,7 @@ gg_konkurser <- diagram_konkurser_TVA(spara_figur = spara_figur,
 
 # Konkurser - 1 figur - tre största branscher
 source(here("Skript","diagram_konkurser_tillvaxtanalys_bransch.R"), encoding="UTF-8")
-gg_konkurser_bransch <- diagram_konkurser_bransch_TVA(antal_branscher = 5,
+gg_konkurser_bransch <- diagram_konkurser_bransch_TVA(antal_branscher = 3,
                                                       output_mapp = Output_mapp,
                                                       spara_figur = spara_figur,
                                                       returnera_dataframe_global_environment = TRUE)
