@@ -56,13 +56,35 @@ gg_nybygg_bygglov <- diagram_nybyggnation_bygglov(spara_figur = spara_figur,
 #                                       returnera_data = TRUE, 
 #                                       returnera_figur = TRUE)
 
-# Konkurser - 1 figur - enbart län, inte bransch som tidigare eftersom Tillväxtanalys enbart publicerar branschdata på årsbasis
+# Konkurser - 1 figur - enbart län
 source(here("Skript","diagram_konkurser_tillvaxtanalys_korrekt.R"), encoding="UTF-8")
 gg_konkurser <- diagram_konkurser_TVA(spara_figur = spara_figur,
                                       variabel_klartext = "Antal anställda berörda av konkurser",
                                       output_mapp = Output_mapp,
                                       returnera_data = TRUE,
                                       returnera_figur = TRUE)
+
+# Konkurser - 1 figur - tre största branscher
+source(here("Skript","diagram_konkurser_tillvaxtanalys_bransch.R"), encoding="UTF-8")
+gg_konkurser_bransch <- diagram_konkurser_bransch_TVA(antal_branscher = 5,
+                                                      output_mapp = Output_mapp,
+                                                      spara_figur = spara_figur,
+                                                      returnera_dataframe_global_environment = TRUE)
+
+konk_bransch_ar <- unique(konkurser_bransch_df$ar)
+konk_bransch_manad <- unique(konkurser_bransch_df$manad_namn)
+storsta_bransch <- konkurser_bransch_df %>% 
+  filter(antal == max(antal)) %>% 
+  .$bransch
+storsta_bransch_antal <- konkurser_bransch_df %>% 
+  filter(antal == max(antal)) %>% 
+  .$antal
+nast_storsta_bransch <- konkurser_bransch_df %>% 
+  filter(antal == sort(antal,decreasing = TRUE)[2]) %>% 
+  .$bransch
+nast_storsta_bransch_antal <- konkurser_bransch_df %>%
+  filter(antal == sort(antal,decreasing = TRUE)[2]) %>% 
+  .$antal
 
 # Nystartade företag - 1 figur
 source(here("Skript","diagram_nystartade_ftg_tillvaxtanalys_korrekt.R"), encoding="UTF-8")
