@@ -23,7 +23,7 @@ diagram_konkurser_bransch_TVA <- function(region_vekt = hamtakommuner("20",F,F),
   source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_SkapaDiagram.R", encoding = "utf-8")
   source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R", encoding = "utf-8")
   
-  diagram_capt = "Källa: Tillväxtanalys\nBearbetning: Samhällsanalys, Region Dalarna"
+  diagram_capt = "Källa: Tillväxtanalys\nBearbetning: Samhällsanalys, Region Dalarna\nDiagramförklaring: Diagrammet visar de tre branscher med flest anställda berörda av konkurser"
   gg_list <- list()
   
   # Källa: https://statistik.tillvaxtanalys.se/PxWeb/pxweb/sv/Tillv%C3%A4xtanalys%20statistikdatabas/
