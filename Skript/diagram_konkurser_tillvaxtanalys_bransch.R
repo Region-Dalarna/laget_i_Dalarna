@@ -15,7 +15,6 @@ diagram_konkurser_bransch_TVA <- function(region_vekt = hamtakommuner("20",F,F),
   if (!require("pacman")) install.packages("pacman")
   p_load(here,
          tidyverse,
-         glue,
          openxlsx,
          stringr)
   
