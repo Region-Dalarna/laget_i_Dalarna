@@ -25,12 +25,15 @@ gg_BNP <- diagram_BNP_SCB(spara_figur = spara_figur,
 source(here("Skript","diagram_konjunkturbarometern_konj.R"), encoding="UTF-8")
 gg_konjB <- diagram_konjunkturbarometern(spara_figur = spara_figur, 
                                          output_mapp = Output_mapp,
+                                         antal_etiketter_barometern = 24, # Intervall mellan visade etiketter (i månader)
+                                         antal_etiketter_bransch = 24, # Intervall mellan visade etiketter (i månader)
                                          returnera_data = TRUE, 
                                          returnera_figur = TRUE)
 
 # KPI - 1 diagram
 source(here("Skript","diagram_inflation_SCB.R"), encoding="UTF-8")
 gg_infl <- diagram_inflation_SCB(spara_figur = spara_figur, 
+                                 antal_etiketter = 36,
                                  output_mapp = Output_mapp,
                                  returnera_data = TRUE, 
                                  returnera_figur = TRUE)
