@@ -36,7 +36,7 @@ diagram_ek_bistand_bakgrund_SCB <- function(region_vekt = "20",
     assign("ekonomiskt_bistand_bakgrund_SCB_df", ekonomiskt_bistand_df, envir = .GlobalEnv)
   }
   
-  diagram_capt <- "Källa: SCB:s öppna statistikdatabas\nBearbetning: Samhällsanalys, Region Dalarna"
+  diagram_capt <- "Källa: SCB:s öppna statistikdatabas\nBearbetning: Samhällsanalys, Region Dalarna.\nDiagramförklaring: Antal individer som har ekonomiskt stöd som huvudsaklig inkomstkälla."
   diagram_titel <- paste0("Antal individer ",ekonomiskt_bistand_df$ålder, " med ekonomiskt bistånd i ",unique(ekonomiskt_bistand_df$region))
   diagramfilnamn <- paste0("ekonomiskt_bistand_fodelseland_",unique(ekonomiskt_bistand_df$region),".png")
   
