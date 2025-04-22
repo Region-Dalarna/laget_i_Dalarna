@@ -176,7 +176,7 @@ gg_infl$inflation
 ```
 
 # Bostadsmarknaden
-2010-talet kännetecknades av en bostadsmarknad där det mesta pekade uppåt. Låg inflation och låga räntor i kombination med fördelaktiga skatteregler medförde att såväl byggandet av bostäder, som bostadspriserna ökade kraftigt. Även bostadslånen har ökat under en lång period och uppgick 2023 till 165 procent av hushållens disponibla inkomst, vilket är ungefär dubbelt så stor andel som under mitten av 1990-talet. Samtidigt har hushållens finansiella tillgångar ökat, vilket medfört att skulderna i relation till de finansiella tillgångarna minskat något under samma tidsperiod [(SCB)](https://www.scb.se/hitta-statistik/temaomraden/sveriges-ekonomi/konjunkturindikatorer/finansmarknad/#62307){target="_blank"}. 
+2010-talet kännetecknades av en bostadsmarknad där det mesta pekade uppåt. Låg inflation och låga räntor i kombination med fördelaktiga skatteregler medförde att såväl byggandet av bostäder, som bostadspriserna ökade kraftigt. Nationellt har bostadslånen ökat under en lång period och uppgick i Sverige år 2024 till ungefär 160 procent av hushållens disponibla inkomst, vilket är nästan dubbelt så stor andel som under mitten av 1990-talet. Samtidigt har hushållen i Sveriges finansiella tillgångar ökat, vilket medfört att skulderna i relation till de finansiella tillgångarna minskat något under samma tidsperiod [(SCB)](https://www.scb.se/hitta-statistik/temaomraden/sveriges-ekonomi/konjunkturindikatorer/finansmarknad/#62307){target="_blank"}. Det kan naturligtvis finnas skillnader regionalt, men vi saknar data för detta i nuläget.
 
 ## Bostadsbyggande{.tabset}
 

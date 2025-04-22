@@ -42,7 +42,7 @@ diagram_BNP_SCB <- function(output_mapp = "G:/Samhällsanalys/Statistik/Närings
   
   diagram_capt <- "Källa: SCBs öppna statistikdatabas.\nBearbetning: Samhällsanalys, Region Dalarna."
   
-  diagramtitel <- paste0("Procentuell förändring i Sveriges BNP jämfört med samma kvartal föregående år")
+  diagramtitel <- paste0("Procentuell förändring i Sveriges BNP jämfört med föregående kvartal")
   diagramtitel <- str_wrap(diagramtitel,40)
   diagramfilnamn <- paste0("BNP.png")
   
