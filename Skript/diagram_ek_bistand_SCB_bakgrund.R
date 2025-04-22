@@ -7,7 +7,8 @@ diagram_ek_bistand_bakgrund_SCB <- function(region_vekt = "20",
                                    returnera_data = FALSE, # Skall data returneras?
                                    returnera_figur = TRUE){
   
-  # Diagram som skapar en figur för ekonomisk bistånd. API från SCB
+  # Diagram som skapar en figur för ekonomisk stöd. API från SCB
+  # Om man vill veta vad ekonomiskt stöd innefattar: https://www.scb.se/contentassets/592dcafe2a3b4e65b8e5434796bab0af/huvudsaklig-inkomstkalla-och-arbetsrelaterad-inkomstniva_x.pdf
   
   if (!require("pacman")) install.packages("pacman")
   p_load(tidyverse,
@@ -37,7 +38,7 @@ diagram_ek_bistand_bakgrund_SCB <- function(region_vekt = "20",
   }
   
   diagram_capt <- "Källa: SCB:s öppna statistikdatabas\nBearbetning: Samhällsanalys, Region Dalarna.\nDiagramförklaring: Antal individer som har ekonomiskt stöd som huvudsaklig inkomstkälla."
-  diagram_titel <- paste0("Antal individer ",ekonomiskt_bistand_df$ålder, " med ekonomiskt bistånd i ",unique(ekonomiskt_bistand_df$region))
+  diagram_titel <- paste0("Antal individer ",ekonomiskt_bistand_df$ålder, " med ekonomiskt stöd i ",unique(ekonomiskt_bistand_df$region))
   diagramfilnamn <- paste0("ekonomiskt_bistand_fodelseland_",unique(ekonomiskt_bistand_df$region),".png")
   
   gg_obj <- SkapaLinjeDiagram(skickad_df = ekonomiskt_bistand_df %>% 

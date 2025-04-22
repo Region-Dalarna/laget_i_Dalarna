@@ -430,29 +430,30 @@ karta
 
 # Befolkningens ekonomi
 
-Befolkningens ekonomiska situation kan mätas på flera olika sätt. Arbetslösheten, som diskuterades i föregående avsnitt, är en indikator. Personer som arbetar har helt enkelt en bättre ekonomi än personer som inte gör det. En annan indikator är den disponibla inkomsten, dvs. hur mycket varje person har i plånboken (inkomst efter skatt och transfereringar). Tyvärr mäts den disponibla inkomsten med en betydande eftersläpning, varför vi i denna rapport istället valt att fokusera på hur många individer som har svårt att försörja sig, mätt i antalet personer som är i behov av ekonomiskt bistånd.
+Befolkningens ekonomiska situation kan mätas på flera olika sätt. Arbetslösheten, som diskuterades i föregående avsnitt, är en indikator. Personer som arbetar har helt enkelt en bättre ekonomi än personer som inte gör det. En annan indikator är den disponibla inkomsten, dvs. hur mycket varje person har i plånboken (inkomst efter skatt och transfereringar). Tyvärr mäts den disponibla inkomsten med en betydande eftersläpning, varför vi i denna rapport istället valt att fokusera på hur många individer som har svårt att försörja sig, mätt i antalet personer som är i behov av ekonomiskt stöd.
 
-## Ekonomiskt bistånd
+## Ekonomiskt stöd
 
 <details>
 
   <summary>Mer information om statistiken</summary>
 
-<div title="Källa: Socialstyrelsen">Ekonomiskt bistånd är ett stöd som personer kan ansöka om i sin kommun om de har problem att försörja sig själva och sin familj. Ekonomiskt bistånd består av försörjningsstöd och bistånd till livsföringen i övrigt.</div> 
+<div title="Källa: SCB och Socialstyrelsen">
+Med ekonomiskt stöd åsyftas ekonomiskt bistånd för sökande och eventuell medsökande, bostadsbidrag för sökande och eventuell medsökande samt äldreförsörjningsstöd. Ekonomiskt bistånd är ett stöd som personer kan ansöka om i sin kommun om de har problem att försörja sig själva och sin familj. Ekonomiskt bistånd består av försörjningsstöd och bistånd till livsföringen i övrigt.</div> 
  
 </details>
 
-I Dalarna hade som mest närmare 5000 personer mellan 15 och 74 år ett sådant behov under 2020, men därefter minskade behovet stadigt under en längre period. Anmärkningsvärt är även att behovet av bistånd minskade trots att prisnivån i samhället ökade avsevärt under samma tidsperiod (se avsnittet om inflation). Exakt vad den utvecklingen beror på är oklart, men ett antal tänkbara orsaker diskuteras i följande <a href = "https://www.svt.se/nyheter/inrikes/darfor-minskar-antalet-hushall-som-far-socialbidrag-i-sverige-forskare-forklarar-orsaker-bakom" target="_blank">artikel</a>.
+I Dalarna hade som mest närmare 5000 personer mellan 15 och 74 år ett sådant behov under 2020, men därefter minskade behovet stadigt under en längre period. Anmärkningsvärt är även att behovet av stöd minskade trots att prisnivån i samhället ökade avsevärt under samma tidsperiod (se avsnittet om inflation). Exakt vad den utvecklingen beror på är oklart, men ett antal tänkbara orsaker diskuteras i följande <a href = "https://www.svt.se/nyheter/inrikes/darfor-minskar-antalet-hushall-som-far-socialbidrag-i-sverige-forskare-forklarar-orsaker-bakom" target="_blank">artikel</a>.
 
-Antalet personer som får bistånd varierar en del mellan månaderna, men under 2024 har trenden varit nedåtgående då färre får bistånd jämfört med föregående år. I `r last(ekonomiskt_bistand_SCB_df$månad_år)` var `r last(ekonomiskt_bistand_SCB_df$antal)` personer i behov av sådant stöd.
+Antalet personer som får stöd varierar en del mellan månaderna, men under 2024 har trenden varit nedåtgående då färre får ekonomiskt stöd jämfört med föregående år. I `r last(ekonomiskt_bistand_SCB_df$månad_år)` var `r last(ekonomiskt_bistand_SCB_df$antal)` personer i behov av sådant stöd.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_ek_bistand_SCB$ekonomiskt_bistand_individ_Dalarna
 ```
 
-Om antalet individer som får ekonomiskt bistånd delas upp i inrikes och utrikes födda, blir det tydligt att nedgången i antalet individer som får bistånd framförallt är koncentrerad till utrikes födda. I `r first(ekonomiskt_bistand_bakgrund_SCB_df$månad_år)` var det `r ekonomiskt_bistand_bakgrund_SCB_df %>% filter(månad_år==first(månad_år)) %>% filter(födelseregion=="utrikes född") %>% .$antal - ekonomiskt_bistand_bakgrund_SCB_df %>% filter(månad_år==first(månad_år)) %>% filter(födelseregion=="inrikes född") %>% .$antal ` fler utrikes födda personer som var i behov av ekonomiskt bistånd i Dalarna, jämfört med inrikes födda. I `r last(ekonomiskt_bistand_bakgrund_SCB_df$månad_år)` var den skillnaden bara `r ekonomiskt_bistand_bakgrund_SCB_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="utrikes född") %>% .$antal - ekonomiskt_bistand_bakgrund_SCB_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="inrikes född") %>% .$antal ` personer.
+Om antalet individer som får ekonomiskt stöd delas upp i inrikes och utrikes födda, blir det tydligt att nedgången i antalet individer som får stöd framförallt är koncentrerad till utrikes födda. I `r first(ekonomiskt_bistand_bakgrund_SCB_df$månad_år)` var det `r ekonomiskt_bistand_bakgrund_SCB_df %>% filter(månad_år==first(månad_år)) %>% filter(födelseregion=="utrikes född") %>% .$antal - ekonomiskt_bistand_bakgrund_SCB_df %>% filter(månad_år==first(månad_år)) %>% filter(födelseregion=="inrikes född") %>% .$antal ` fler utrikes födda personer som var i behov av ekonomiskt stöd i Dalarna, jämfört med inrikes födda. I `r last(ekonomiskt_bistand_bakgrund_SCB_df$månad_år)` var den skillnaden bara `r ekonomiskt_bistand_bakgrund_SCB_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="utrikes född") %>% .$antal - ekonomiskt_bistand_bakgrund_SCB_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="inrikes född") %>% .$antal ` personer.
 
-Ett annat generellt mönster är att det bland inrikes födda är vanligare att män får ekonomiskt bistånd, medan det bland utrikes födda är vanligare att kvinnor får det.
+Ett annat generellt mönster är att det bland inrikes födda är vanligare att män får ekonomiskt stöd, medan det bland utrikes födda är vanligare att kvinnor får det.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_ek_bistand_bakgrund_SCB$ekonomiskt_bistand_fodelseland_Dalarna
