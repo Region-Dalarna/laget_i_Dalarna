@@ -39,14 +39,22 @@ hamta_data_arbetsloshet <- function(vald_region="20",
     ungroup()
   
   # Skapar grupper baserat på arbetslöshet
+  # arblosa_bakgr <- arblosa_bakgr %>% 
+  #   mutate(grupp = ifelse(between(arbetslöshet,0,0.999),"0-1",
+  #                         ifelse(between(arbetslöshet,1,1.999),"1-2",
+  #                                ifelse(between(arbetslöshet,2,2.999),"2-3",
+  #                                       ifelse(between(arbetslöshet,3,3.999),"3-4",
+  #                                              ifelse(between(arbetslöshet,4,4.999),"4-5",
+  #                                                     ifelse(between(arbetslöshet,5,5.9999),"5-6",
+  #                                                            ifelse(between(arbetslöshet,6,6.9999),"6-7","7+"))))))))
+  
   arblosa_bakgr <- arblosa_bakgr %>% 
-    mutate(grupp = ifelse(between(arbetslöshet,0,0.999),"0-1",
-                          ifelse(between(arbetslöshet,1,1.999),"1-2",
-                                 ifelse(between(arbetslöshet,2,2.999),"2-3",
-                                        ifelse(between(arbetslöshet,3,3.999),"3-4",
-                                               ifelse(between(arbetslöshet,4,4.999),"4-5",
-                                                      ifelse(between(arbetslöshet,5,5.9999),"5-6",
-                                                             ifelse(between(arbetslöshet,6,6.9999),"6-7","7+"))))))))
+    mutate(grupp = case_when(
+      arbetslöshet >= 0 & arbetslöshet < 2 ~ "0-2",
+      arbetslöshet >= 2 & arbetslöshet < 4 ~ "2-4",
+      arbetslöshet >= 4 & arbetslöshet < 6 ~ "4-6",
+      arbetslöshet >= 6 ~ "6+"
+    ))
   
   if (spara_data==TRUE){
     flik_lista=lst("Arbetsloshet kommun"= arblosa_bakgr)
