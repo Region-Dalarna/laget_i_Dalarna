@@ -3,6 +3,7 @@ diagram_ek_bistand_SCB <- function(region_vekt = "20",
                                    output_mapp = "G:/Samhällsanalys/Statistik/Näringsliv/basfakta/",
                                    tid = "*",			 # "*" = alla år eller månader, "9999" = senaste, finns: "2020M01" : "2024M11"
                                    alder_klartext = "15-74 år", #
+                                   ta_bort_nast_sista_varde = TRUE, # Ta bort näst sista värdet på x-axeln
                                    kon_klartext = "totalt", # Finns kvinnor, män, totalt
                                    spara_figur = TRUE, # Skall diagrammet sparas
                                    returnera_data = FALSE, # Skall data returneras?
@@ -54,6 +55,7 @@ diagram_ek_bistand_SCB <- function(region_vekt = "20",
                               diagram_capt =  diagram_capt,
                               output_mapp = output_mapp,
                               stodlinjer_avrunda_fem = TRUE,
+                              x_axis_var_xe_etikett_ta_bort_nast_sista_vardet = ta_bort_nast_sista_varde,
                               manual_y_axis_title = "",
                               legend_tabort = TRUE,
                               x_axis_visa_var_xe_etikett = 6,

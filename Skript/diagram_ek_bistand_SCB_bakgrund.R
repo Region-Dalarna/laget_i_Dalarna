@@ -3,6 +3,7 @@ diagram_ek_bistand_bakgrund_SCB <- function(region_vekt = "20",
                                    tid = "*",			 # "*" = alla år eller månader, "9999" = senaste, finns: "2020M01" : "2024M11"
                                    alder_klartext = "15-74 år", #
                                    kon_klartext = "totalt", # Finns kvinnor, män, totalt
+                                   ta_bort_nast_sista_varde = TRUE, # Ta bort näst sista värdet på x-axeln
                                    spara_figur = TRUE, # Skall diagrammet sparas
                                    returnera_data = FALSE, # Skall data returneras?
                                    returnera_figur = TRUE){
@@ -49,6 +50,7 @@ diagram_ek_bistand_bakgrund_SCB <- function(region_vekt = "20",
                               berakna_index = FALSE,
                               diagram_titel = diagram_titel,
                               manual_color = rev(diagramfarger("rus_sex")[1:2]),
+                              x_axis_var_xe_etikett_ta_bort_nast_sista_vardet = ta_bort_nast_sista_varde,
                               diagram_capt =  diagram_capt,
                               output_mapp = output_mapp,
                               stodlinjer_avrunda_fem = TRUE,
