@@ -67,27 +67,27 @@ gg_konkurser <- diagram_konkurser_TVA(spara_figur = spara_figur,
                                       returnera_data = TRUE,
                                       returnera_figur = TRUE)
 
-# Konkurser - 1 figur - tre största branscher
-source(here("Skript","diagram_konkurser_tillvaxtanalys_bransch.R"), encoding="UTF-8")
-gg_konkurser_bransch <- diagram_konkurser_bransch_TVA(antal_branscher = 3,
-                                                      output_mapp = Output_mapp,
-                                                      spara_figur = spara_figur,
-                                                      returnera_dataframe_global_environment = TRUE)
-
-konk_bransch_ar <- unique(konkurser_bransch_df$ar)
-konk_bransch_manad <- unique(konkurser_bransch_df$manad_namn)
-storsta_bransch <- konkurser_bransch_df %>% 
-  filter(antal == max(antal)) %>% 
-  .$bransch
-storsta_bransch_antal <- konkurser_bransch_df %>% 
-  filter(antal == max(antal)) %>% 
-  .$antal
-nast_storsta_bransch <- konkurser_bransch_df %>% 
-  filter(antal == sort(antal,decreasing = TRUE)[2]) %>% 
-  .$bransch
-nast_storsta_bransch_antal <- konkurser_bransch_df %>%
-  filter(antal == sort(antal,decreasing = TRUE)[2]) %>% 
-  .$antal
+# # Konkurser - 1 figur - tre största branscher
+# source(here("Skript","diagram_konkurser_tillvaxtanalys_bransch.R"), encoding="UTF-8")
+# gg_konkurser_bransch <- diagram_konkurser_bransch_TVA(antal_branscher = 3,
+#                                                       output_mapp = Output_mapp,
+#                                                       spara_figur = spara_figur,
+#                                                       returnera_dataframe_global_environment = TRUE)
+# 
+# konk_bransch_ar <- unique(konkurser_bransch_df$ar)
+# konk_bransch_manad <- unique(konkurser_bransch_df$manad_namn)
+# storsta_bransch <- konkurser_bransch_df %>% 
+#   filter(antal == max(antal)) %>% 
+#   .$bransch
+# storsta_bransch_antal <- konkurser_bransch_df %>% 
+#   filter(antal == max(antal)) %>% 
+#   .$antal
+# nast_storsta_bransch <- konkurser_bransch_df %>% 
+#   filter(antal == sort(antal,decreasing = TRUE)[2]) %>% 
+#   .$bransch
+# nast_storsta_bransch_antal <- konkurser_bransch_df %>%
+#   filter(antal == sort(antal,decreasing = TRUE)[2]) %>% 
+#   .$antal
 
 # Nystartade företag - 1 figur
 source(here("Skript","diagram_nystartade_ftg_tillvaxtanalys_korrekt.R"), encoding="UTF-8")
@@ -146,19 +146,33 @@ gg_avregistrerade <- diagram_avregistrerade(spara_figur = spara_figur,
                                             returnera_data = TRUE, 
                                             returnera_figur = TRUE)
 
-# Ekonomiskt bistånd SCB - 1 figur
-source(here("Skript","diagram_ek_bistand_SCB.R"), encoding="UTF-8")
-gg_ek_bistand_SCB = diagram_ek_bistand_SCB(spara_figur = spara_figur, 
-                                           output_mapp = Output_mapp,
-                                           returnera_data = TRUE, 
-                                           returnera_figur = TRUE)
+source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_ek_stod_bakgrund.R")
+gg_ek_stod <- diagram_ek_stod_bakgrund_SCB (output_mapp = Output_mapp,
+                                            skriv_diagrambildfil = spara_figur,
+                                            returnera_data_rmarkdown = TRUE)
 
-# Ekonomiskt bistånd SCB bakgrund - 1 figur
-source(here("Skript","diagram_ek_bistand_SCB_bakgrund.R"), encoding="UTF-8")
-gg_ek_bistand_bakgrund_SCB = diagram_ek_bistand_bakgrund_SCB(spara_figur = spara_figur, 
-                                                             output_mapp = Output_mapp,
-                                                             returnera_data = TRUE, 
-                                                             returnera_figur = TRUE)
+ek_stod_manad_ar_forsta <- first(ekonomiskt_stod_df$månad_år)
+ek_stod_manad_ar_sista <- last(ekonomiskt_stod_df$månad_år)
+
+ek_stod_totalt_sista <- ekonomiskt_stod_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="totalt") %>% .$antal
+
+ek_stod_skillnad_forsta <- ekonomiskt_stod_df %>% filter(månad_år==first(månad_år)) %>% filter(födelseregion=="utrikes född") %>% .$antal - ekonomiskt_stod_df %>% filter(månad_år==first(månad_år)) %>% filter(födelseregion=="inrikes född") %>% .$antal
+ek_stod_skillnad_senaste <- ekonomiskt_stod_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="utrikes född") %>% .$antal - ekonomiskt_stod_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="inrikes född") %>% .$antal
+
+
+# # Ekonomiskt bistånd SCB - 1 figur
+# source(here("Skript","diagram_ek_bistand_SCB.R"), encoding="UTF-8")
+# gg_ek_bistand_SCB = diagram_ek_bistand_SCB(spara_figur = spara_figur, 
+#                                            output_mapp = Output_mapp,
+#                                            returnera_data = TRUE, 
+#                                            returnera_figur = TRUE)
+# 
+# # Ekonomiskt bistånd SCB bakgrund - 1 figur
+# source(here("Skript","diagram_ek_bistand_SCB_bakgrund.R"), encoding="UTF-8")
+# gg_ek_bistand_bakgrund_SCB = diagram_ek_bistand_bakgrund_SCB(spara_figur = spara_figur, 
+#                                                              output_mapp = Output_mapp,
+#                                                              returnera_data = TRUE, 
+#                                                              returnera_figur = TRUE)
 
 ###########################################
 ### Kräver manuell nedladdning av data #### - Tidigare datahämtning, ej relevant längre
