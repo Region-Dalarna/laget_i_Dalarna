@@ -23,10 +23,10 @@ diagram_konjunkturbarometern <- function(output_mapp = "G:/Samhällsanalys/Stati
     diagram_capt <- "Källa: Konjunkturinstitutet.\nBearbetning: Samhällsanalys, Region Dalarna.\nDiagramförklaring: En indikator över 100 motsvarar en starkare ekonomi än normalt och värden över 110 en mycket starkare ekonomi än normalt.\nEn indikator under 100 respektive under 90 visar en svagare respektive mycket svagare ekonomi än normalt."
     gg_list <- list()
     objektnamn <- c()
-  
+
     barometern_df <- hamta_konjunkturbarometern(indikator = c("Barometerindikatorn","Tillverkningsindustri (SNI 10-33)",
-                                                                                    "Byggindustri (SNI 41-43)","Handel (SNI 45-47)",
-                                                                                    "Tjänstesektorn (SNI 49-82 + 95-96)","Konfidensindikator hushåll"),
+                                                              "Byggverksamhet (SNI 41-43)","Handel (SNI 45-47)",
+                                                              "Tjänstesektorn (SNI 49-82 + 95-96)","Konfidensindikator hushåll"),
                                                 period = "*")
     
     barometern_df <- barometern_df %>% 
@@ -89,7 +89,7 @@ diagram_konjunkturbarometern <- function(output_mapp = "G:/Samhällsanalys/Stati
       
       
       barometern_bransch_utskrift <-  barometern_bransch_utskrift %>% 
-        mutate(Indikator = case_when(barometern_bransch_utskrift$Indikator == "Byggindustri (SNI 41-43)" ~ "Byggindustri",
+        mutate(Indikator = case_when(barometern_bransch_utskrift$Indikator == "Byggverksamhet (SNI 41-43)" ~ "Byggindustri",
                                      barometern_bransch_utskrift$Indikator == "Handel (SNI 45-47)" ~ "Handel",
                                      barometern_bransch_utskrift$Indikator == "Tillverkningsindustri (SNI 10-33)" ~ "Tillverkningsindustri",
                                      barometern_bransch_utskrift$Indikator == "Tjänstesektorn (SNI 49-82 + 95-96)" ~ "Tjänstesektorn",
