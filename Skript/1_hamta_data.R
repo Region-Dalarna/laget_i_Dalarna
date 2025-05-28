@@ -169,7 +169,7 @@ gg_ek_stod <- diagram_ek_stod_bakgrund_SCB (output_mapp = Output_mapp,
 ek_stod_manad_ar_forsta <- first(ekonomiskt_stod_df$månad_år)
 ek_stod_manad_ar_sista <- last(ekonomiskt_stod_df$månad_år)
 
-ek_stod_totalt_sista <- ekonomiskt_stod_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="totalt") %>% .$antal
+ek_stod_totalt_sista <- format(ekonomiskt_stod_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="totalt") %>% .$antal,big.mark = " ")
 
 ek_stod_skillnad_forsta <- ekonomiskt_stod_df %>% filter(månad_år==first(månad_år)) %>% filter(födelseregion=="utrikes född") %>% .$antal - ekonomiskt_stod_df %>% filter(månad_år==first(månad_år)) %>% filter(födelseregion=="inrikes född") %>% .$antal
 ek_stod_skillnad_senaste <- ekonomiskt_stod_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="utrikes född") %>% .$antal - ekonomiskt_stod_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="inrikes född") %>% .$antal
