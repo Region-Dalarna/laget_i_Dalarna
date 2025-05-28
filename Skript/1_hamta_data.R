@@ -21,6 +21,10 @@ gg_BNP <- diagram_BNP_SCB(spara_figur = spara_figur,
                           returnera_data = TRUE, 
                           returnera_figur = TRUE)
 
+BNP_senaste_kvartal <- BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$kvartal
+BNP_senaste_ar <- BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$ar
+BNP_senaste_varde <- gsub("\\.",",",BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Sasongsransad_forandring)
+
 # Konjunkturbarometern - 2 diagram
 source(here("Skript","diagram_konjunkturbarometern_konj.R"), encoding="UTF-8")
 gg_konjB <- diagram_konjunkturbarometern(spara_figur = spara_figur, 
@@ -30,6 +34,18 @@ gg_konjB <- diagram_konjunkturbarometern(spara_figur = spara_figur,
                                          returnera_data = TRUE, 
                                          returnera_figur = TRUE)
 
+konjukturbarometern_senaste_manad <- last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$manad_long
+konjukturbarometern_senaste_ar <- last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$ar
+konjukturbarometern_senaste_varde <- gsub("\\.",",",last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$varde)
+
+konj_hushall_senaste <- gsub("\\.",",",last(barometern_df$varde[barometern_df$Indikator=="Konfidensindikator hushåll"])) 
+konj_bransch_positiv <- tolower(gsub( " .*$", "", barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(varde==max(varde)) %>% .$Indikator))
+konj_bransch_positiv_varde <- gsub("\\.",",",barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(varde==max(varde)) %>% .$varde)
+konj_bransch_negativ <- tolower(gsub( " .*$", "", barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(varde==min(varde)) %>% .$Indikator))
+konj_bransch_negativ_varde <- gsub("\\.",",",barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(varde==min(varde)) %>% .$varde)
+
+konj_bygg_senaste_varde <- gsub("\\.",",",barometern_df %>%filter(Indikator=="Byggverksamhet (SNI 41-43)",Period==last(Period)) %>% .$varde)
+
 # KPI - 1 diagram
 source(here("Skript","diagram_inflation_SCB.R"), encoding="UTF-8")
 gg_infl <- diagram_inflation_SCB(spara_figur = spara_figur, 
@@ -37,6 +53,12 @@ gg_infl <- diagram_inflation_SCB(spara_figur = spara_figur,
                                  output_mapp = Output_mapp,
                                  returnera_data = TRUE, 
                                  returnera_figur = TRUE)
+
+inflation_max_manad_ar <- paste(KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar),collapse = " ")
+inflation_max_varde <- gsub("\\.",",",KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF)
+
+inflation_senaste_manad_ar <- paste(KPI_df %>% filter(månad==last(månad)) %>% select(manad_long,ar),collapse = " ")
+inflation_senaste_varde <- gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)
 
 # Småhuspriser - 2 diagram
 source(here("Skript","diagram_smahuspriser_SCB.R"), encoding="UTF-8")
@@ -106,6 +128,14 @@ gg_arbetsloshet_lan <- diagram_arbetsmarknadsstatus(region_vekt = hamtaAllaLan()
                                                     diag_sysselsattningsgrad = FALSE, 
                                                     returnera_data = TRUE, 
                                                     returnera_figur = TRUE)
+
+arbetsloshet_ar_senaste <- unique(arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$ar)
+arbetsloshet_manad_senaste <- unique(arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$manad_long)
+arbetsloshet_dalarna_senaste <- gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$varde)
+arbetsloshet_Sverige_senaste <- gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Sverige") %>% .$varde)
+arbetsloshet_gavleborg_senaste <- gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Gävleborg") %>% .$varde)
+arbetsloshet_lan_min <- arbetsmarknadsstatus %>% filter(varde==min(varde)) %>% dplyr::pull(region) %>% list_komma_och()
+arbetsloshet_lan_min_varde <- min(arbetsmarknadsstatus$varde) %>% str_replace("\\.", "\\,")
 
 # Arbetslöshet tidsserie - 1 figur
 source("https://raw.githubusercontent.com/Region-Dalarna/diagram/main/diagram_arbetsmarknadsstatus_tidsserie_SCB.R")
