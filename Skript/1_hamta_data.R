@@ -82,6 +82,37 @@ gg_nybygg_bygglov <- diagram_nybyggnation_bygglov(spara_figur = spara_figur,
                                                   returnera_data = TRUE, 
                                                   returnera_figur = TRUE)
 
+Bygglov_df <- Bygglov_df %>% 
+  mutate(kvartal=case_when(
+    kvartal=="K1" ~ "kvartal ett",
+    kvartal=="K2" ~ "kvartal två",
+    kvartal=="K3" ~ "kvartal tre",
+    kvartal=="K4" ~ "kvartal fyra",
+    TRUE ~ kvartal
+  ))
+
+bygglov_smahus_max_manad_ar <- paste(Bygglov_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Antal==max(Antal)) %>% select(kvartal,ar),collapse = " ")
+bygglov_smahus_max_varde <- Bygglov_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Antal==max(Antal)) %>% .$Antal
+
+bygglov_smahus_senaste_manad_ar <- paste(Bygglov_df %>%filter(hustyp=="småhus")  %>% select(kvartal,ar) %>% last(),collapse = " ")
+bygglov_smahus_senaste_varde <- Bygglov_df %>%filter(hustyp=="småhus") %>% select(Antal) %>% last() %>% .$Antal
+bygglov_flerbostadshus_senaste_varde <-Bygglov_df %>%filter(ar>"2009",hustyp=="flerbostadshus exkl. specialbostäder") %>% .$Antal %>% last()
+
+Husbyggande_df <- Husbyggande_df %>% 
+  mutate(kvartal=case_when(
+    kvartal=="K1" ~ "kvartal ett",
+    kvartal=="K2" ~ "kvartal två",
+    kvartal=="K3" ~ "kvartal tre",
+    kvartal=="K4" ~ "kvartal fyra",
+    TRUE ~ kvartal
+  ))
+
+husbyggande_smahus_max_manad_ar <- paste(Husbyggande_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(varde==max(varde)) %>% select(kvartal,ar),collapse = " ")
+husbyggande_smahus_max_varde <- Husbyggande_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(varde==max(varde)) %>% .$varde
+husbyggande_smahus_senaste_manad_ar <- paste(Husbyggande_df %>%filter(hustyp=="småhus")  %>% select(kvartal,ar) %>% last(),collapse = " ")
+husbyggande_smahus_senaste_varde <- Husbyggande_df %>%filter(hustyp=="småhus") %>% select(varde) %>% last() %>% .$varde
+husbyggande_flerbostadshus_senaste_varde <- Husbyggande_df %>%filter(hustyp=="flerbostadshus") %>% .$varde %>%  last()
+
 # # Konkurser - 2 figurer - SCB har inte längre data för konkurser, så vi använder Tillväxtanalys data istället (se längre ned)
 # source(here("Skript","diagram_konkurser_SCB.R"), encoding="UTF-8")
 # gg_konkurser <- diagram_konkurser_SCB(spara_figur = spara_figur, 
@@ -96,6 +127,13 @@ gg_konkurser <- diagram_konkurser_TVA(spara_figur = spara_figur,
                                       output_mapp = Output_mapp,
                                       returnera_data = TRUE,
                                       returnera_figur = TRUE)
+
+konkurser_senaste_manad <- first(konkurser_df$manad_long)
+konkurser_senaste_ar <- first(konkurser_df$år)
+konkurser_senaste_antal <- konkurser_df %>% filter(år==first(år),manad_long == first(manad_long)) %>% group_by(region,år) %>% .$antal %>% sum()
+
+konkurser_foregaende_ar <- as.character(as.numeric(first(konkurser_df$år))-1)
+konkurser_foregaende_ar_antal <- konkurser_df  %>% filter(år==(as.numeric(first(år))-1),manad_long == first(manad_long)) %>% group_by(region,år) %>% .$antal %>% sum()
 
 # # Konkurser - 1 figur - tre största branscher
 # source(here("Skript","diagram_konkurser_tillvaxtanalys_bransch.R"), encoding="UTF-8")
@@ -119,6 +157,18 @@ gg_konkurser <- diagram_konkurser_TVA(spara_figur = spara_figur,
 #   filter(antal == sort(antal,decreasing = TRUE)[2]) %>% 
 #   .$antal
 
+# Avregistrerade företag - 1 figur
+source(here("Skript","diagram_avreg_ftg_Bolagsverket.R"), encoding="UTF-8")
+gg_avregistrerade <- diagram_avregistrerade(spara_figur = spara_figur, 
+                                            output_mapp = Output_mapp,
+                                            returnera_data = TRUE, 
+                                            returnera_figur = TRUE)
+
+avregistrerade_senaste_ar <- max(antal_avregistreringar_df$ar)
+avregistrerade_senaste_manad <- tolower(last(antal_avregistreringar_df$manad))
+avregisterade_senaste_varde <- last(antal_avregistreringar_df$antal)
+avregistrerade_foregaende_ar_varde <- antal_avregistreringar_df %>% filter(manad == last(manad), ar == sort(unique(ar), decreasing = TRUE)[2]) %>% dplyr::pull(antal)
+
 # Nystartade företag - 1 figur
 source(here("Skript","diagram_nystartade_ftg_tillvaxtanalys_korrekt.R"), encoding="UTF-8")
 gg_nystartade <- diagram_nystartade(spara_figur = spara_figur, 
@@ -126,6 +176,15 @@ gg_nystartade <- diagram_nystartade(spara_figur = spara_figur,
                                     returnera_data = TRUE, 
                                     returnera_figur = TRUE)
 
+nystartade_max_ar <- nystartade_df %>% filter(antal == max(antal)) %>% .$ar
+nystartade_max_kvartal <- nystartade_df %>% filter(antal == max(antal)) %>% .$kvartal_namn
+nystartade_max_varde <- nystartade_df %>% filter(antal == max(antal)) %>% .$antal
+
+nystartade_senaste_ar <- nystartade_df %>% filter(tid == first(tid)) %>% .$ar
+nystartade_max_kvartal <- nystartade_df %>% filter(tid == first(tid)) %>% .$kvartal_namn
+nystartade_max_varde <- nystartade_df %>% filter(tid == first(tid)) %>% .$antal
+
+nystartade_jmf <- nystartade_df %>% filter(tid == first(tid)) %>% .$antal - first(nystartade_df %>% filter(tid != first(tid)) %>% .$antal)
 
 # Arbetslöshet län - 1 figur
 source("https://raw.githubusercontent.com/Region-Dalarna/diagram/main/diagram_arbetsmarknadsstatus_senastear.R")
@@ -192,12 +251,6 @@ hamta_data_arbetsloshet(vald_region="20",
                         spara_data=TRUE,
                         output_mapp_excel = here("Data"))
 
-# Avregistrerade företag - 1 figur
-source(here("Skript","diagram_avreg_ftg_Bolagsverket.R"), encoding="UTF-8")
-gg_avregistrerade <- diagram_avregistrerade(spara_figur = spara_figur, 
-                                            output_mapp = Output_mapp,
-                                            returnera_data = TRUE, 
-                                            returnera_figur = TRUE)
 
 source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_ek_stod_bakgrund.R")
 gg_ek_stod <- diagram_ek_stod_bakgrund_SCB (output_mapp = Output_mapp,

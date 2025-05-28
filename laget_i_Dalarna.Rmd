@@ -199,40 +199,8 @@ Med bostadslägenhet avses en lägenhet avsedd att helt eller till en inte oväs
  
 </details>
 
-```{r , include = FALSE}
-# Bygglov_df <- Bygglov_df %>% 
-#     mutate(kvartal=ifelse(kvartal=="K1","kvartal ett",
-#                           ifelse(kvartal=="K2","kvartal två",
-#                                  ifelse(kvartal=="K3","kvartal tre","kvartal fyra"))))
-
-Bygglov_df <- Bygglov_df %>% 
-  mutate(kvartal=case_when(
-    kvartal=="K1" ~ "kvartal ett",
-    kvartal=="K2" ~ "kvartal två",
-    kvartal=="K3" ~ "kvartal tre",
-    kvartal=="K4" ~ "kvartal fyra",
-    TRUE ~ kvartal
-  ))
-
-# Husbyggande_df <- Husbyggande_df %>%
-#   mutate(kvartal=ifelse(kvartal=="K1","kvartal ett",
-#                           ifelse(kvartal=="K2","kvartal två",
-#                                  ifelse(kvartal=="K3","kvartal tre","kvartal fyra"))))
-
-Husbyggande_df <- Husbyggande_df %>% 
-  mutate(kvartal=case_when(
-    kvartal=="K1" ~ "kvartal ett",
-    kvartal=="K2" ~ "kvartal två",
-    kvartal=="K3" ~ "kvartal tre",
-    kvartal=="K4" ~ "kvartal fyra",
-    TRUE ~ kvartal
-  ))
-  
-```
-
-
 ### Bygglov {-}
-Antalet godkända bygglov för småhus i Dalarna varierar mellan kvartalen, men en tydlig trend är att de har börjat minska på senare tid. Sedan toppen i  `r Bygglov_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Antal==max(Antal)) %>% select(kvartal,ar) %>% .[1,]`, då `r Bygglov_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Antal==max(Antal)) %>% .$Antal %>% .[1]` bygglov godkändes, har antalet godkända bygglov minskat och i `r Bygglov_df %>%filter(hustyp=="småhus")  %>% select(kvartal,ar) %>% last()`, godkändes `r Bygglov_df %>%filter(,hustyp=="småhus") %>% .$Antal %>% last()` bygglov. För flerbostadshus är trenden relativt likvärdig, men variationen är större från kvartal till kvartal. Under `r Bygglov_df %>%filter(ar>"2009",hustyp=="småhus") %>% select(kvartal,ar) %>% last()`, godkändes bygglov för `r Bygglov_df %>%filter(ar>"2009",hustyp=="flerbostadshus exkl. specialbostäder") %>% .$Antal %>% last()` lägenheter i Dalarna, vilket var fler än kvartalen innan.
+Antalet godkända bygglov för småhus i Dalarna varierar mellan kvartalen, men en tydlig trend är att de har börjat minska på senare tid. Sedan toppen i  `r bygglov_smahus_max_manad_ar`, då `r  bygglov_smahus_max_varde` bygglov godkändes, har antalet godkända bygglov minskat och i `r bygglov_smahus_senaste_manad_ar`, godkändes `r bygglov_smahus_senaste_varde` bygglov. För flerbostadshus är trenden relativt likvärdig, men variationen är större från kvartal till kvartal. Under `r bygglov_smahus_max_manad_ar`, godkändes bygglov för `r bygglov_flerbostadshus_senaste_varde` lägenheter i Dalarna, vilket var fler än kvartalen innan.
 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
@@ -240,7 +208,7 @@ gg_nybygg_bygglov$bygglov_20_arK1_K4
 ```
 
 ### Nybyggnation {-}
-Precis som för byggloven, varierar byggandet av småhus mellan kvartalen, men en långsiktig trend var att byggandet minskade tydligt från toppen i  `r Husbyggande_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(varde==max(varde)) %>% select(kvartal,ar) %>% .[1,]`, då `r Husbyggande_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(varde==max(varde)) %>% .$varde %>% .[1]` småhus påbörjades, till botten under första kvartalet 2024, då blott 17 småhus påbörjades. I `r Husbyggande_df %>%filter(hustyp=="småhus") %>% filter(ar_kvartal==last(ar_kvartal)) %>% select(kvartal,ar)`, påbörjades `r Husbyggande_df %>%filter(hustyp=="småhus") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$varde` småhus, vilket var färre än månaderna innan. För flerbostadshus är trenden svårare att tolka, då variationen är stor mellan kvartalen. I `r Husbyggande_df %>%filter(hustyp=="flerbostadshus") %>% filter(ar_kvartal==last(ar_kvartal)) %>% select(kvartal,ar)`, påbörjades `r Husbyggande_df %>%filter(hustyp=="flerbostadshus") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$varde` lägenhet, vilket var fler än kvartalet innan.
+Precis som för byggloven, varierar byggandet av småhus mellan kvartalen, men en långsiktig trend var att byggandet minskade tydligt från toppen i  `r husbyggande_smahus_max_manad_ar`, då `r husbyggande_smahus_max_varde` småhus påbörjades, till botten under första kvartalet 2024, då blott 17 småhus påbörjades. I `r husbyggande_smahus_senaste_manad_ar`, påbörjades `r husbyggande_smahus_senaste_varde` småhus, vilket var färre än månaderna innan. För flerbostadshus är trenden svårare att tolka, då variationen är stor mellan kvartalen. I `r husbyggande_smahus_max_manad_ar`, påbörjades `r husbyggande_flerbostadshus_senaste_varde` lägenhet, vilket var fler än kvartalet innan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_nybygg_bygglov$nybyggnation_20_arK1_K4
@@ -289,7 +257,7 @@ k = k+1
 
 Antalet anställda som berörs av konkurser varierar relativt mycket från månad till månad, vilket medför att det kan var svårt att se någon trend på månadsbasis kopplad till Rysslands invasion av Ukraina och dess effekter på Dalarnas ekonomi. Mellan januari och mars 2024 ökade antalet anställda berörda av konkurser i Dalarna exempelvis tydligt jämfört med samma period året innan, för att därefter minska påtagligt i april 2024. I maj 2024 berördes återigen fler av konkurser jämfört med året innan, men i juni var utvecklingen det omvända. Mellan augusti och november 2024 var trenden positiv, då tydligt färre berördes av konkurser i Dalarna jämfört med samma period året innan. 
 
-Efter att ha ökat tydligt i januari 2025, då närmare 150 personer berördes av konkurser i Dalarna, minskade antalet anställda som berördes av konkurser i februari och mars 2025, jämfört med samma period föregående år. I `r first(konkurser_df$manad_long)` `r max(konkurser_df$år)` berördes `r konkurser_df %>% filter(år==first(år),manad_long == first(manad_long)) %>% group_by(region,år) %>% .$antal %>% sum()` anställda av konkurser, vilket dock var fler än de `r konkurser_df  %>% filter(år==(as.numeric(first(år))-1),manad_long == first(manad_long)) %>% group_by(region,år) %>% .$antal %>% sum()` anställda som berördes motsvarande månad `r as.character(as.numeric(first(konkurser_df$år))-1)`.
+Efter att ha ökat tydligt i januari 2025, då närmare 150 personer berördes av konkurser i Dalarna, minskade antalet anställda som berördes av konkurser i februari och mars 2025, jämfört med samma period föregående år. I `r konkurser_senaste_manad` `r konkurser_senaste_ar` berördes `r konkurser_senaste_antal` anställda av konkurser, vilket dock var fler än de `r konkurser_foregaende_ar_antal` anställda som berördes motsvarande månad `r konkurser_foregaende_ar`.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_konkurser$anstalla_berorda_konkurser_Dalarna
@@ -300,7 +268,7 @@ gg_konkurser$anstalla_berorda_konkurser_Dalarna
 
 ## Avregistrerade företag
 
-Ett potentiellt alternativ till att begära ett företag i konkurs är att istället avregistrera det. Antalet avregistrerade företag tenderar att följa ett visst säsongsmönster, med fler avregistreringar i början och slutet av året. Det är dock svårt att se någon långsiktig trend, då ungefär lika många företag avregistreras varje år. I `r tolower(last(antal_avregistreringar_df$manad))` `r max(antal_avregistreringar_df$ar)` avregistrerades `r last(antal_avregistreringar_df$antal)` företag i Dalarna, jämfört med `r antal_avregistreringar_df %>% filter(manad == last(manad), ar == sort(unique(ar), decreasing = TRUE)[2]) %>% dplyr::pull(antal)` samma månad året innan.
+Ett potentiellt alternativ till att begära ett företag i konkurs är att istället avregistrera det. Antalet avregistrerade företag tenderar att följa ett visst säsongsmönster, med fler avregistreringar i början och slutet av året. Det är dock svårt att se någon långsiktig trend, då ungefär lika många företag avregistreras varje år. I `r avregistrerade_senaste_manad` `r avregistrerade_senaste_ar` avregistrerades `r avregisterade_senaste_varde` företag i Dalarna, jämfört med `r avregistrerade_foregaende_ar_varde` samma månad året innan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_avregistrerade$avreg_manad
@@ -317,7 +285,7 @@ gg_avregistrerade$avreg_manad
 </details>
 
 
-En annan indikator på läget för företagen i länet är hur många nya företag som startas. Historiskt startades väldigt många företag i samband med Corona-pandemin 2020-2021. I  `r nystartade_df %>% filter(antal == max(antal)) %>% .$kvartal_namn` `r nystartade_df %>% filter(antal == max(antal)) %>% .$ar` startades exempelvis `r nystartade_df %>% filter(antal == max(antal)) %>% .$antal` företag, vilket är det största antalet sedan åtminstone 2011. Exakt vad detta beror på kan vara svårt att säga, men en potentiell förklaring är att individer som blev uppsagda under pandemin valde att starta egna företag. Någon större trend sedan Rysslands invasion av Ukraina märktes inte initialt för antalet nystartade företag. Under 2022 startades till och med något fler företag än genomsnittet sedan 2011. Under första halvan av 2023 märktes en viss avmattning dock, innan antalet nystartade företag återigen började öka. I `r nystartade_df %>% filter(tid == first(tid)) %>% .$kvartal_namn` `r nystartade_df %>% filter(tid == first(tid)) %>% .$ar` startades `r nystartade_df %>% filter(tid == first(tid)) %>% .$antal` företag, vilket var `r abs(nystartade_df %>% filter(tid == first(tid)) %>% .$antal - first(nystartade_df %>% filter(tid != first(tid)) %>% .$antal))` `r ifelse(nystartade_df %>% filter(tid == first(tid)) %>% .$antal>first(nystartade_df %>% filter(tid != first(tid)) %>% .$antal), "fler", "färre")`  än föregående kvartal.
+En annan indikator på läget för företagen i länet är hur många nya företag som startas. Historiskt startades väldigt många företag i samband med Corona-pandemin 2020-2021. I  `r nystartade_max_kvartal` `r nystartade_max_ar` startades exempelvis `r nystartade_max_varde` företag, vilket är det största antalet sedan åtminstone 2011. Exakt vad detta beror på kan vara svårt att säga, men en potentiell förklaring är att individer som blev uppsagda under pandemin valde att starta egna företag. Någon större trend sedan Rysslands invasion av Ukraina märktes inte initialt för antalet nystartade företag. Under 2022 startades till och med något fler företag än genomsnittet sedan 2011. Under första halvan av 2023 märktes en viss avmattning dock, innan antalet nystartade företag återigen började öka. I `r nystartade_max_kvartal` `r nystartade_senaste_ar` startades `r nystartade_max_varde` företag, vilket var `r abs(nystartade_jmf)` `r ifelse(nystartade_jmf>0, "fler", "färre")`  än föregående kvartal.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_nystartade$nystartade_ftg_Dalarna
