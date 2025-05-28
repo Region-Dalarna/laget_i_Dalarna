@@ -116,6 +116,21 @@ gg_arbetsloshet_tidsserie <- diagram_arbetsmarknadsstatus_tidsserie (spara_figur
                                                                      diagram_facet = TRUE,
                                                                      returnera_figur = TRUE)
 
+arbetsloshet_tidsserie_ar <-  unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="inrikes född") %>% .$ar))
+arbetsloshet_tidsserie_manad <- unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="inrikes född") %>% .$manad_long))
+
+# Totalt
+arbetsloshet_tidserie_Dalarna_totalt_max_ar <- arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="totalt") %>% filter(varde==max(varde)) %>%  .$ar %>% .[1]
+arbetsloshet_tidserie_Dalarna_totalt_max_manad <- arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="totalt") %>% filter(varde==max(varde)) %>%  .$manad_long %>% .[1]
+arbetsloshet_tidserie_Dalarna_totalt_max_varde <- gsub("\\.",",", arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="totalt") %>% filter(varde==max(varde)) %>%  .$varde %>% .[1])
+
+arbetsloshet_tidserie_Dalarna_totalt_senaste_varde <- gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="totalt") %>% .$varde))
+
+# Inrikes/utrikes födda
+arbetsloshet_tidserie_Dalarna_inrikes_varde <- gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="inrikes född") %>% .$varde))
+arbetsloshet_tidserie_Dalarna_utrikes_varde <- gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="utrikes född") %>% .$varde))
+
+
 # Hämta antal arbetslösa (till texten enbart)
 source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/refs/heads/main/hamta_bas_arbstatus_region_kon_alder_fodelseregion_prel_manad_ArbStatusM_scb.R")
 arbstatus_df <- hamta_bas_arbstatus_region_kon_alder_fodelseregion_prel_manad_scb(region_vekt = "20",
