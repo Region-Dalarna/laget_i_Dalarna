@@ -67,6 +67,14 @@ gg_smahuspriser <- diagram_smahuspriser(spara_figur = spara_figur,
                                         returnera_data = TRUE, 
                                         returnera_figur = TRUE)
 
+priser_max_manad_ar <- paste(priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% select(manad_long,ar),collapse = " ")
+priser_max_varde <- round(priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% .$Medelpris/1000,1)
+priser_senaste_manad_ar <- paste(priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(manad_long,ar),collapse = " ")
+priser_senaste_varde <- gsub("\\.",",",(round(priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(Medelpris)/1000,1)))
+priser_senaste_max_region <- paste(priser_df %>%filter(Period==max(Period)) %>% filter(Medelpris==max(Medelpris)) %>% .$region,collapse = " ")
+priser_senaste_max_varde <- gsub("\\.",",", round(priser_df %>%filter(Period==max(Period)) %>% filter(Medelpris==max(Medelpris)) %>% select(Medelpris)/1000,1))
+
+
 # Byggande - 2 figurer
 source(here("Skript","diagram_nybygg_bygglov_SCB.R"), encoding="UTF-8")
 gg_nybygg_bygglov <- diagram_nybyggnation_bygglov(spara_figur = spara_figur, 
