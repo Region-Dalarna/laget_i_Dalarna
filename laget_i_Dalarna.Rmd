@@ -90,7 +90,7 @@ Senast uppdaterad: `r Sys.Date()`</i>
 Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvecklingen. Rapporten uppdateras regelbundet och ett antal viktiga trender och mönster sammanfattas här: 
 
 <ul>
-<li> Hushållens syn på ekonomin har försämrats tydligt de senaste månaderna, men aktiviteten i ekonomin (BNP) ökade under fjärde kvartalet 2024. Inflationen har sjunkit något på sistone, men är fortfarande över Riksbankens inflationsmål. </li>
+<li> Hushållens syn på ekonomin har försämrats jämfört med inledningen av 2025, samtidigt som aktiviteten i ekonomin (BNP) minskade under årets första kvartal. Inflationen har sjunkit något på sistone, men är fortfarande över Riksbankens inflationsmål. </li>
 <li> Såväl nybyggnation av bostäder, som priserna på småhus, har ökat i Dalarna på sistone.
 <li> Efter att ha ökat tydligt i januari 2025, har antalet anställda berörda av konkurser i Dalarna minskat de senaste månaderna. </li>
 <li> Arbetslösheten i Dalarna, som är klart under genomsnittet i Sverige, har under 2024 och inledningen av 2025, efter en lång period av nedgång, stabiliserats på ungefär samma nivå som föregående år.</li>
@@ -228,7 +228,7 @@ gg_nybygg_bygglov$nybyggnation_20_arK1_K4
 
 Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige. Efter toppen i `r priser_max_manad_ar`, då ett småhus i Dalarna kostade ungefär `r priser_max_varde` miljoner kronor, har dock det genomsnittliga priset på småhus i länet minskat avsevärt och en botten nåddes i oktober 2023, när ett småhus i Dalarna kostade strax under 2,1 miljoner kronor i genomsnitt. Minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medfört en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkar efterfrågan på bostäder. 
 
-Under första halvåret 2024 steg priserna på småhus tydligt i Dalarna, innan de återigen började sjunka i augusti. I `r priser_senaste_manad_ar ` var priset på ett småhus knappt `r priser_senaste_varde` miljoner kronor (i genomsnitt), vilket var en tydlig ökning jämfört med månaderna innan.
+Under första halvåret 2024 steg priserna på småhus tydligt i Dalarna, innan de återigen började sjunka i augusti. I `r priser_senaste_manad_ar ` var priset på ett småhus knappt `r priser_senaste_varde` miljoner kronor (i genomsnitt), vilket var något lägre än med månaderna innan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_smahuspriser$smahuspriser_tidserie
