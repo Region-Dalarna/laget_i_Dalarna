@@ -91,8 +91,8 @@ Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvec
 
 <ul>
 <li> Hushållens syn på ekonomin har försämrats jämfört med inledningen av 2025, samtidigt som aktiviteten i ekonomin (BNP) minskade under årets första kvartal. Inflationen har sjunkit avsevärt sedan de höga nivåerna mot slutet av 2022, men är fortfarande över Riksbankens inflationsmål. </li>
-<li> Såväl nybyggnation av bostäder, som priserna på småhus, har ökat i Dalarna på sistone.
-<li> Efter att ha ökat tydligt i januari 2025, har antalet anställda berörda av konkurser i Dalarna minskat de senaste månaderna. </li>
+<li> Priserna på småhus i Dalarna minskade i `r priser_senaste_manad_ar `, jämfört med månaderna innan.
+<li> Antalet anställda berörda av konkurser i Dalarna var lägre i `r konkurser_senaste_manad` `r konkurser_senaste_ar`, jämfört med motsvarande månad året innan. </li>
 <li> Arbetslösheten i Dalarna, som är klart under genomsnittet i Sverige, har under 2024 och inledningen av 2025, efter en lång period av nedgång, stabiliserats på ungefär samma nivå som föregående år.</li>
 <li> Trots en ökande prisnivå i samhället har antalet hushåll i behov av ekonomiskt bistånd minskat i Dalarna på senare år. Minskningen är framförallt koncentrerad till utrikes födda.</li>
 </ul>

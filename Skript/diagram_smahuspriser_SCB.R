@@ -77,6 +77,7 @@ diagram_smahuspriser <- function(region_vekt = "20",
                                             output_mapp = output_mapp,
                                             x_axis_visa_var_xe_etikett = 12,
                                             inkludera_sista_vardet_var_xe_etikett = FALSE,
+                                            x_axis_var_xe_etikett_ta_bort_nast_sista_vardet = TRUE,
                                             filnamn_diagram = diagramfilnamn,
                                             skriv_till_diagramfil = spara_figur)
     
