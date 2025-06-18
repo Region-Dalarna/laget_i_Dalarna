@@ -4,8 +4,11 @@ author: ""
 date: ""
 output: 
   html_document:
+    self_contained: true
     includes:
-      in_header: hero_image.html
+      in_header: 
+      - favicon.html
+      - hero_image.html
     toc: yes
     toc_float: yes
     toc_depth: 6
@@ -103,7 +106,7 @@ Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvec
 # Introduktion {-}
 
 I Sverige har vi tillgång till mycket god statistik om både våra levnadsförhållanden och vår ekonomi. Det innebär att vi också kan följa upp bland annat den ekonomiska utvecklingen i närtid både regionalt och nationellt till exempel vad gäller sysselsättning, bostadsbyggande och företagsetableringar.
-De senaste årens omvälvande händelser i världen med Covid-19-pandemin, Rysslands invasion av Ukraina, och kriget mellan Israel och Hamas är förödande för dem som står i händelsernas centrum, men de drabbar även oss. Lägg därtill det handelskrig kopplat till USA som nyligen blossat upp, med potentiellt långtgående konsekvenser för ett litet exportberoende land som Sverige. Dessa händelser sätter prägel på både vår ekonomi och våra levnadsförhållanden, och gör det än mer angeläget att följa den ekonomiska utvecklingen regionalt och nationellt. <br>
+De senaste årens omvälvande händelser i världen med Covid-19-pandemin, Rysslands invasion av Ukraina, och flera konflikter i Mellanöstern är förödande för dem som står i händelsernas centrum, men de drabbar även oss. Lägg därtill det handelskrig kopplat till USA som nyligen blossat upp, med potentiellt långtgående konsekvenser för ett litet exportberoende land som Sverige. Dessa händelser sätter prägel på både vår ekonomi och våra levnadsförhållanden, och gör det än mer angeläget att följa den ekonomiska utvecklingen regionalt och nationellt. <br>
 <br>
 Region Dalarnas samhällsanalytiker har därför tagit fram denna rapport i syfte att ge en nulägesbild över hur läget utvecklas i Dalarna. Rapporten kommer att uppdateras regelbundet. Fokus ligger i första hand på att synliggöra det ekonomiska läget i Dalarna, vad gäller exempelvis hur arbetsmarknad och bostadsbyggande utvecklas i regionen, men många faktorer som påverkar Dalarnas ekonomi är nationella och därför startar analysen med att diskutera läget i Sverige i stort och faktorer som ramar in förutsättningarna för oss som bor och vistas i Dalarna.
 
@@ -175,7 +178,7 @@ Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i
 
 Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r inflation_max_manad_ar`, då den i Sverige uppgick till `r inflation_max_varde` procent. Därefter minskade inflationen avsevärt och var som lägst i september 2024 (1,1 procent). I  `r inflation_senaste_manad_ar` var inflationen `r inflation_senaste_varde` procent, vilket var i linje med månaderna innan men något högre än Riksbankens inflationsmål på 2 procent. För en mer ingående förklaring av vad som påverkade inflationstakten i `r inflation_senaste_manad_ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/priser-och-ekonomiska-tendenser/priser/konsumentprisindex-kpi/pong/statistiknyhet/konsumentprisindex-kpi-maj-2025/){target="_blank"}. 
 
-I januari sänkte Riksbanken sin styrränta för sjätte gången sedan sommaren 2024, från 2,5 procent till 2,25 procent, vilket påverkar [räntorna](https://www.scb.se/hitta-statistik/statistik-efter-amne/finansmarknad/finansmarknadsstatistik/finansmarknadsstatistik/pong/statistiknyhet/finansmarknadsstatistik-september-2024/){target="_blank"} på exempelvis bostadslån. I jämförelse med det senaste dryga decenniet, är dock styrräntan fortfarande hög. Senast den var på den nivån var under finanskrisen 2008/2009 (se exempelvis [Ekonomifakta](https://www.ekonomifakta.se/sakomraden/finansiell-ekonomi/inflation-och-styrrantor/styrrantan_1208883.html){target="_blank"}).
+I juni 2025 sänkte Riksbanken sin styrränta för sjunde gången sedan sommaren 2024, från 2,25 procent till 2 procent, vilket påverkar [räntorna](https://www.scb.se/hitta-statistik/statistik-efter-amne/finansmarknad/finansmarknadsstatistik/finansmarknadsstatistik/pong/statistiknyhet/finansmarknadsstatistik-september-2024/){target="_blank"} på exempelvis bostadslån. I jämförelse med det senaste dryga decenniet, är dock styrräntan fortfarande hög. Senast den var på den nivån var 2011 (se exempelvis [Ekonomifakta](https://www.ekonomifakta.se/sakomraden/finansiell-ekonomi/inflation-och-styrrantor/styrrantan_1208883.html){target="_blank"}).
 
 Den höga inflationstakten under framförallt 2022 och 2023 har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på  [Wikipedia](https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge){target="_blank"}.
 

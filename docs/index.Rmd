@@ -4,8 +4,11 @@ author: ""
 date: ""
 output: 
   html_document:
+    self_contained: true
     includes:
-      in_header: hero_image.html
+      in_header: 
+      - favicon.html
+      - hero_image.html
     toc: yes
     toc_float: yes
     toc_depth: 6
@@ -33,6 +36,12 @@ source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_te
 
 # Den enda av figurerna (kartan) som inte är en funktion
 arbetsloshet_kommun <-  read.xlsx(here("Data","arbetsloshet_kommun.xlsx"))
+
+arbetsloshet_kommun_min <- arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==min(arbetslöshet)) %>% .$region %>% list_komma_och()
+arbetsloshet_kommun_min_varde <- gsub("\\.",",",arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==min(arbetslöshet)) %>% .$arbetslöshet)
+arbetsloshet_kommun_max <- arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==max(arbetslöshet)) %>% .$region %>% list_komma_och()
+arbetsloshet_kommun_max_varde <- gsub("\\.",",",arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==max(arbetslöshet)) %>% .$arbetslöshet)
+
 
 ```
 
@@ -84,9 +93,9 @@ Senast uppdaterad: `r Sys.Date()`</i>
 Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvecklingen. Rapporten uppdateras regelbundet och ett antal viktiga trender och mönster sammanfattas här: 
 
 <ul>
-<li> Hushållens syn på ekonomin har försämrats tydligt de senaste månaderna, men aktiviteten i ekonomin (BNP) ökade under fjärde kvartalet 2024. Inflationen har sjunkit något på sistone, men är fortfarande över Riksbankens inflationsmål. </li>
-<li> Såväl nybyggnation av bostäder, som priserna på småhus, har ökat i Dalarna på sistone.
-<li> Efter att ha ökat tydligt i januari 2025, har antalet anställda berörda av konkurser i Dalarna minskat de senaste månaderna. </li>
+<li> Hushållens syn på ekonomin har försämrats jämfört med inledningen av 2025, samtidigt som aktiviteten i ekonomin (BNP) minskade under årets första kvartal. Inflationen har sjunkit avsevärt sedan de höga nivåerna mot slutet av 2022, men är fortfarande över Riksbankens inflationsmål. </li>
+<li> Priserna på småhus i Dalarna minskade i `r priser_senaste_manad_ar `, jämfört med månaderna innan.
+<li> Antalet anställda berörda av konkurser i Dalarna var lägre i `r konkurser_senaste_manad` `r konkurser_senaste_ar`, jämfört med motsvarande månad året innan. </li>
 <li> Arbetslösheten i Dalarna, som är klart under genomsnittet i Sverige, har under 2024 och inledningen av 2025, efter en lång period av nedgång, stabiliserats på ungefär samma nivå som föregående år.</li>
 <li> Trots en ökande prisnivå i samhället har antalet hushåll i behov av ekonomiskt bistånd minskat i Dalarna på senare år. Minskningen är framförallt koncentrerad till utrikes födda.</li>
 </ul>
@@ -97,7 +106,7 @@ Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvec
 # Introduktion {-}
 
 I Sverige har vi tillgång till mycket god statistik om både våra levnadsförhållanden och vår ekonomi. Det innebär att vi också kan följa upp bland annat den ekonomiska utvecklingen i närtid både regionalt och nationellt till exempel vad gäller sysselsättning, bostadsbyggande och företagsetableringar.
-De senaste årens omvälvande händelser i världen med Covid-19-pandemin, Rysslands invasion av Ukraina, och kriget mellan Israel och Hamas är förödande för dem som står i händelsernas centrum, men de drabbar även oss. Lägg därtill det handelskrig kopplat till USA som nyligen blossat upp, med potentiellt långtgående konsekvenser för ett litet exportberoende land som Sverige. Dessa händelser sätter prägel på både vår ekonomi och våra levnadsförhållanden, och gör det än mer angeläget att följa den ekonomiska utvecklingen regionalt och nationellt. <br>
+De senaste årens omvälvande händelser i världen med Covid-19-pandemin, Rysslands invasion av Ukraina, och flera konflikter i Mellanöstern är förödande för dem som står i händelsernas centrum, men de drabbar även oss. Lägg därtill det handelskrig kopplat till USA som nyligen blossat upp, med potentiellt långtgående konsekvenser för ett litet exportberoende land som Sverige. Dessa händelser sätter prägel på både vår ekonomi och våra levnadsförhållanden, och gör det än mer angeläget att följa den ekonomiska utvecklingen regionalt och nationellt. <br>
 <br>
 Region Dalarnas samhällsanalytiker har därför tagit fram denna rapport i syfte att ge en nulägesbild över hur läget utvecklas i Dalarna. Rapporten kommer att uppdateras regelbundet. Fokus ligger i första hand på att synliggöra det ekonomiska läget i Dalarna, vad gäller exempelvis hur arbetsmarknad och bostadsbyggande utvecklas i regionen, men många faktorer som påverkar Dalarnas ekonomi är nationella och därför startar analysen med att diskutera läget i Sverige i stort och faktorer som ramar in förutsättningarna för oss som bor och vistas i Dalarna.
 
@@ -117,7 +126,7 @@ Det allmänna läget i en ekonomi kan beskrivas på flera sätt. I detta första
 
 Genom att titta på förändring i BNP kan man få en uppfattning om hur aktiviteten i den svenska ekonomin förändras över tid. Eftersom Sveriges ekonomi, precis som de flesta andra länders, växer i normala fall, ökar BNP under en majoritet av kvartalen. Vid större kriser i samhället kan dock BNP minska avsevärt, vilket också syns i figuren nedan. Under andra kvartalet 2020 minskade aktiviteten i den svenska ekonomin med nästan 8 procent jämfört med föregående kvartal, vilket kan tillskrivas Corona-pandemin. Återhämtningen gick dock snabbt och redan i efterföljande kvartal så ökade BNP med nästan lika mycket som minskningen i kvartal två. Därefter följde ett par år när läget i Sveriges ekonomi kan beskrivas som gott, innan aktiviteten i ekonomin återigen minskade i kvartal ett, år 2022. Därefter var läget länge relativt skakigt, med omväxlande positiva och negativa förändringar i BNP. 
 
-I `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$kvartal` `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$ar` var förändringen i BNP `r gsub("\\.",",",BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Sasongsransad_forandring)` procent. Detta var fjärde kvartalet i rad som aktiviteten i Sveriges ekonomi ökade jämfört med kvartalet innan. För en diskussion runt vad som påverkade BNP under `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$kvartal` `r BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/nationalrakenskaper/nationalrakenskaper/nationalrakenskaper-kvartals-och-arsberakningar/pong/statistiknyhet/nationalrakenskaper-4e-kvartalet-2024/){target="_blank"}.
+I `r BNP_senaste_kvartal` `r BNP_senaste_ar` var förändringen i BNP `r BNP_senaste_varde` procent. Detta var första gången sedan fjärde kvartalet 2023 som aktiviteten i Sveriges ekonomi minskade jämfört med kvartalet innan. För en diskussion runt vad som påverkade BNP under `r BNP_senaste_kvartal` `r BNP_senaste_ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/nationalrakenskaper/nationalrakenskaper/nationalrakenskaper-kvartals-och-arsberakningar/pong/statistiknyhet/nationalrakenskaper-1a-kvartalet-2025/){target="_blank"}.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_BNP$BNP
@@ -136,7 +145,7 @@ Ett annat sätt att mäta läget i ekonomin är genom de olika enkätundersökni
 </details>
 
 ### Generellt {-}
-I `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$manad_long` `r last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$ar` var barometerindikatorn `r gsub("\\.",",",last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$varde)`, vilket var något sämre än månaderna innan men något bättre än motsvarande månad 2024. Eftersom barometerindikatorn understiger 100, kan läget beskrivas som svagare än normalt. Att barometerindikatorn länge hade ett lågt värde kan delvis förklaras av Rysslands invasion av Ukraina och de effekter denna haft på bland annat tillgången på råvaror. Historiskt varierar barometerindikatorn med konjunkturen och större kriser i samhället, såsom finanskrisen 2008/2009 och Coronapandemin 2020/2021, syns tydligt i diagrammet.
+I `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` var barometerindikatorn `r konjukturbarometern_senaste_varde`, vilket var något sämre än månaderna innan men något bättre än motsvarande månad 2024. Eftersom barometerindikatorn understiger 100, kan läget beskrivas som svagare än normalt. Att barometerindikatorn länge hade ett lågt värde kan delvis förklaras av Rysslands invasion av Ukraina och de effekter denna haft på bland annat tillgången på råvaror. Historiskt varierar barometerindikatorn med konjunkturen och större kriser i samhället, såsom finanskrisen 2008/2009 och Coronapandemin 2020/2021, syns tydligt i diagrammet.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 gg_konjB$barometern
@@ -144,9 +153,11 @@ gg_konjB$barometern
 
 ### Bransch {-}
 
-Hur läget i ekonomin uppfattas varierar beroende på om det är företagen eller hushållen som tillfrågas. Hushållens syn på ekonomin har försämrats kraftigt de senaste månaderna, med en barometerindikator på `r gsub("\\.",",",last(barometern_df$varde[barometern_df$Indikator=="Konfidensindikator hushåll"]))` i `r last(barometern_df$manad_long)` `r last(barometern_df$ar)`. Så sent som i februari 2025 var motsvarande siffra 94,5. Hushållens syn på ekonomin visar nu på ett betydligt svagare stämningsläge än normalt. Försämringen hänger sannolikt samman med den osäkra situationen i USA, med ett tullkrig i vardande. 
+Hur läget i ekonomin uppfattas varierar beroende på om det är företagen eller hushållen som tillfrågas. Hushållens syn på ekonomin har försämrats tydligt sedan inledningen av året, med en barometerindikator på `r konj_hushall_senaste` i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar`. Så sent som i februari 2025 var motsvarande siffra 94,5. Hushållens syn på ekonomin visar nu på ett betydligt svagare stämningsläge än normalt. Försämringen hänger sannolikt samman med den osäkra situationen i USA, med ett tullkrig i vardande. 
 
-Bland branschgrupperna i diagrammet nedan hade `r tolower(gsub( " .*$", "", barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(varde==max(varde)) %>% .$Indikator))` den mest positiva synen på ekonomin i `r last(barometern_df$manad_long)` `r last(barometern_df$ar)` (en barometerindikator på `r gsub("\\.",",",barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(varde==max(varde)) %>% .$varde)`), medan företag inom `r tolower(gsub( " .*$", "", barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(varde==min(varde)) %>% .$Indikator))` uppfattar den ekonomiska utvecklingen som mer negativ (en barometerindikator på `r gsub("\\.",",", barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(varde==min(varde)) %>% .$varde)`). Synen på ekonomin bland företag inom byggindustri har dock förbättrats tydligt på sistone och är på sin högsta nivå på nästan två år. Tjänstesektorn drabbades värst under pandemin (mars/april 2020), medan tillverkningsindustrin uppfattade ekonomin som starkare än normalt från slutet av 2020 fram till mitten av 2022.
+Bland branschgrupperna i diagrammet nedan hade `r konj_bransch_positiv` den mest positiva synen på ekonomin i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` (en barometerindikator på `r konj_bransch_positiv_varde`), medan företag inom `r konj_bransch_negativ` uppfattar den ekonomiska utvecklingen som mer negativ (en barometerindikator på `r konj_bransch_negativ_varde`). Tjänstesektorn drabbades värst under pandemin (mars/april 2020), medan tillverkningsindustrin uppfattade ekonomin som starkare än normalt från slutet av 2020 fram till mitten av 2022.
+
+På senare tid har byggindustri varit den bransch som uppfattat ekonomin som svagast, men de senaste månaderna har synen på ekonomin inom branschen tydligt förbättrats. I `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` var barometerindikatorn för byggindustri `r konj_bygg_senaste_varde`, den högsta siffran sedan slutet på 2022.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_konjB$barometern_bransch
@@ -165,9 +176,9 @@ Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i
  
 </details>
 
-Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar)`, då den i Sverige uppgick till `r gsub("\\.",",",KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF)` procent. Därefter minskade inflationen avsevärt och var som lägst i september 2024 (1,1 procent). I  `r KPI_df %>% filter(månad==last(månad)) %>% select(manad_long,ar)` var inflationen `r gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)` procent, vilket är något högre än Riksbankens inflationsmål på 2 procent. För en mer ingående förklaring av vad som påverkade inflationstakten i `r KPI_df %>% filter(månad==last(månad)) %>% select(manad_long,ar)`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/priser-och-ekonomiska-tendenser/priser/konsumentprisindex-kpi/pong/statistiknyhet/konsumentprisindex-kpi-april-2025/){target="_blank"}. 
+Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r inflation_max_manad_ar`, då den i Sverige uppgick till `r inflation_max_varde` procent. Därefter minskade inflationen avsevärt och var som lägst i september 2024 (1,1 procent). I  `r inflation_senaste_manad_ar` var inflationen `r inflation_senaste_varde` procent, vilket var i linje med månaderna innan men något högre än Riksbankens inflationsmål på 2 procent. För en mer ingående förklaring av vad som påverkade inflationstakten i `r inflation_senaste_manad_ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/priser-och-ekonomiska-tendenser/priser/konsumentprisindex-kpi/pong/statistiknyhet/konsumentprisindex-kpi-maj-2025/){target="_blank"}. 
 
-I januari sänkte Riksbanken sin styrränta för sjätte gången sedan sommaren 2024, från 2,5 procent till 2,25 procent, vilket påverkar [räntorna](https://www.scb.se/hitta-statistik/statistik-efter-amne/finansmarknad/finansmarknadsstatistik/finansmarknadsstatistik/pong/statistiknyhet/finansmarknadsstatistik-september-2024/){target="_blank"} på exempelvis bostadslån. I jämförelse med det senaste dryga decenniet, är dock styrräntan fortfarande hög. Senast den var på den nivån var under finanskrisen 2008/2009 (se exempelvis [Ekonomifakta](https://www.ekonomifakta.se/sakomraden/finansiell-ekonomi/inflation-och-styrrantor/styrrantan_1208883.html){target="_blank"}).
+I juni 2025 sänkte Riksbanken sin styrränta för sjunde gången sedan sommaren 2024, från 2,25 procent till 2 procent, vilket påverkar [räntorna](https://www.scb.se/hitta-statistik/statistik-efter-amne/finansmarknad/finansmarknadsstatistik/finansmarknadsstatistik/pong/statistiknyhet/finansmarknadsstatistik-september-2024/){target="_blank"} på exempelvis bostadslån. I jämförelse med det senaste dryga decenniet, är dock styrräntan fortfarande hög. Senast den var på den nivån var 2011 (se exempelvis [Ekonomifakta](https://www.ekonomifakta.se/sakomraden/finansiell-ekonomi/inflation-och-styrrantor/styrrantan_1208883.html){target="_blank"}).
 
 Den höga inflationstakten under framförallt 2022 och 2023 har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på  [Wikipedia](https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge){target="_blank"}.
 
@@ -191,40 +202,8 @@ Med bostadslägenhet avses en lägenhet avsedd att helt eller till en inte oväs
  
 </details>
 
-```{r , include = FALSE}
-# Bygglov_df <- Bygglov_df %>% 
-#     mutate(kvartal=ifelse(kvartal=="K1","kvartal ett",
-#                           ifelse(kvartal=="K2","kvartal två",
-#                                  ifelse(kvartal=="K3","kvartal tre","kvartal fyra"))))
-
-Bygglov_df <- Bygglov_df %>% 
-  mutate(kvartal=case_when(
-    kvartal=="K1" ~ "kvartal ett",
-    kvartal=="K2" ~ "kvartal två",
-    kvartal=="K3" ~ "kvartal tre",
-    kvartal=="K4" ~ "kvartal fyra",
-    TRUE ~ kvartal
-  ))
-
-# Husbyggande_df <- Husbyggande_df %>%
-#   mutate(kvartal=ifelse(kvartal=="K1","kvartal ett",
-#                           ifelse(kvartal=="K2","kvartal två",
-#                                  ifelse(kvartal=="K3","kvartal tre","kvartal fyra"))))
-
-Husbyggande_df <- Husbyggande_df %>% 
-  mutate(kvartal=case_when(
-    kvartal=="K1" ~ "kvartal ett",
-    kvartal=="K2" ~ "kvartal två",
-    kvartal=="K3" ~ "kvartal tre",
-    kvartal=="K4" ~ "kvartal fyra",
-    TRUE ~ kvartal
-  ))
-  
-```
-
-
 ### Bygglov {-}
-Antalet godkända bygglov för småhus i Dalarna varierar mellan kvartalen, men en tydlig trend är att de har börjat minska på senare tid. Sedan toppen i  `r Bygglov_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Antal==max(Antal)) %>% select(kvartal,ar) %>% .[1,]`, då `r Bygglov_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Antal==max(Antal)) %>% .$Antal %>% .[1]` bygglov godkändes, har antalet godkända bygglov minskat och i `r Bygglov_df %>%filter(hustyp=="småhus") %>% filter(Antal==last(Antal)) %>% select(kvartal,ar)`, godkändes `r Bygglov_df %>%filter(,hustyp=="småhus") %>% filter(Antal==last(Antal)) %>% .$Antal` bygglov. För flerbostadshus är trenden relativt likvärdig, men variationen är större från kvartal till kvartal. Under `r Bygglov_df %>%filter(ar>"2009",hustyp=="småhus") %>% filter(Antal==last(Antal)) %>% select(kvartal,ar)`, godkändes bygglov för `r Bygglov_df %>%filter(ar>"2009",hustyp=="flerbostadshus exkl. specialbostäder") %>% filter(Antal==last(Antal)) %>% .$Antal` lägenheter i Dalarna, vilket är färre än kvartalet innan men fler jämfört med motsvarande kvartal föregående år.
+Antalet godkända bygglov för småhus i Dalarna varierar mellan kvartalen, men en tydlig trend är att de har börjat minska på senare tid. Sedan toppen i  `r bygglov_smahus_max_manad_ar`, då `r  bygglov_smahus_max_varde` bygglov godkändes, har antalet godkända bygglov minskat och i `r bygglov_smahus_senaste_manad_ar`, godkändes `r bygglov_smahus_senaste_varde` bygglov. För flerbostadshus är trenden relativt likvärdig, men variationen är större från kvartal till kvartal. Under `r bygglov_smahus_max_manad_ar`, godkändes bygglov för `r bygglov_flerbostadshus_senaste_varde` lägenheter i Dalarna, vilket var fler än kvartalen innan.
 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
@@ -232,7 +211,7 @@ gg_nybygg_bygglov$bygglov_20_arK1_K4
 ```
 
 ### Nybyggnation {-}
-Precis som för byggloven, varierar byggandet av småhus mellan kvartalen, men en långsiktig trend var att byggandet minskade tydligt från toppen i  `r Husbyggande_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(varde==max(varde)) %>% select(kvartal,ar) %>% .[1,]`, då `r Husbyggande_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(varde==max(varde)) %>% .$varde %>% .[1]` småhus påbörjades, till botten under första kvartalet 2024, då blott 17 småhus påbörjades. I `r Husbyggande_df %>%filter(hustyp=="småhus") %>% filter(ar_kvartal==last(ar_kvartal)) %>% select(kvartal,ar)`, påbörjades `r Husbyggande_df %>%filter(hustyp=="småhus") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$varde` småhus, vilket var färre än månaderna innan. För flerbostadshus är trenden svårare att tolka, då variationen är stor mellan kvartalen. I `r Husbyggande_df %>%filter(hustyp=="flerbostadshus") %>% filter(ar_kvartal==last(ar_kvartal)) %>% select(kvartal,ar)`, påbörjades `r Husbyggande_df %>%filter(hustyp=="flerbostadshus") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$varde` lägenhet, vilket var tydligt färre än kvartalet innan.
+Precis som för byggloven, varierar byggandet av småhus mellan kvartalen, men en långsiktig trend var att byggandet minskade tydligt från toppen i  `r husbyggande_smahus_max_manad_ar`, då `r husbyggande_smahus_max_varde` småhus påbörjades, till botten under första kvartalet 2024, då blott 17 småhus påbörjades. I `r husbyggande_smahus_senaste_manad_ar` påbörjades `r husbyggande_smahus_senaste_varde` småhus, vilket var färre än månaderna innan. För flerbostadshus är trenden svårare att tolka, då variationen är stor mellan kvartalen. I `r husbyggande_smahus_max_manad_ar`, påbörjades `r husbyggande_flerbostadshus_senaste_varde` lägenhet, vilket var fler än kvartalet innan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_nybygg_bygglov$nybyggnation_20_arK1_K4
@@ -250,16 +229,16 @@ gg_nybygg_bygglov$nybyggnation_20_arK1_K4
 
 ### Historisk jämförelse {-}
 
-Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige. Efter toppen i `r priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% select(manad_long,ar)`, då ett småhus i Dalarna kostade ungefär `r round(priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% .$Medelpris/1000,1)` miljoner kronor, har dock det genomsnittliga priset på småhus i länet minskat avsevärt och en botten nåddes i oktober 2023, när ett småhus i Dalarna kostade strax under 2,1 miljoner kronor i genomsnitt. Minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medfört en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkar efterfrågan på bostäder. 
+Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige. Efter toppen i `r priser_max_manad_ar`, då ett småhus i Dalarna kostade ungefär `r priser_max_varde` miljoner kronor, har dock det genomsnittliga priset på småhus i länet minskat avsevärt och en botten nåddes i oktober 2023, när ett småhus i Dalarna kostade strax under 2,1 miljoner kronor i genomsnitt. Minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medfört en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkar efterfrågan på bostäder. 
 
-Under första halvåret 2024 steg priserna på småhus tydligt i Dalarna, innan de återigen började sjunka i augusti. I `r priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(manad_long,ar)` var priset på ett småhus knappt `r gsub("\\.",",",(round(priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(Medelpris)/1000,1)))` miljoner kronor (i genomsnitt), vilket var i linje med månaden innan men en ökning jämfört med månaderna dessförrinnan.
+Under första halvåret 2024 steg priserna på småhus tydligt i Dalarna, innan de återigen började sjunka i augusti. I `r priser_senaste_manad_ar ` var priset på ett småhus knappt `r priser_senaste_varde` miljoner kronor (i genomsnitt), vilket var något lägre än månaderna innan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_smahuspriser$smahuspriser_tidserie
 ```
 
 ### Län {-}
-Det genomsnittliga priset på ett småhus varierar mellan Sveriges län och var i `r priser_df %>%filter(Period==max(Period),region=="Sverige") %>% select(manad_long,ar)`, högst i `r priser_df %>%filter(Period==max(Period)) %>% filter(Medelpris==max(Medelpris)) %>% .$region`, där ett småhus i genomsnitt kostade `r gsub("\\.",",", round(priser_df %>%filter(Period==max(Period)) %>% filter(Medelpris==max(Medelpris)) %>% select(Medelpris)/1000,1))` miljoner kronor. I Dalarna är priset klart lägre, ett småhus kostade i genomsnitt knappt `r gsub("\\.",",", round(priser_df %>%filter(Period==max(Period)) %>% filter(region=="Dalarna") %>% select(Medelpris)/1000,1))` miljoner kronor i länet. Av förklarliga skäl är bostadspriserna generellt högst i län med större städer där befolkningen växer, medan det omvända gäller för län med en mindre befolkning.
+Det genomsnittliga priset på ett småhus varierar mellan Sveriges län och var i `r priser_senaste_manad_ar` högst i `r priser_senaste_max_region`, där ett småhus i genomsnitt kostade `r priser_senaste_max_varde` miljoner kronor. I Dalarna är priset klart lägre, ett småhus kostade i genomsnitt knappt `r priser_senaste_varde` miljoner kronor i länet. Av förklarliga skäl är bostadspriserna generellt högst i län med större städer där befolkningen växer, medan det omvända gäller för län med en mindre befolkning.
 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
@@ -281,7 +260,7 @@ k = k+1
 
 Antalet anställda som berörs av konkurser varierar relativt mycket från månad till månad, vilket medför att det kan var svårt att se någon trend på månadsbasis kopplad till Rysslands invasion av Ukraina och dess effekter på Dalarnas ekonomi. Mellan januari och mars 2024 ökade antalet anställda berörda av konkurser i Dalarna exempelvis tydligt jämfört med samma period året innan, för att därefter minska påtagligt i april 2024. I maj 2024 berördes återigen fler av konkurser jämfört med året innan, men i juni var utvecklingen det omvända. Mellan augusti och november 2024 var trenden positiv, då tydligt färre berördes av konkurser i Dalarna jämfört med samma period året innan. 
 
-Efter att ha ökat tydligt i januari 2025, då närmare 150 personer berördes av konkurser i Dalarna, har antalet anställda som berörs av konkurser minskat de senaste månaderna, jämfört med samma period föregående år. I `r first(konkurser_df$manad_long)` `r max(konkurser_df$år)` berördes blott `r konkurser_df %>% filter(år==first(år),manad_long == first(manad_long)) %>% group_by(region,år) %>% .$antal %>% sum()` anställda av konkurser, att jämföra med `r konkurser_df  %>% filter(år==(as.numeric(first(år))-1),manad_long == first(manad_long)) %>% group_by(region,år) %>% .$antal %>% sum()` anställda motsvarande månad `r as.character(as.numeric(first(konkurser_df$år))-1)`.
+Efter att ha ökat tydligt i januari 2025, då närmare 150 personer berördes av konkurser i Dalarna, minskade antalet anställda som berördes av konkurser i februari och mars 2025, jämfört med samma period föregående år. I `r konkurser_senaste_manad` `r konkurser_senaste_ar` berördes `r konkurser_senaste_antal` anställda av konkurser, vilket var `r ifelse(konkurser_senaste_antal > konkurser_foregaende_ar_antal,"fler","färre")` än de `r konkurser_foregaende_ar_antal` anställda som berördes motsvarande månad `r konkurser_foregaende_ar`.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_konkurser$anstalla_berorda_konkurser_Dalarna
@@ -292,7 +271,7 @@ gg_konkurser$anstalla_berorda_konkurser_Dalarna
 
 ## Avregistrerade företag
 
-Ett potentiellt alternativ till att begära ett företag i konkurs är att istället avregistrera det. Antalet avregistrerade företag tenderar att följa ett visst säsongsmönster, med fler avregistreringar i början och slutet av året. Det är dock svårt att se någon långsiktig trend, då ungefär lika många företag avregistreras varje år. I `r tolower(last(antal_avregistreringar_df$manad))` `r max(antal_avregistreringar_df$ar)` avregistrerades `r last(antal_avregistreringar_df$antal)` företag i Dalarna, jämfört med `r antal_avregistreringar_df %>% filter(manad == last(manad), ar == sort(unique(ar), decreasing = TRUE)[2]) %>% dplyr::pull(antal)` samma månad året innan.
+Ett potentiellt alternativ till att begära ett företag i konkurs är att istället avregistrera det. Antalet avregistrerade företag tenderar att följa ett visst säsongsmönster, med fler avregistreringar i början och slutet av året. Det är dock svårt att se någon långsiktig trend, då ungefär lika många företag avregistreras varje år. I `r avregistrerade_senaste_manad` `r avregistrerade_senaste_ar` avregistrerades `r avregisterade_senaste_varde` företag i Dalarna, jämfört med `r avregistrerade_foregaende_ar_varde` samma månad året innan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_avregistrerade$avreg_manad
@@ -309,7 +288,7 @@ gg_avregistrerade$avreg_manad
 </details>
 
 
-En annan indikator på läget för företagen i länet är hur många nya företag som startas. Historiskt startades väldigt många företag i samband med Corona-pandemin 2020-2021. I  `r nystartade_df %>% filter(antal == max(antal)) %>% .$kvartal_namn` `r nystartade_df %>% filter(antal == max(antal)) %>% .$ar` startades exempelvis `r nystartade_df %>% filter(antal == max(antal)) %>% .$antal` företag, vilket är det största antalet sedan åtminstone 2011. Exakt vad detta beror på kan vara svårt att säga, men en potentiell förklaring är att individer som blev uppsagda under pandemin valde att starta egna företag. Någon större trend sedan Rysslands invasion av Ukraina märktes inte initialt för antalet nystartade företag. Under 2022 startades till och med något fler företag än genomsnittet sedan 2011. Under första halvan av 2023 märktes en viss avmattning dock, innan antalet nystartade företag återigen började öka. I `r nystartade_df %>% filter(tid == first(tid)) %>% .$kvartal_namn` `r nystartade_df %>% filter(tid == first(tid)) %>% .$ar` startades `r nystartade_df %>% filter(tid == first(tid)) %>% .$antal` företag, vilket var `r abs(nystartade_df %>% filter(tid == first(tid)) %>% .$antal - first(nystartade_df %>% filter(tid != first(tid)) %>% .$antal))` `r ifelse(nystartade_df %>% filter(tid == first(tid)) %>% .$antal>first(nystartade_df %>% filter(tid != first(tid)) %>% .$antal), "fler", "färre")`  än föregående kvartal.
+En annan indikator på läget för företagen i länet är hur många nya företag som startas. Historiskt startades väldigt många företag i samband med Corona-pandemin 2020-2021. I  `r nystartade_max_kvartal` `r nystartade_max_ar` startades exempelvis `r nystartade_max_varde` företag, vilket är det största antalet sedan åtminstone 2011. Exakt vad detta beror på kan vara svårt att säga, men en potentiell förklaring är att individer som blev uppsagda under pandemin valde att starta egna företag. Någon större trend sedan Rysslands invasion av Ukraina märktes inte initialt för antalet nystartade företag. Under 2022 startades till och med något fler företag än genomsnittet sedan 2011. Under första halvan av 2023 märktes en viss avmattning dock, innan antalet nystartade företag återigen började öka. I `r nystartade_senaste_kvartal` `r nystartade_senaste_ar` startades `r nystartade_senaste_varde` företag, vilket var `r abs(nystartade_jmf)` `r ifelse(nystartade_jmf>0, "fler", "färre")`  än föregående kvartal.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_nystartade$nystartade_ftg_Dalarna
@@ -330,14 +309,14 @@ Arbetslöshet beräknas som andelen arbetslösa i förhållande till antalet per
 </details>
 
 ### Län {-}
-I en nationell jämförelse är arbetslösheten i Dalarna relativt låg. I `r arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$manad_long` `r arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$ar` hade Dalarna `r gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$varde)` procents arbetslöshet, att jämföra med `r gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Sverige") %>% .$varde)` procent i Sverige som helhet. Noterbart är även att Dalarna har klart lägre arbetslöshet än näraliggande Gävleborg, där arbetslösheten var `r gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Gävleborg") %>% .$varde)` procent under samma tidsperiod. Lägst arbetslöshet i Sverige hade `r arbetsmarknadsstatus %>% filter(varde==min(varde)) %>% dplyr::pull(region) %>% list_komma_och()`, med `r min(arbetsmarknadsstatus$varde) %>% str_replace("\\.", "\\,")` procent.
+I en nationell jämförelse är arbetslösheten i Dalarna relativt låg. I `r arbetsloshet_manad_senaste` `r arbetsloshet_ar_senaste` hade Dalarna `r arbetsloshet_dalarna_senaste` procents arbetslöshet, att jämföra med `r arbetsloshet_Sverige_senaste` procent i Sverige som helhet. Noterbart är även att Dalarna har klart lägre arbetslöshet än näraliggande Gävleborg, där arbetslösheten var `r arbetsloshet_gavleborg_senaste` procent under samma tidsperiod. Lägst arbetslöshet i Sverige hade `r arbetsloshet_lan_min` med `r arbetsloshet_lan_min_varde` procent.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_arbetsloshet_lan$arbetslosthet_senastear
 ```
 
 ### Jämförelse över tid {-}
-Arbetslösheten, såväl i Dalarna som i Sverige, varierar över tid. I samband med pandemin orsakad av Covid-19, ökade arbetslösheten och var som högst i Dalarna i `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="totalt") %>% filter(varde==max(varde)) %>%  .$manad_long %>% .[1]`  `r arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="totalt") %>% filter(varde==max(varde)) %>%  .$ar %>% .[1]`, då den uppgick till `r  gsub("\\.",",", arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="totalt") %>% filter(varde==max(varde)) %>%  .$varde %>% .[1])` procent. Därefter har arbetslösheten minskat och var i `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="totalt") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="totalt") %>% .$ar))` `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="totalt") %>% .$varde))` procent i Dalarna. 
+Arbetslösheten, såväl i Dalarna som i Sverige, varierar över tid. I samband med pandemin orsakad av Covid-19, ökade arbetslösheten och var som högst i Dalarna i `r arbetsloshet_tidserie_Dalarna_totalt_max_manad`  `r arbetsloshet_tidserie_Dalarna_totalt_max_ar`, då den uppgick till `r  arbetsloshet_tidserie_Dalarna_totalt_max_varde` procent. Därefter har arbetslösheten minskat och var i `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar` `r arbetsloshet_tidserie_Dalarna_totalt_senaste_varde` procent i Dalarna. 
 
 På sistone har det blivit tydligt att den långsiktiga trenden med stadigt minskande arbetslöshet har brutits. Under 2024 och inledningen av 2025
 har arbetslösheten i Dalarna varit på ungefär samma nivå som föregående år. 
@@ -346,7 +325,7 @@ har arbetslösheten i Dalarna varit på ungefär samma nivå som föregående å
 gg_arbetsloshet_tidsserie$arbetslöshet_tidsserie_totalt_Dalarna
 ```
 
-Om arbetslösheten delas upp i inrikes och utrikes födda framträder en delvis annorlunda bild. Bland inrikes födda (det vänstra diagrammet nedan) har  arbetslösheten ökat under 2024 och inledningen av 2025, jämfört med samma period föregående år. I `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="inrikes född") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="inrikes född") %>% .$ar))` var arbetslösheten bland inrikes födda `r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="inrikes född") %>% .$varde))` procent i Dalarna, den högsta arbetslösheten i gruppen under en februari-månad sedan 2021. Bland utrikes födda (det högra diagrammet nedan) har arbetslösheten fortsatt att minska stadigt under samma tidsperiod, men är klart högre än bland inrikes födda (`r gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="utrikes född") %>% .$varde))` procent i `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="utrikes född") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="utrikes född") %>% .$ar))`). 
+Om arbetslösheten delas upp i inrikes och utrikes födda framträder en delvis annorlunda bild. Bland inrikes födda (det vänstra diagrammet nedan) har  arbetslösheten ökat under 2024 och inledningen av 2025, jämfört med samma period föregående år. I `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar` var arbetslösheten bland inrikes födda `r arbetsloshet_tidserie_Dalarna_inrikes_varde` procent i Dalarna. Bland utrikes födda (det högra diagrammet nedan) har arbetslösheten fortsatt att minska stadigt under samma tidsperiod, men är klart högre än bland inrikes födda (`r arbetsloshet_tidserie_Dalarna_utrikes_varde` procent i `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar`). 
 
 Totalt var `r arblosa_inrikes` inrikes födda personer och `r arblosa_utrikes` utrikes födda personer i åldersgruppen `r arblosa_alder` arbetslösa i Dalarna i `r arblosa_manad` `r arblosa_ar`.
 
@@ -421,7 +400,7 @@ arblosa_kommun_gis <- left_join(kommuner_sv, arbetsloshet_kommun, by = c("KOMMUN
 
   
 ```
-Arbetslösheten bland Dalarnas kommuner är låg på många håll, där en majoritet av länets kommuner hade mellan 2 och 4 procents arbetslöshet i `r last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$manad_long)` `r unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna") %>% .$ar))`. Lägst är arbetslösheten i `r arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==min(arbetslöshet)) %>% .$region`, med `r gsub("\\.",",",arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==min(arbetslöshet)) %>% .$arbetslöshet)` procent. I de södra delarna av länet är bilden delvis annorlunda, där ett par kommuner har mer än 6 procents arbetslöshet. Högst är arbetslösheten i  `r arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==max(arbetslöshet)) %>% .$region`, där den uppgår till `r gsub("\\.",",",arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==max(arbetslöshet)) %>% .$arbetslöshet)` procent. En tänkbar orsak till detta mönster är att de kommuner med högst arbetslöshet också är de kommuner som har högst andel utrikes födda. Den sistnämnda gruppen tenderar att hamna i arbetslöshet i högre utsträckning än inrikes födda.
+Arbetslösheten bland Dalarnas kommuner är låg på många håll, där en majoritet av länets kommuner hade mellan 2 och 4 procents arbetslöshet i `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar`. Lägst är arbetslösheten i `r arbetsloshet_kommun_min`, med `r arbetsloshet_kommun_min_varde` procent. I de södra delarna av länet är bilden delvis annorlunda, där ett par kommuner har mer än 6 procents arbetslöshet. Högst är arbetslösheten i  `r arbetsloshet_kommun_max`, där den uppgår till `r arbetsloshet_kommun_max_varde` procent. En tänkbar orsak till detta mönster är att de kommuner med högst arbetslöshet också är de kommuner som har högst andel utrikes födda. Den sistnämnda gruppen tenderar att hamna i arbetslöshet i högre utsträckning än inrikes födda.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=10, fig.width=10}
 karta
@@ -445,7 +424,7 @@ Med ekonomiskt stöd åsyftas ekonomiskt bistånd för sökande och eventuell me
 
 I Dalarna hade som mest närmare 5000 personer mellan 15 och 74 år ett sådant behov under 2020, men därefter minskade behovet stadigt under en längre period. Anmärkningsvärt är även att behovet av stöd minskade trots att prisnivån i samhället ökade avsevärt under samma tidsperiod (se avsnittet om inflation). Exakt vad den utvecklingen beror på är oklart, men ett antal tänkbara orsaker diskuteras i följande <a href = "https://www.svt.se/nyheter/inrikes/darfor-minskar-antalet-hushall-som-far-socialbidrag-i-sverige-forskare-forklarar-orsaker-bakom" target="_blank">artikel</a>.
 
-Antalet personer som får stöd varierar en del mellan månaderna, men under 2024 var trenden nedåtgående då färre fick ekonomiskt stöd jämfört med föregående år. I `r ek_stod_manad_ar_sista` ökade dock antalet personer i behov av sådant stöd till `r ek_stod_totalt_sista` personer, den högsta siffran sedan sommaren 2024.
+Antalet personer som får stöd varierar en del mellan månaderna, men under 2024 var trenden nedåtgående då färre fick ekonomiskt stöd jämfört med föregående år. I `r ek_stod_manad_ar_sista` ökade dock antalet personer i behov av sådant stöd till `r ek_stod_totalt_sista` personer, den högsta siffran sedan maj 2024.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_ek_stod$ekonomiskt_bistand_alla_Dalarna
