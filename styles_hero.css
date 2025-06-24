@@ -158,6 +158,23 @@ top: 5px;
     line-height: 25px !important;
 }
 
+/* Nedan gör så att table of contents flyttar sig längst upp vid scrollning. Vill man ändra hastighet så går det att ändra transition: top 0.5s ease;  */
+
+html[data-scroll="top"] .tocify {
+  top: 150x;
+}
+
+html[data-scroll="scrolled"] .tocify {
+  top: 20px;
+}
+
+.tocify {
+  position: fixed;
+  top: 150px; 
+  transition: top 0.5s ease;
+  z-index: 10;
+} 
+
 .nav-pills>li>a:hover, .nav-pills>li>a:focus, .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
      background-color: #db3747;
      color: #fff
