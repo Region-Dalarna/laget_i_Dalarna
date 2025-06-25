@@ -159,7 +159,7 @@ top: 5px;
 }
 
 /* Nedan gör så att table of contents flyttar sig längst upp vid scrollning. Vill man ändra hastighet så går det att ändra transition: top 0.5s ease;  */
-
+/*
 html[data-scroll="top"] .tocify {
   top: 150x;
 }
@@ -167,7 +167,7 @@ html[data-scroll="top"] .tocify {
 html[data-scroll="scrolled"] .tocify {
   top: 20px;
 }
-
+*/
 .tocify {
   position: fixed;
   top: 150px; 

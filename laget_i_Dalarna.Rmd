@@ -277,7 +277,7 @@ gg_nystartade$nystartade_ftg_Dalarna
 ```
 
 # Arbetsmarknaden
-Som mått på läget i Dalarna, är arbetslösheten sannolikt en relativt trögrörlig indikator. Detta eftersom företag i första läget varslar personal, för att därefter eventuellt göra större uppsägningar. De är även viktigt att notera att arbetslösheten varierar mellan olika grupper i samhället, exempelvis baserat på personers kön, utbildningsbakgrund eller huruvida de är födda i Sverige. För en fördjupad diskussion runt detta, se exempelvis Region Dalarnas rapport ["Kvinnor och män i Dalarna"](https://region-dalarna.github.io/kvinnor_man_i_Dalarna/){target="_blank"}.
+Som mått på läget i Dalarna, är arbetslösheten sannolikt en relativt trögrörlig indikator. Detta eftersom företag i första läget varslar personal, för att därefter eventuellt göra större uppsägningar. De är även viktigt att notera att arbetslösheten varierar mellan olika grupper i samhället, exempelvis baserat på personers kön, utbildningsbakgrund eller huruvida de är födda i Sverige. För en fördjupad diskussion runt detta, se exempelvis Region Dalarnas rapport ["Kvinnor och män i Dalarna"](https://samhallsanalys.regiondalarna.se/kvinnor_man){target="_blank"}.
  
 ## Arbetslöshet {.tabset}
 
