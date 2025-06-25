@@ -167,13 +167,13 @@ html[data-scroll="top"] .tocify {
 html[data-scroll="scrolled"] .tocify {
   top: 20px;
 }
-*/
+
 .tocify {
   position: fixed;
   top: 150px; 
   transition: top 0.5s ease;
   z-index: 10;
-} 
+} */
 
 .nav-pills>li>a:hover, .nav-pills>li>a:focus, .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
      background-color: #db3747;
@@ -291,4 +291,25 @@ stilsätter det i CSS*/
 }
 }
 
+/* Om man vill att table of contents skall hamna längst upp på skärmen (vid scrollning) */
+
+
+/*
+@media(min-width: 767px){
+html[data-scroll="top"] .tocify {
+  top: 150x;
+}
+
+html[data-scroll="scrolled"] .tocify {
+  top: 20px;
+}
+
+.tocify {
+  position: fixed;
+  top: 150px; 
+  transition: top 0.5s ease;
+  z-index: 10;
+}
+}
+*/
 

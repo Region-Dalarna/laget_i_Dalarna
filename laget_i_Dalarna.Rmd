@@ -419,8 +419,6 @@ Ett annat generellt mönster är att det bland inrikes födda är vanligare att 
 gg_ek_stod$ekonomiskt_bistand_fodelseland_Dalarna
 ```
 
-
-
 <div class="tocify-extend-page" data-unique="tocify-extend-page" style="height: 200px;"></div>
 
 ```{r, include = FALSE}
