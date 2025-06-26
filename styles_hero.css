@@ -294,22 +294,21 @@ stilsätter det i CSS*/
 /* Om man vill att table of contents skall hamna längst upp på skärmen (vid scrollning) */
 
 
-/*
 @media(min-width: 767px){
 html[data-scroll="top"] .tocify {
   top: 150x;
 }
 
 html[data-scroll="scrolled"] .tocify {
-  top: 20px;
+  top: 5px;
 }
 
 .tocify {
   position: fixed;
   top: 150px; 
-  transition: top 0.5s ease;
+  transition: top 0.4s ease;
   z-index: 10;
 }
 }
-*/
+
 

@@ -55,7 +55,7 @@ const debounce = (fn) => {
 };
 
 const storeScroll = () => {
-  const threshold = 250; // px
+  const threshold = 150; // px
   const scrolled = window.scrollY > threshold;
 
   document.documentElement.dataset.scroll = scrolled ? 'scrolled' : 'top';
