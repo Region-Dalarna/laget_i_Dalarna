@@ -10,7 +10,7 @@ uppdatera_data = TRUE
 
 if(uppdatera_data == TRUE){
 
-  cat("Hämtning av data påbörjad")
+  cat("Hämtning av data påbörjad\n\n")
   start_time <- Sys.time()
   
   source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R")
@@ -139,6 +139,10 @@ if(uppdatera_data == TRUE){
   konkurser_senaste_manad <- first(konkurser_df$manad_long)
   konkurser_senaste_ar <- first(konkurser_df$år)
   konkurser_senaste_antal <- konkurser_df %>% filter(år==first(år),manad_long == first(manad_long)) %>% group_by(region,år) %>% .$antal %>% sum()
+  
+  konkurser_hittils_i_ar <- konkurser_df %>% filter(år==first(år)) %>% group_by(region,år) %>% .$antal %>% sum()
+  manader_hittils_i_ar <- konkurser_df %>% filter(år==first(år)) %>% .$månad
+  konkurser_motsvarande_foregaende_ar <- konkurser_df %>% filter(år==(as.numeric(first(år))-1),månad %in%manader_hittils_i_ar) %>% group_by(region,år) %>% .$antal %>% sum()
   
   konkurser_foregaende_ar <- as.character(as.numeric(first(konkurser_df$år))-1)
   konkurser_foregaende_ar_antal <- konkurser_df  %>% filter(år==(as.numeric(first(år))-1),manad_long == first(manad_long)) %>% group_by(region,år) %>% .$antal %>% sum()
