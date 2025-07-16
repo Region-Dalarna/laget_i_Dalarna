@@ -5,8 +5,8 @@
 if (!require("pacman")) install.packages("pacman")
 p_load(here)
 
-# Skall data uppdateras? Annars läses data in från en sparad global environment-fil.
-uppdatera_data = TRUE
+# Skall data uppdateras? Annars läses data in från en sparad global environment-fil och rapporten knittas baserat på senast sparade data.
+uppdatera_data = FALSE
 
 if(uppdatera_data == TRUE){
 
