@@ -75,8 +75,8 @@ Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvec
 
 <ul>
 <li> Hushållens syn på ekonomin har försämrats jämfört med inledningen av 2025, samtidigt som aktiviteten i ekonomin (BNP) minskade under årets första kvartal. </li>
-<li>Inflationen ökade i juni 2025, jämfört med månaderna innan, och är över Riksbankens inflationsmål.</li>
-<li> Priserna på småhus i Dalarna minskade i `r priser_senaste_manad_ar `, jämfört med månaderna innan.
+<li>Inflationen ökade i juli 2025, jämfört med månaden innan, och är över Riksbankens inflationsmål.</li>
+<li> Priserna på småhus i Dalarna ökade något i `r priser_senaste_manad_ar `, jämfört med månaden innan, men är fortfarande lägre än månaderna dessförinnan.
 <li> Antalet anställda berörda av konkurser i Dalarna var `r ifelse(konkurser_senaste_antal > konkurser_foregaende_ar_antal,"fler","färre")` i `r konkurser_senaste_manad` `r konkurser_senaste_ar`, jämfört med motsvarande månad året innan. </li>
 <li> Arbetslösheten i Dalarna, som är klart under genomsnittet i Sverige, har under 2024 och inledningen av 2025, efter en lång period av nedgång, stabiliserats på ungefär samma nivå som föregående år.</li>
 <li> Trots en ökande prisnivå i samhället har antalet hushåll i behov av ekonomiskt bistånd minskat i Dalarna på senare år. Minskningen är framförallt koncentrerad till utrikes födda.</li>
@@ -127,7 +127,7 @@ Ett annat sätt att mäta läget i ekonomin är genom de olika enkätundersökni
 </details>
 
 ### Generellt {-}
-I `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` var barometerindikatorn `r konjukturbarometern_senaste_varde`, vilket var sämre än månaderna innan. Eftersom barometerindikatorn understiger 100, kan läget beskrivas som svagare än normalt. Att barometerindikatorn länge hade ett lågt värde kan delvis förklaras av Rysslands invasion av Ukraina och de effekter denna haft på bland annat tillgången på råvaror. Historiskt varierar barometerindikatorn med konjunkturen och större kriser i samhället, såsom finanskrisen 2008/2009 och Coronapandemin 2020/2021, syns tydligt i diagrammet.
+I `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` var barometerindikatorn `r konjukturbarometern_senaste_varde`, vilket var bättre än månaden innan men sämre än månaderna dessförrinnan. Eftersom barometerindikatorn understiger 100, kan läget beskrivas som svagare än normalt. Att barometerindikatorn länge hade ett lågt värde kan delvis förklaras av Rysslands invasion av Ukraina och de effekter denna haft på bland annat tillgången på råvaror. Historiskt varierar barometerindikatorn med konjunkturen och större kriser i samhället, såsom finanskrisen 2008/2009 och Coronapandemin 2020/2021, syns tydligt i diagrammet.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 gg_konjB$barometern
@@ -135,11 +135,11 @@ gg_konjB$barometern
 
 ### Bransch {-}
 
-Hur läget i ekonomin uppfattas varierar beroende på om det är företagen eller hushållen som tillfrågas. Hushållens syn på ekonomin har försämrats tydligt sedan inledningen av året, med en barometerindikator på `r konj_hushall_senaste` i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar`. Så sent som i februari 2025 var motsvarande siffra 94,5. Hushållens syn på ekonomin visar nu på ett betydligt svagare stämningsläge än normalt. Försämringen hänger sannolikt samman med den osäkra situationen i omvärlden, med bland annat ett tullkrig kopplat till USA i vardande. 
+Hur läget i ekonomin uppfattas varierar beroende på om det är företagen eller hushållen som tillfrågas. Hushållens syn på ekonomin förbättrades tydlig i juli 2025, jämfört med månaderna innan, med en barometerindikator på `r konj_hushall_senaste` i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar`. Hushållens syn på ekonomin är dock fortfarande sämre jämfört med inledningen av året (så sent som i februari 2025 var motsvarande siffra 94,5). Försämringen jämfört med inledningen av året hänger sannolikt samman med den osäkra situationen i omvärlden, med bland annat högre tullar för varor som exporteras till USA. 
 
 Bland branschgrupperna i diagrammet nedan hade `r konj_bransch_positiv` den mest positiva synen på ekonomin i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` (en barometerindikator på `r konj_bransch_positiv_varde`), medan företag inom `r konj_bransch_negativ` uppfattar den ekonomiska utvecklingen som mer negativ (en barometerindikator på `r konj_bransch_negativ_varde`). Tjänstesektorn drabbades värst under pandemin (mars/april 2020), medan tillverkningsindustrin uppfattade ekonomin som starkare än normalt från slutet av 2020 fram till mitten av 2022.
 
-På senare tid har byggindustri varit den bransch som uppfattat ekonomin som svagast, men jämfört med inledningen av året har synen på ekonomin inom branschen tydligt förbättrats. I `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` var barometerindikatorn för byggindustri `r konj_bygg_senaste_varde`, vilket dock var något lägre än månaden innan.
+På senare tid har byggindustri varit den bransch som uppfattat ekonomin som svagast, men jämfört med inledningen av året har synen på ekonomin inom branschen förbättrats. I `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` var barometerindikatorn för byggindustri `r konj_bygg_senaste_varde`, vilket dock var något lägre än månaderna innan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_konjB$barometern_bransch
@@ -158,9 +158,9 @@ Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i
  
 </details>
 
-Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r inflation_max_manad_ar`, då den i Sverige uppgick till `r inflation_max_varde` procent. Därefter minskade inflationen avsevärt och var som lägst i september 2024 (1,1 procent). I  `r inflation_senaste_manad_ar` var inflationen `r inflation_senaste_varde` procent, vilket var en ökning jämfört med månaderna innan och högre än Riksbankens inflationsmål på 2 procent. För en mer ingående förklaring av vad som påverkade inflationstakten i `r inflation_senaste_manad_ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/priser-och-ekonomiska-tendenser/priser/konsumentprisindex-kpi/pong/statistiknyhet/konsumentprisindex-kpi-juni-2025/){target="_blank"}. 
+Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r inflation_max_manad_ar`, då den i Sverige uppgick till `r inflation_max_varde` procent. Därefter minskade inflationen avsevärt och var som lägst i september 2024 (1,1 procent). I  `r inflation_senaste_manad_ar` var inflationen `r inflation_senaste_varde` procent, vilket var en ökning jämfört med månaderna innan och högre än Riksbankens inflationsmål på 2 procent. För en mer ingående förklaring av vad som påverkade inflationstakten i `r inflation_senaste_manad_ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/priser-och-ekonomiska-tendenser/priser/konsumentprisindex-kpi/pong/statistiknyhet/konsumentprisindex-kpi-juli-2025/){target="_blank"}. 
 
-I juni 2025 sänkte Riksbanken sin styrränta för sjunde gången sedan sommaren 2024, från 2,25 procent till 2 procent, vilket påverkar [räntorna](https://www.scb.se/hitta-statistik/statistik-efter-amne/finansmarknad/finansmarknadsstatistik/finansmarknadsstatistik/pong/statistiknyhet/finansmarknadsstatistik-september-2024/){target="_blank"} på exempelvis bostadslån. I jämförelse med det senaste dryga decenniet är dock styrräntan fortfarande hög (se exempelvis [Ekonomifakta](https://www.ekonomifakta.se/sakomraden/finansiell-ekonomi/inflation-och-styrrantor/styrrantan_1208883.html){target="_blank"}).
+Sedan sommaren 2024 har Riksbanken sänkt sin styrränta sju gånger (den ligger nu på 2 procent). Detta påverkar [räntorna](https://www.scb.se/hitta-statistik/statistik-efter-amne/finansmarknad/finansmarknadsstatistik/finansmarknadsstatistik/pong/statistiknyhet/finansmarknadsstatistik-september-2024/){target="_blank"} på exempelvis bostadslån. I jämförelse med det senaste dryga decenniet är dock styrräntan fortfarande hög (se exempelvis [Ekonomifakta](https://www.ekonomifakta.se/sakomraden/finansiell-ekonomi/inflation-och-styrrantor/styrrantan_1208883.html){target="_blank"}).
 
 Den höga inflationstakten under framförallt 2022 och 2023 har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på  [Wikipedia](https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge){target="_blank"}.
 
@@ -185,7 +185,7 @@ Med bostadslägenhet avses en lägenhet avsedd att helt eller till en inte oväs
 </details>
 
 ### Bygglov {-}
-Antalet godkända bygglov för småhus i Dalarna varierar mellan kvartalen, men en tydlig trend är att de har börjat minska på senare tid. Sedan toppen i  `r bygglov_smahus_max_manad_ar`, då `r  bygglov_smahus_max_varde` bygglov godkändes, har antalet godkända bygglov minskat och i `r bygglov_smahus_senaste_manad_ar`, godkändes `r bygglov_smahus_senaste_varde` bygglov. För flerbostadshus är trenden relativt likvärdig, men variationen är större från kvartal till kvartal. Under `r bygglov_smahus_senaste_manad_ar`, godkändes bygglov för `r bygglov_flerbostadshus_senaste_varde` lägenheter i Dalarna, vilket var fler än kvartalen innan.
+Antalet godkända bygglov för småhus i Dalarna varierar mellan kvartalen, men sedan toppen i  `r bygglov_smahus_max_manad_ar`, då `r  bygglov_smahus_max_varde` bygglov godkändes, har antalet godkända bygglov minskat och i `r bygglov_smahus_senaste_manad_ar`, godkändes `r bygglov_smahus_senaste_varde` bygglov. Detta var dock en tydlig ökning i antalet godkända bygglov jämfört med kvartalen innan. För flerbostadshus är trenden relativt likvärdig, men variationen är större från kvartal till kvartal. Under `r bygglov_smahus_senaste_manad_ar`, godkändes bygglov för `r bygglov_flerbostadshus_senaste_varde` lägenheter i Dalarna, vilket var färre än kvartalen innan.
 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
@@ -193,7 +193,7 @@ gg_nybygg_bygglov$bygglov_20_arK1_K4
 ```
 
 ### Nybyggnation {-}
-Precis som för byggloven, varierar byggandet av småhus mellan kvartalen, men en långsiktig trend var att byggandet minskade tydligt från toppen i  `r husbyggande_smahus_max_manad_ar`, då `r husbyggande_smahus_max_varde` småhus påbörjades, till botten under första kvartalet 2024, då blott 17 småhus påbörjades. I `r husbyggande_smahus_senaste_manad_ar` påbörjades `r husbyggande_smahus_senaste_varde` småhus, vilket var färre än månaderna innan. För flerbostadshus är trenden svårare att tolka, då variationen är stor mellan kvartalen. I `r husbyggande_smahus_senaste_manad_ar`, påbörjades `r husbyggande_flerbostadshus_senaste_varde` lägenhet, vilket var fler än kvartalet innan.
+Precis som för byggloven, varierar byggandet av småhus mellan kvartalen, men en långsiktig trend är att byggandet har minskat tydligt från toppen i  `r husbyggande_smahus_max_manad_ar`, då `r husbyggande_smahus_max_varde` småhus påbörjades, till botten under första kvartalet 2024, då blott 17 småhus påbörjades. I `r husbyggande_smahus_senaste_manad_ar` påbörjades `r husbyggande_smahus_senaste_varde` småhus, vilket var färre än månaderna innan. För flerbostadshus är trenden svårare att tolka, då variationen är stor mellan kvartalen. I `r husbyggande_smahus_senaste_manad_ar`, påbörjades `r husbyggande_flerbostadshus_senaste_varde` lägenhet, vilket var fler än kvartalet innan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_nybygg_bygglov$nybyggnation_20_arK1_K4
@@ -213,7 +213,7 @@ gg_nybygg_bygglov$nybyggnation_20_arK1_K4
 
 Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige. Efter toppen i `r priser_max_manad_ar`, då ett småhus i Dalarna kostade ungefär `r priser_max_varde` miljoner kronor, har dock det genomsnittliga priset på småhus i länet minskat avsevärt och en botten nåddes i oktober 2023, när ett småhus i Dalarna kostade strax under 2,1 miljoner kronor i genomsnitt. Minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medfört en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkar efterfrågan på bostäder. 
 
-Under första halvåret 2024 steg priserna på småhus tydligt i Dalarna, innan de återigen började sjunka i augusti. I `r priser_senaste_manad_ar ` var priset på ett småhus knappt `r priser_senaste_varde` miljoner kronor (i genomsnitt), vilket var lägre än månaderna innan.
+Under första halvåret 2024 steg priserna på småhus tydligt i Dalarna, innan de återigen började sjunka i augusti. I `r priser_senaste_manad_ar ` var priset på ett småhus knappt `r priser_senaste_varde` miljoner kronor (i genomsnitt), vilket var högre än månaden innan men lägre än månaderna dessförinnan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_smahuspriser$smahuspriser_tidserie

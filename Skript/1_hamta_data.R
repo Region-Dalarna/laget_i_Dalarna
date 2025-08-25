@@ -1,6 +1,6 @@
 # Uppdaterar data som används i rapporten "Läget i Dalarna" och kör markdown-filen som skapar rapporten.
-# Notera att viss data uppdateras automatiskt, medan annan måste laddas hem från diverse källor (som finns i skripten).
-# För mer info om källor för data som behöver hämtas, se avsnittet mot slutet av skriptet.
+# Variabeln uppdatera_data styr om data skall uppdateras eller om data skall läsas in från en sparad global environment-fil. Det sistnämnda alternativet
+# är användbart för att slippa hämta data varje gång rapporten skall knittas, vilket kan ta lång tid.
 
 if (!require("pacman")) install.packages("pacman")
 p_load(here)
