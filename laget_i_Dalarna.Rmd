@@ -38,9 +38,9 @@ source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_te
 arbetsloshet_kommun <-  read.xlsx(here("Data","arbetsloshet_kommun.xlsx"))
 
 arbetsloshet_kommun_min <- arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==min(arbetslöshet)) %>% .$region %>% list_komma_och()
-arbetsloshet_kommun_min_varde <- gsub("\\.",",",arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==min(arbetslöshet)) %>% .$arbetslöshet)
-arbetsloshet_kommun_max <- arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==max(arbetslöshet)) %>% .$region %>% list_komma_och()
-arbetsloshet_kommun_max_varde <- gsub("\\.",",",arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==max(arbetslöshet)) %>% .$arbetslöshet)
+arbetsloshet_kommun_min_varde <- gsub("\\.",",",arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==min(arbetslöshet)) %>% .$arbetslöshet %>% first())
+arbetsloshet_kommun_max <- arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==max(arbetslöshet)) %>% .$region %>% list_komma_och() 
+arbetsloshet_kommun_max_varde <- gsub("\\.",",",arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==max(arbetslöshet)) %>% .$arbetslöshet %>% first()) 
 
 
 ```
@@ -166,6 +166,7 @@ Den höga inflationstakten under framförallt 2022 och 2023 har ett antal olika 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_infl$inflation
+
 ```
 
 # Bostadsmarknaden
@@ -185,7 +186,7 @@ Med bostadslägenhet avses en lägenhet avsedd att helt eller till en inte oväs
 </details>
 
 ### Bygglov {-}
-Antalet godkända bygglov för småhus i Dalarna varierar mellan kvartalen, men sedan toppen i  `r bygglov_smahus_max_manad_ar`, då `r  bygglov_smahus_max_varde` bygglov godkändes, har antalet godkända bygglov minskat och i `r bygglov_smahus_senaste_manad_ar`, godkändes `r bygglov_smahus_senaste_varde` bygglov. Detta var dock en tydlig ökning i antalet godkända bygglov jämfört med kvartalen innan. För flerbostadshus är trenden relativt likvärdig, men variationen är större från kvartal till kvartal. Under `r bygglov_smahus_senaste_manad_ar`, godkändes bygglov för `r bygglov_flerbostadshus_senaste_varde` lägenheter i Dalarna, vilket var färre än kvartalen innan.
+Antalet godkända bygglov för småhus i Dalarna varierar mellan kvartalen, men sedan toppen i  `r bygglov_smahus_max_manad_ar`, då `r  bygglov_smahus_max_varde` bygglov godkändes, har antalet godkända bygglov minskat och i `r bygglov_smahus_senaste_manad_ar`, godkändes `r bygglov_smahus_senaste_varde` bygglov. För flerbostadshus är trenden relativt likvärdig, men variationen är större från kvartal till kvartal. Under `r bygglov_smahus_senaste_manad_ar`, godkändes bygglov för `r bygglov_flerbostadshus_senaste_varde` lägenheter i Dalarna, vilket var fler än kvartalet innan.
 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
@@ -193,7 +194,7 @@ gg_nybygg_bygglov$bygglov_20_arK1_K4
 ```
 
 ### Nybyggnation {-}
-Precis som för byggloven, varierar byggandet av småhus mellan kvartalen, men en långsiktig trend är att byggandet har minskat tydligt från toppen i  `r husbyggande_smahus_max_manad_ar`, då `r husbyggande_smahus_max_varde` småhus påbörjades, till botten under första kvartalet 2024, då blott 17 småhus påbörjades. I `r husbyggande_smahus_senaste_manad_ar` påbörjades `r husbyggande_smahus_senaste_varde` småhus, vilket var färre än månaderna innan. För flerbostadshus är trenden svårare att tolka, då variationen är stor mellan kvartalen. I `r husbyggande_smahus_senaste_manad_ar`, påbörjades `r husbyggande_flerbostadshus_senaste_varde` lägenhet, vilket var fler än kvartalet innan.
+Precis som för byggloven, varierar byggandet av småhus mellan kvartalen, men en långsiktig trend är att byggandet har minskat tydligt från toppen i  `r husbyggande_smahus_max_manad_ar`, då `r husbyggande_smahus_max_varde` småhus påbörjades, till botten under första kvartalet 2024, då blott 17 småhus påbörjades. I `r husbyggande_smahus_senaste_manad_ar` påbörjades `r husbyggande_smahus_senaste_varde` småhus, vilket var fler än kvartalet innan. För flerbostadshus är trenden svårare att tolka, då variationen är stor mellan kvartalen. I `r husbyggande_smahus_senaste_manad_ar`, påbörjades `r husbyggande_flerbostadshus_senaste_varde` lägenhet, vilket var fler än kvartalet innan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_nybygg_bygglov$nybyggnation_20_arK1_K4
