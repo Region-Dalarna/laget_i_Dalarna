@@ -74,7 +74,7 @@ Senast uppdaterad: `r Sys.Date()`</i>
 Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvecklingen. Rapporten uppdateras regelbundet och ett antal viktiga trender och mönster sammanfattas här: 
 
 <ul>
-<li> Hushållens syn på ekonomin har försämrats jämfört med inledningen av 2025, samtidigt som aktiviteten i ekonomin (BNP) minskade under årets första kvartal. </li>
+<li> Hushållens syn på ekonomin har försämrats jämfört med inledningen av 2025, men aktiviteten i ekonomin (BNP) ökade under årets andra kvartal. </li>
 <li>Inflationen ökade i juli 2025, jämfört med månaden innan, och är över Riksbankens inflationsmål.</li>
 <li> Priserna på småhus i Dalarna ökade något i `r priser_senaste_manad_ar `, jämfört med månaden innan, men är fortfarande lägre än månaderna dessförinnan.
 <li> Antalet anställda berörda av konkurser i Dalarna var `r ifelse(konkurser_senaste_antal > konkurser_foregaende_ar_antal,"fler","färre")` i `r konkurser_senaste_manad` `r konkurser_senaste_ar`, jämfört med motsvarande månad året innan. </li>
@@ -108,7 +108,7 @@ Det allmänna läget i en ekonomi kan beskrivas på flera sätt. I detta första
 
 Genom att titta på förändring i BNP kan man få en uppfattning om hur aktiviteten i den svenska ekonomin förändras över tid. Eftersom Sveriges ekonomi, precis som de flesta andra länders, växer i normala fall, ökar BNP under en majoritet av kvartalen. Vid större kriser i samhället kan dock BNP minska avsevärt, vilket också syns i figuren nedan. Under andra kvartalet 2020 minskade aktiviteten i den svenska ekonomin med nästan 8 procent jämfört med föregående kvartal, vilket kan tillskrivas Corona-pandemin. Återhämtningen gick dock snabbt och redan i efterföljande kvartal så ökade BNP med nästan lika mycket som minskningen i kvartal två. Därefter följde ett par år när läget i Sveriges ekonomi kan beskrivas som gott, innan aktiviteten i ekonomin återigen minskade i kvartal ett, år 2022. Därefter var läget länge relativt skakigt, med omväxlande positiva och negativa förändringar i BNP. 
 
-I `r BNP_senaste_kvartal` `r BNP_senaste_ar` var förändringen i BNP `r BNP_senaste_varde` procent. Detta var första gången sedan fjärde kvartalet 2023 som aktiviteten i Sveriges ekonomi minskade jämfört med kvartalet innan. För en diskussion runt vad som påverkade BNP under `r BNP_senaste_kvartal` `r BNP_senaste_ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/nationalrakenskaper/nationalrakenskaper/nationalrakenskaper-kvartals-och-arsberakningar/pong/statistiknyhet/nationalrakenskaper-1a-kvartalet-2025/){target="_blank"}.
+I `r BNP_senaste_kvartal` `r BNP_senaste_ar` var förändringen i BNP `r BNP_senaste_varde` procent, dvs. aktiviteten i Sveriges ekonomi ökade jämfört med kvartalet innan. För en diskussion runt vad som påverkade BNP under `r BNP_senaste_kvartal` `r BNP_senaste_ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/nationalrakenskaper/nationalrakenskaper/nationalrakenskaper-kvartals-och-arsberakningar/pong/statistiknyhet/nationalrakenskaper-2a-kvartalet-2025/){target="_blank"}.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_BNP$BNP
@@ -310,7 +310,7 @@ har arbetslösheten i Dalarna varit på ungefär samma nivå som föregående å
 gg_arbetsloshet_tidsserie$arbetslöshet_tidsserie_totalt_Dalarna
 ```
 
-Om arbetslösheten delas upp i inrikes och utrikes födda framträder en delvis annorlunda bild. Bland inrikes födda (det vänstra diagrammet nedan) har  arbetslösheten ökat under 2024 och inledningen av 2025, jämfört med samma period föregående år. I `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar` var arbetslösheten bland inrikes födda `r arbetsloshet_tidserie_Dalarna_inrikes_varde` procent i Dalarna. Bland utrikes födda (det högra diagrammet nedan) har arbetslösheten fortsatt att minska stadigt under samma tidsperiod, men är klart högre än bland inrikes födda (`r arbetsloshet_tidserie_Dalarna_utrikes_varde` procent i `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar`). 
+Om arbetslösheten delas upp i inrikes och utrikes födda framträder en delvis annorlunda bild. Bland inrikes födda (det vänstra diagrammet nedan) ökade arbetslösheten under 2024 och inledningen av 2025, jämfört med samma period föregående år. I `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar` var arbetslösheten bland inrikes födda `r arbetsloshet_tidserie_Dalarna_inrikes_varde` procent i Dalarna, vilket dock var samma nivå som motsvarande månad året innan. Bland utrikes födda (det högra diagrammet nedan) har arbetslösheten fortsatt att minska stadigt under samma tidsperiod, men är klart högre än bland inrikes födda (`r arbetsloshet_tidserie_Dalarna_utrikes_varde` procent i `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar`). 
 
 Totalt var `r arblosa_inrikes` inrikes födda personer och `r arblosa_utrikes` utrikes födda personer i åldersgruppen `r arblosa_alder` arbetslösa i Dalarna i `r arblosa_manad` `r arblosa_ar`.
 
@@ -409,7 +409,7 @@ Med ekonomiskt stöd åsyftas ekonomiskt bistånd för sökande och eventuell me
 
 I Dalarna hade som mest närmare 5000 personer mellan 15 och 74 år ett sådant behov under 2020, men därefter minskade behovet stadigt under en längre period. Anmärkningsvärt är även att behovet av stöd minskade trots att prisnivån i samhället ökade avsevärt under samma tidsperiod (se avsnittet om inflation). Exakt vad den utvecklingen beror på är oklart, men ett antal tänkbara orsaker diskuteras i följande <a href = "https://www.svt.se/nyheter/inrikes/darfor-minskar-antalet-hushall-som-far-socialbidrag-i-sverige-forskare-forklarar-orsaker-bakom" target="_blank">artikel</a>.
 
-Antalet personer som får stöd varierar en del mellan månaderna, men under 2024 var trenden nedåtgående då färre fick ekonomiskt stöd jämfört med föregående år. I `r ek_stod_manad_ar_sista` var `r ek_stod_totalt_sista` personer i behov av sådant stöd till, vilket var färre än månaden innan.
+Antalet personer som får stöd varierar en del mellan månaderna, men under 2024 var trenden nedåtgående då färre fick ekonomiskt stöd jämfört med föregående år. I `r ek_stod_manad_ar_sista` var `r ek_stod_totalt_sista` personer i behov av sådant stöd till, vilket var fler än månaden innan men färre än samma månad föregående år.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_ek_stod$ekonomiskt_bistand_alla_Dalarna
