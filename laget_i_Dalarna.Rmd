@@ -214,14 +214,14 @@ gg_nybygg_bygglov$nybyggnation_20_arK1_K4
 
 Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige. Efter toppen i `r priser_max_manad_ar`, då ett småhus i Dalarna kostade ungefär `r priser_max_varde` miljoner kronor, har dock det genomsnittliga priset på småhus i länet minskat avsevärt och en botten nåddes i oktober 2023, när ett småhus i Dalarna kostade strax under 2,1 miljoner kronor i genomsnitt. Minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medfört en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkar efterfrågan på bostäder. 
 
-Under första halvåret 2024 steg priserna på småhus tydligt i Dalarna, innan de återigen började sjunka i augusti. I `r priser_senaste_manad_ar ` var priset på ett småhus knappt `r priser_senaste_varde` miljoner kronor (i genomsnitt), vilket var högre än månaden innan men lägre än månaderna dessförinnan.
+Under första halvåret 2024 steg priserna på småhus tydligt i Dalarna, innan de återigen började sjunka i augusti. I `r priser_senaste_manad_ar ` var priset på ett småhus ungefär `r priser_senaste_varde` miljoner kronor (i genomsnitt), vilket var en tydlig ökning jämfört med månaderna innan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_smahuspriser$smahuspriser_tidserie
 ```
 
 ### Län {-}
-Det genomsnittliga priset på ett småhus varierar mellan Sveriges län och var i `r priser_senaste_manad_ar` högst i `r priser_senaste_max_region`, där ett småhus i genomsnitt kostade `r priser_senaste_max_varde` miljoner kronor. I Dalarna är priset klart lägre, ett småhus kostade i genomsnitt knappt `r priser_senaste_varde` miljoner kronor i länet. Av förklarliga skäl är bostadspriserna generellt högst i län med större städer där befolkningen växer, medan det omvända gäller för län med en mindre befolkning.
+Det genomsnittliga priset på ett småhus varierar mellan Sveriges län och var i `r priser_senaste_manad_ar` högst i `r priser_senaste_max_region`, där ett småhus i genomsnitt kostade `r priser_senaste_max_varde` miljoner kronor. I Dalarna är priset klart lägre, ett småhus kostade i genomsnitt ungefär `r priser_senaste_varde` miljoner kronor i länet. Av förklarliga skäl är bostadspriserna generellt högst i län med större städer där befolkningen växer, medan det omvända gäller för län med en mindre befolkning.
 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
