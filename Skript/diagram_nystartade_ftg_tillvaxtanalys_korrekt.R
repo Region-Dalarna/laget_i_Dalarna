@@ -56,7 +56,7 @@ diagram_nystartade <- function(output_mapp = "G:/Samhällsanalys/Statistik/Näri
   diagramfilnamn <- paste0("nystartade_ftg_",skapa_kortnamn_lan(unique(nystartade_df$region)),".png")
   
   gg_obj <- SkapaLinjeDiagram(skickad_df = nystartade_df %>% 
-                                mutate(kvartal_ar = factor(kvartal_ar, levels = unique(kvartal_ar), ordered = TRUE)),
+                                mutate(kvartal_ar = factor(kvartal_ar, levels = rev(unique(kvartal_ar)), ordered = TRUE)),
                               skickad_x_var = "kvartal_ar",
                               skickad_y_var = "antal",
                               skickad_x_grupp = "variabel",
