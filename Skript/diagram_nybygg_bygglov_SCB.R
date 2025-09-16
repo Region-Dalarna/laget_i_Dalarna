@@ -43,10 +43,11 @@ diagram_nybyggnation_bygglov <- function(region_vekt = "20",
       mutate(variabel = last(names(nybyggnation_df)),
              ar=substr(kvartal,1,4),
              ar_kvartal = kvartal,
-             kvartal=substr(kvartal,5,6)) %>% 
+             kvartal=substr(kvartal,5,6),
+             kvartal_ar = paste0(kvartal," ",ar)) %>% 
         filter(ar>=startar_nybygg) %>% 
          rename(varde = `Påbörjade lägenheter i nybyggda hus`) %>% 
-          select(regionkod,region,ar,ar_kvartal,kvartal,hustyp,variabel,varde)
+          select(regionkod,region,ar,ar_kvartal,kvartal,kvartal_ar,hustyp,variabel,varde)
     
     # mutate(ar=substr(kvartal,1,4),
     #        ar_kvartal = kvartal,
@@ -65,8 +66,9 @@ diagram_nybyggnation_bygglov <- function(region_vekt = "20",
     diagramfil <- glue("nybyggnation_{unique(nybyggnation_df$regionkod) %>% paste0(collapse = '_')}_ar{min(nybyggnation_df$kvartal)}_{max(nybyggnation_df$kvartal)}.png")
     objektnamn <- c(objektnamn,diagramfil %>% str_remove(".png"))
     
-    gg_obj <- SkapaLinjeDiagram(skickad_df = nybyggnation_df,
-                                            skickad_x_var = "ar_kvartal",
+    gg_obj <- SkapaLinjeDiagram(skickad_df = nybyggnation_df %>% 
+                                  mutate(kvartal_ar = factor(kvartal_ar, levels = unique(kvartal_ar), ordered = TRUE)),
+                                            skickad_x_var = "kvartal_ar",
                                             skickad_y_var = "varde",
                                             skickad_x_grupp = "hustyp",
                                             stodlinjer_avrunda_fem = TRUE,
@@ -97,9 +99,10 @@ diagram_nybyggnation_bygglov <- function(region_vekt = "20",
     ) %>%  
       mutate(ar = substr(kvartal,1,4),
              ar_kvartal = kvartal,
-             kvartal=substr(kvartal,5,6)) %>% 
+             kvartal = substr(kvartal,5,6),
+             kvartal_ar = paste0(kvartal," ",ar)) %>% 
         #rename("Antal" = `Bygglov för nybyggnad, lägenheter`) %>%
-          filter(ar>=startar_bygglov)
+          filter(ar >= startar_bygglov)
     
     if(returnera_data == TRUE){
       assign("Bygglov_df", bygglov_df, envir = .GlobalEnv)
@@ -111,10 +114,11 @@ diagram_nybyggnation_bygglov <- function(region_vekt = "20",
     diagramfil <- glue("bygglov_{unique(bygglov_df$regionkod) %>% paste0(collapse = '_')}_ar{min(bygglov_df$kvartal)}_{max(bygglov_df$kvartal)}.png")
     objektnamn <- c(objektnamn,diagramfil %>% str_remove(".png"))
     
-    gg_obj <- SkapaLinjeDiagram(skickad_df = bygglov_df %>%
+    gg_obj <- SkapaLinjeDiagram(skickad_df = bygglov_df %>% 
+                                  mutate(kvartal_ar = factor(kvartal_ar, levels = unique(kvartal_ar), ordered = TRUE)) %>% 
                                    filter(ar>=startar_bygglov) %>%
                                    filter(hustyp%in%c("småhus","flerbostadshus exkl. specialbostäder")), 
-                                 skickad_x_var = "ar_kvartal",
+                                 skickad_x_var = "kvartal_ar",
                                  skickad_y_var = "Antal",
                                  skickad_x_grupp = "hustyp",
                                  berakna_index=FALSE,
