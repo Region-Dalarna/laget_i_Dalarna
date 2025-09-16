@@ -33,7 +33,8 @@ diagram_inflation_SCB <- function(output_mapp = "G:/Samhällsanalys/Statistik/N�
   KPIF_df <- KPIF_df %>%   
     mutate(ar=substr(månad,1,4),
            manad_long=format(as.Date(paste(ar, str_sub(månad, 6,7),"1", sep = "-")), "%B"),
-           Period=paste(ar, str_sub(månad, 6,7),sep = "-")) %>% 
+           Period=paste(ar, str_sub(månad, 6,7),sep = "-"),
+           manad_ar = paste0(manad_long," ",ar)) %>% 
       rename("KPIF" = `KPIF, 12-månadsförändring, 1987=100`) %>% 
         mutate(variabel = "Inflation")%>% 
       filter(Period>=startvarde)
@@ -44,18 +45,19 @@ diagram_inflation_SCB <- function(output_mapp = "G:/Samhällsanalys/Statistik/N�
   
   # Riksbankens inflationsmål
   KPI_df_mal<- KPIF_df %>%
-    select(KPIF,manad_long,Period,variabel) %>%
+    select(KPIF,manad_ar,Period,variabel) %>%
       mutate("KPIF"=2,
              "variabel" = "Riksbankens inflationsmål") %>% 
         filter(Period>=startvarde)
   
-  KPI_utskrift <- rbind(KPIF_df %>% select(KPIF,manad_long,Period,variabel),KPI_df_mal)
+  KPI_utskrift <- rbind(KPIF_df %>% select(KPIF,manad_ar,Period,variabel),KPI_df_mal)
 
-  diagramtitel <- paste0("Inflation i Sverige från " ,first(KPIF_df$manad_long)," ",first(KPIF_df$ar), " till ",last(KPIF_df$manad_long)," ",last(KPIF_df$ar))
+  diagramtitel <- paste0("Inflation i Sverige från " ,first(KPIF_df$manad_ar), " till ",last(KPIF_df$manad_ar))
   diagramfilnamn <- paste0("inflation.png")
   
-  gg_obj <- SkapaLinjeDiagram(skickad_df = KPI_utskrift,
-                                       skickad_x_var = "Period",
+  gg_obj <- SkapaLinjeDiagram(skickad_df = KPI_utskrift %>% 
+                                mutate(manad_ar = factor(manad_ar, levels = unique(manad_ar), ordered = TRUE)),
+                                       skickad_x_var = "manad_ar",
                                        skickad_y_var = "KPIF",
                                        skickad_x_grupp = "variabel",
                                        berakna_index=FALSE,

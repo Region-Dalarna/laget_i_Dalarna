@@ -36,7 +36,8 @@ diagram_smahuspriser <- function(region_vekt = "20",
   priser_df <- smahuspriser_df %>%   
     mutate(ar=substr(månad,1,4),
            manad_long=format(as.Date(paste(ar, str_sub(månad, 6,7),"1", sep = "-")), "%B"),
-           Period=paste(ar, str_sub(månad, 6,7),sep = "-")) %>% 
+           Period=paste(ar, str_sub(månad, 6,7),sep = "-"),
+           manad_ar = paste0(manad_long," ",ar)) %>% 
       select(-månad) %>% 
         rename("Medelpris"=`Medelpris, 1000-tals kronor`) %>% 
           mutate(region = skapa_kortnamn_lan(region,byt_ut_riket_mot_sverige = TRUE)) %>% 
@@ -57,16 +58,17 @@ diagram_smahuspriser <- function(region_vekt = "20",
     ValdGeografi <- skapa_kortnamn_lan(hamtaregion_kod_namn(region_vekt)$region,byt_ut_riket_mot_sverige = TRUE)
     jmf_geografi <- skapa_kortnamn_lan(hamtaregion_kod_namn(jmf_vekt)$region,byt_ut_riket_mot_sverige = TRUE) 
     
-    diagramtitel <- paste0("Förändring i priser på småhus mellan ",first(priser_df$manad_long)," ",first(priser_df$ar)," och ",last(priser_df$manad_long)," ",last(priser_df$ar))
+    diagramtitel <- paste0("Förändring i priser på småhus mellan ",first(priser_df$manad_ar)," och ",last(priser_df$manad_ar))
     diagramtitel = str_wrap(diagramtitel,40)
     diagramfilnamn <- paste0("smahuspriser_tidserie.png")
     objektnamn <- c(objektnamn,diagramfilnamn %>% str_remove(".png"))
     
     gg_obj <- SkapaLinjeDiagram(skickad_df = priser_df %>% 
-                                              filter(ar >= startar,region%in%c(jmf_geografi,ValdGeografi))%>%
+                                              filter(ar >= startar,region%in%c(jmf_geografi,ValdGeografi)) %>% 
+                                              mutate(manad_ar = factor(manad_ar, levels = unique(manad_ar), ordered = TRUE)) %>% 
                                               group_by(region)%>% 
                                               mutate("Index (startvärde 100)"=(Medelpris/first(Medelpris))*100),
-                                            skickad_x_var = "Period", 
+                                            skickad_x_var = "manad_ar", 
                                             skickad_y_var = "Index (startvärde 100)", 
                                             skickad_x_grupp = "region",
                                             berakna_index=FALSE,

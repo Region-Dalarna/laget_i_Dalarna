@@ -1,4 +1,3 @@
-#test = diagram_BNP_SCB(spara_figur = FALSE,startar="1980")
 diagram_BNP_SCB <- function(output_mapp = "G:/Samhällsanalys/Statistik/Näringsliv/basfakta/",
                                   spara_figur = TRUE, # Skall diagrammet sparas
                                   returnera_data = FALSE, # Skall data returneras
@@ -31,9 +30,11 @@ diagram_BNP_SCB <- function(output_mapp = "G:/Samhällsanalys/Statistik/Närings
            ar_kvartal = kvartal,
            kvartal=substr(kvartal,5,6)) %>% 
       rename("Sasongsransad_forandring"=`Säsongrensad, volymförändring föregående period, procent`) %>% 
-        mutate(kvartal=ifelse(kvartal=="K1","kvartal ett",
-                              ifelse(kvartal=="K2","kvartal två",
-                                     ifelse(kvartal=="K3","kvartal tre","kvartal fyra"))))
+        mutate(kvartal_ar = paste0(kvartal," ",ar)) %>% 
+          mutate(kvartal=ifelse(kvartal=="K1","kvartal ett",
+                                ifelse(kvartal=="K2","kvartal två",
+                                       ifelse(kvartal=="K3","kvartal tre","kvartal fyra")))) 
+          
   
   if(returnera_data == TRUE){
     assign("BNP_df", BNP_df, envir = .GlobalEnv)
@@ -46,9 +47,13 @@ diagram_BNP_SCB <- function(output_mapp = "G:/Samhällsanalys/Statistik/Närings
   diagramtitel <- str_wrap(diagramtitel,40)
   diagramfilnamn <- paste0("BNP.png")
   
+  BNP_df$kvartal_ar <- factor(BNP_df$kvartal_ar,
+                       levels = unique(BNP_df$kvartal_ar),  # keep first-appearance order
+                       ordered = TRUE)
+  
   gg_obj <- SkapaStapelDiagram(skickad_df = BNP_df %>% 
                                      filter(ar>=startar) ,
-                                   skickad_x_var = "ar_kvartal", 
+                                   skickad_x_var = "kvartal_ar", 
                                    skickad_y_var = "Sasongsransad_forandring",
                                    manual_x_axis_text_vjust=1,
                                    manual_x_axis_text_hjust=1,
