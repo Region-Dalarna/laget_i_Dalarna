@@ -35,14 +35,18 @@ diagram_nystartade <- function(output_mapp = "G:/Samhällsanalys/Statistik/Näri
   nystartade_df <- nystartade_df %>% 
     rename(tid = kvartal,
            antal = `Nystartade företag 2011-`) %>%
-      #separate(län, into = c("regionkod", "region"), sep = " ", remove = TRUE,extra = "merge") %>% 
-        mutate(ar = substr(tid,1,4),
-               kvartal = substr(tid,5,6)) %>% 
-          mutate(kvartal_namn = case_when(
-            kvartal == "Q1" ~ "kvartal ett",
-            kvartal == "Q2" ~ "kvartal två",
-            kvartal == "Q3" ~ "kvartal tre",
-            kvartal == "Q4" ~ "kvartal fyra")) 
+    #separate(län, into = c("regionkod", "region"), sep = " ", remove = TRUE,extra = "merge") %>% 
+    mutate(ar = substr(tid,1,4),
+           kvartal = substr(tid,5,6)) %>% 
+      mutate(kvartal_namn = case_when(
+        kvartal == "Q1" ~ "kvartal ett",
+        kvartal == "Q2" ~ "kvartal två",
+        kvartal == "Q3" ~ "kvartal tre",
+        kvartal == "Q4" ~ "kvartal fyra")) %>% 
+        mutate(kvartal = str_replace_all(kvartal, "\\bQ(?=\\d)", "K"),
+               kvartal_ar = paste0(kvartal, " ", ar))
+
+             
   
   if(returnera_data == TRUE){
     assign("nystartade_df", nystartade_df, envir = .GlobalEnv)
@@ -51,8 +55,9 @@ diagram_nystartade <- function(output_mapp = "G:/Samhällsanalys/Statistik/Näri
   diagram_titel <- paste0("Antal nystartade företag per kvartal i ", skapa_kortnamn_lan(unique(nystartade_df$region)))
   diagramfilnamn <- paste0("nystartade_ftg_",skapa_kortnamn_lan(unique(nystartade_df$region)),".png")
   
-  gg_obj <- SkapaLinjeDiagram(skickad_df = nystartade_df,
-                              skickad_x_var = "tid",
+  gg_obj <- SkapaLinjeDiagram(skickad_df = nystartade_df %>% 
+                                mutate(kvartal_ar = factor(kvartal_ar, levels = unique(kvartal_ar), ordered = TRUE)),
+                              skickad_x_var = "kvartal_ar",
                               skickad_y_var = "antal",
                               skickad_x_grupp = "variabel",
                               stodlinjer_avrunda_fem = TRUE,
