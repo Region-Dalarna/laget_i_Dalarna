@@ -7,7 +7,8 @@
 # Tar längre tid (ett par minuter) och medför en risk att text inte längre är aktuell då figurer har ändrats.
 
 if (!require("pacman")) install.packages("pacman")
-p_load(here)
+p_load(here,
+       tidyverse)
 
 # Skall data uppdateras? Annars läses data in från en sparad global environment-fil och rapporten knittas baserat på senast sparade data.
 uppdatera_data = TRUE
@@ -71,6 +72,23 @@ if(uppdatera_data == TRUE){
   
   inflation_senaste_manad_ar <- paste(KPI_df %>% filter(månad==last(månad)) %>% select(manad_long,ar),collapse = " ")
   inflation_senaste_varde <- gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)
+  
+  # Styrränta - prognos
+  source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/refs/heads/main/hamta_ek_prognoser_fran_prognosinstitut_ki.R")
+  prognos_styrranta_df <- hamta_ek_prognoser_fran_prognosinstitut_ki() %>% 
+    filter(variabel == "Styrränta, vid årets slut, procent**",
+           prognos_for_ar == min(prognos_for_ar))
+  
+  prognos_styrranta_ar <- unique(prognos_styrranta_df$prognos_for_ar)
+  prognos_styrranta_antal_institut <- length(prognos_styrranta_df$Prognosinstitut)
+  
+  vanligaste <- prognos_styrranta_df %>%
+    filter(!is.na(varde)) %>%             # drop missing values
+      count(varde, name = "n", sort = TRUE) %>%
+        slice_max(n, n = 1, with_ties = TRUE) # keep all modes if tied
+  
+  vanligaste_antal <- vanligaste$n
+  vanligaste_varde <- gsub(".", ",", vanligaste$varde, fixed = TRUE)
   
   # Småhuspriser - 2 diagram
   source(here("Skript","diagram_smahuspriser_SCB.R"), encoding="UTF-8")
