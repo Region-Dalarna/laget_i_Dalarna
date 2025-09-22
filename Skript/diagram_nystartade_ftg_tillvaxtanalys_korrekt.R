@@ -56,7 +56,7 @@ diagram_nystartade <- function(output_mapp = "G:/Samhällsanalys/Statistik/Näri
   diagramfilnamn <- paste0("nystartade_ftg_",skapa_kortnamn_lan(unique(nystartade_df$region)),".png")
   
   gg_obj <- SkapaLinjeDiagram(skickad_df = nystartade_df %>% 
-                                mutate(kvartal_ar = factor(kvartal_ar, levels = rev(unique(kvartal_ar)), ordered = TRUE)),
+                                mutate(kvartal_ar = factor(kvartal_ar, levels = unique(kvartal_ar), ordered = TRUE)),
                               skickad_x_var = "kvartal_ar",
                               skickad_y_var = "antal",
                               skickad_x_grupp = "variabel",
@@ -65,6 +65,7 @@ diagram_nystartade <- function(output_mapp = "G:/Samhällsanalys/Statistik/Näri
                               diagram_titel = diagram_titel,
                               diagram_capt =  diagram_capt,
                               inkludera_sista_vardet_var_xe_etikett = TRUE,
+                              x_axis_var_xe_etikett_ta_bort_nast_sista_vardet = TRUE, # tar bort näst sista värdet i visa_var_xe_etikett
                               output_mapp = "output_mapp",
                               manual_y_axis_title = "Antal",
                               legend_tabort = TRUE,

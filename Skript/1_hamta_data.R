@@ -11,7 +11,7 @@ p_load(here,
        tidyverse)
 
 # Skall data uppdateras? Annars läses data in från en sparad global environment-fil och rapporten knittas baserat på senast sparade data.
-uppdatera_data = FALSE
+uppdatera_data = TRUE
 
 if(uppdatera_data == TRUE){
 
@@ -89,6 +89,18 @@ if(uppdatera_data == TRUE){
   
   vanligaste_antal <- vanligaste$n
   vanligaste_varde <- gsub(".", ",", vanligaste$varde, fixed = TRUE)
+  
+  # Styrränta - prognos
+  prognos_BNP_df <- hamta_ek_prognoser_fran_prognosinstitut_ki() %>% 
+    filter(variabel == "BNP")
+  
+  prognos_BNP_2026 <- gsub(".", ",", round(mean(prognos_BNP_df %>% filter(prognos_for_ar == "2026") %>% .$varde),1), fixed = TRUE)
+  prognos_BNP_2026_antal <- length(unique(prognos_BNP_df %>% filter(prognos_for_ar == "2026") %>% .$Prognosinstitut))
+  prognos_BNP_2027<- gsub(".", ",", round(mean(prognos_BNP_df %>% filter(prognos_for_ar == "2027") %>% .$varde),1), fixed = TRUE)
+  prognos_BNP_2027_antal <- length(unique(prognos_BNP_df %>% filter(prognos_for_ar == "2027") %>% .$Prognosinstitut))
+  prognos_BNP_2028 <- gsub(".", ",", round(mean(prognos_BNP_df %>% filter(prognos_for_ar == "2028") %>% .$varde),1), fixed = TRUE)
+  prognos_BNP_2028_antal <- length(unique(prognos_BNP_df %>% filter(prognos_for_ar == "2028") %>% .$Prognosinstitut))
+  
   
   # Småhuspriser - 2 diagram
   source(here("Skript","diagram_smahuspriser_SCB.R"), encoding="UTF-8")
@@ -214,11 +226,11 @@ if(uppdatera_data == TRUE){
   nystartade_max_kvartal <- nystartade_df %>% filter(antal == max(antal)) %>% .$kvartal_namn
   nystartade_max_varde <- nystartade_df %>% filter(antal == max(antal)) %>% .$antal
   
-  nystartade_senaste_ar <- nystartade_df %>% filter(tid == first(tid)) %>% .$ar
-  nystartade_senaste_kvartal <- nystartade_df %>% filter(tid == first(tid)) %>% .$kvartal_namn
-  nystartade_senaste_varde <- nystartade_df %>% filter(tid == first(tid)) %>% .$antal
+  nystartade_senaste_ar <- nystartade_df %>% filter(tid == last(tid)) %>% .$ar
+  nystartade_senaste_kvartal <- nystartade_df %>% filter(tid == last(tid)) %>% .$kvartal_namn
+  nystartade_senaste_varde <- nystartade_df %>% filter(tid == last(tid)) %>% .$antal
   
-  nystartade_jmf <- nystartade_df %>% filter(tid == first(tid)) %>% .$antal - first(nystartade_df %>% filter(tid != first(tid)) %>% .$antal)
+  nystartade_jmf <- nystartade_df %>% filter(tid == last(tid)) %>% .$antal - last(nystartade_df %>% filter(tid != last(tid)) %>% .$antal)
   
   # Arbetslöshet län - 1 figur
   source("https://raw.githubusercontent.com/Region-Dalarna/diagram/main/diagram_arbetsmarknadsstatus_senastear.R")
