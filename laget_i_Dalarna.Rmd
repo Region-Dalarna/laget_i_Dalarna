@@ -409,7 +409,7 @@ Med ekonomiskt stöd åsyftas ekonomiskt bistånd för sökande och eventuell me
 
 I Dalarna hade som mest närmare 5000 personer mellan 15 och 74 år ekonomiskt stöd som huvudsaklig inkomstkälla under 2020, men därefter minskade antalet stadigt under en längre period. Anmärkningsvärt är även att behovet av stöd minskade trots att prisnivån i samhället ökade avsevärt under samma tidsperiod (se avsnittet om inflation). Exakt vad den utvecklingen beror på är oklart, men ett antal tänkbara orsaker diskuteras i följande <a href = "https://www.svt.se/nyheter/inrikes/darfor-minskar-antalet-hushall-som-far-socialbidrag-i-sverige-forskare-forklarar-orsaker-bakom" target="_blank">artikel</a>.
 
-Antalet personer som har ekonomiskt stöd som huvudsaklig inkomstkälla varierar en del mellan månaderna, men under 2024 var trenden nedåtgående jämfört med föregående år. I `r ek_stod_manad_ar_sista` hade `r ek_stod_totalt_sista` personer ekonomiskt stöd som huvudsaklig inkomstkälla, vilket var fler än månaden innan men färre än samma månad föregående år.
+Antalet personer som har ekonomiskt stöd som huvudsaklig inkomstkälla varierar en del mellan månaderna, men under 2024 var trenden nedåtgående jämfört med föregående år. I `r ek_stod_manad_ar_sista` hade `r ek_stod_totalt_sista` personer ekonomiskt stöd som huvudsaklig inkomstkälla, vilket var det lägsta antalet sedan februari 2023.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_ek_stod$ekonomiskt_bistand_alla_Dalarna
