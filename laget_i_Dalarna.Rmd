@@ -78,7 +78,7 @@ Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvec
 <li>Inflationen ökade i augusti 2025, jämfört med månaden innan, och är över Riksbankens inflationsmål.</li>
 <li> Priserna på småhus i Dalarna ökade något i `r priser_senaste_manad_ar `, jämfört med månaden innan, men är fortfarande lägre än månaderna dessförinnan.
 <li> Antalet anställda berörda av konkurser i Dalarna var `r ifelse(konkurser_senaste_antal > konkurser_foregaende_ar_antal,"fler","färre")` i `r konkurser_senaste_manad` `r konkurser_senaste_ar`, jämfört med motsvarande månad året innan. </li>
-<li> Arbetslösheten i Dalarna, som är klart under genomsnittet i Sverige, har under 2024 och inledningen av 2025, efter en lång period av nedgång, stabiliserats på ungefär samma nivå som föregående år.</li>
+<li> Arbetslösheten i Dalarna, som är klart under genomsnittet i Sverige, har under 2024 och första halvan av 2025, efter en lång period av nedgång, stabiliserats på ungefär samma nivå som föregående år.</li>
 <li> Antalet personer med ekonomiskt stöd som huvudsakliga inkomstkälla har minskat i Dalarna på senare år. Minskningen är framförallt koncentrerad till utrikes födda.</li>
 </ul>
 
@@ -273,7 +273,7 @@ gg_avregistrerade$avreg_manad
 </details>
 
 
-En annan indikator på läget för företagen i länet är hur många nya företag som startas. Historiskt startades väldigt många företag i samband med Corona-pandemin 2020-2021. I  `r nystartade_max_kvartal` `r nystartade_max_ar` startades exempelvis `r nystartade_max_varde` företag, vilket är det största antalet sedan åtminstone 2011. Exakt vad detta beror på kan vara svårt att säga, men en potentiell förklaring är att individer som blev uppsagda under pandemin valde att starta egna företag. Någon större trend sedan Rysslands invasion av Ukraina märktes inte initialt för antalet nystartade företag. Under 2022 startades till och med något fler företag än genomsnittet sedan 2011. Under första halvan av 2023 märktes en viss avmattning dock, innan antalet nystartade företag återigen började öka. I `r nystartade_senaste_kvartal` `r nystartade_senaste_ar` startades `r nystartade_senaste_varde` företag, vilket var `r abs(nystartade_jmf)` `r ifelse(nystartade_jmf>0, "fler", "färre")`  än föregående kvartal.
+En annan indikator på läget för företagen i länet är hur många nya företag som startas. Historiskt startades väldigt många företag i samband med Corona-pandemin 2020-2021. I  `r nystartade_max_kvartal` `r nystartade_max_ar` startades exempelvis `r nystartade_max_varde` företag, vilket var det största antalet sedan åtminstone 2011. Exakt vad detta beror på kan vara svårt att säga, men en potentiell förklaring är att individer som blev uppsagda under pandemin valde att starta egna företag. Någon större trend sedan Rysslands invasion av Ukraina märktes inte initialt för antalet nystartade företag. Under 2022 startades till och med något fler företag än genomsnittet sedan 2011. Under första halvan av 2023 märktes en viss avmattning dock, innan antalet nystartade företag återigen började öka. I `r nystartade_senaste_kvartal` `r nystartade_senaste_ar` startades `r nystartade_senaste_varde` företag, vilket var `r abs(nystartade_jmf)` `r ifelse(nystartade_jmf>0, "fler", "färre")`  än föregående kvartal.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_nystartade$nystartade_ftg_Dalarna
@@ -385,7 +385,7 @@ arblosa_kommun_gis <- left_join(kommuner_sv, arbetsloshet_kommun, by = c("KOMMUN
 
   
 ```
-Arbetslösheten bland Dalarnas kommuner är låg på många håll, där en majoritet av länets kommuner hade mellan 2 och 4 procents arbetslöshet i `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar`. Lägst är arbetslösheten i `r arbetsloshet_kommun_min`, med `r arbetsloshet_kommun_min_varde` procent. I de södra delarna av länet är bilden delvis annorlunda, där ett par kommuner har mer än 6 procents arbetslöshet. Högst är arbetslösheten i  `r arbetsloshet_kommun_max`, där den uppgår till `r arbetsloshet_kommun_max_varde` procent. En tänkbar orsak till detta mönster är att de kommuner med högst arbetslöshet också är de kommuner som har högst andel utrikes födda. Den sistnämnda gruppen tenderar att hamna i arbetslöshet i högre utsträckning än inrikes födda.
+Arbetslösheten bland Dalarnas kommuner är låg på många håll, där en majoritet av länets kommuner hade mellan 2 och 4 procents arbetslöshet i `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar`. Lägst är arbetslösheten i `r arbetsloshet_kommun_min`, med `r arbetsloshet_kommun_min_varde` procent. I de södra delarna av länet är bilden delvis annorlunda, där kommunerna generellt har högre arbetslöshet. Högst är arbetslösheten i  `r arbetsloshet_kommun_max`, där den uppgår till `r arbetsloshet_kommun_max_varde` procent. En tänkbar orsak till detta mönster är att de kommuner med högst arbetslöshet också är de kommuner som har högst andel utrikes födda. Den sistnämnda gruppen tenderar att hamna i arbetslöshet i högre utsträckning än inrikes födda.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=10, fig.width=10}
 karta
