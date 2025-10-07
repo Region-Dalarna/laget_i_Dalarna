@@ -11,7 +11,7 @@ p_load(here,
        tidyverse)
 
 # Skall data uppdateras? Annars läses data in från en sparad global environment-fil och rapporten knittas baserat på senast sparade data.
-uppdatera_data = FALSE
+uppdatera_data = TRUE
 
 if(uppdatera_data == TRUE){
 
@@ -38,10 +38,19 @@ if(uppdatera_data == TRUE){
   BNP_senaste_ar <- BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$ar
   BNP_senaste_varde <- gsub("\\.",",",BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Sasongsransad_forandring)
   
+  source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_ek_prognoser_olika_prognosinstitut_ki.R")
+  gg_BNP_prognos <- diag_ekonomiska_prognoser_olika_progn_institut_ki(vald_variabel  = "BNP",
+                                                                     output_mapp = Output_mapp,
+                                                                     valda_prognos_ar = "+1",
+                                                                     x_axis_lutning = 45,
+                                                                     #manual_y_axis_title = "procent",
+                                                                     skriv_diagramfil  = spara_figur)
+  
   # Konjunkturbarometern - 2 diagram
   source(here("Skript","diagram_konjunkturbarometern_konj.R"), encoding="UTF-8")
   gg_konjB <- diagram_konjunkturbarometern(spara_figur = spara_figur, 
                                            output_mapp = Output_mapp,
+                                           diagram_capt = "Källa: Konjunkturinstitutet.\nBearbetning: Samhällsanalys, Region Dalarna.",
                                            antal_etiketter_barometern = 24, # Intervall mellan visade etiketter (i månader)
                                            antal_etiketter_bransch = 24, # Intervall mellan visade etiketter (i månader)
                                            returnera_data = TRUE, 
@@ -58,6 +67,11 @@ if(uppdatera_data == TRUE){
   konj_bransch_negativ_varde <- gsub("\\.",",",barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(varde==min(varde)) %>% .$varde)
   
   konj_bygg_senaste_varde <- gsub("\\.",",",barometern_df %>%filter(Indikator=="Byggverksamhet (SNI 41-43)",Period==last(Period)) %>% .$varde)
+  
+  # source(here("Skript","diagram_konjunkturbarometern_konj_alt.R"), encoding="UTF-8")
+  # konj_test = diagram_konjunkturbarometern_alt(spara_figur=FALSE,antal_etiketter_bransch = 36)
+  
+  
   
   # KPI - 1 diagram
   source(here("Skript","diagram_inflation_SCB.R"), encoding="UTF-8")

@@ -5,6 +5,7 @@ diagram_konjunkturbarometern <- function(output_mapp = "G:/Samhällsanalys/Stati
                                          valda_farger = diagramfarger("rus_sex"),
                                          diag_barometern = TRUE,
                                          diag_bransch = TRUE,
+                                         diagram_capt = "Källa: Konjunkturinstitutet.\nBearbetning: Samhällsanalys, Region Dalarna.\nDiagramförklaring: En indikator över 100 motsvarar en starkare ekonomi än normalt och värden över 110\nen mycket starkare ekonomi än normalt. En indikator under 100 respektive under 90\nvisar en svagare respektive mycket svagare ekonomi än normalt.",
                                          antal_etiketter_barometern = 12, # Intervall mellan visade etiketter (i månader)
                                          antal_etiketter_bransch = 12, # Intervall mellan visade etiketter (i månader)
                                          startvarde_barometern = "1996-07",# Startvärde för diagrammet.Finns från 1996-07
@@ -19,7 +20,6 @@ diagram_konjunkturbarometern <- function(output_mapp = "G:/Samhällsanalys/Stati
     source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/main/hamta_konjunkturbarometern_indikator_period_konj.R")
     source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_SkapaDiagram.R", encoding = "utf-8")
     
-    diagram_capt <- "Källa: Konjunkturinstitutet.\nBearbetning: Samhällsanalys, Region Dalarna.\nDiagramförklaring: En indikator över 100 motsvarar en starkare ekonomi än normalt och värden över 110\nen mycket starkare ekonomi än normalt. En indikator under 100 respektive under 90\nvisar en svagare respektive mycket svagare ekonomi än normalt."
     gg_list <- list()
     objektnamn <- c()
 
@@ -33,7 +33,8 @@ diagram_konjunkturbarometern <- function(output_mapp = "G:/Samhällsanalys/Stati
         mutate(ar=substr(Period,1,4),
                manad_long=format(as.Date(paste(ar, str_sub(Period, 6,7),"1", sep = "-")), "%B"),
                Period=paste(ar, str_sub(Period, 6,7),sep = "-"),
-               manad_ar = paste0(manad_long," ",ar)) %>% 
+               manad_ar = paste0(manad_long," ",ar),
+               manad_kort_ar = paste0(substr(manad_long,1,3)," ",ar)) %>% 
           filter(Period >= min(startvarde_barometern,startvarde_bransch)) %>% 
             rename("varde" = `Barometerindikatorn och andra indikatorer`)
     
@@ -61,8 +62,8 @@ diagram_konjunkturbarometern <- function(output_mapp = "G:/Samhällsanalys/Stati
       objektnamn <- c(objektnamn,diagramfilnamn %>% str_remove(".png"))
         
       gg_obj <- SkapaLinjeDiagram(skickad_df = barometern_gen_utskrift %>% 
-                                    mutate(manad_ar = factor(manad_ar, levels = unique(manad_ar), ordered = TRUE)),
-                                  skickad_x_var = "manad_ar", 
+                                    mutate(manad_kort_ar = factor(manad_kort_ar, levels = unique(manad_kort_ar), ordered = TRUE)),
+                                  skickad_x_var = "manad_kort_ar", 
                                   skickad_y_var = "varde",
                                   skickad_x_grupp ="Indikator",
                                   berakna_index=FALSE,
@@ -106,14 +107,14 @@ diagram_konjunkturbarometern <- function(output_mapp = "G:/Samhällsanalys/Stati
                                                         "Tjänstesektorn", "Hushåll", 
                                                         "Normalt läge i ekonomin")))
       
-      diagramtitel <- paste0("Barometerindikatorns utveckling i Sverige mellan januari 2020 och ",last(barometern_bransch_utskrift$manad_long)," ",last(barometern_bransch_utskrift$ar))
+      diagramtitel <- paste0("Barometerindikatorns utveckling i Sverige mellan ", first(barometern_bransch_utskrift$manad_long)," ",first(barometern_bransch_utskrift$ar), " och ",last(barometern_bransch_utskrift$manad_long)," ",last(barometern_bransch_utskrift$ar))
       diagramtitel = str_wrap(diagramtitel,45)
       diagramfilnamn <- paste0("barometern_bransch.png")
       objektnamn <- c(objektnamn,diagramfilnamn %>% str_remove(".png"))
       
       gg_obj <- SkapaLinjeDiagram(skickad_df = barometern_bransch_utskrift %>% 
-                                    mutate(manad_ar = factor(manad_ar, levels = unique(manad_ar), ordered = TRUE)) ,
-                                        skickad_x_var = "manad_ar", 
+                                    mutate(manad_kort_ar = factor(manad_kort_ar, levels = unique(manad_kort_ar), ordered = TRUE)) ,
+                                        skickad_x_var = "manad_kort_ar", 
                                         skickad_y_var = "varde",
                                         skickad_x_grupp ="Indikator",
                                         berakna_index=FALSE,

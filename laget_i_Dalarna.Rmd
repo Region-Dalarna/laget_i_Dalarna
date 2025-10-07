@@ -114,6 +114,10 @@ I `r BNP_senaste_kvartal` `r BNP_senaste_ar` var förändringen i BNP `r BNP_sen
 gg_BNP$BNP
 ```
 
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+gg_BNP_prognos$BNP_prognos_ar_2025_2026
+```
+
 ## Konjunkturbarometern{.tabset}
 Ett annat sätt att mäta läget i ekonomin är genom de olika enkätundersökningar som Konjunkturinstitutet regelbundet genomför, med frågor till företag och hushåll om deras uppfattning om nuläge och förväntningar på den ekonomiska utvecklingen. Svaren vägs samman i en indikator som kallas Konjunkturbarometern. Till skillnad från BNP fokuserar konjunkturbarometern inte enbart på nuläget, utan hushållen och företagen får även svara på frågor som rör framtidsutsikterna. Barometerindikatorn väger samman konfidensindikatorer från svaren i de olika enkäterna och ger varje månad en bild av konjunkturläget i Sveriges ekonomi.
 <br>
@@ -144,6 +148,10 @@ Bland branschgrupperna i diagrammet nedan hade `r konj_bransch_positiv` den mest
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_konjB$barometern_bransch
 
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+#konj_test$barometern_bransch_facet
 ```
 
 ## Inflation
