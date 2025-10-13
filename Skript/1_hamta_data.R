@@ -11,7 +11,7 @@ p_load(here,
        tidyverse)
 
 # Skall data uppdateras? Annars läses data in från en sparad global environment-fil och rapporten knittas baserat på senast sparade data.
-uppdatera_data = TRUE
+uppdatera_data = FALSE
 
 if(uppdatera_data == TRUE){
 
@@ -43,7 +43,7 @@ if(uppdatera_data == TRUE){
                                                                      output_mapp = Output_mapp,
                                                                      valda_prognos_ar = "+1",
                                                                      x_axis_lutning = 45,
-                                                                     #manual_y_axis_title = "procent",
+                                                                     manual_y_axis_title = "procent",
                                                                      skriv_diagramfil  = spara_figur)
   
   # Konjunkturbarometern - 2 diagram
@@ -86,6 +86,14 @@ if(uppdatera_data == TRUE){
   
   inflation_senaste_manad_ar <- paste(KPI_df %>% filter(månad==last(månad)) %>% select(manad_long,ar),collapse = " ")
   inflation_senaste_varde <- gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)
+  
+  source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_ek_prognoser_olika_prognosinstitut_ki.R")
+  gg_infl_prognos <- diag_ekonomiska_prognoser_olika_progn_institut_ki(vald_variabel  = "KPI med fast bostadsränta (KPIF), årsgenomsnitt",
+                                                                      output_mapp = Output_mapp,
+                                                                      valda_prognos_ar = "+1",
+                                                                      x_axis_lutning = 45,
+                                                                      manual_y_axis_title = "procent",
+                                                                      skriv_diagramfil  = spara_figur)
   
   # Styrränta - prognos
   source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/refs/heads/main/hamta_ek_prognoser_fran_prognosinstitut_ki.R")
@@ -135,6 +143,7 @@ if(uppdatera_data == TRUE){
   source(here("Skript","diagram_nybygg_bygglov_SCB.R"), encoding="UTF-8")
   gg_nybygg_bygglov <- diagram_nybyggnation_bygglov(spara_figur = spara_figur, 
                                                     output_mapp = Output_mapp,
+                                                    hustyp_klartext = "småhus",
                                                     returnera_data = TRUE, 
                                                     returnera_figur = TRUE)
   
@@ -152,7 +161,7 @@ if(uppdatera_data == TRUE){
   
   bygglov_smahus_senaste_manad_ar <- paste(Bygglov_df %>%filter(hustyp=="småhus")  %>% select(kvartal,ar) %>% last(),collapse = " ")
   bygglov_smahus_senaste_varde <- Bygglov_df %>%filter(hustyp=="småhus") %>% select(Antal) %>% last() %>% .$Antal
-  bygglov_flerbostadshus_senaste_varde <-Bygglov_df %>%filter(ar>"2009",hustyp=="flerbostadshus exkl. specialbostäder") %>% .$Antal %>% last()
+  #bygglov_flerbostadshus_senaste_varde <-Bygglov_df %>%filter(ar>"2009",hustyp=="flerbostadshus exkl. specialbostäder") %>% .$Antal %>% last()
   
   Husbyggande_df <- Husbyggande_df %>% 
     mutate(kvartal=case_when(
@@ -167,7 +176,7 @@ if(uppdatera_data == TRUE){
   husbyggande_smahus_max_varde <- Husbyggande_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(varde==max(varde)) %>% .$varde
   husbyggande_smahus_senaste_manad_ar <- paste(Husbyggande_df %>%filter(hustyp=="småhus")  %>% select(kvartal,ar) %>% last(),collapse = " ")
   husbyggande_smahus_senaste_varde <- Husbyggande_df %>%filter(hustyp=="småhus") %>% select(varde) %>% last() %>% .$varde
-  husbyggande_flerbostadshus_senaste_varde <- Husbyggande_df %>%filter(hustyp=="flerbostadshus") %>% .$varde %>%  last()
+ # husbyggande_flerbostadshus_senaste_varde <- Husbyggande_df %>%filter(hustyp=="flerbostadshus") %>% .$varde %>%  last()
   
   # # Konkurser - 2 figurer - SCB har inte längre data för konkurser, så vi använder Tillväxtanalys data istället (se längre ned)
   # source(here("Skript","diagram_konkurser_SCB.R"), encoding="UTF-8")
@@ -176,7 +185,7 @@ if(uppdatera_data == TRUE){
   #                                       returnera_data = TRUE, 
   #                                       returnera_figur = TRUE)
   
-  # Konkurser - 1 figur - enbart län
+  # Konkurser - 2 figurer - enbart län
   source(here("Skript","diagram_konkurser_tillvaxtanalys_korrekt.R"), encoding="UTF-8")
   gg_konkurser <- diagram_konkurser_TVA(spara_figur = spara_figur,
                                         variabel_klartext = "Antal anställda berörda av konkurser",
@@ -184,16 +193,23 @@ if(uppdatera_data == TRUE){
                                         returnera_data = TRUE,
                                         returnera_figur = TRUE)
   
-  konkurser_senaste_manad <- first(konkurser_df$manad_long)
-  konkurser_senaste_ar <- first(konkurser_df$år)
-  konkurser_senaste_antal <- konkurser_df %>% filter(år==first(år),manad_long == first(manad_long)) %>% group_by(region,år) %>% .$antal %>% sum()
+  konkurser_senaste_manad <- last(konkurser_df$manad_long)
+  konkurser_senaste_ar <- last(konkurser_df$år)
+  konkurser_senaste_antal <- konkurser_df %>% filter(år==last(år),manad_long == last(manad_long)) %>% group_by(region,år) %>% .$antal %>% sum()
   
-  konkurser_hittils_i_ar <- konkurser_df %>% filter(år==first(år)) %>% group_by(region,år) %>% .$antal %>% sum()
-  manader_hittils_i_ar <- konkurser_df %>% filter(år==first(år)) %>% .$månad
-  konkurser_motsvarande_foregaende_ar <- konkurser_df %>% filter(år==(as.numeric(first(år))-1),månad %in%manader_hittils_i_ar) %>% group_by(region,år) %>% .$antal %>% sum()
+  konkurser_hittils_i_ar <- konkurser_df %>% filter(år==last(år)) %>% group_by(region,år) %>% .$antal %>% sum()
+  manader_hittils_i_ar <- konkurser_df %>% filter(år==last(år)) %>% .$månad
+  konkurser_motsvarande_foregaende_ar <- konkurser_df %>% filter(år==(as.numeric(last(år))-1),månad %in%manader_hittils_i_ar) %>% group_by(region,år) %>% .$antal %>% sum()
   
-  konkurser_foregaende_ar <- as.character(as.numeric(first(konkurser_df$år))-1)
-  konkurser_foregaende_ar_antal <- konkurser_df  %>% filter(år==(as.numeric(first(år))-1),manad_long == first(manad_long)) %>% group_by(region,år) %>% .$antal %>% sum()
+  konkurser_foregaende_ar <- as.character(as.numeric(last(konkurser_df$år))-1)
+  konkurser_foregaende_ar_antal <- konkurser_df  %>% filter(år==(as.numeric(last(år))-1),manad_long == last(manad_long)) %>% group_by(region,år) %>% .$antal %>% sum()
+  
+  source(here("Skript","diagram_konkurser_tillvaxtanalys_korrekt_ar.R"), encoding="UTF-8")
+  gg_konkurser_ar <- diagram_konkurser_TVA_ar(spara_figur = spara_figur,
+                                           variabel_klartext = "Antal anställda berörda av konkurser",
+                                           output_mapp = Output_mapp,
+                                           returnera_data = TRUE,
+                                           returnera_figur = TRUE)
   
   # # Konkurser - 1 figur - tre största branscher
   # source(here("Skript","diagram_konkurser_tillvaxtanalys_bransch.R"), encoding="UTF-8")
@@ -229,7 +245,7 @@ if(uppdatera_data == TRUE){
   avregisterade_senaste_varde <- last(antal_avregistreringar_df$antal)
   avregistrerade_foregaende_ar_varde <- antal_avregistreringar_df %>% filter(manad == last(manad), ar == sort(unique(ar), decreasing = TRUE)[2]) %>% dplyr::pull(antal)
   
-  # Nystartade företag - 1 figur
+  # Nystartade företag - 2 figurer
   source(here("Skript","diagram_nystartade_ftg_tillvaxtanalys_korrekt.R"), encoding="UTF-8")
   gg_nystartade <- diagram_nystartade(spara_figur = spara_figur, 
                                       output_mapp = Output_mapp,

@@ -4,13 +4,8 @@ diagram_konkurser_TVA <- function(region_vekt = "20",			   # Val av region. Finn
                                   output_mapp = "G:/Samhällsanalys/Statistik/Näringsliv/basfakta/",			# Var skall figuren sparas
                                   spara_figur = TRUE, # Skall diagrammet sparas
                                   returnera_data = FALSE, # Skall data returneras
-                                  returnera_figur = TRUE, # Skall diagram returneras
-                                  valda_farger = diagramfarger("rus_sex"),
-                                  valda_farger_lan = diagramfarger("rus_tre_fokus"),
-                                  diag_tidsserie = TRUE){
-  
-  
-  
+                                  returnera_figur = TRUE# Skall diagram returneras
+                                  ){
   
   if (!require("pacman")) install.packages("pacman")
   p_load(here,
