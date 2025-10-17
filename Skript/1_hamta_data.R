@@ -11,7 +11,7 @@ p_load(here,
        tidyverse)
 
 # Skall data uppdateras? Annars läses data in från en sparad global environment-fil och rapporten knittas baserat på senast sparade data.
-uppdatera_data = FALSE
+uppdatera_data = TRUE
 
 if(uppdatera_data == TRUE){
 
@@ -52,6 +52,7 @@ if(uppdatera_data == TRUE){
                                            output_mapp = Output_mapp,
                                            diagram_capt = "Källa: Konjunkturinstitutet.\nBearbetning: Samhällsanalys, Region Dalarna.",
                                            antal_etiketter_barometern = 24, # Intervall mellan visade etiketter (i månader)
+                                           legend_byrow = TRUE,
                                            antal_etiketter_bransch = 24, # Intervall mellan visade etiketter (i månader)
                                            returnera_data = TRUE, 
                                            returnera_figur = TRUE)
@@ -95,7 +96,7 @@ if(uppdatera_data == TRUE){
                                                                       manual_y_axis_title = "procent",
                                                                       skriv_diagramfil  = spara_figur)
   
-  # Styrränta - prognos
+  # Styrränta - prognos - används för tillfället inte
   source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/refs/heads/main/hamta_ek_prognoser_fran_prognosinstitut_ki.R")
   prognos_styrranta_df <- hamta_ek_prognoser_fran_prognosinstitut_ki() %>% 
     filter(variabel == "Styrränta, vid årets slut, procent**",
@@ -237,6 +238,7 @@ if(uppdatera_data == TRUE){
   source(here("Skript","diagram_avreg_ftg_Bolagsverket.R"), encoding="UTF-8")
   gg_avregistrerade <- diagram_avregistrerade(spara_figur = spara_figur, 
                                               output_mapp = Output_mapp,
+                                              legend_rader = 1,
                                               returnera_data = TRUE, 
                                               returnera_figur = TRUE)
   
@@ -285,6 +287,7 @@ if(uppdatera_data == TRUE){
   gg_arbetsloshet_tidsserie <- diagram_arbetsmarknadsstatus_tidsserie (spara_figur = spara_figur, 
                                                                        output_mapp_figur = Output_mapp,
                                                                        returnera_data = TRUE,
+                                                                       legend_rader = 1,
                                                                        marginal_yaxis_facet = c(0.02,0.02),
                                                                        diagram_facet = TRUE,
                                                                        returnera_figur = TRUE)

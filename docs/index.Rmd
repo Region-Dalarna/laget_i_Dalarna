@@ -75,15 +75,12 @@ Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvec
 
 <ul>
 <li> Hushållens syn på ekonomin har tydligt förbättrats de senaste månaderna. Dessutom ökade aktiviteten i ekonomin (BNP) under årets andra kvartal. </li>
-<li>Inflationen ökade i augusti 2025, jämfört med månaden innan, och är över Riksbankens inflationsmål.</li>
-<li> Priserna på småhus i Dalarna ökade något i `r priser_senaste_manad_ar `, jämfört med månaden innan, men är fortfarande lägre än månaderna dessförinnan.
+<li>Inflationen i september 2025 var något lägre än månaden innan, men är över Riksbankens inflationsmål.</li>
+<li> Priserna på småhus i Dalarna ökade tydligt i `r priser_senaste_manad_ar `, jämfört med månaderna innan.
 <li> Antalet anställda berörda av konkurser i Dalarna var `r ifelse(konkurser_senaste_antal > konkurser_foregaende_ar_antal,"fler","färre")` i `r konkurser_senaste_manad` `r konkurser_senaste_ar`, jämfört med motsvarande månad året innan. </li>
 <li> Arbetslösheten i Dalarna, som är klart under genomsnittet i Sverige, har under 2024 och första halvan av 2025, efter en lång period av nedgång, stabiliserats på ungefär samma nivå som föregående år.</li>
 <li> Antalet personer med ekonomiskt stöd som huvudsakliga inkomstkälla har minskat i Dalarna på senare år. Minskningen är framförallt koncentrerad till utrikes födda.</li>
 </ul>
-
-
-
 
 # Introduktion {-}
 
@@ -112,6 +109,12 @@ I `r BNP_senaste_kvartal` `r BNP_senaste_ar` var förändringen i BNP `r BNP_sen
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_BNP$BNP
+```
+
+Konjunkturinstitutet sammanställer på sin [hemsida](https://www.konj.se/publikationer/prognosjamforelse/){target="_blank"} ett urval av aktuella prognoser för bland annat BNP (på helårsbasis). För år 2025 tror en majoritet av prognosinstituten att aktiviteten i Sveriges ekonomi (BNP) kommer att öka med runt 1 procent. Året efter är bilden av Sveriges ekonomi dock klart ljusare och de flesta prognosinstitut tror att BNP kommer att växa med mellan 2 och 3 procent under 2026.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+gg_BNP_prognos[[1]]
 ```
 
 ## Konjunkturbarometern{.tabset}
@@ -146,6 +149,10 @@ gg_konjB$barometern_bransch
 
 ```
 
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+#konj_test$barometern_bransch_facet
+```
+
 ## Inflation
 Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i den allmänna prisnivån, så kallad inflation. Normalt förknippas hög inflation med problem, eftersom varor och tjänster blir dyrare. Om inte lönerna ökar i samma takt blir människor fattigare i reala termer, vilket har blivit påtagligt i Sverige de senaste åren. Även låg, eller negativ, inflation kan vara skadligt för ekonomin. Exempelvis missgynnas låntagare av en sjunkande prisnivå, då deras lån ökar i värde realt. Sveriges Riksbank strävar därför efter att hålla inflationen relativt konstant över tid, runt ett uttalat inflationsmål. 
 <br>
@@ -158,13 +165,19 @@ Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i
  
 </details>
 
-Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r inflation_max_manad_ar`, då den i Sverige uppgick till `r inflation_max_varde` procent. Därefter minskade inflationen avsevärt och var som lägst i september 2024 (1,1 procent). I  `r inflation_senaste_manad_ar` var inflationen `r inflation_senaste_varde` procent, vilket var en ökning jämfört med månaderna innan och högre än Riksbankens inflationsmål på 2 procent. För en mer ingående förklaring av vad som påverkade inflationstakten i `r inflation_senaste_manad_ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/priser-och-ekonomiska-tendenser/priser/konsumentprisindex-kpi/pong/statistiknyhet/konsumentprisindex-kpi-augusti-2025/){target="_blank"}. 
+Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r inflation_max_manad_ar`, då den i Sverige uppgick till `r inflation_max_varde` procent. Därefter minskade inflationen avsevärt och var som lägst i september 2024 (1,1 procent). I  `r inflation_senaste_manad_ar` var inflationen `r inflation_senaste_varde` procent, vilket var något lägre än månaden innan men högre än Riksbankens inflationsmål på 2 procent. För en mer ingående förklaring av vad som påverkade inflationstakten i `r inflation_senaste_manad_ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/priser-och-ekonomiska-tendenser/priser/konsumentprisindex-kpi/pong/statistiknyhet/konsumentprisindex-kpi-september-2025/){target="_blank"}. 
 
 Den höga inflationstakten under framförallt 2022 och 2023 har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på  [Wikipedia](https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge){target="_blank"}.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_infl$inflation
 
+```
+
+Konjunkturinstitutet sammanställer på sin [hemsida](https://www.konj.se/publikationer/prognosjamforelse/){target="_blank"} ett urval av aktuella prognoser för inflation (enligt KPIF). För år 2025 tror en tydlig majoritet av prognosinstituten att inflationen enligt KPIF kommer att vara runt 2,5 procent, vilket är något under nivån i september 2025. Året efter är det större skillnader mellan prognoserna, men de flesta prognosinstitut prognostiserar en inflation på mellan 1 och 2 procent, dvs. något under Riksbankens inflationsmål.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+gg_infl_prognos[[1]]
 ```
 
 Sedan sommaren 2024 har Riksbanken sänkt sin styrränta åtta gånger (den ligger nu på 1,75 procent). Detta påverkar [räntorna](https://www.scb.se/hitta-statistik/statistik-efter-amne/finansmarknad/finansmarknadsstatistik/finansmarknadsstatistik/pong/statistiknyhet/finansmarknadsstatistik-augusti-2025/){target="_blank"} på exempelvis bostadslån. I jämförelse med framförallt andra hälften av 2010-talet är dock styrräntan fortfarande relativt hög (se exempelvis [Ekonomifakta](https://www.ekonomifakta.se/sakomraden/finansiell-ekonomi/inflation-och-styrrantor/styrrantan_1208883.html){target="_blank"}). Om inflations- och konjunkturutsikterna står sig förväntas styrräntan ligga kvar på denna nivå under en tid framöver ([Riksbanken](https://www.riksbank.se/sv/press-och-publicerat/nyheter-och-pressmeddelanden/pressmeddelanden/2025/styrrantan-sanks-till-175-procent/){target="_blank"}).
@@ -178,15 +191,19 @@ Sedan sommaren 2024 har Riksbanken sänkt sin styrränta åtta gånger (den ligg
 
   <summary>Mer information om statistiken</summary>
 
-<div title="Källa: SCB">Statistiken omfattar alla nybyggnadsprojekt som kräver bygglov. Bygglovsstatistik för bostäder visar antal bygglov och lägenheter. Nybyggnad av bostäder visar bostadsbyggandets omfattning och inriktning av bostadslägenheter. Data i figurerna nedan visar bygglov och nybyggnad av bostäder på kvartalsbasis.
+<div title="Källa: SCB">
+Småhus definieras som friliggande en- och tvåbostadshus samt par-, rad- och kedjehus (exklusive fritidshus).
 
-Med bostadslägenhet avses en lägenhet avsedd att helt eller till en inte oväsentlig del användas som bostad, oavsett i vilken hustyp den ligger. Även bostäder i småhus definieras således som lägenheter. Småhus definieras som friliggande en- och tvåbostadshus samt par-, rad- och kedjehus (exklusive fritidshus). Flerbostadshus definieras som bostadsbyggnader innehållande tre eller flera lägenheter inklusive loftgångshus.
+Notera att det finns en eftersläpning i statistiken. För bygglov gör eftersläpningen att de senaste fyra kvartalens siffror är underskattade. Störst är underskattningen det senaste kvartalet.
+
+För påbörjade småhus är statistiken preliminär och underskattningen det senaste kvartalet mellan 20 och 60 procent beroende på kvartal. Underskattningen är som störst för andra kvartalet. Efter ett år är underskattningen cirka 2 procent 
+
 </div>
  
 </details>
 
 ### Bygglov {-}
-Antalet godkända bygglov för småhus i Dalarna varierar mellan kvartalen, men sedan toppen i  `r bygglov_smahus_max_manad_ar`, då `r  bygglov_smahus_max_varde` bygglov godkändes, har antalet godkända bygglov minskat och i `r bygglov_smahus_senaste_manad_ar`, godkändes `r bygglov_smahus_senaste_varde` bygglov. För flerbostadshus är trenden relativt likvärdig, men variationen är större från kvartal till kvartal. Under `r bygglov_smahus_senaste_manad_ar`, godkändes bygglov för `r bygglov_flerbostadshus_senaste_varde` lägenheter i Dalarna, vilket var fler än kvartalet innan.
+Antalet godkända bygglov för småhus i Dalarna varierar mellan kvartalen, men sedan toppen i  `r bygglov_smahus_max_manad_ar`, då `r  bygglov_smahus_max_varde` bygglov godkändes, har antalet godkända bygglov minskat och i `r bygglov_smahus_senaste_manad_ar`, godkändes `r bygglov_smahus_senaste_varde` bygglov. Notera att det finns en eftersläpning i statistiken, se "Mer information om statistiken" ovan.
 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
@@ -194,7 +211,7 @@ gg_nybygg_bygglov$bygglov_20_arK1_K4
 ```
 
 ### Nybyggnation {-}
-Precis som för byggloven, varierar byggandet av småhus mellan kvartalen, men en långsiktig trend är att byggandet har minskat tydligt från toppen i  `r husbyggande_smahus_max_manad_ar`, då `r husbyggande_smahus_max_varde` småhus påbörjades, till botten under första kvartalet 2024, då blott 17 småhus påbörjades. I `r husbyggande_smahus_senaste_manad_ar` påbörjades `r husbyggande_smahus_senaste_varde` småhus, vilket var fler än kvartalet innan. För flerbostadshus är trenden svårare att tolka, då variationen är stor mellan kvartalen. I `r husbyggande_smahus_senaste_manad_ar`, påbörjades `r husbyggande_flerbostadshus_senaste_varde` lägenhet, vilket var fler än kvartalet innan.
+Precis som för byggloven, varierar byggandet av småhus mellan kvartalen, men en långsiktig trend är att byggandet har minskat tydligt från toppen i  `r husbyggande_smahus_max_manad_ar`, då `r husbyggande_smahus_max_varde` småhus påbörjades, till botten under första kvartalet 2024, då blott 17 småhus påbörjades. I `r husbyggande_smahus_senaste_manad_ar` påbörjades `r husbyggande_smahus_senaste_varde` småhus, vilket var fler än kvartalet innan. Notera att det finns en eftersläpning i statistiken, se "Mer information om statistiken" ovan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_nybygg_bygglov$nybyggnation_20_arK1_K4
@@ -221,7 +238,7 @@ gg_smahuspriser$smahuspriser_tidserie
 ```
 
 ### Län {-}
-Det genomsnittliga priset på ett småhus varierar mellan Sveriges län och var i `r priser_senaste_manad_ar` högst i `r priser_senaste_max_region`, där ett småhus i genomsnitt kostade `r priser_senaste_max_varde` miljoner kronor. I Dalarna är priset klart lägre, ett småhus kostade i genomsnitt ungefär `r priser_senaste_varde` miljoner kronor i länet. Av förklarliga skäl är bostadspriserna generellt högst i län med större städer där befolkningen växer, medan det omvända gäller för län med en mindre befolkning.
+Det genomsnittliga priset på ett småhus varierar mellan Sveriges län och var i `r priser_senaste_manad_ar` högst i `r priser_senaste_max_region`, där ett småhus i genomsnitt kostade `r priser_senaste_max_varde` miljoner kronor. I Dalarna är priset klart lägre, ett småhus kostar i genomsnitt ungefär `r priser_senaste_varde` miljoner kronor i länet. Av förklarliga skäl är bostadspriserna generellt högst i län med större städer där befolkningen växer, medan det omvända gäller för län med en mindre befolkning.
 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
@@ -235,32 +252,7 @@ k=1
 ```
 Läget för företagen i länet hänger naturligtvis samman med läget i ekonomin i stort. Vid sämre tider konsumerar hushållen mindre och efterfrågan på många företags produkter och tjänster minskar, vilket i förlängningen kan leda till att företag begärs i konkurs eller avregistreras. Det är även möjligt att sämre tider medför att det blir mindre attraktivt att starta nya företag.
 
-## Konkurser
-
-```{r, include = FALSE}
-k = k+1
-```
-
-Antalet anställda som berörs av konkurser varierar relativt mycket från månad till månad, vilket medför att det kan var svårt att se någon trend på månadsbasis kopplad till exempelvis Rysslands invasion av Ukraina och dess effekter på Dalarnas ekonomi. Mellan januari och mars 2024 ökade antalet anställda berörda av konkurser i Dalarna exempelvis tydligt jämfört med samma period året innan, för att därefter minska påtagligt i april 2024. I maj 2024 berördes återigen fler av konkurser jämfört med året innan, men i juni var utvecklingen det omvända. Mellan augusti och november 2024 var trenden positiv, då tydligt färre berördes av konkurser i Dalarna jämfört med samma period året innan. 
-
-Efter att ha ökat tydligt i januari 2025, då närmare 150 personer berördes av konkurser i Dalarna, minskade antalet anställda som berördes av konkurser i februari och mars 2025, jämfört med samma period föregående år. I `r konkurser_senaste_manad` `r konkurser_senaste_ar` berördes `r konkurser_senaste_antal` anställda av konkurser, vilket var `r ifelse(konkurser_senaste_antal > konkurser_foregaende_ar_antal,"fler","färre")` än de `r konkurser_foregaende_ar_antal` anställda som berördes motsvarande månad `r konkurser_foregaende_ar`. 
-
-Hittills i år har `r konkurser_hittils_i_ar` anställda berörts av konkurser i Dalarna, vilket är `r ifelse(konkurser_hittils_i_ar > konkurser_motsvarande_foregaende_ar,"fler","färre")` än de `r konkurser_motsvarande_foregaende_ar` som berördes under motsvarande period föregående år.
-
-```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
-gg_konkurser$anstalla_berorda_konkurser_Dalarna
-
-# Hittills i år har `r konkurser_df %>% filter(år==first(år)) %>% group_by(region,år) %>% .$antal %>% sum()` anställda berörts av konkurser i Dalarna, vilket är färre än de `r konkurser_df  %>% filter(år==(as.numeric(first(år))-1),månad%in%unique(konkurser_df  %>% filter(år==first(år)) %>% .$månad)) %>% group_by(region,år) %>% .$antal %>% sum()` som berördes under motsvarande period föregående år.
-
-```
-
-## Avregistrerade företag
-
-Ett potentiellt alternativ till att begära ett företag i konkurs är att istället avregistrera det. Antalet avregistrerade företag tenderar att följa ett visst säsongsmönster, med fler avregistreringar i början och slutet av året. Det är dock svårt att se någon långsiktig trend, då ungefär lika många företag avregistreras varje år. I `r avregistrerade_senaste_manad` `r avregistrerade_senaste_ar` avregistrerades `r avregisterade_senaste_varde` företag i Dalarna, jämfört med `r avregistrerade_foregaende_ar_varde` samma månad året innan.
-
-```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
-gg_avregistrerade$avreg_manad
-```
+I det här avsnittet undersöks först hur många nya företag som startas i Dalarna, därefter analyseras hur många anställda som berörs av konkurser i länet och hur många företag som avregistreras.
 
 ## Nystartade företag
 
@@ -272,12 +264,58 @@ gg_avregistrerade$avreg_manad
  
 </details>
 
-
-En annan indikator på läget för företagen i länet är hur många nya företag som startas. Historiskt startades väldigt många företag i samband med Corona-pandemin 2020-2021. I  `r nystartade_max_kvartal` `r nystartade_max_ar` startades exempelvis `r nystartade_max_varde` företag, vilket var det största antalet sedan åtminstone 2011. Exakt vad detta beror på kan vara svårt att säga, men en potentiell förklaring är att individer som blev uppsagda under pandemin valde att starta egna företag. Någon större trend sedan Rysslands invasion av Ukraina märktes inte initialt för antalet nystartade företag. Under 2022 startades till och med något fler företag än genomsnittet sedan 2011. Under första halvan av 2023 märktes en viss avmattning dock, innan antalet nystartade företag återigen började öka. I `r nystartade_senaste_kvartal` `r nystartade_senaste_ar` startades `r nystartade_senaste_varde` företag, vilket var `r abs(nystartade_jmf)` `r ifelse(nystartade_jmf>0, "fler", "färre")`  än föregående kvartal.
+Historiskt startades väldigt många företag i samband med Corona-pandemin 2020-2021. I  `r nystartade_max_kvartal` `r nystartade_max_ar` startades exempelvis `r nystartade_max_varde` företag, vilket var det största antalet sedan åtminstone 2011. Exakt vad detta beror på kan vara svårt att säga, men en potentiell förklaring är att individer som blev uppsagda under pandemin valde att starta egna företag. Någon större trend sedan Rysslands invasion av Ukraina märktes inte initialt för antalet nystartade företag. Under 2022 startades till och med något fler företag än genomsnittet sedan 2011. Under första halvan av 2023 märktes en viss avmattning dock, innan antalet nystartade företag återigen började öka. I `r nystartade_senaste_kvartal` `r nystartade_senaste_ar` startades `r nystartade_senaste_varde` företag, vilket var `r abs(nystartade_jmf)` `r ifelse(nystartade_jmf>0, "fler", "färre")` än föregående kvartal.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_nystartade$nystartade_ftg_Dalarna
 
+```
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+# Diagram för nystartade företag på årsbasis. Hoppa över tillsvidare
+#gg_nystartade$nystartade_ftg_ar_Dalarna
+
+```
+
+## Konkurser{.tabset}
+
+```{r, include = FALSE}
+k = k+1
+```
+
+### Månad {-}
+
+Antalet anställda som berörs av konkurser varierar relativt mycket från månad till månad, vilket medför att det kan var svårt att se någon trend på månadsbasis kopplad till exempelvis Rysslands invasion av Ukraina och dess effekter på Dalarnas ekonomi. Mellan januari och mars 2024 ökade antalet anställda berörda av konkurser i Dalarna exempelvis tydligt jämfört med samma period året innan, för att därefter minska påtagligt i april 2024. I maj 2024 berördes återigen fler av konkurser jämfört med året innan, men i juni var utvecklingen det omvända. Mellan augusti och november 2024 var trenden positiv, då tydligt färre berördes av konkurser i Dalarna jämfört med samma period året innan. 
+
+Efter att ha ökat tydligt i januari 2025, då närmare 150 personer berördes av konkurser i Dalarna, minskade antalet anställda som berördes av konkurser i februari och mars 2025, jämfört med samma period föregående år. I `r konkurser_senaste_manad` `r konkurser_senaste_ar` berördes `r konkurser_senaste_antal` anställda av konkurser, vilket var `r ifelse(konkurser_senaste_antal > konkurser_foregaende_ar_antal,"fler","färre")` än de `r konkurser_foregaende_ar_antal` anställda som berördes motsvarande månad `r konkurser_foregaende_ar`. 
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+gg_konkurser$anstalla_berorda_konkurser_Dalarna
+
+# Hittills i år har `r konkurser_df %>% filter(år==first(år)) %>% group_by(region,år) %>% .$antal %>% sum()` anställda berörts av konkurser i Dalarna, vilket är färre än de `r konkurser_df  %>% filter(år==(as.numeric(first(år))-1),månad%in%unique(konkurser_df  %>% filter(år==first(år)) %>% .$månad)) %>% group_by(region,år) %>% .$antal %>% sum()` som berördes under motsvarande period föregående år.
+
+```
+
+### År {-}
+
+Antalet anställda som berörs av konkurser varierar relativt mycket även från år till år, men tenderar att öka till följd större ekonomiska kriser i samhället. Efter IT-bubblan runt millenieskiftet ökade antalet anställda berörda av konkurser tydligt och som mest berördes mer än 800 personer under år 2003. Även under åren efter finanskraschen (2008-2009) berördes relativt många av konkurser. På senare år har antalet anställda berörda av konkurser ökat, framförallt mellan år 2023 och 2024. Detta hänger sannolikt delvis samman med Rysslands invasion av Ukraina och de effekter denna haft på Sveriges ekonomi (se avsnitt 1, "Det allmänna läget i ekonomin", ovan). En annan potentiell förklaring är att företag under Coronapandemin (2020-2021) gavs möjlighet att skjuta upp sin betalning av skatter, ett anstånd som förlängdes under energikrisen. När de uppskjutna skatterna skall betalas, riskerar det att leda till att företag går i konkurs [(SVT)](https://www.svt.se/nyheter/ekonomi/staten-kan-ga-miste-om-24-miljarder-efter-pandemin-allt-storre-foretag-gar-i-konkurs){target="_blank"}.
+
+Viktigt att notera är att antalet konkurser för år `r konkurser_senaste_ar` gäller fram till och med `r konkurser_senaste_manad`. Hittills i år har `r konkurser_hittils_i_ar` anställda berörts av konkurser i Dalarna, vilket är `r ifelse(konkurser_hittils_i_ar > konkurser_motsvarande_foregaende_ar,"fler","färre")` än de `r konkurser_motsvarande_foregaende_ar` som berördes under motsvarande period föregående år.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+ gg_konkurser_ar$anstalla_berorda_konkurser_arDalarna
+
+```
+
+
+## Avregistrerade företag
+
+Ett potentiellt alternativ till att begära ett företag i konkurs är att istället avregistrera det. Antalet avregistrerade företag tenderar att följa ett visst säsongsmönster, med fler avregistreringar i början och slutet av året. Det är dock svårt att se någon långsiktig trend, då ungefär lika många företag (drygt 1000) avregistreras varje år. Undantaget var 2021, när drygt 1200 företag avregistrerades. Detta verkar i första hand bero på att många företag avregistrerade i januari 2021, av oklar anledning.
+
+I `r avregistrerade_senaste_manad` `r avregistrerade_senaste_ar` avregistrerades `r avregisterade_senaste_varde` företag i Dalarna, jämfört med `r avregistrerade_foregaende_ar_varde` samma månad året innan.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
+gg_avregistrerade$avreg_manad
 ```
 
 # Arbetsmarknaden
@@ -321,7 +359,7 @@ gg_arbetsloshet_tidsserie$arbetslöshet_tidsserie_facet_totalt_Dalarna
 ### Kommun {-}
 ```{r, include = FALSE}
  
-mapp_scbadmgranser <- "G:/Samhällsanalys/GIS/grundkartor/KommunerDalarna/"
+mapp_scbadmgranser <- "G:/Samhällsanalys/GIS/data/grundkartor/KommunerDalarna/"
 #G:\Samhällsanalys\GIS\grundkartor\Adm gränser med kustgränser
 filnamn_kommuner <- "Dalarna_kommuner.shp"
 
@@ -403,7 +441,7 @@ Befolkningens ekonomiska situation kan mätas på flera olika sätt. Arbetslösh
   <summary>Mer information om statistiken</summary>
 
 <div title="Källa: SCB och Socialstyrelsen">
-Med ekonomiskt stöd åsyftas ekonomiskt bistånd för sökande och eventuell medsökande, bostadsbidrag för sökande och eventuell medsökande samt äldreförsörjningsstöd. Ekonomiskt bistånd är ett stöd som personer kan ansöka om i sin kommun om de har problem att försörja sig själva och sin familj. Ekonomiskt bistånd består av försörjningsstöd och bistånd till livsföringen i övrigt.</div> 
+Med ekonomiskt stöd åsyftas försörjningsstöd och bistånd till livsföringen i övrigt för sökande och eventuell medsökande, bostadsbidrag för sökande och eventuell medsökande samt äldreförsörjningsstöd.</div> 
  
 </details>
 

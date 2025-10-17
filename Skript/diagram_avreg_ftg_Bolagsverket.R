@@ -5,6 +5,7 @@ diagram_avregistrerade <- function(output_mapp = "G:/Samhällsanalys/Statistik/N
                                tid = "*",			 # "*" = alla år eller månader, "9999" = senaste, finns: "2009M01" : "2024M03"
                                spara_figur = TRUE, # Skall diagrammet sparas
                                returnera_data = FALSE, # Skall data returneras
+                               legend_rader = NULL,
                                diag_manad = TRUE, # Figur med data på månadsbasis
                                diag_ar = FALSE, # Figur med data på årsbasis
                                returnera_figur = TRUE,
@@ -55,6 +56,7 @@ diagram_avregistrerade <- function(output_mapp = "G:/Samhällsanalys/Statistik/N
                                             skickad_y_var = "antal",
                                             skickad_x_grupp = "ar",
                                             berakna_index = FALSE,
+                                            legend_rader = legend_rader,
                                             lagga_till_punkter = TRUE,
                                             manual_color = diagramfarger("rus_sex"),
                                             diagram_titel = diagramtitel,
