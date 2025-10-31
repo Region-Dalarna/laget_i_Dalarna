@@ -11,7 +11,7 @@ p_load(here,
        tidyverse)
 
 # Skall data uppdateras? Annars läses data in från en sparad global environment-fil och rapporten knittas baserat på senast sparade data.
-uppdatera_data = TRUE
+uppdatera_data = FALSE
 
 if(uppdatera_data == TRUE){
 
