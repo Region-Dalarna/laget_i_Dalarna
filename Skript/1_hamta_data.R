@@ -11,7 +11,7 @@ p_load(here,
        tidyverse)
 
 # Skall data uppdateras? Annars läses data in från en sparad global environment-fil och rapporten knittas baserat på senast sparade data.
-uppdatera_data = FALSE
+uppdatera_data = TRUE
 
 if(uppdatera_data == TRUE){
 
@@ -21,7 +21,7 @@ if(uppdatera_data == TRUE){
   source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R")
   
   Output_mapp = here("Figurer","/")
-  spara_figur = FALSE
+  spara_figur = TRUE
   
   ######################################################
   ### Uppdateras automatiskt vid körning av skript   ###
@@ -33,6 +33,16 @@ if(uppdatera_data == TRUE){
                             output_mapp = Output_mapp,
                             returnera_data = TRUE, 
                             returnera_figur = TRUE)
+
+ggplot2::ggsave(
+  here::here("Figurer", "BNP.png"),
+  plot = gg_BNP$BNP,
+  width = 8, height = 5, units = "in", dpi = 96 # matches HTML CSS pixel density
+)
+
+
+  
+  #rm(gg_BNP)
   
   BNP_senaste_kvartal <- BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$kvartal
   BNP_senaste_ar <- BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$ar
@@ -56,6 +66,12 @@ if(uppdatera_data == TRUE){
                                            antal_etiketter_bransch = 24, # Intervall mellan visade etiketter (i månader)
                                            returnera_data = TRUE, 
                                            returnera_figur = TRUE)
+  
+  ggplot2::ggsave(
+    filename = here("Figurer", "barometern.svg"),  # for HTML
+    plot = gg_konjB$barometern,
+    width = 8, height = 5, units = "in"
+  )
   
   konjukturbarometern_senaste_manad <- last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$manad_long
   konjukturbarometern_senaste_ar <- last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$ar
@@ -334,6 +350,7 @@ if(uppdatera_data == TRUE){
   source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_ek_stod_bakgrund.R")
   gg_ek_stod <- diagram_ek_stod_bakgrund_SCB (output_mapp = Output_mapp,
                                               skriv_diagrambildfil = spara_figur,
+                                              stodlinjer_avrunda_fem = FALSE,
                                               returnera_data_rmarkdown = TRUE)
   
   ek_stod_manad_ar_forsta <- first(ekonomiskt_stod_df$månad_år)

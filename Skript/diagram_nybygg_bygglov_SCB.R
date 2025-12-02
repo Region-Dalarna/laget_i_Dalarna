@@ -85,7 +85,7 @@ diagram_nybyggnation_bygglov <- function(region_vekt = "20",
                                             output_mapp = output_mapp,
                                             manual_y_axis_title = "Antal",
                                             x_axis_visa_var_xe_etikett = 1,
-                                            filnamn_diagram = diagramfilnamn,
+                                            filnamn_diagram = diagramfil,
                                             skriv_till_diagramfil = spara_figur)
     
     gg_list <- c(gg_list, list(gg_obj))
@@ -142,7 +142,7 @@ diagram_nybyggnation_bygglov <- function(region_vekt = "20",
                                  output_mapp = output_mapp,
                                  manual_y_axis_title = "Antal",
                                  x_axis_visa_var_xe_etikett = 1,
-                                 filnamn_diagram = diagramfilnamn,
+                                 filnamn_diagram = diagramfil,
                                  skriv_till_diagramfil = spara_figur)
     
     gg_list <- c(gg_list, list(gg_obj))
