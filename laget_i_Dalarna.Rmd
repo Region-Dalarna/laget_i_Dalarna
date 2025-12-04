@@ -151,7 +151,7 @@ Hur läget i ekonomin uppfattas varierar beroende på om det är företagen elle
 
 Bland branschgrupperna i diagrammet nedan hade `r konj_bransch_positiv` den mest positiva synen på ekonomin i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` (en barometerindikator på `r konj_bransch_positiv_varde`), medan företag inom `r konj_bransch_negativ` uppfattar den ekonomiska utvecklingen som mer negativ (en barometerindikator på `r konj_bransch_negativ_varde`). Tjänstesektorn drabbades värst under pandemin (mars/april 2020), medan tillverkningsindustrin uppfattade ekonomin som starkare än normalt från slutet av 2020 fram till mitten av 2022.
 
-Intressant att notera är att samtliga branschgrupper uppfattade ekonomin som starkare än normalt (ett indikatorvärde över 100) i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar`. 
+Intressant att notera är att ekonomin uppfattades som starkare än normalt (ett indikatorvärde över 100) i samtliga branschgrupper i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar`. 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_konjB$barometern_bransch
@@ -174,7 +174,7 @@ Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i
  
 </details>
 
-Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r inflation_max_manad_ar`, då den i Sverige uppgick till `r inflation_max_varde` procent. Därefter minskade inflationen avsevärt och var som lägst i september 2024 (1,1 procent). I  `r inflation_senaste_manad_ar` var inflationen `r inflation_senaste_varde` procent, vilket i linje med månaden innan men högre än Riksbankens inflationsmål på 2 procent. För en mer ingående förklaring av vad som påverkade inflationstakten i `r inflation_senaste_manad_ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/priser-och-ekonomiska-tendenser/priser/konsumentprisindex-kpi/pong/statistiknyhet/konsumentprisindex-kpi-oktober-2025/){target="_blank"}. 
+Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r inflation_max_manad_ar`, då den i Sverige uppgick till `r inflation_max_varde` procent. Därefter minskade inflationen avsevärt och var som lägst i september 2024 (1,1 procent). I  `r inflation_senaste_manad_ar` var inflationen `r inflation_senaste_varde` procent, vilket var i linje med månaden innan men högre än Riksbankens inflationsmål på 2 procent. För en mer ingående förklaring av vad som påverkade inflationstakten i `r inflation_senaste_manad_ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/priser-och-ekonomiska-tendenser/priser/konsumentprisindex-kpi/pong/statistiknyhet/konsumentprisindex-kpi-oktober-2025/){target="_blank"}. 
 
 Den höga inflationstakten under framförallt 2022 och 2023 har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på  [Wikipedia](https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge){target="_blank"}.
 
@@ -240,7 +240,7 @@ gg_nybygg_bygglov$nybyggnation_20_arK1_K4
 
 Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige. Efter toppen i `r priser_max_manad_ar`, då ett småhus i Dalarna kostade ungefär `r priser_max_varde` miljoner kronor, har dock det genomsnittliga priset på småhus i länet minskat avsevärt och en botten nåddes i oktober 2023, när ett småhus i Dalarna kostade strax under 2,1 miljoner kronor i genomsnitt. Minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medfört en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkar efterfrågan på bostäder. 
 
-Sedan 2023 har priserna på småhus återhämtat sig delvis. I `r priser_senaste_manad_ar ` var priset på ett småhus ungefär `r priser_senaste_varde` miljoner kronor (i genomsnitt), vilket dock var något lägre än månaden innan.
+Sedan 2023 har priserna på småhus i Dalarna delvis återhämtat sig och var i `r priser_senaste_manad_ar ` ungefär `r priser_senaste_varde` miljoner kronor (i genomsnitt), vilket dock var något lägre än månaden innan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_smahuspriser$smahuspriser_tidserie
