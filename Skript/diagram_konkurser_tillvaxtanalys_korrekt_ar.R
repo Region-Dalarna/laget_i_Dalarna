@@ -33,7 +33,7 @@ diagram_konkurser_TVA_ar <- function(region_vekt = "20",			   # Val av region. F
   # Diverse justeringar
   konkurser_df <- konkurser_df %>% 
     rename(tid = månad,
-           antal = `Konkurser och anställda berörda av konkurs 1996-`) %>% 
+           antal = matches("konkurser", ignore.case = TRUE)) %>% 
     #separate(region, into = c("regionkod", "region"), sep = " ", remove = TRUE,extra = "merge") %>% 
     mutate(år = str_sub(tid, 1, 4),
            månad = format(as.Date(paste(år, str_sub(tid, 6,7), "1", sep = "-")), "%b"),

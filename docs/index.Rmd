@@ -75,10 +75,10 @@ Senast uppdaterad: `r Sys.Date()`</i>
 Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvecklingen. Rapporten uppdateras regelbundet och ett antal viktiga trender och mönster sammanfattas här: 
 
 <ul>
-<li> Hushållens syn på ekonomin har tydligt förbättrats de senaste månaderna. Dessutom ökade aktiviteten i ekonomin (BNP) under årets tredje kvartal. </li>
-<li> Inflationen i oktober 2025 var på samma nivå som månaden innan, men är över Riksbankens inflationsmål.</li>
+<li> Hushållens syn på ekonomin var i stort sett oförändrad i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar`, jämfört med månaden innan (en barometerindikator på `r konj_hushall_senaste`). Samtidigt ökade aktiviteten i ekonomin (BNP) under årets tredje kvartal. </li>
+<li> Inflationen i november 2025 var lägre än månaderna innan, men är fortfarande över Riksbankens inflationsmål.</li>
 <li> Priserna på småhus i Dalarna var något lägre i `r priser_senaste_manad_ar `, jämfört med månaderna innan.
-<li> Antalet anställda berörda av konkurser i Dalarna var `r ifelse(konkurser_senaste_antal > konkurser_foregaende_ar_antal,"fler","färre")` i `r konkurser_senaste_manad` `r konkurser_senaste_ar`, jämfört med motsvarande månad året innan. </li>
+<li> Antalet anställda berörda av konkurser i Dalarna var något `r ifelse(konkurser_senaste_antal > konkurser_foregaende_ar_antal,"fler","färre")` i `r konkurser_senaste_manad` `r konkurser_senaste_ar`, jämfört med motsvarande månad året innan. </li>
 <li> Arbetslösheten i Dalarna, som är klart under genomsnittet i Sverige, har under 2024 och första halvan av 2025, efter en lång period av nedgång, stabiliserats på ungefär samma nivå som föregående år.</li>
 <li> Antalet personer med ekonomiskt stöd som huvudsakliga inkomstkälla har minskat i Dalarna på senare år. Minskningen är framförallt koncentrerad till utrikes födda.</li>
 </ul>
@@ -147,7 +147,7 @@ gg_konjB$barometern
 
 ### Bransch {-}
 
-Hur läget i ekonomin uppfattas varierar beroende på om det är företagen eller hushållen som tillfrågas. Efter att ha förbättrats tydligt de senaste månaderna, försämrades hushållens syn på ekonomin något i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar`, jämfört med månaden innan (en barometerindikator på `r konj_hushall_senaste`). Eftersom indikatorn understiger 100, är stämningsläget bland hushållen sämre än normalt. 
+Hur läget i ekonomin uppfattas varierar beroende på om det är företagen eller hushållen som tillfrågas. Hushållens syn på ekonomin var i stort sett oförändrad i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar`, jämfört med månaden innan (en barometerindikator på `r konj_hushall_senaste`). Eftersom indikatorn understiger 100, är stämningsläget bland hushållen dock sämre än normalt. 
 
 Bland branschgrupperna i diagrammet nedan hade `r konj_bransch_positiv` den mest positiva synen på ekonomin i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` (en barometerindikator på `r konj_bransch_positiv_varde`), medan företag inom `r konj_bransch_negativ` uppfattar den ekonomiska utvecklingen som mer negativ (en barometerindikator på `r konj_bransch_negativ_varde`). Tjänstesektorn drabbades värst under pandemin (mars/april 2020), medan tillverkningsindustrin uppfattade ekonomin som starkare än normalt från slutet av 2020 fram till mitten av 2022.
 
@@ -174,7 +174,7 @@ Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i
  
 </details>
 
-Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r inflation_max_manad_ar`, då den i Sverige uppgick till `r inflation_max_varde` procent. Därefter minskade inflationen avsevärt och var som lägst i september 2024 (1,1 procent). I  `r inflation_senaste_manad_ar` var inflationen `r inflation_senaste_varde` procent, vilket var i linje med månaden innan men högre än Riksbankens inflationsmål på 2 procent. För en mer ingående förklaring av vad som påverkade inflationstakten i `r inflation_senaste_manad_ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/priser-och-ekonomiska-tendenser/priser/konsumentprisindex-kpi/pong/statistiknyhet/konsumentprisindex-kpi-oktober-2025/){target="_blank"}. 
+Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r inflation_max_manad_ar`, då den i Sverige uppgick till `r inflation_max_varde` procent. Därefter minskade inflationen avsevärt och var som lägst i september 2024 (1,1 procent). I  `r inflation_senaste_manad_ar` var inflationen `r inflation_senaste_varde` procent, vilket var lägre än månaderna innan men fortfarande högre än Riksbankens inflationsmål på 2 procent. För en mer ingående förklaring av vad som påverkade inflationstakten i `r inflation_senaste_manad_ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/priser-och-ekonomiska-tendenser/priser/konsumentprisindex-kpi/pong/statistiknyhet/konsumentprisindex-kpi-november-2025/){target="_blank"}. 
 
 Den höga inflationstakten under framförallt 2022 och 2023 har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på  [Wikipedia](https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge){target="_blank"}.
 
@@ -183,7 +183,7 @@ gg_infl$inflation
 
 ```
 
-Konjunkturinstitutet sammanställer på sin [hemsida](https://www.konj.se/publikationer/prognosjamforelse/){target="_blank"} ett urval av aktuella prognoser för inflation (enligt KPIF). För år 2025 tror en tydlig majoritet av prognosinstituten att inflationen enligt KPIF kommer att vara runt 2,5 procent, vilket är något under nivån i september 2025. Året efter är det större skillnader mellan prognoserna, men de flesta prognosinstitut prognostiserar en inflation på mellan 1 och 2 procent, dvs. något under Riksbankens inflationsmål.
+Konjunkturinstitutet sammanställer på sin [hemsida](https://www.konj.se/publikationer/prognosjamforelse/){target="_blank"} ett urval av aktuella prognoser för inflation (enligt KPIF). För år 2025 tror en tydlig majoritet av prognosinstituten att inflationen enligt KPIF kommer att vara runt 2,5 procent, vilket är något över nivån i september 2025. Året efter är det större skillnader mellan prognoserna, men de flesta prognosinstitut prognostiserar en inflation på mellan 1 och 2 procent, dvs. något under Riksbankens inflationsmål.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_infl_prognos[[1]]
@@ -240,7 +240,7 @@ gg_nybygg_bygglov$nybyggnation_20_arK1_K4
 
 Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige. Efter toppen i `r priser_max_manad_ar`, då ett småhus i Dalarna kostade ungefär `r priser_max_varde` miljoner kronor, har dock det genomsnittliga priset på småhus i länet minskat avsevärt och en botten nåddes i oktober 2023, när ett småhus i Dalarna kostade strax under 2,1 miljoner kronor i genomsnitt. Minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medfört en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkar efterfrågan på bostäder. 
 
-Sedan 2023 har priserna på småhus i Dalarna delvis återhämtat sig och var i `r priser_senaste_manad_ar ` ungefär `r priser_senaste_varde` miljoner kronor (i genomsnitt), vilket dock var något lägre än månaden innan.
+Sedan 2023 har priserna på småhus i Dalarna delvis återhämtat sig och var i `r priser_senaste_manad_ar ` ungefär `r priser_senaste_varde` miljoner kronor (i genomsnitt), vilket dock var lägre än månaderna innan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_smahuspriser$smahuspriser_tidserie
@@ -296,7 +296,7 @@ k = k+1
 
 Antalet anställda som berörs av konkurser varierar relativt mycket från månad till månad, vilket medför att det kan var svårt att se någon trend på månadsbasis kopplad till exempelvis Rysslands invasion av Ukraina och dess effekter på Dalarnas ekonomi. Mellan januari och mars 2024 ökade antalet anställda berörda av konkurser i Dalarna exempelvis tydligt jämfört med samma period året innan, för att därefter minska påtagligt i april 2024. I maj 2024 berördes återigen fler av konkurser jämfört med året innan, men i juni var utvecklingen det omvända. Mellan augusti och november 2024 var trenden positiv, då tydligt färre berördes av konkurser i Dalarna jämfört med samma period året innan. 
 
-Efter att ha ökat tydligt i januari 2025, då närmare 150 personer berördes av konkurser i Dalarna, minskade antalet anställda som berördes av konkurser i februari och mars 2025, jämfört med samma period föregående år. I `r konkurser_senaste_manad` `r konkurser_senaste_ar` berördes `r konkurser_senaste_antal` anställda av konkurser, vilket var `r ifelse(konkurser_senaste_antal > konkurser_foregaende_ar_antal,"fler","färre")` än de `r konkurser_foregaende_ar_antal` anställda som berördes motsvarande månad `r konkurser_foregaende_ar`. 
+Efter att ha ökat tydligt i januari 2025, då närmare 150 personer berördes av konkurser i Dalarna, minskade antalet anställda som berördes av konkurser i februari och mars 2025, jämfört med samma period föregående år. I `r konkurser_senaste_manad` `r konkurser_senaste_ar` berördes `r konkurser_senaste_antal` anställda av konkurser, vilket var något `r ifelse(konkurser_senaste_antal > konkurser_foregaende_ar_antal,"fler","färre")` än de `r konkurser_foregaende_ar_antal` anställda som berördes motsvarande månad `r konkurser_foregaende_ar`. 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_konkurser$anstalla_berorda_konkurser_Dalarna
@@ -356,7 +356,7 @@ På sistone har det blivit tydligt att den långsiktiga trenden med stadigt mins
 gg_arbetsloshet_tidsserie$arbetslöshet_tidsserie_totalt_Dalarna
 ```
 
-Om arbetslösheten delas upp i inrikes och utrikes födda framträder en delvis annorlunda bild. Bland inrikes födda (det vänstra diagrammet nedan) ökade arbetslösheten under 2024 och inledningen av 2025, jämfört med samma period föregående år. I `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar` var arbetslösheten bland inrikes födda `r arbetsloshet_tidserie_Dalarna_inrikes_varde` procent i Dalarna, vilket var högre än motsvarande månad året innan. Bland utrikes födda (det högra diagrammet nedan) har arbetslösheten fortsatt att minska stadigt under samma tidsperiod, men är klart högre än bland inrikes födda (`r arbetsloshet_tidserie_Dalarna_utrikes_varde` procent i `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar`). 
+Om arbetslösheten delas upp i inrikes och utrikes födda framträder en delvis annorlunda bild. Bland inrikes födda (det vänstra diagrammet nedan) har arbetslösheten ökat under 2024 och 2025, jämfört med samma period föregående år. I `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar` var arbetslösheten bland inrikes födda `r arbetsloshet_tidserie_Dalarna_inrikes_varde` procent i Dalarna, vilket var högre än motsvarande månad året innan. Bland utrikes födda (det högra diagrammet nedan) har arbetslösheten fortsatt att minska stadigt under samma tidsperiod, men är klart högre än bland inrikes födda (`r arbetsloshet_tidserie_Dalarna_utrikes_varde` procent i `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar`). 
 
 Totalt var `r arblosa_inrikes` inrikes födda personer och `r arblosa_utrikes` utrikes födda personer i åldersgruppen `r arblosa_alder` arbetslösa i Dalarna i `r arblosa_manad` `r arblosa_ar`.
 
@@ -461,7 +461,7 @@ Antalet personer som har ekonomiskt stöd som huvudsaklig inkomstkälla varierar
 gg_ek_stod$ekonomiskt_bistand_alla_Dalarna
 ```
 
-Om antalet individer delas upp i inrikes och utrikes födda, blir det tydligt att nedgången i antalet med ekonomiskt stöd som huvudsaklig inkomstkälla framförallt är koncentrerad till utrikes födda. I `r ek_stod_manad_ar_forsta` hade ungefär `r ek_stod_skillnad_forsta ` fler utrikes födda personer i Dalarna ekonomiskt stöd som huvudsaklig inkomstkälla, jämfört med inrikes födda. I `r ek_stod_manad_ar_sista` var den skillnaden bara ca `r ek_stod_skillnad_senaste ` personer.
+Om antalet individer delas upp i inrikes och utrikes födda, blir det tydligt att nedgången i antalet med ekonomiskt stöd som huvudsaklig inkomstkälla framförallt är koncentrerad till utrikes födda. I `r ek_stod_manad_ar_forsta` hade ungefär `r ek_stod_skillnad_forsta ` fler utrikes födda personer i Dalarna ekonomiskt stöd som huvudsaklig inkomstkälla, jämfört med inrikes födda. I `r ek_stod_manad_ar_sista` hade istället drygt `r ek_stod_skillnad_senaste ` fler inrikes än utrikes födda personer ekonomiskt stöd som huvudsaklig inkomstkälla.
 
 Ett annat generellt mönster är att det bland inrikes födda är vanligare att män har ekonomiskt stöd som huvudsaklig inkomstkälla, medan det bland utrikes födda är vanligare att kvinnor har det. I `r ek_stod_manad_ar_sista` hade ungefär `r antal_kvinnor_stod_inrikes` inrikes födda kvinnor och ca `r antal_man_stod_inrikes` inrikes födda män ekonomiskt stöd som huvudsakliga inkomstkälla. Bland utrikes födda var motsvarande antal ca `r antal_kvinnor_stod_utrikes` kvinnor och ungefär `r antal_man_stod_utrikes` män.
 

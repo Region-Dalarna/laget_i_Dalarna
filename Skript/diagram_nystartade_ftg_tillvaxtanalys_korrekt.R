@@ -35,7 +35,7 @@ diagram_nystartade <- function(output_mapp = "G:/Samhällsanalys/Statistik/Näri
   # Diverse justeringar
   nystartade_df <- nystartade_df %>% 
     rename(tid = kvartal,
-           antal = `Nystartade företag 2011-`) %>%
+           antal = matches("nys", ignore.case = TRUE)) %>%
     #separate(län, into = c("regionkod", "region"), sep = " ", remove = TRUE,extra = "merge") %>% 
     mutate(ar = substr(tid,1,4),
            kvartal = substr(tid,5,6)) %>% 
