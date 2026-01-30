@@ -148,10 +148,10 @@ ggplot2::ggsave(
                                           returnera_data = TRUE, 
                                           returnera_figur = TRUE)
   
-  priser_max_manad_ar <- paste(priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% select(manad_long,ar),collapse = " ")
-  priser_max_varde <- round(priser_df %>% filter(Medelpris==(max(priser_df %>% filter(ar>2009,region%in%c("Dalarna")) %>% select(Medelpris)))) %>% .$Medelpris/1000,1)
-  priser_senaste_manad_ar <- paste(priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(manad_long,ar),collapse = " ")
-  priser_senaste_varde <- gsub("\\.",",",(round(priser_df %>% filter(Period==last(Period),region=="Dalarna") %>% select(Medelpris)/1000,1)))
+  priser_max_manad_ar <- paste(priser_df %>% filter(ar>2009,region == "Dalarna") %>%  filter(Medelpris==max(Medelpris)) %>% select(manad_long,ar),collapse = " ")
+  priser_max_varde <- round(priser_df %>% filter(ar>2009,region == "Dalarna") %>%  filter(Medelpris==max(Medelpris)) %>% select(Medelpris) %>% .$Medelpris/1000,1)
+  priser_senaste_manad_ar <- paste(priser_df %>% filter(Period==last(Period),region == "Dalarna") %>% select(manad_long,ar),collapse = " ")
+  priser_senaste_varde <- gsub("\\.",",",(round(priser_df %>% filter(Period==last(Period),region == "Dalarna") %>% select(Medelpris)/1000,1)))
   priser_senaste_max_region <- paste(priser_df %>%filter(Period==max(Period)) %>% filter(Medelpris==max(Medelpris)) %>% .$region,collapse = " ")
   priser_senaste_max_varde <- gsub("\\.",",", round(priser_df %>%filter(Period==max(Period)) %>% filter(Medelpris==max(Medelpris)) %>% select(Medelpris)/1000,1))
   
@@ -263,6 +263,13 @@ ggplot2::ggsave(
   avregisterade_senaste_varde <- last(antal_avregistreringar_df$antal)
   avregistrerade_foregaende_ar_varde <- antal_avregistreringar_df %>% filter(manad == last(manad), ar == sort(unique(ar), decreasing = TRUE)[2]) %>% dplyr::pull(antal)
   
+  antal_avregistreringar_foregaende_ar <- sum(antal_avregistreringar_df %>% filter(ar == sort(unique(ar), decreasing = TRUE)[2]) %>% dplyr::pull(antal))
+  antal_avregistreringar_innevarande_ar <- sum(antal_avregistreringar_df %>% filter(ar == sort(unique(ar), decreasing = TRUE)[1]) %>% dplyr::pull(antal))
+  
+  # Summerar antal avregristeringar föregående år (upp till den senaste månaden)
+  manader_hittils_i_ar_avreg <- antal_avregistreringar_df %>% filter(ar == sort(unique(ar), decreasing = TRUE)[1]) %>% .$manad
+  antal_avregistreringar_motsvarande_foregaende_ar <- sum(antal_avregistreringar_df %>% filter(ar == sort(unique(ar), decreasing = TRUE)[2], manad %in% manader_hittils_i_ar_avreg) %>% dplyr::pull(antal))
+ 
   # Nystartade företag - 2 figurer
   source(here("Skript","diagram_nystartade_ftg_tillvaxtanalys_korrekt.R"), encoding="UTF-8")
   gg_nystartade <- diagram_nystartade(spara_figur = spara_figur, 
