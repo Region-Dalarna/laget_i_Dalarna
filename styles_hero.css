@@ -311,4 +311,23 @@ html[data-scroll="scrolled"] .tocify {
 }
 }
 
+.indicator-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 30px;
+}
+
+.big-indicator {
+  font-size: 1.3em;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.1;
+}
+
+.section.tabset.tabset-collapsed .tab-content {
+  display: none !important;
+}
+
 

@@ -9,7 +9,7 @@ diagram_avregistrerade <- function(output_mapp = "G:/Samhällsanalys/Statistik/N
                                diag_manad = TRUE, # Figur med data på månadsbasis
                                diag_ar = FALSE, # Figur med data på årsbasis
                                returnera_figur = TRUE,
-                               startar = 2020){# Finns från 2020
+                               startar = 2021){# Går enbart från 2021
   
   # Diagram som skapar en figur för avregistrerade företag från Bolagsverket
   
@@ -26,7 +26,7 @@ diagram_avregistrerade <- function(output_mapp = "G:/Samhällsanalys/Statistik/N
   # hämta data från Bolagsverket och sortera efter variabeln armanad, där både år och månad är med som numeriska variabler
   antal_avreg_df <- hamta_foretag_foreningar_handelser(region_vekt = "20",
                                                        handelse_klartext = "Avslutade",
-                                                       tid_koder = "2020:9999") %>%
+                                                       tid_koder = as.character(startar:9999)) %>%
     arrange(armanad)
   
   bolagsformer <- unique(antal_avreg_df$bolagsform) %>% list_komma_och() %>% tolower()
