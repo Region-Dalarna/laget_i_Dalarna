@@ -313,6 +313,7 @@ ggplot2::ggsave(
                                                                        legend_rader = 1,
                                                                        marginal_yaxis_facet = c(0.02,0.02),
                                                                        diagram_facet = TRUE,
+                                                                       start_ar ="2021",
                                                                        returnera_figur = TRUE)
   
   arbetsloshet_tidsserie_ar <-  unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="inrikes född") %>% .$ar))

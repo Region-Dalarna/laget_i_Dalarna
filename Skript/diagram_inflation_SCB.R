@@ -63,6 +63,7 @@ diagram_inflation_SCB <- function(output_mapp = "G:/SamhÃ¤llsanalys/Statistik/NÃ
                                        berakna_index=FALSE,
                                        stodlinjer_avrunda_fem = FALSE,
                                        manual_color = c(valda_farger[1],"#000000"),
+                                       x_axis_var_xe_etikett_ta_bort_nast_sista_vardet = TRUE,
                                        diagram_titel = diagramtitel,
                                        diagram_capt =  diagram_capt,
                                        output_mapp = output_mapp,
