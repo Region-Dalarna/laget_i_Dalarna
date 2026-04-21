@@ -15,19 +15,8 @@ file.copy(from = here(senaste_html_filen), to = paste0(here(), "/docs/index.html
 file.copy(from = here(senaste_rmd_filen), to = paste0(here(), "/docs/index.Rmd"), overwrite = TRUE)
 
 # kopiera html-filen till publicera rapporter och committa projektet
+sokvag_lokal_repo <- "c:/gh/"
+file.copy(from = here(senaste_html_filen), to = paste0(sokvag_lokal_repo, "publicera_rapporter/docs/"), overwrite = TRUE)
 
-publicera_rapport <- function(sokvag_lokal_repo = "c:/gh/"){
-  file.copy(from = here(senaste_html_filen), to = paste0(sokvag_lokal_repo, "publicera_rapporter/docs/"), overwrite = TRUE)
-  # github_commit_push(sokvag_lokal_repo = sokvag_lokal_repo,
-  #                    repo = "publicera_rapporter")
-}
-
-# if(Sys.getenv("USERNAME") == "frkjon"){
-#   sokvag_lokal <- "C:/Users/frkjon/Projekt/"
-# }else{
-#   sokvag_lokal = "c:/gh/"
-# }
-
-#publicera_rapport(sokvag_lokal_repo = sokvag_lokal)
-publicera_rapport()
-
+# commit + push till publicera rapporter
+github_commit_push(repo = "publicera_rapporter", commit_txt = "Publicera rapport")
