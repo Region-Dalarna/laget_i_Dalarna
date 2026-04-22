@@ -10,8 +10,12 @@ if (!require("pacman")) install.packages("pacman")
 p_load(here,
        tidyverse)
 
+# OBS! Ska sättas till FALSE när skriptet går i produktion - men kan stängas av genom att sätta till TRUE för att se att alla skript fungerar som de ska
+# skriptet är till för att hantera rcurl-fel och inte vanliga fel som ju inte blir bättre av att man försöker flera gånger. =)
+hoppa_over_felhantering = TRUE
+
 # Skall data uppdateras? Annars läses data in från en sparad global environment-fil och rapporten knittas baserat på senast sparade data.
-uppdatera_data = TRUE
+uppdatera_data = FALSE
 
 if(uppdatera_data == TRUE){
 
@@ -29,10 +33,11 @@ if(uppdatera_data == TRUE){
   
   # BNP - 1 diagram
   source(here("Skript","diagram_BNP_forandring_SCB.R"), encoding="UTF-8")
-  gg_BNP <- diagram_BNP_SCB(spara_figur = spara_figur, 
+  gg_BNP <- funktion_upprepa_forsok_om_fel( function() {diagram_BNP_SCB(spara_figur = spara_figur, 
                             output_mapp = Output_mapp,
                             returnera_data = TRUE, 
                             returnera_figur = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
 
 ggplot2::ggsave(
   here::here("Figurer", "BNP.png"),
@@ -49,16 +54,17 @@ ggplot2::ggsave(
   BNP_senaste_varde <- gsub("\\.",",",BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Sasongsransad_forandring)
   
   source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_ek_prognoser_olika_prognosinstitut_ki.R")
-  gg_BNP_prognos <- diag_ekonomiska_prognoser_olika_progn_institut_ki(vald_variabel  = "BNP",
+  gg_BNP_prognos <- funktion_upprepa_forsok_om_fel( function() {diag_ekonomiska_prognoser_olika_progn_institut_ki(vald_variabel  = "BNP",
                                                                      output_mapp = Output_mapp,
                                                                      valda_prognos_ar = "+1",
                                                                      x_axis_lutning = 45,
                                                                      manual_y_axis_title = "procent",
                                                                      skriv_diagramfil  = spara_figur)
+  }, hoppa_over = hoppa_over_felhantering)
   
   # Konjunkturbarometern - 2 diagram
   source(here("Skript","diagram_konjunkturbarometern_konj.R"), encoding="UTF-8")
-  gg_konjB <- diagram_konjunkturbarometern(spara_figur = spara_figur, 
+  gg_konjB <- funktion_upprepa_forsok_om_fel( function() {diagram_konjunkturbarometern(spara_figur = spara_figur, 
                                            output_mapp = Output_mapp,
                                            diagram_capt = "Källa: Konjunkturinstitutet.\nBearbetning: Samhällsanalys, Region Dalarna.",
                                            antal_etiketter_barometern = 24, # Intervall mellan visade etiketter (i månader)
@@ -66,6 +72,8 @@ ggplot2::ggsave(
                                            antal_etiketter_bransch = 24, # Intervall mellan visade etiketter (i månader)
                                            returnera_data = TRUE, 
                                            returnera_figur = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
+    
   
   ggplot2::ggsave(
     filename = here("Figurer", "barometern.svg"),  # for HTML
@@ -92,11 +100,12 @@ ggplot2::ggsave(
   
   # KPI - 1 diagram
   source(here("Skript","diagram_inflation_SCB.R"), encoding="UTF-8")
-  gg_infl <- diagram_inflation_SCB(spara_figur = spara_figur, 
+  gg_infl <- funktion_upprepa_forsok_om_fel( function() {diagram_inflation_SCB(spara_figur = spara_figur, 
                                    antal_etiketter = 36,
                                    output_mapp = Output_mapp,
                                    returnera_data = TRUE, 
                                    returnera_figur = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
   
   inflation_max_manad_ar <- paste(KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar),collapse = " ")
   inflation_max_varde <- gsub("\\.",",",KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF)
@@ -105,18 +114,20 @@ ggplot2::ggsave(
   inflation_senaste_varde <- gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)
   
   source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_ek_prognoser_olika_prognosinstitut_ki.R")
-  gg_infl_prognos <- diag_ekonomiska_prognoser_olika_progn_institut_ki(vald_variabel  = "KPI med fast bostadsränta (KPIF), årsgenomsnitt",
+  gg_infl_prognos <- funktion_upprepa_forsok_om_fel( function() {diag_ekonomiska_prognoser_olika_progn_institut_ki(vald_variabel  = "KPI med fast bostadsränta (KPIF), årsgenomsnitt",
                                                                       output_mapp = Output_mapp,
                                                                       valda_prognos_ar = "+1",
                                                                       x_axis_lutning = 45,
                                                                       manual_y_axis_title = "procent",
                                                                       skriv_diagramfil  = spara_figur)
+  }, hoppa_over = hoppa_over_felhantering)
   
   # Styrränta - prognos - används för tillfället inte
   source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/refs/heads/main/hamta_ek_prognoser_fran_prognosinstitut_ki.R")
-  prognos_styrranta_df <- hamta_ek_prognoser_fran_prognosinstitut_ki() %>% 
+  prognos_styrranta_df <- funktion_upprepa_forsok_om_fel( function() {hamta_ek_prognoser_fran_prognosinstitut_ki() %>% 
     filter(variabel == "Styrränta, vid årets slut, procent**",
            prognos_for_ar == min(prognos_for_ar))
+  }, hoppa_over = hoppa_over_felhantering)
   
   prognos_styrranta_ar <- unique(prognos_styrranta_df$prognos_for_ar)
   prognos_styrranta_antal_institut <- length(prognos_styrranta_df$Prognosinstitut)
@@ -130,8 +141,9 @@ ggplot2::ggsave(
   vanligaste_varde <- gsub(".", ",", vanligaste$varde, fixed = TRUE)
   
   # Styrränta - prognos
-  prognos_BNP_df <- hamta_ek_prognoser_fran_prognosinstitut_ki() %>% 
+  prognos_BNP_df <- funktion_upprepa_forsok_om_fel( function() {hamta_ek_prognoser_fran_prognosinstitut_ki() %>% 
     filter(variabel == "BNP")
+  }, hoppa_over = hoppa_over_felhantering)
   
   prognos_BNP_2026 <- gsub(".", ",", round(mean(prognos_BNP_df %>% filter(prognos_for_ar == "2026") %>% .$varde),1), fixed = TRUE)
   prognos_BNP_2026_antal <- length(unique(prognos_BNP_df %>% filter(prognos_for_ar == "2026") %>% .$Prognosinstitut))
@@ -143,10 +155,11 @@ ggplot2::ggsave(
   
   # Småhuspriser - 2 diagram
   source(here("Skript","diagram_smahuspriser_SCB.R"), encoding="UTF-8")
-  gg_smahuspriser <- diagram_smahuspriser(spara_figur = spara_figur, 
+  gg_smahuspriser <- funktion_upprepa_forsok_om_fel( function() {diagram_smahuspriser(spara_figur = spara_figur, 
                                           output_mapp = Output_mapp,
                                           returnera_data = TRUE, 
                                           returnera_figur = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
   
   priser_max_manad_ar <- paste(priser_df %>% filter(ar>2009,region == "Dalarna") %>%  filter(Medelpris==max(Medelpris)) %>% select(manad_long,ar),collapse = " ")
   priser_max_varde <- round(priser_df %>% filter(ar>2009,region == "Dalarna") %>%  filter(Medelpris==max(Medelpris)) %>% select(Medelpris) %>% .$Medelpris/1000,1)
@@ -158,11 +171,12 @@ ggplot2::ggsave(
   
   # Byggande - 2 figurer
   source(here("Skript","diagram_nybygg_bygglov_SCB.R"), encoding="UTF-8")
-  gg_nybygg_bygglov <- diagram_nybyggnation_bygglov(spara_figur = spara_figur, 
+  gg_nybygg_bygglov <- funktion_upprepa_forsok_om_fel( function() {diagram_nybyggnation_bygglov(spara_figur = spara_figur, 
                                                     output_mapp = Output_mapp,
                                                     hustyp_klartext = "småhus",
                                                     returnera_data = TRUE, 
                                                     returnera_figur = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
   
   Bygglov_df <- Bygglov_df %>% 
     mutate(kvartal=case_when(
@@ -204,11 +218,12 @@ ggplot2::ggsave(
   
   # Konkurser - 2 figurer - enbart län
   source(here("Skript","diagram_konkurser_tillvaxtanalys_korrekt.R"), encoding="UTF-8")
-  gg_konkurser <- diagram_konkurser_TVA(spara_figur = spara_figur,
+  gg_konkurser <- funktion_upprepa_forsok_om_fel( function() {diagram_konkurser_TVA(spara_figur = spara_figur,
                                         variabel_klartext = "Antal anställda berörda av konkurser",
                                         output_mapp = Output_mapp,
                                         returnera_data = TRUE,
                                         returnera_figur = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
   
   konkurser_senaste_manad <- last(konkurser_df$manad_long)
   konkurser_senaste_ar <- last(konkurser_df$år)
@@ -222,11 +237,12 @@ ggplot2::ggsave(
   konkurser_foregaende_ar_antal <- konkurser_df  %>% filter(år==(as.numeric(last(år))-1),manad_long == last(manad_long)) %>% group_by(region,år) %>% .$antal %>% sum()
   
   source(here("Skript","diagram_konkurser_tillvaxtanalys_korrekt_ar.R"), encoding="UTF-8")
-  gg_konkurser_ar <- diagram_konkurser_TVA_ar(spara_figur = spara_figur,
+  gg_konkurser_ar <- funktion_upprepa_forsok_om_fel( function() {diagram_konkurser_TVA_ar(spara_figur = spara_figur,
                                            variabel_klartext = "Antal anställda berörda av konkurser",
                                            output_mapp = Output_mapp,
                                            returnera_data = TRUE,
                                            returnera_figur = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
   
   # # Konkurser - 1 figur - tre största branscher
   # source(here("Skript","diagram_konkurser_tillvaxtanalys_bransch.R"), encoding="UTF-8")
@@ -252,11 +268,12 @@ ggplot2::ggsave(
   
   # Avregistrerade företag - 1 figur
   source(here("Skript","diagram_avreg_ftg_Bolagsverket.R"), encoding="UTF-8")
-  gg_avregistrerade <- diagram_avregistrerade(spara_figur = spara_figur, 
+  gg_avregistrerade <- funktion_upprepa_forsok_om_fel( function() {diagram_avregistrerade(spara_figur = spara_figur, 
                                               output_mapp = Output_mapp,
                                               legend_rader = 1,
                                               returnera_data = TRUE, 
                                               returnera_figur = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
   
   avregistrerade_senaste_ar <- max(antal_avregistreringar_df$ar)
   avregistrerade_senaste_manad <- tolower(last(antal_avregistreringar_df$manad))
@@ -272,10 +289,11 @@ ggplot2::ggsave(
  
   # Nystartade företag - 2 figurer
   source(here("Skript","diagram_nystartade_ftg_tillvaxtanalys_korrekt.R"), encoding="UTF-8")
-  gg_nystartade <- diagram_nystartade(spara_figur = spara_figur, 
+  gg_nystartade <- funktion_upprepa_forsok_om_fel( function() {diagram_nystartade(spara_figur = spara_figur, 
                                       output_mapp = Output_mapp,
                                       returnera_data = TRUE, 
                                       returnera_figur = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
   
   nystartade_max_ar <- nystartade_df %>% filter(antal == max(antal)) %>% .$ar
   nystartade_max_kvartal <- nystartade_df %>% filter(antal == max(antal)) %>% .$kvartal_namn
@@ -289,13 +307,14 @@ ggplot2::ggsave(
   
   # Arbetslöshet län - 1 figur
   source("https://raw.githubusercontent.com/Region-Dalarna/diagram/main/diagram_arbetsmarknadsstatus_senastear.R")
-  gg_arbetsloshet_lan <- diagram_arbetsmarknadsstatus(region_vekt = hamtaAllaLan(),
+  gg_arbetsloshet_lan <- funktion_upprepa_forsok_om_fel( function() {diagram_arbetsmarknadsstatus(region_vekt = hamtaAllaLan(),
                                                       spara_figur = spara_figur, 
                                                       output_mapp_figur = Output_mapp,
                                                       diag_arbetskraftsdeltagande = FALSE, 
                                                       diag_sysselsattningsgrad = FALSE, 
                                                       returnera_data = TRUE, 
                                                       returnera_figur = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
   
   arbetsloshet_ar_senaste <- unique(arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$ar)
   arbetsloshet_manad_senaste <- unique(arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$manad_long)
@@ -307,7 +326,7 @@ ggplot2::ggsave(
   
   # Arbetslöshet tidsserie - 1 figur
   source("https://raw.githubusercontent.com/Region-Dalarna/diagram/main/diagram_arbetsmarknadsstatus_tidsserie_SCB.R")
-  gg_arbetsloshet_tidsserie <- diagram_arbetsmarknadsstatus_tidsserie (spara_figur = spara_figur, 
+  gg_arbetsloshet_tidsserie <- funktion_upprepa_forsok_om_fel( function() {diagram_arbetsmarknadsstatus_tidsserie (spara_figur = spara_figur, 
                                                                        output_mapp_figur = Output_mapp,
                                                                        returnera_data = TRUE,
                                                                        legend_rader = 1,
@@ -315,6 +334,7 @@ ggplot2::ggsave(
                                                                        diagram_facet = TRUE,
                                                                        start_ar ="2021",
                                                                        returnera_figur = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
   
   arbetsloshet_tidsserie_ar <-  unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="inrikes född") %>% .$ar))
   arbetsloshet_tidsserie_manad <- unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="inrikes född") %>% .$manad_long))
@@ -333,7 +353,7 @@ ggplot2::ggsave(
   
   # Hämta antal arbetslösa (till texten enbart)
   source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/refs/heads/main/hamta_bas_arbstatus_region_kon_alder_fodelseregion_prel_manad_ArbStatusM_scb.R")
-  arbstatus_df <- hamta_bas_arbstatus_region_kon_alder_fodelseregion_prel_manad_scb(region_vekt = "20",
+  arbstatus_df <- funktion_upprepa_forsok_om_fel( function() {hamta_bas_arbstatus_region_kon_alder_fodelseregion_prel_manad_scb(region_vekt = "20",
                                                                                     alder_klartext = unique(arbetsmarknadsstatus_tidsserie$ålder),
                                                                                     kon_klartext = "totalt",
                                                                                     fodelseregion_klartext = unique(arbetsmarknadsstatus_tidsserie$födelseregion),
@@ -341,6 +361,7 @@ ggplot2::ggsave(
                                                                                     wide_om_en_contvar = FALSE,
                                                                                     tid_koder = "9999") %>% 
     manader_bearbeta_scbtabeller()
+  }, hoppa_over = hoppa_over_felhantering)
   
   arblosa_utrikes <- format(arbstatus_df %>% filter(födelseregion == "utrikes född") %>% .$varde,big.mark = " ")
   arblosa_inrikes <- format(arbstatus_df %>% filter(födelseregion == "inrikes född") %>% .$varde,big.mark = " ")
@@ -350,16 +371,18 @@ ggplot2::ggsave(
   
   # Arbetslöshet kommun - Karta, ej diagramskript (ännu)
   source(here("Skript","arbetsloshet_kommun.R"), encoding="UTF-8")
-  hamta_data_arbetsloshet(vald_region="20",
+  funktion_upprepa_forsok_om_fel( function() {hamta_data_arbetsloshet(vald_region="20",
                           spara_data=TRUE,
                           output_mapp_excel = here("Data"))
+  }, hoppa_over = hoppa_over_felhantering)
   
   
   source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_ek_stod_bakgrund.R")
-  gg_ek_stod <- diagram_ek_stod_bakgrund_SCB (output_mapp = Output_mapp,
+  gg_ek_stod <- funktion_upprepa_forsok_om_fel( function() {diagram_ek_stod_bakgrund_SCB (output_mapp = Output_mapp,
                                               skriv_diagrambildfil = spara_figur,
                                               stodlinjer_avrunda_fem = FALSE,
                                               returnera_data_rmarkdown = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
   
   ek_stod_manad_ar_forsta <- first(ekonomiskt_stod_df$månad_år)
   ek_stod_manad_ar_sista <- last(ekonomiskt_stod_df$månad_år)
@@ -371,13 +394,14 @@ ggplot2::ggsave(
   
   # Enbart för data
   source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/refs/heads/main/hamta_bas_huvink_region_huvudfot1m_kon_alder_fodelseregion_tid_ArbStatFoT1_scb.R")
-  ekonomiskt_bistand_df<- hamta_bas_huvink_region_huvudfot1m_kon_alder_fodelseregion_tid_scb(region = "20",
+  ekonomiskt_bistand_df<- funktion_upprepa_forsok_om_fel( function() {hamta_bas_huvink_region_huvudfot1m_kon_alder_fodelseregion_tid_scb(region = "20",
                                                                                              huvudfot1m_klartext = "ekonomiskt stöd",
                                                                                              fodelseregion_klartext = "*",
                                                                                              cont_klartext = "antal totalt",
                                                                                              alder_klartext = "15-74 år",
                                                                                              tid_koder = "9999",
                                                                                              kon_klartext = c("*"))
+  }, hoppa_over = hoppa_over_felhantering)
   
   antal_kvinnor_stod_inrikes <- plyr::round_any(ekonomiskt_bistand_df %>% filter(kön == "kvinnor",födelseregion == "inrikes född") %>% .$`antal totalt`,10)
   antal_man_stod_inrikes <- plyr::round_any(ekonomiskt_bistand_df %>% filter(kön == "män",födelseregion == "inrikes född") %>% .$`antal totalt`,10)
