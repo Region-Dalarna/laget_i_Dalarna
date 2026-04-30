@@ -75,7 +75,7 @@ Senast uppdaterad: `r Sys.Date()`</i>
 Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvecklingen. Rapporten uppdateras regelbundet och ett antal viktiga trender och mönster sammanfattas här: 
 
 <ul>
-<li> Konjunkturinstitutets barometerindikator visar på ett normalt stämningsläget i den svenska ekonomin i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar`. Aktiviteten i ekonomin (BNP) ökade dessutom under det fjärde kvartalet 2025.</li>
+<li> Konjunkturinstitutets barometerindikator visar på ett normalt stämningsläget i den svenska ekonomin i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar`. Stämningsläget bland hushållen försämrades dock jämfört med månaden innan och är fortsatt svagare än normalt.</li>
 <li> Inflationen i `r inflation_senaste_manad_ar` var `r inflation_senaste_varde` procent, vilket är lägre än Riksbankens inflationsmål. Riksbankschefen Erik Thedéen varnar dock för att högre drivmedelspriser till följd av kriget i Mellanöstern kan leda till en ökad inflation ([Riksbanken](https://www.riksbank.se/sv/press-och-publicerat/nyheter-och-pressmeddelanden/nyheter/2026/thedeen-buffertar-ska-vara-anvandbara/){target="_blank"}). </li>
 <li> Priserna på småhus i Dalarna var något högre i `r priser_senaste_manad_ar `, jämfört med månaden innan.
 <li> Antalet anställda berörda av konkurser i Dalarna ökade i `r konkurser_senaste_manad` `r konkurser_senaste_ar`, jämfört med motsvarande månad åren innan. </li>
@@ -134,7 +134,9 @@ Ett annat sätt att mäta läget i ekonomin är genom de olika enkätundersökni
 </details>
 
 ### Generellt {-}
-I `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` var barometerindikatorn `r konjukturbarometern_senaste_varde`, vilket var i stort sett oförändrat jämfört med månaden innan. Barometerindikatorn visar på ett normalt stämningsläge i den svenska ekonomin (se [Konjunkturinstitutet](https://www.konj.se/publikationer/konjunkturbarometern/2026-03-25-fortsatt-normaltstarkt-stamningslage/){target="_blank"}) . Att barometerindikatorn länge hade ett lågt värde kan delvis förklaras av Rysslands invasion av Ukraina och de effekter denna haft på bland annat tillgången på råvaror. Historiskt varierar barometerindikatorn med konjunkturen och större kriser i samhället, såsom finanskrisen 2008/2009 och Coronapandemin 2020/2021, syns tydligt i diagrammet.
+I `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` var barometerindikatorn `r konjukturbarometern_senaste_varde`, vilket var i stort sett oförändrat jämfört med månaden innan. Barometerindikatorn visar på ett normalt stämningsläge i den svenska ekonomin (se [Konjunkturinstitutet](https://www.konj.se/publikationer/konjunkturbarometern/2026-04-29-normalt-stamningslage-men-mer-pessimistiska-hushall/){target="_blank"}). 
+
+Att barometerindikatorn länge hade ett lågt värde kan delvis förklaras av Rysslands invasion av Ukraina och de effekter denna haft på bland annat tillgången på råvaror. Historiskt varierar barometerindikatorn med konjunkturen och större kriser i samhället, såsom finanskrisen 2008/2009 och Coronapandemin 2020/2021, syns tydligt i diagrammet.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 gg_konjB$barometern
@@ -146,9 +148,9 @@ gg_konjB$barometern
 
 ### Bransch {-}
 
-Hur läget i ekonomin uppfattas varierar beroende på om det är företagen eller hushållen som tillfrågas. Hushållens syn på ekonomin försämrades i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar`, jämfört med månaden innan (en barometerindikator på `r konj_hushall_senaste`). Eftersom indikatorn understiger 100, är stämningsläget bland hushållen sämre än normalt. 
+Hur läget i ekonomin uppfattas varierar beroende på om det är företagen eller hushållen som tillfrågas. Hushållens syn på ekonomin försämrades i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar`, jämfört med månaden innan (en barometerindikator på `r konj_hushall_senaste`). Eftersom indikatorn understiger 100, är stämningsläget bland hushållen sämre än normalt, (se [Konjunkturinstitutet](https://www.konj.se/publikationer/konjunkturbarometern/2026-04-29-normalt-stamningslage-men-mer-pessimistiska-hushall/){target="_blank"}). 
 
-Bland branschgrupperna i diagrammet nedan hade `r konj_bransch_positiv` den mest positiva synen på ekonomin i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` (en barometerindikator på `r konj_bransch_positiv_varde`), medan företag inom `r konj_bransch_negativ` uppfattar den ekonomiska utvecklingen som mer negativ (en barometerindikator på `r konj_bransch_negativ_varde`). Stämningsläget inom handel försvagades tydligt jämfört med månaderna innan, men kan fortfarande beskrivas som bättre än normalt (se [Konjunkturinstitutet](https://www.konj.se/publikationer/konjunkturbarometern/2026-03-25-fortsatt-normaltstarkt-stamningslage/){target="_blank"}).  
+Bland branschgrupperna i diagrammet nedan hade `r konj_bransch_positiv` den mest positiva synen på ekonomin i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` (en barometerindikator på `r konj_bransch_positiv_varde`), medan företag inom de övriga branschgrupperna uppfattar den ekonomiska utvecklingen som mer normal, se [Konjunkturinstitutet](https://www.konj.se/publikationer/konjunkturbarometern/2026-04-29-normalt-stamningslage-men-mer-pessimistiska-hushall/){target="_blank"}).
 
 Tjänstesektorn drabbades värst under pandemin (mars/april 2020), medan tillverkningsindustrin uppfattade ekonomin som starkare än normalt från slutet av 2020 fram till mitten av 2022.
 
@@ -351,15 +353,15 @@ gg_arbetsloshet_lan$arbetslosthet_senastear
 ### Jämförelse över tid {-}
 Arbetslösheten, såväl i Dalarna som i Sverige, varierar över tid. I samband med pandemin orsakad av Covid-19, ökade arbetslösheten och var som högst i Dalarna i `r arbetsloshet_tidserie_Dalarna_totalt_max_manad`  `r arbetsloshet_tidserie_Dalarna_totalt_max_ar`, då den uppgick till `r  arbetsloshet_tidserie_Dalarna_totalt_max_varde` procent. Därefter har arbetslösheten minskat och var i `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar` `r arbetsloshet_tidserie_Dalarna_totalt_senaste_varde` procent i Dalarna. 
 
-Under stora delar av 2025 var arbetslösheten i Dalarna på ungefär samma nivå som motsvarande perioder 2023 och 2024, men mot slutet av året var den något lägre. Denna trend fortsatte i januari 2026, då arbetslösheten var lägre än motsvarande månader åren innan.
+Under stora delar av 2025 var arbetslösheten i Dalarna på ungefär samma nivå som motsvarande perioder 2023 och 2024, men mot slutet av året var den något lägre. Denna trend fortsatte i januari och februari 2026, då arbetslösheten varit lägre än motsvarande månader åren innan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_arbetsloshet_tidsserie$arbetslöshet_tidsserie_totalt_Dalarna
 ```
 
-Om arbetslösheten delas upp i inrikes och utrikes födda framträder en delvis annorlunda bild. Bland inrikes födda (det vänstra diagrammet nedan) var arbetslösheten något högre under 2025 jämfört med åren innan under stora delar av året . I `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar` var arbetslösheten bland inrikes födda `r arbetsloshet_tidserie_Dalarna_inrikes_varde` procent i Dalarna, vilket dock var lägre än motsvarande månad året innan (men högre än 2024 och 2023). Bland utrikes födda (det högra diagrammet nedan) har arbetslösheten fortsatt att minska stadigt under samma tidsperiod, men är klart högre än bland inrikes födda (`r arbetsloshet_tidserie_Dalarna_utrikes_varde` procent i `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar`). 
+Om arbetslösheten delas upp i inrikes och utrikes födda framträder en delvis annorlunda bild. Bland inrikes födda (det vänstra diagrammet nedan) var arbetslösheten något högre under 2025 jämfört med åren innan under stora delar av året . I `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar` var arbetslösheten bland inrikes födda `r arbetsloshet_tidserie_Dalarna_inrikes_varde` procent i Dalarna, vilket dock var lägre än motsvarande månad året innan. Bland utrikes födda (det högra diagrammet nedan) har arbetslösheten fortsatt att minska stadigt under samma tidsperiod, men är klart högre än bland inrikes födda (`r arbetsloshet_tidserie_Dalarna_utrikes_varde` procent i `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar`). 
 
-Totalt var `r arblosa_inrikes` inrikes födda personer och `r arblosa_utrikes` utrikes födda personer i åldersgruppen `r arblosa_alder` arbetslösa i Dalarna i `r arblosa_manad` `r arblosa_ar`.
+Totalt var ungefär `r arblosa_inrikes` inrikes födda personer och ca `r arblosa_utrikes` utrikes födda personer i åldersgruppen `r arblosa_alder` arbetslösa i Dalarna i `r arblosa_manad` `r arblosa_ar`.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_arbetsloshet_tidsserie$arbetslöshet_tidsserie_facet_totalt_Dalarna
@@ -456,15 +458,15 @@ Med ekonomiskt stöd åsyftas försörjningsstöd och bistånd till livsföringe
 
 I Dalarna hade som mest närmare 5000 personer mellan 15 och 74 år ekonomiskt stöd som huvudsaklig inkomstkälla under 2020, men därefter minskade antalet stadigt under en längre period. Anmärkningsvärt är även att behovet av stöd minskade trots att prisnivån i samhället ökade avsevärt under samma tidsperiod (se avsnittet om inflation). Exakt vad den utvecklingen beror på är oklart, men ett antal tänkbara orsaker diskuteras i följande <a href = "https://www.svt.se/nyheter/inrikes/darfor-minskar-antalet-hushall-som-far-socialbidrag-i-sverige-forskare-forklarar-orsaker-bakom" target="_blank">artikel</a>.
 
-Antalet personer som har ekonomiskt stöd som huvudsaklig inkomstkälla varierar en del mellan månaderna, men under 2025 var trenden nedåtgående jämfört med föregående år. I `r ek_stod_manad_ar_sista` hade `r ek_stod_totalt_sista` personer ekonomiskt stöd som huvudsaklig inkomstkälla, vilket var färre än månaden innan.
+Antalet personer som har ekonomiskt stöd som huvudsaklig inkomstkälla varierar en del mellan månaderna, men under 2025 var trenden nedåtgående jämfört med föregående år. I `r ek_stod_manad_ar_sista` hade drygt `r ek_stod_totalt_sista` personer ekonomiskt stöd som huvudsaklig inkomstkälla, vilket var ungefär lika många som månaden innan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_ek_stod$ekonomiskt_bistand_alla_Dalarna
 ```
 
-Om antalet individer delas upp i inrikes och utrikes födda, blir det tydligt att nedgången i antalet med ekonomiskt stöd som huvudsaklig inkomstkälla framförallt är koncentrerad till utrikes födda. I `r ek_stod_manad_ar_forsta` hade ungefär `r ek_stod_skillnad_forsta ` fler utrikes födda personer i Dalarna ekonomiskt stöd som huvudsaklig inkomstkälla, jämfört med inrikes födda. I `r ek_stod_manad_ar_sista` hade lika många utrikes som inrikes födda personer ekonomiskt stöd som huvudsaklig inkomstkälla.
+Om antalet individer delas upp i inrikes och utrikes födda, blir det tydligt att nedgången i antalet med ekonomiskt stöd som huvudsaklig inkomstkälla framförallt är koncentrerad till utrikes födda. I `r ek_stod_manad_ar_forsta` hade ungefär `r ek_stod_skillnad_forsta ` fler utrikes födda personer i Dalarna ekonomiskt stöd som huvudsaklig inkomstkälla, jämfört med inrikes födda. I `r ek_stod_manad_ar_sista` hade istället fler inrikes födda personer ekonomiskt stöd som huvudsaklig inkomstkälla, jämfört med utrikes födda.
 
-Ett annat generellt mönster är att det bland inrikes födda är vanligare att män har ekonomiskt stöd som huvudsaklig inkomstkälla, medan det bland utrikes födda är vanligare att kvinnor har det. I `r ek_stod_manad_ar_sista` hade ungefär `r antal_kvinnor_stod_inrikes` inrikes födda kvinnor och ca `r antal_man_stod_inrikes` inrikes födda män ekonomiskt stöd som huvudsakliga inkomstkälla. Bland utrikes födda var motsvarande antal ca `r antal_kvinnor_stod_utrikes` kvinnor och ungefär `r antal_man_stod_utrikes` män.
+Ett annat generellt mönster är att det bland inrikes födda är vanligare att män har ekonomiskt stöd som huvudsaklig inkomstkälla, medan det bland utrikes födda är vanligare att kvinnor har det.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center'}
 gg_ek_stod$ekonomiskt_bistand_fodelseland_Dalarna

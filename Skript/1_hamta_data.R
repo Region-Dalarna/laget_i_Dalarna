@@ -15,7 +15,7 @@ p_load(here,
 hoppa_over_felhantering = TRUE
 
 # Skall data uppdateras? Annars läses data in från en sparad global environment-fil och rapporten knittas baserat på senast sparade data.
-uppdatera_data = FALSE
+uppdatera_data = TRUE
 
 if(uppdatera_data == TRUE){
 
@@ -101,7 +101,7 @@ ggplot2::ggsave(
   # KPI - 1 diagram
   source(here("Skript","diagram_inflation_SCB.R"), encoding="UTF-8")
   gg_infl <- funktion_upprepa_forsok_om_fel( function() {diagram_inflation_SCB(spara_figur = spara_figur, 
-                                   antal_etiketter = 36,
+                                   antal_etiketter = 24,
                                    output_mapp = Output_mapp,
                                    returnera_data = TRUE, 
                                    returnera_figur = TRUE)
@@ -363,8 +363,8 @@ ggplot2::ggsave(
     manader_bearbeta_scbtabeller()
   }, hoppa_over = hoppa_over_felhantering)
   
-  arblosa_utrikes <- format(arbstatus_df %>% filter(födelseregion == "utrikes född") %>% .$varde,big.mark = " ")
-  arblosa_inrikes <- format(arbstatus_df %>% filter(födelseregion == "inrikes född") %>% .$varde,big.mark = " ")
+  arblosa_utrikes <- format(plyr::round_any(arbstatus_df %>% filter(födelseregion == "utrikes född") %>% .$varde,10),big.mark = " ")
+  arblosa_inrikes <- format(plyr::round_any(arbstatus_df %>% filter(födelseregion == "inrikes född") %>% .$varde,10),big.mark = " ")
   arblosa_manad <- unique(arbstatus_df$månad)
   arblosa_ar <- unique(arbstatus_df$år)
   arblosa_alder <- unique(arbstatus_df$ålder)
@@ -387,7 +387,7 @@ ggplot2::ggsave(
   ek_stod_manad_ar_forsta <- first(ekonomiskt_stod_df$månad_år)
   ek_stod_manad_ar_sista <- last(ekonomiskt_stod_df$månad_år)
   
-  ek_stod_totalt_sista <- format(ekonomiskt_stod_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="totalt") %>% .$antal,big.mark = " ")
+  ek_stod_totalt_sista <- format(plyr::round_any(ekonomiskt_stod_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="totalt") %>% .$antal,10),big.mark = " ")
   
   ek_stod_skillnad_forsta <- plyr::round_any(ekonomiskt_stod_df %>% filter(månad_år==first(månad_år)) %>% filter(födelseregion=="utrikes född") %>% .$antal - ekonomiskt_stod_df %>% filter(månad_år==first(månad_år)) %>% filter(födelseregion=="inrikes född") %>% .$antal,10)
   ek_stod_skillnad_senaste <- abs(plyr::round_any(ekonomiskt_stod_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="utrikes född") %>% .$antal - ekonomiskt_stod_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="inrikes född") %>% .$antal,10))
@@ -403,10 +403,10 @@ ggplot2::ggsave(
                                                                                              kon_klartext = c("*"))
   }, hoppa_over = hoppa_over_felhantering)
   
-  antal_kvinnor_stod_inrikes <- plyr::round_any(ekonomiskt_bistand_df %>% filter(kön == "kvinnor",födelseregion == "inrikes född") %>% .$`antal totalt`,10)
-  antal_man_stod_inrikes <- plyr::round_any(ekonomiskt_bistand_df %>% filter(kön == "män",födelseregion == "inrikes född") %>% .$`antal totalt`,10)
-  antal_kvinnor_stod_utrikes <- plyr::round_any(ekonomiskt_bistand_df %>% filter(kön == "kvinnor",födelseregion == "utrikes född") %>% .$`antal totalt`,10)
-  antal_man_stod_utrikes <- plyr::round_any(ekonomiskt_bistand_df %>% filter(kön == "män",födelseregion == "utrikes född") %>% .$`antal totalt`,10)
+  antal_kvinnor_stod_inrikes <- plyr::round_any(ekonomiskt_bistand_df %>% filter(kön == "kvinnor",födelseregion == "inrikes född") %>% .$`antal totalt`,5)
+  antal_man_stod_inrikes <- plyr::round_any(ekonomiskt_bistand_df %>% filter(kön == "män",födelseregion == "inrikes född") %>% .$`antal totalt`,5)
+  antal_kvinnor_stod_utrikes <- plyr::round_any(ekonomiskt_bistand_df %>% filter(kön == "kvinnor",födelseregion == "utrikes född") %>% .$`antal totalt`,5)
+  antal_man_stod_utrikes <- plyr::round_any(ekonomiskt_bistand_df %>% filter(kön == "män",födelseregion == "utrikes född") %>% .$`antal totalt`,5)
   
   
   # # Ekonomiskt bistånd SCB - 1 figur
