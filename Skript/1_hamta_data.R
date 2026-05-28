@@ -67,9 +67,9 @@ ggplot2::ggsave(
   gg_konjB <- funktion_upprepa_forsok_om_fel( function() {diagram_konjunkturbarometern(spara_figur = spara_figur, 
                                            output_mapp = Output_mapp,
                                            diagram_capt = "Källa: Konjunkturinstitutet.\nBearbetning: Samhällsanalys, Region Dalarna.",
-                                           antal_etiketter_barometern = 24, # Intervall mellan visade etiketter (i månader)
+                                           antal_etiketter_barometern = 36, # Intervall mellan visade etiketter (i månader)
                                            legend_byrow = TRUE,
-                                           antal_etiketter_bransch = 24, # Intervall mellan visade etiketter (i månader)
+                                           antal_etiketter_bransch = 36, # Intervall mellan visade etiketter (i månader)
                                            returnera_data = TRUE, 
                                            returnera_figur = TRUE)
   }, hoppa_over = hoppa_over_felhantering)
@@ -157,6 +157,7 @@ ggplot2::ggsave(
   source(here("Skript","diagram_smahuspriser_SCB.R"), encoding="UTF-8")
   gg_smahuspriser <- funktion_upprepa_forsok_om_fel( function() {diagram_smahuspriser(spara_figur = spara_figur, 
                                           output_mapp = Output_mapp,
+                                          stodlinjer_avrunda_fem = FALSE,
                                           returnera_data = TRUE, 
                                           returnera_figur = TRUE)
   }, hoppa_over = hoppa_over_felhantering)
