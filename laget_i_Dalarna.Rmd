@@ -82,9 +82,9 @@ Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvec
 
 <ul>
 <li> Konjunkturinstitutets barometerindikator visar på ett normalt stämningsläget i den svenska ekonomin i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar`. Stämningsläget bland hushållen är dock svagare än normalt.</li>
-<li> Inflationen i `r inflation_senaste_manad_ar` var `r inflation_senaste_varde` procent, vilket är klart lägre än Riksbankens inflationsmål. Riksbankschefen Erik Thedéen varnar dock för att högre drivmedelspriser till följd av kriget i Mellanöstern kan leda till en ökad inflation ([Riksbanken](https://www.riksbank.se/sv/press-och-publicerat/nyheter-och-pressmeddelanden/nyheter/2026/thedeen-buffertar-ska-vara-anvandbara/){target="_blank"}). </li>
-<li> Priserna på småhus i Dalarna var något lägre i `r priser_senaste_manad_ar `, jämfört med månaden innan.
-<li> Antalet anställda berörda av konkurser i Dalarna minskade svagt i `r konkurser_senaste_manad` `r konkurser_senaste_ar`, jämfört med motsvarande månad året innan. </li>
+<li> Inflationen i `r inflation_senaste_manad_ar` var `r inflation_senaste_varde` procent, vilket är lägre än Riksbankens inflationsmål. Riksbankschefen Erik Thedéen varnar dock för att högre drivmedelspriser till följd av kriget i Mellanöstern kan leda till en ökad inflation ([Riksbanken](https://www.riksbank.se/sv/press-och-publicerat/nyheter-och-pressmeddelanden/nyheter/2026/thedeen-buffertar-ska-vara-anvandbara/){target="_blank"}). </li>
+<li> Priserna på småhus i Dalarna har ökat något på sistone, men är fortfarande lägre än de höga nivåerna under inledningen av 2022.
+<li> Antalet anställda berörda av konkurser i Dalarna minskade tydligt i `r konkurser_senaste_manad` `r konkurser_senaste_ar`, jämfört med motsvarande månad året innan. </li>
 <li> Arbetslösheten i Dalarna, som är klart under genomsnittet i Sverige, har minskat under inledningen av 2026, jämfört med motsvarande månader åren innan.</li>
 <li> Antalet personer med ekonomiskt stöd som huvudsakliga inkomstkälla har minskat i Dalarna på senare år. Minskningen är framförallt koncentrerad till utrikes födda.</li>
 </ul>
@@ -121,7 +121,7 @@ gg_BNP$BNP
 #knitr::include_graphics(here("Figurer", "BNP.png"))
 ```
 
-Konjunkturinstitutet sammanställer på sin [hemsida](https://www.konj.se/publikationer/prognosjamforelse/){target="_blank"} ett urval av aktuella prognoser för bland annat BNP (på helårsbasis). För såväl år 2026 som år 2027 tror en majoritet bland prognosinstituten att aktiviteten i Sveriges ekonomi (BNP) kommer att öka med mellan 2,5 och 3 procent. 
+Konjunkturinstitutet sammanställer på sin [hemsida](https://www.konj.se/publikationer/prognosjamforelse/){target="_blank"} ett urval av aktuella prognoser för bland annat BNP (på helårsbasis). För år 2026 tror prognosinstituten i genomsnitt på en ökning av aktiviteten i Sveriges ekonomi (BNP) på ungefär `r prognos_BNP_2026` procent, medan förväntningarna år 2027 är något högre (en ökning med cirka `r prognos_BNP_2027` procent). 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_BNP_prognos[[1]])}
 gg_BNP_prognos[[1]]
@@ -181,7 +181,7 @@ Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i
  
 </details>
 
-Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r inflation_max_manad_ar`, då den i Sverige uppgick till `r inflation_max_varde` procent. Därefter minskade inflationen avsevärt och var som lägst i september 2024 (1,1 procent). I  `r inflation_senaste_manad_ar` var inflationen `r inflation_senaste_varde` procent, vilket var lägre än månaden innan och även klart lägre än Riksbankens inflationsmål på 2 procent. För en mer ingående förklaring av vad som påverkade inflationstakten i `r inflation_senaste_manad_ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/priser-och-ekonomiska-tendenser/priser/konsumentprisindex-kpi/pong/statistiknyhet/konsumentprisindex-kpi-april-2026/){target="_blank"}. Riksbankschefen Erik Thedéen varnar dock för att högre drivmedelspriser till följd av kriget i Mellanöstern kan leda till en ökad inflation ([Riksbanken](https://www.riksbank.se/sv/press-och-publicerat/nyheter-och-pressmeddelanden/nyheter/2026/thedeen-buffertar-ska-vara-anvandbara/){target="_blank"}).
+Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r inflation_max_manad_ar`, då den i Sverige uppgick till `r inflation_max_varde` procent. Därefter minskade inflationen avsevärt och var som lägst i september 2024 (1,1 procent). I  `r inflation_senaste_manad_ar` var inflationen `r inflation_senaste_varde` procent, vilket var klart högre än månaden innan men fortfarande lägre än Riksbankens inflationsmål på 2 procent. För en mer ingående förklaring av vad som påverkade inflationstakten i `r inflation_senaste_manad_ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/priser-och-ekonomiska-tendenser/priser/konsumentprisindex-kpi/pong/statistiknyhet/konsumentprisindex-kpi-maj-2026/){target="_blank"}. Riksbankschefen Erik Thedéen varnar dock för att högre drivmedelspriser till följd av kriget i Mellanöstern kan leda till en ökad inflation ([Riksbanken](https://www.riksbank.se/sv/press-och-publicerat/nyheter-och-pressmeddelanden/nyheter/2026/thedeen-buffertar-ska-vara-anvandbara/){target="_blank"}).
 
 Den höga inflationstakten under framförallt 2022 och 2023 har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter Corona-pandemin och Rysslands invasion av Ukraina. Läs mer på  [Wikipedia](https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge){target="_blank"}.
 
@@ -190,13 +190,13 @@ gg_infl$inflation
 
 ```
 
-Konjunkturinstitutet sammanställer på sin [hemsida](https://www.konj.se/publikationer/prognosjamforelse/){target="_blank"} ett urval av aktuella prognoser för inflation (enligt KPIF). För år 2026 är det vissa skillnader mellan prognoserna, men en majoritet av prognosinstituten tror att inflationen enligt KPIF kommer att vara mellan 1 och 1,5 procent, vilket är lägre än Riksbankens inflationsmål. Året efter är det mindre skillnader mellan prognoserna och uppfattningen är att inflationen kommer att vara något högre än under 2026 (mellan 1 och 2 procent).
+Konjunkturinstitutet sammanställer på sin [hemsida](https://www.konj.se/publikationer/prognosjamforelse/){target="_blank"} ett urval av aktuella prognoser för inflation (enligt KPIF). För år 2026 är det vissa skillnader mellan prognoserna, men en majoritet av prognosinstituten tror att inflationen enligt KPIF kommer att vara mellan 1 och 1,5 procent, vilket är lägre än Riksbankens inflationsmål. Året efter är prognoserna generellt högre: en majoritet av instituten tror på mellan 1,5 och 2 procents inflation.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_infl_prognos[[1]])}
 gg_infl_prognos[[1]]
 ```
 
-Sedan sommaren 2024 har Riksbanken sänkt sin styrränta åtta gånger (den ligger nu på 1,75 procent). Detta påverkar [räntorna](https://www.scb.se/hitta-statistik/statistik-efter-amne/finansmarknad/finansmarknadsstatistik/finansmarknadsstatistik/pong/statistiknyhet/finansmarknadsstatistik-augusti-2025/){target="_blank"} på exempelvis bostadslån. I jämförelse med framförallt andra hälften av 2010-talet är dock styrräntan fortfarande relativt hög (se exempelvis [Ekonomifakta](https://www.ekonomifakta.se/sakomraden/finansiell-ekonomi/inflation-och-styrrantor/styrrantan_1208883.html){target="_blank"}). Kriget i Mellanöstern riskerar att leda till högre inflation, men samtidigt är inflationen för tillfället låg och konjunkturen svag vilket gör utsikterna osäkra. Riksbankens direktion valde därför att behålla styrräntan oförändrad vid sitt senaste möte ([Riksbanken](https://www.riksbank.se/sv/press-och-publicerat/nyheter-och-pressmeddelanden/pressmeddelanden/2026/styrrantan-oforandrad-pa-175-procent3/){target="_blank"}).
+Sedan sommaren 2024 har Riksbanken sänkt sin styrränta åtta gånger (den ligger nu på 1,75 procent). Detta påverkar [räntorna](https://www.scb.se/hitta-statistik/statistik-efter-amne/finansmarknad/finansmarknadsstatistik/finansmarknadsstatistik/pong/statistiknyhet/finansmarknadsstatistik-augusti-2025/){target="_blank"} på exempelvis bostadslån. I jämförelse med framförallt andra hälften av 2010-talet är dock styrräntan fortfarande relativt hög (se exempelvis [Ekonomifakta](https://www.ekonomifakta.se/sakomraden/finansiell-ekonomi/inflation-och-styrrantor/styrrantan_1208883.html){target="_blank"}). Vid sitt senaste möte (juni 2026) valde Riksbankens direktion att lämna styrräntan oförändrad, men flaggade för att sannolikheten att räntan skall höjas till hösten har ökat sedan mötet i mars  ([Riksbanken](https://www.riksbank.se/sv/press-och-publicerat/nyheter-och-pressmeddelanden/pressmeddelanden/2026/styrrantan-oforandrad-pa-175-procent4/){target="_blank"}).
 
 # Bostadsmarknaden
 2010-talet kännetecknades av en bostadsmarknad där det mesta pekade uppåt. Låg inflation och låga räntor i kombination med fördelaktiga skatteregler medförde att såväl byggandet av bostäder, som bostadspriserna ökade kraftigt. Nationellt har bostadslånen ökat under en lång period och uppgick i Sverige år 2024 till ungefär 160 procent av hushållens disponibla inkomst, vilket är nästan dubbelt så stor andel som under mitten av 1990-talet. Samtidigt har hushållen i Sveriges finansiella tillgångar ökat, vilket medfört att skulderna i relation till de finansiella tillgångarna minskat något under samma tidsperiod [(SCB)](https://www.scb.se/hitta-statistik/temaomraden/sveriges-ekonomi/konjunkturindikatorer/finansmarknad/#62307){target="_blank"}. Det kan naturligtvis finnas skillnader regionalt, men vi saknar data för detta i nuläget.
@@ -247,7 +247,7 @@ gg_nybygg_bygglov$nybyggnation_20_arK1_K4
 
 Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige. Efter toppen i `r priser_max_manad_ar`, då ett småhus i Dalarna kostade ungefär `r priser_max_varde` miljoner kronor, har dock det genomsnittliga priset på småhus i länet minskat avsevärt och en botten nåddes i oktober 2023, när ett småhus i Dalarna kostade strax under 2,1 miljoner kronor i genomsnitt. Den tydliga minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medförde en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkar efterfrågan på bostäder. 
 
-Sedan 2023 har priserna på småhus i Dalarna delvis återhämtat sig och var i `r priser_senaste_manad_ar ` knappt `r priser_senaste_varde` miljoner kronor (i genomsnitt). Detta var dock något lägre än månaden innan.
+Sedan 2023 har priserna på småhus i Dalarna delvis återhämtat sig och var i `r priser_senaste_manad_ar ` knappt `r priser_senaste_varde` miljoner kronor (i genomsnitt). Detta var högre än månaderna innan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_smahuspriser$smahuspriser_tidserie)}
 gg_smahuspriser$smahuspriser_tidserie
@@ -305,7 +305,7 @@ Antalet anställda som berörs av konkurser varierar relativt mycket från måna
 
 Efter att ha ökat tydligt i januari 2025, då närmare 150 personer berördes av konkurser i Dalarna, minskade exempelvis antalet anställda som berördes av konkurser i februari och mars 2025, jämfört med samma period föregående år. Därefter såväl ökade som minskade antalet anställda berörda av konkurser under 2025 jämfört med motvarande månader föregående år, vilket gör det svårt att utröna någon tydlig trend.  
 
-I `r konkurser_senaste_manad` `r konkurser_senaste_ar` berördes `r konkurser_senaste_antal` anställda av konkurser, vilket var `r ifelse(konkurser_senaste_antal > konkurser_foregaende_ar_antal,"fler","färre")` än de `r konkurser_foregaende_ar_antal` anställda som berördes motsvarande månad `r konkurser_foregaende_ar`.
+I `r konkurser_senaste_manad` `r konkurser_senaste_ar` berördes blott `r konkurser_senaste_antal` anställda av konkurser, vilket var `r ifelse(konkurser_senaste_antal > konkurser_foregaende_ar_antal,"fler","färre")` än de `r konkurser_foregaende_ar_antal` anställda som berördes motsvarande månad `r konkurser_foregaende_ar`.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_konkurser$anstalla_berorda_konkurser_Dalarna)}
 gg_konkurser$anstalla_berorda_konkurser_Dalarna
