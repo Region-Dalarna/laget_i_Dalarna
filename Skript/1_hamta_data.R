@@ -56,6 +56,7 @@ ggplot2::ggsave(
   source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_ek_prognoser_olika_prognosinstitut_ki.R")
   gg_BNP_prognos <- funktion_upprepa_forsok_om_fel( function() {diag_ekonomiska_prognoser_olika_progn_institut_ki(vald_variabel  = "BNP",
                                                                      output_mapp = Output_mapp,
+                                                                     diagram_capt = "Källa: Konjunkturinstitutet.\nBearbetning: Samhällsanalys, Region Dalarna.\nObservera att prognoserna är gjorda vid olika tidpunkter, vilket bör beaktas vid jämförelse mellan prognosinstitut.",
                                                                      valda_prognos_ar = "+1",
                                                                      x_axis_lutning = 45,
                                                                      manual_y_axis_title = "procent",
@@ -70,6 +71,7 @@ ggplot2::ggsave(
                                            antal_etiketter_barometern = 36, # Intervall mellan visade etiketter (i månader)
                                            legend_byrow = TRUE,
                                            antal_etiketter_bransch = 36, # Intervall mellan visade etiketter (i månader)
+                                           startvarde_bransch = "1996-07",
                                            returnera_data = TRUE, 
                                            returnera_figur = TRUE)
   }, hoppa_over = hoppa_over_felhantering)
@@ -117,6 +119,7 @@ ggplot2::ggsave(
   gg_infl_prognos <- funktion_upprepa_forsok_om_fel( function() {diag_ekonomiska_prognoser_olika_progn_institut_ki(vald_variabel  = "KPI med fast bostadsränta (KPIF), årsgenomsnitt",
                                                                       output_mapp = Output_mapp,
                                                                       valda_prognos_ar = "+1",
+                                                                      diagram_capt = "Källa: Konjunkturinstitutet.\nBearbetning: Samhällsanalys, Region Dalarna.\nObservera att prognoserna är gjorda vid olika tidpunkter, vilket bör beaktas vid jämförelse mellan prognosinstitut.",
                                                                       x_axis_lutning = 45,
                                                                       manual_y_axis_title = "procent",
                                                                       skriv_diagramfil  = spara_figur)
@@ -325,6 +328,17 @@ ggplot2::ggsave(
   arbetsloshet_lan_min <- arbetsmarknadsstatus %>% filter(varde==min(varde)) %>% dplyr::pull(region) %>% list_komma_och()
   arbetsloshet_lan_min_varde <- min(arbetsmarknadsstatus$varde) %>% str_replace("\\.", "\\,")
   
+  source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_bas_arbloshet_jmfr_manad_1ar_tillbaka_region_scb.R")
+  gg_arb_ett_ar <- diag_bas_arbloshet_manad_jmfr_1ar_tillbaka_scb(output_mapp = Output_mapp,
+                                                                  dela_upp_utrikes = FALSE,
+                                                                  returnera_data = TRUE)
+  
+
+  storst_okning_arb_lan <- forandring_arbetsloshet_df %>% filter(födelseregion == "totalt") %>% filter(diff == max(diff)) %>% .$region
+  storst_okning_arb_varde <- forandring_arbetsloshet_df %>% filter(födelseregion == "totalt") %>% filter(diff == max(diff)) %>% .$diff %>% gsub("\\.",",",.)
+  
+  okning_arb_Dalarna_varde <- round(forandring_arbetsloshet_df %>% filter(region == "Dalarna", födelseregion == "totalt") %>% .$diff,1) %>% gsub("\\.",",",.)
+  
   # Arbetslöshet tidsserie - 1 figur
   source("https://raw.githubusercontent.com/Region-Dalarna/diagram/main/diagram_arbetsmarknadsstatus_tidsserie_SCB.R")
   gg_arbetsloshet_tidsserie <- funktion_upprepa_forsok_om_fel( function() {diagram_arbetsmarknadsstatus_tidsserie (spara_figur = spara_figur, 
@@ -388,7 +402,7 @@ ggplot2::ggsave(
   ek_stod_manad_ar_forsta <- first(ekonomiskt_stod_df$månad_år)
   ek_stod_manad_ar_sista <- last(ekonomiskt_stod_df$månad_år)
   
-  ek_stod_totalt_sista <- format(plyr::round_any(ekonomiskt_stod_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="totalt") %>% .$antal,10),big.mark = " ")
+  ek_stod_totalt_sista <- format(plyr::round_any(ekonomiskt_stod_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="totalt") %>% .$antal,100),big.mark = " ")
   
   ek_stod_skillnad_forsta <- plyr::round_any(ekonomiskt_stod_df %>% filter(månad_år==first(månad_år)) %>% filter(födelseregion=="utrikes född") %>% .$antal - ekonomiskt_stod_df %>% filter(månad_år==first(månad_år)) %>% filter(födelseregion=="inrikes född") %>% .$antal,10)
   ek_stod_skillnad_senaste <- abs(plyr::round_any(ekonomiskt_stod_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="utrikes född") %>% .$antal - ekonomiskt_stod_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="inrikes född") %>% .$antal,10))

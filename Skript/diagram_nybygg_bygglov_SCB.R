@@ -20,7 +20,7 @@ diagram_nybyggnation_bygglov <- function(region_vekt = "20",
   source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_SkapaDiagram.R", encoding = "utf-8")
   source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_text.R", encoding = "utf-8")
   
-  diagram_capt_nybygg <- "Källa: SCB:s öppna statistikdatabas\nBearbetning: Samhällsanalys, Region Dalarna\nDiagramförklaring: Gäller för nybyggnad. Data är preliminär och det finns en viss eftersläpning.\nUnderskattningen det senaste kvartalet är mellan 20 och 60 procent beroende på kvartal.\nUnderskattningen är som störst för andra kvartalet. Efter ett år är underskattningen cirka 2 procent"
+  diagram_capt_nybygg <- "Källa: SCB:s öppna statistikdatabas\nBearbetning: Samhällsanalys, Region Dalarna\nDiagramförklaring: Gäller för nybyggnad. Data är preliminär och det finns en viss eftersläpning.\nUnderskattningen det senaste kvartalet är mellan 20 och 60 procent beroende på kvartal.\nUnderskattningen är som störst för andra kvartalet. Efter ett år är underskattningen cirka 2 procent."
   diagram_capt_bygglov <- "Källa: SCB:s öppna statistikdatabas\nBearbetning: Samhällsanalys, Region Dalarna\nDiagramförklaring: Gäller för nybyggnad. Notera att det finns en eftersläpning i statistiken.\nFör bygglov gör eftersläpningen att de senaste fyra kvartalens siffror är underskattade.\nStörst är underskattningen det senaste kvartalet."
   gg_list <- list()
   objektnamn = c()
