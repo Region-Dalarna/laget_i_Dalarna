@@ -105,7 +105,7 @@ Det allmänna läget i en ekonomi kan beskrivas på flera sätt. I detta första
 
   <summary>Mer information om statistiken</summary>
 
-<div title="Källa: SCB">BNP till marknadspris från användningssidan (ENS2010). Data är säsongsrensad och på kvartalsbasis (i fasta priser, dvs. justerat för inflation). BNP är ett mått på den totala ekonomiska aktiviteten i ett land under en tidsperiod. För en mer övergripande förklaring av Sveriges BNP och dess utveckling, se SCB:s [snabba fakta](https://www.scb.se/hitta-statistik/sverige-i-siffror/samhallets-ekonomi/bnp-i-sverige/){target="_blank"}. </div>
+<div title="Källa: SCB">BNP mäts till marknadspris från användningssidan (ENS2010). Data är säsongsrensad och på kvartalsbasis (i fasta priser, dvs. justerad för inflation). BNP är ett mått på den totala ekonomiska aktiviteten i ett land under en tidsperiod. För en mer övergripande förklaring av Sveriges BNP och dess utveckling se SCB:s [snabba fakta](https://www.scb.se/hitta-statistik/sverige-i-siffror/samhallets-ekonomi/bnp-i-sverige/){target="_blank"}. </div>
  
 </details>
 
@@ -154,7 +154,7 @@ gg_konjB$barometern
 
 ### Bransch {-}
 
-Hur läget i ekonomin uppfattas varierar beroende på om det är företagen eller hushållen som tillfrågas. Hushållens syn på ekonomin förbättrades något i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` jämfört med månaden innan (en barometerindikator på `r konj_hushall_senaste`), men eftersom indikatorn understiger 100 är stämningsläget bland hushållen sämre än normalt, se [Konjunkturinstitutet](https://www.konj.se/publikationer/konjunkturbarometern/2026-06-26-tillverkningsindustrin-lyfter-barometerindikatorn/){target="_blank"}. 
+Hur läget i ekonomin uppfattas varierar beroende på om det är företagen eller hushållen som tillfrågas. Hushållens syn på ekonomin förbättrades något i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` jämfört med månaden innan (en barometerindikator på `r konj_hushall_senaste`), men eftersom indikatorn understiger 100 är stämningsläget bland hushållen sämre än normalt (se [Konjunkturinstitutet](https://www.konj.se/publikationer/konjunkturbarometern/2026-06-26-tillverkningsindustrin-lyfter-barometerindikatorn/){target="_blank"}). 
 
 Bland branschgrupperna i diagrammet nedan hade `r konj_bransch_positiv` den mest positiva synen på ekonomin i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` (en barometerindikator på `r konj_bransch_positiv_varde`), medan företag inom `r ifelse(konj_bransch_negativ == "byggverksamhet","byggindustri",konj_bransch_negativ)` uppfattade den ekonomiska utvecklingen som sämre än normalt (en barometerindikator på `r konj_bransch_negativ_varde`).
 
@@ -175,7 +175,7 @@ Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i
 
   <summary>Mer information om statistiken</summary>
 
-<div title="Källa: Riksbanken">Det vanligaste och mest kända sättet att mäta inflationen på i Sverige är titta på förändringen i konsumentprisindex, KPI. Under senare tid har måttet utvecklats med att hålla räntenivån fast, då kallat KPIF. Anledningen är att räntan kan påverka prisnivån indirekt, framförallt genom boendekostnader. Konsumentprisindex med fast ränta, KPIF beräknas med samma data och på samma sätt som KPI, men utan att effekten av ändrade räntor räknas med. Indexet visar hur mycket det kostar att leva i Sverige och hur denna kostnad har utvecklats över tid. Målet för Riksbankens penningpolitik är att inflationen ska vara 2 procent. Ett viktigt skäl till den tydliga målsättningen är också att skapa trygghet och långsiktighet för företag och hushåll i deras ekonomiska beslut. </div>
+<div title="Källa: Riksbanken">Det vanligaste och mest kända sättet att mäta inflationen i Sverige är att titta på förändringen i konsumentprisindex, KPI. Under senare tid har dock måttet kompletterats med en variant som håller räntenivån fast, kallad KPIF. Anledningen är att räntan kan påverka prisnivån indirekt, framförallt genom boendekostnader. Konsumentprisindex med fast ränta, KPIF, beräknas med samma data och på samma sätt som KPI, men utan att effekten av ändrade räntor räknas med. Indexet visar hur mycket det kostar att leva i Sverige och hur denna kostnad har utvecklats över tid. Målet för Riksbankens penningpolitik är att inflationen ska vara 2 procent. Ett viktigt skäl till den tydliga målsättningen är att skapa trygghet och långsiktighet för företag och hushåll i deras ekonomiska beslut. </div>
  
 </details>
 
@@ -197,7 +197,7 @@ gg_infl_prognos[[1]]
 Sedan sommaren 2024 har Riksbanken sänkt sin styrränta ett flertal gånger (den ligger nu på 1,75 procent). Detta påverkar räntorna på exempelvis bostadslån ([SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/finansmarknad/finansmarknadsstatistik/finansmarknadsstatistik/pong/statistiknyhet/finansmarknadsstatistik-augusti-2025/){target="_blank"}). I jämförelse med framförallt andra hälften av 2010-talet är dock styrräntan fortfarande relativt hög (se exempelvis [Ekonomifakta](https://www.ekonomifakta.se/sakomraden/finansiell-ekonomi/inflation-och-styrrantor/styrrantan_1208883.html){target="_blank"}). Vid sitt senaste möte (juni 2026) valde Riksbankens direktion att lämna styrräntan oförändrad, men flaggade att sannolikheten att räntan ska höjas till hösten har ökat sedan mötet i mars  ([Riksbanken](https://www.riksbank.se/sv/press-och-publicerat/nyheter-och-pressmeddelanden/pressmeddelanden/2026/styrrantan-oforandrad-pa-175-procent4/){target="_blank"}).
 
 # Bostadsmarknaden
-2010-talet kännetecknades av en bostadsmarknad där det mesta pekade uppåt. Låg inflation och låga räntor i kombination med fördelaktiga skatteregler medförde att såväl byggandet av bostäder, som bostadspriserna ökade kraftigt. Nationellt har bostadslånen ökat under en lång period och uppgick i Sverige år 2024 till ungefär 160 procent av hushållens disponibla inkomst, vilket är nästan dubbelt så stor andel som under mitten av 1990-talet. Samtidigt har hushållens finansiella tillgångar ökat, vilket medfört att skulderna i relation till de finansiella tillgångarna minskat något under samma period [(SCB)](https://www.scb.se/hitta-statistik/temaomraden/sveriges-ekonomi/konjunkturindikatorer/finansmarknad/#62307){target="_blank"}. Det kan naturligtvis finnas skillnader regionalt, men vi saknar data för detta i nuläget.
+2010-talet kännetecknades av en bostadsmarknad där det mesta pekade uppåt. Låg inflation och låga räntor i kombination med fördelaktiga skatteregler medförde att såväl byggandet av bostäder, som bostadspriserna ökade kraftigt. Nationellt har bostadslånen ökat under en lång period och uppgick i Sverige 2025 till ungefär 160 procent av hushållens disponibla inkomst, vilket är nästan dubbelt så stor andel som under mitten av 1990-talet. Samtidigt har hushållens finansiella tillgångar ökat, vilket medfört att skulderna i relation till de finansiella tillgångarna minskat något under samma period [(SCB)](https://www.scb.se/hitta-statistik/temaomraden/sveriges-ekonomi/konjunkturindikatorer/finansmarknad/#62307){target="_blank"}. Det kan naturligtvis finnas skillnader regionalt, men vi saknar data för detta i nuläget.
 
 ## Bostadsbyggande{.tabset}
 
@@ -299,7 +299,7 @@ k = k+1
 
 ### Månad {-}
 
-Antalet anställda som berörs av konkurser varierar relativt mycket från månad till månad. Det gör det svårt att urskilja någon tydlig trend på månadsbasis, exempelvis kopplad till Rysslands invasion av Ukraina och dess effekter på Dalarnas ekonomi. 
+Statistiken täcker företagskonkurser, det vill säga att ett företag försätts i konkurs, oavsett företagsform (inklusive enskilda näringsidkare). Antalet anställda som berörs av konkurser varierar relativt mycket från månad till månad. Det gör det svårt att urskilja någon tydlig trend på månadsbasis, exempelvis kopplad till Rysslands invasion av Ukraina och dess effekter på Dalarnas ekonomi. 
 
 Mönstret är ojämnt: under 2025 var antalet berörda vissa månader högre och andra månader lägre än motsvarande månad föregående år. I januari 2025 berördes närmare 150 personer, medan antalet i februari och mars var lägre än samma period året innan.  
 

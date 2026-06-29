@@ -326,7 +326,7 @@ ggplot2::ggsave(
   arbetsloshet_Sverige_senaste <- gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Sverige") %>% .$varde)
   arbetsloshet_gavleborg_senaste <- gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Gävleborg") %>% .$varde)
   arbetsloshet_lan_min <- arbetsmarknadsstatus %>% filter(varde==min(varde)) %>% dplyr::pull(region) %>% list_komma_och()
-  arbetsloshet_lan_min_varde <- min(arbetsmarknadsstatus$varde) %>% str_replace("\\.", "\\,")
+  arbetsloshet_lan_min_varde <- min(arbetsmarknadsstatus$varde) %>% formatC(format = "f", digits = 1) %>%  str_replace("\\.", "\\,")
   
   source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_bas_arbloshet_jmfr_manad_1ar_tillbaka_region_scb.R")
   gg_arb_ett_ar <- diag_bas_arbloshet_manad_jmfr_1ar_tillbaka_scb(output_mapp = Output_mapp,
