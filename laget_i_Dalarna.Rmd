@@ -36,12 +36,14 @@ source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_te
 #uppdatera_hemsida = FALSE
 
 # Den enda av figurerna (kartan) som inte är en funktion
-arbetsloshet_kommun <-  read.xlsx(here("Data","arbetsloshet_kommun.xlsx"))
+arbetsloshet_kommun <-  read.xlsx(here("Data","arbetsloshet_kommun.xlsx")) %>% 
+  mutate(region_kod = as.integer(region_kod))
 
-arbetsloshet_kommun_min <- arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==min(arbetslöshet)) %>% .$region %>% list_komma_och()
-arbetsloshet_kommun_min_varde <- gsub("\\.",",",arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==min(arbetslöshet)) %>% .$arbetslöshet %>% formatC(format = "f", digits = 1) %>%first())
-arbetsloshet_kommun_max <- arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==max(arbetslöshet)) %>% .$region %>% list_komma_och() 
-arbetsloshet_kommun_max_varde <- gsub("\\.",",",arbetsloshet_kommun %>% filter(månad==max(månad)) %>%  filter(arbetslöshet==max(arbetslöshet)) %>% .$arbetslöshet %>% formatC(format = "f", digits = 1) %>% first()) 
+# Tar ut variabler som skall användas i texten kopplat till kartan
+arbetsloshet_kommun_min <- arbetsloshet_kommun  %>%  filter(value == min(value)) %>% .$region %>% list_komma_och()
+arbetsloshet_kommun_min_varde <- gsub("\\.",",",arbetsloshet_kommun %>% filter(value == min(value)) %>% .$value %>% formatC(format = "f", digits = 1) %>% first())
+arbetsloshet_kommun_max <- arbetsloshet_kommun %>%  filter(value == max(value)) %>% .$region %>% list_komma_och() 
+arbetsloshet_kommun_max_varde <- gsub("\\.",",",arbetsloshet_kommun %>% filter(value == max(value)) %>% .$value %>% formatC(format = "f", digits = 1) %>% first()) 
 
 
 make_alt <- function(p) {
@@ -391,13 +393,13 @@ kommuner_sv <- st_read(sokvag_kommuner_sv,options = "ENCODING=WINDOWS-1252")
 #col.regions=colorRampPalette(c('deepskyblue', 'deepskyblue4')),
 
 # ta ut endast kommuner och för senaste tillgängliga år
- arbetsloshet_kommun <- arbetsloshet_kommun %>%
-     filter(månad == max(månad)) %>%
-       filter(nchar(regionkod) == 4) %>%
-         mutate(regionkod = as.integer(regionkod))
+ # arbetsloshet_kommun <- arbetsloshet_kommun %>%
+ #     filter(månad == max(månad)) %>%
+ #       filter(nchar(regionkod) == 4) %>%
+ #         mutate(regionkod = as.integer(regionkod))
 
 # lägg ihop kommunpolygonerna med brp per kommun-statistiken
-arblosa_kommun_gis <- left_join(kommuner_sv, arbetsloshet_kommun, by = c("KOMMUNKOD" = "regionkod")) %>% 
+arblosa_kommun_gis <- left_join(kommuner_sv, arbetsloshet_kommun, by = c("KOMMUNKOD" = "region_kod")) %>% 
    mutate(månad = gsub("M","-",månad),
           år = str_sub(månad, 1, 4),
           manad = format(as.Date(paste(år, str_sub(månad, 6,7), "1", sep = "-")), "%b"),
@@ -420,7 +422,7 @@ arblosa_kommun_gis <- left_join(kommuner_sv, arbetsloshet_kommun, by = c("KOMMUN
  
  karta <- ggplot(arblosa_kommun_gis,
        aes(fill = grupp,
-           label = KOMMUNNAMN,tooltip=paste("Kommun:",KOMMUNNAMN,"<br>","Arbetslöshet:",arbetslöshet,"%"))) +
+           label = KOMMUNNAMN,tooltip=paste("Kommun:",KOMMUNNAMN,"<br>","Arbetslöshet:",value,"%"))) +
   geom_sf_interactive() +
   scale_fill_manual(values = colorRampPalette(c("#93cec1", "#0e5a4c"))(4)) +
   theme(axis.text.x = element_blank(),

@@ -1,11 +1,14 @@
-# Hämtar data för konkurser från SCBs hemsida
-pacman::p_load(pxweb,tidyverse,openxlsx)
+# Hämtar data för arbetslöshet från SCB:s hemsida och bearbetar för att användas i karta
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(pxweb,
+               tidyverse,
+               openxlsx)
 source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_SkapaDiagram.R")
 source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R")
 
 #hamta_data_arbetsloshet()
-hamta_data_arbetsloshet <- function(vald_region="20",
-                                    spara_data=TRUE,
+hamta_data_arbetsloshet <- function(vald_region = "20",
+                                    spara_data = TRUE,
                                     output_mapp_excel = "G:/Samhällsanalys/Statistik/Näringsliv/basfakta/"){
   
   # url till tabellen i SCB:s statistikdatabas

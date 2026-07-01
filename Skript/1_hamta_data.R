@@ -23,6 +23,7 @@ if(uppdatera_data == TRUE){
   start_time <- Sys.time()
   
   source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R")
+  source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_pxweb2.R")
   
   Output_mapp = here("Figurer","/")
   spara_figur = TRUE
@@ -31,7 +32,7 @@ if(uppdatera_data == TRUE){
   ### Uppdateras automatiskt vid körning av skript   ###
   ######################################################
   
-  # BNP - 1 diagram
+  # BNP - 1 diagram - upp med nya PXweb
   source(here("Skript","diagram_BNP_forandring_SCB.R"), encoding="UTF-8")
   gg_BNP <- funktion_upprepa_forsok_om_fel( function() {diagram_BNP_SCB(spara_figur = spara_figur, 
                             output_mapp = Output_mapp,
@@ -100,7 +101,7 @@ ggplot2::ggsave(
   
   
   
-  # KPI - 1 diagram
+  # KPI - 1 diagram - upp med nya PXweb
   source(here("Skript","diagram_inflation_SCB.R"), encoding="UTF-8")
   gg_infl <- funktion_upprepa_forsok_om_fel( function() {diagram_inflation_SCB(spara_figur = spara_figur, 
                                    antal_etiketter = 24,
@@ -156,7 +157,7 @@ ggplot2::ggsave(
   prognos_BNP_2028_antal <- length(unique(prognos_BNP_df %>% filter(prognos_for_ar == "2028") %>% .$Prognosinstitut))
   
   
-  # Småhuspriser - 2 diagram
+  # Småhuspriser - 2 diagram - upp med nya PXweb
   source(here("Skript","diagram_smahuspriser_SCB.R"), encoding="UTF-8")
   gg_smahuspriser <- funktion_upprepa_forsok_om_fel( function() {diagram_smahuspriser(spara_figur = spara_figur, 
                                           output_mapp = Output_mapp,
@@ -173,7 +174,7 @@ ggplot2::ggsave(
   priser_senaste_max_varde <- gsub("\\.",",", round(priser_df %>%filter(Period==max(Period)) %>% filter(Medelpris==max(Medelpris)) %>% select(Medelpris)/1000,1))
   
   
-  # Byggande - 2 figurer
+  # Byggande - 2 figurer - upp med nya PXweb
   source(here("Skript","diagram_nybygg_bygglov_SCB.R"), encoding="UTF-8")
   gg_nybygg_bygglov <- funktion_upprepa_forsok_om_fel( function() {diagram_nybyggnation_bygglov(spara_figur = spara_figur, 
                                                     output_mapp = Output_mapp,
@@ -309,7 +310,7 @@ ggplot2::ggsave(
   
   nystartade_jmf <- nystartade_df %>% filter(tid == last(tid)) %>% .$antal - last(nystartade_df %>% filter(tid != last(tid)) %>% .$antal)
   
-  # Arbetslöshet län - 1 figur
+  # Arbetslöshet län - 1 figur - upp med nya PXweb
   source("https://raw.githubusercontent.com/Region-Dalarna/diagram/main/diagram_arbetsmarknadsstatus_senastear.R")
   gg_arbetsloshet_lan <- funktion_upprepa_forsok_om_fel( function() {diagram_arbetsmarknadsstatus(region_vekt = hamtaAllaLan(),
                                                       spara_figur = spara_figur, 
@@ -339,7 +340,7 @@ ggplot2::ggsave(
   
   okning_arb_Dalarna_varde <- round(forandring_arbetsloshet_df %>% filter(region == "Dalarna", födelseregion == "totalt") %>% .$diff,1) %>% gsub("\\.",",",.)
   
-  # Arbetslöshet tidsserie - 1 figur
+  # Arbetslöshet tidsserie - 1 figur - upp med nya pxweb
   source("https://raw.githubusercontent.com/Region-Dalarna/diagram/main/diagram_arbetsmarknadsstatus_tidsserie_SCB.R")
   gg_arbetsloshet_tidsserie <- funktion_upprepa_forsok_om_fel( function() {diagram_arbetsmarknadsstatus_tidsserie (spara_figur = spara_figur, 
                                                                        output_mapp_figur = Output_mapp,
@@ -367,16 +368,20 @@ ggplot2::ggsave(
   
   
   # Hämta antal arbetslösa (till texten enbart)
-  source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/refs/heads/main/hamta_bas_arbstatus_region_kon_alder_fodelseregion_prel_manad_ArbStatusM_scb.R")
-  arbstatus_df <- funktion_upprepa_forsok_om_fel( function() {hamta_bas_arbstatus_region_kon_alder_fodelseregion_prel_manad_scb(region_vekt = "20",
-                                                                                    alder_klartext = unique(arbetsmarknadsstatus_tidsserie$ålder),
-                                                                                    kon_klartext = "totalt",
-                                                                                    fodelseregion_klartext = unique(arbetsmarknadsstatus_tidsserie$födelseregion),
-                                                                                    cont_klartext = "antal arbetslösa",
-                                                                                    wide_om_en_contvar = FALSE,
-                                                                                    tid_koder = "9999") %>% 
-    manader_bearbeta_scbtabeller()
-  }, hoppa_over = hoppa_over_felhantering)
+  arbstatus_df <- pxweb2_hamta_data(
+    tabell = "TAB6260",
+    query = list(
+      Region = "20",
+      Kon = "totalt",
+      Alder = unique(arbetsmarknadsstatus_tidsserie$ålder),
+      Fodelseregion = unique(arbetsmarknadsstatus_tidsserie$födelseregion),
+      ContentsCode = "antal arbetslösa",
+      Tid = "9999"
+    )) %>% 
+    rename(varde = value,
+           regionkod = region_kod,
+           variabel = tabellinnehåll) %>% 
+      manader_bearbeta_scbtabeller()
   
   arblosa_utrikes <- format(plyr::round_any(arbstatus_df %>% filter(födelseregion == "utrikes född") %>% .$varde,10),big.mark = " ")
   arblosa_inrikes <- format(plyr::round_any(arbstatus_df %>% filter(födelseregion == "inrikes född") %>% .$varde,10),big.mark = " ")
@@ -384,14 +389,15 @@ ggplot2::ggsave(
   arblosa_ar <- unique(arbstatus_df$år)
   arblosa_alder <- unique(arbstatus_df$ålder)
   
-  # Arbetslöshet kommun - Karta, ej diagramskript (ännu)
-  source(here("Skript","arbetsloshet_kommun.R"), encoding="UTF-8")
+  # Arbetslöshet kommun - Karta, ej diagramskript (ännu) - upp med nya PXweb
+  source(here("Skript","arbetsloshet_kommun_ny.R"), encoding="UTF-8")
   funktion_upprepa_forsok_om_fel( function() {hamta_data_arbetsloshet(vald_region="20",
-                          spara_data=TRUE,
+                          spara_data = TRUE,
                           output_mapp_excel = here("Data"))
   }, hoppa_over = hoppa_over_felhantering)
   
   
+  # Ekonomiskt bistånd - 2 figurer - upp med nya PXweb
   source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_ek_stod_bakgrund.R")
   gg_ek_stod <- funktion_upprepa_forsok_om_fel( function() {diagram_ek_stod_bakgrund_SCB (output_mapp = Output_mapp,
                                               skriv_diagrambildfil = spara_figur,
@@ -407,16 +413,21 @@ ggplot2::ggsave(
   ek_stod_skillnad_forsta <- plyr::round_any(ekonomiskt_stod_df %>% filter(månad_år==first(månad_år)) %>% filter(födelseregion=="utrikes född") %>% .$antal - ekonomiskt_stod_df %>% filter(månad_år==first(månad_år)) %>% filter(födelseregion=="inrikes född") %>% .$antal,10)
   ek_stod_skillnad_senaste <- abs(plyr::round_any(ekonomiskt_stod_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="utrikes född") %>% .$antal - ekonomiskt_stod_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="inrikes född") %>% .$antal,10))
   
-  # Enbart för data
-  source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/refs/heads/main/hamta_bas_huvink_region_huvudfot1m_kon_alder_fodelseregion_tid_ArbStatFoT1_scb.R")
-  ekonomiskt_bistand_df<- funktion_upprepa_forsok_om_fel( function() {hamta_bas_huvink_region_huvudfot1m_kon_alder_fodelseregion_tid_scb(region = "20",
-                                                                                             huvudfot1m_klartext = "ekonomiskt stöd",
-                                                                                             fodelseregion_klartext = "*",
-                                                                                             cont_klartext = "antal totalt",
-                                                                                             alder_klartext = "15-74 år",
-                                                                                             tid_koder = "9999",
-                                                                                             kon_klartext = c("*"))
-  }, hoppa_over = hoppa_over_felhantering)
+  # Enbart för data - Används inte för tillfället då CKM gör det lite vanskligt att använda exakta siffror - upp med nya PXweb
+  ekonomiskt_bistand_df <- pxweb2_hamta_data(
+    tabell = "TAB1784",
+    query = list(
+      Region = "20",
+      HuvudFoT1m = "ekonomiskt stöd",
+      Kon = "*",
+      Alder = "15-74 år",
+      Fodelseregion = "*",
+      ContentsCode = "antal totalt",
+      Tid = "9999"
+    )) %>% 
+    rename(`antal totalt` = value,
+           regionkod = region_kod) %>% 
+      select(-tabellinnehåll)
   
   antal_kvinnor_stod_inrikes <- plyr::round_any(ekonomiskt_bistand_df %>% filter(kön == "kvinnor",födelseregion == "inrikes född") %>% .$`antal totalt`,5)
   antal_man_stod_inrikes <- plyr::round_any(ekonomiskt_bistand_df %>% filter(kön == "män",födelseregion == "inrikes född") %>% .$`antal totalt`,5)
