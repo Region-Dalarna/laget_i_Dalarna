@@ -33,7 +33,8 @@ jobs:
 
       - name: Ta bort rapport från servern
         run: |
-          RAPPORT_DIR="/srv/rapporter/${{ github.event.repository.name }}"
+          REPO_NAMN_GEMENER=$(echo "${{ github.event.repository.name }}" | tr '[:upper:]' '[:lower:]')
+          RAPPORT_DIR="/srv/rapporter/$REPO_NAMN_GEMENER"
 
           # säkerhetsräcke: pathen MÅSTE ligga under /srv/rapporter/
           # och får inte vara just själva foldern
