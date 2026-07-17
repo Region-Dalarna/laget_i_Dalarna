@@ -1,0 +1,53 @@
+name: Deploy rapport
+run-name: Deploy ${{ github.event.repository.name }} → ${{ github.ref_name == 'publicera-intern' && 'intern' || 'publik' }}
+
+on:
+  push:
+    branches: [ publicera-publik, publicera-intern ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on:
+      - self-hosted
+      - ${{ github.ref == 'refs/heads/publicera-intern' && 'rapport-intern' || 'rapport' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Visa vilken server som deploy:as till
+        run: |
+          if [ "$GITHUB_REF" = "refs/heads/publicera-intern" ]; then
+            echo "Deploy till INTERN server (${{ github.event.repository.name }})"
+          else
+            echo "Deploy till PUBLIK server (${{ github.event.repository.name }})"
+          fi
+
+      - name: Förbered publiceringsmapp
+        run: |
+          REPO_NAMN="${{ github.event.repository.name }}"
+          REPO_NAMN_GEMENER=$(echo "$REPO_NAMN" | tr '[:upper:]' '[:lower:]')
+
+          # Skiftlägesokänslig sökning — repo-namnets exakta case på GitHub
+          # kan skilja sig från filnamnets case (t.ex. Dalarna vs dalarna).
+          KALLFIL=$(find . -maxdepth 1 -iname "${REPO_NAMN}.html" | head -n 1)
+
+          if [ -z "$KALLFIL" ]; then
+            echo "FEL: Hittar ingen fil som matchar ${REPO_NAMN}.html (oavsett skiftläge) i repo-roten." >&2
+            exit 1
+          fi
+
+          echo "Använder källfil: $KALLFIL"
+          echo "Målmapp på servern (alltid gemener): $REPO_NAMN_GEMENER"
+          mkdir -p _publish
+          cp "$KALLFIL" _publish/index.html
+          echo "REPO_NAMN_GEMENER=$REPO_NAMN_GEMENER" >> "$GITHUB_ENV"
+
+      - name: Deploy rapport using server-side script
+        run: |
+          /usr/local/bin/rapport_deploy_repo.sh "$(pwd)/_publish" "$REPO_NAMN_GEMENER"
+
+      - name: Regenerera landningssida
+        run: |
+          sudo /usr/local/bin/generera_landningssida.sh || echo "Varning: kunde inte regenerera landningssidan (ej kritiskt fel)"
