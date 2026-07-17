@@ -247,7 +247,7 @@ gg_nybygg_bygglov$nybyggnation_20_arK1_K4
 
 Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige (se diagrammet nedan, där prisutvecklingen visas som ett index med januari 2010 som startvärde 100). Efter toppen i `r priser_max_manad_ar`, då ett småhus i Dalarna kostade ungefär `r priser_max_varde` miljoner kronor, har dock det genomsnittliga priset på småhus i länet minskat avsevärt och en botten nåddes i oktober 2023, när det kostade strax under 2,1 miljoner kronor i genomsnitt. Den tydliga minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medförde en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkade efterfrågan på bostäder. 
 
-Sedan 2023 har priserna på småhus i Dalarna delvis återhämtat sig och var i `r priser_senaste_manad_ar ` knappt `r priser_senaste_varde` miljoner kronor i genomsnitt. Detta var högre än månaderna innan.
+Sedan 2023 har priserna på småhus i Dalarna delvis återhämtat sig och var i `r priser_senaste_manad_ar ` knappt `r priser_senaste_varde` miljoner kronor i genomsnitt. Detta var i linje med månaden innan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_smahuspriser$smahuspriser_tidserie)}
 gg_smahuspriser$smahuspriser_tidserie
@@ -305,7 +305,7 @@ Statistiken täcker företagskonkurser, det vill säga att ett företag försät
 
 Mönstret är ojämnt: under 2025 var antalet berörda vissa månader högre och andra månader lägre än motsvarande månad föregående år. I januari 2025 berördes närmare 150 personer, medan antalet i februari och mars var lägre än samma period året innan.  
 
-I `r konkurser_senaste_manad` `r konkurser_senaste_ar` berördes endast `r konkurser_senaste_antal` anställda av konkurser, vilket var `r ifelse(konkurser_senaste_antal > konkurser_foregaende_ar_antal,"fler","färre")` än de `r konkurser_foregaende_ar_antal` som berördes motsvarande månad `r konkurser_foregaende_ar`.
+I `r konkurser_senaste_manad` `r konkurser_senaste_ar` berördes `r konkurser_senaste_antal` anställda av konkurser, vilket var `r ifelse(konkurser_senaste_antal > konkurser_foregaende_ar_antal,"fler","färre")` än de `r konkurser_foregaende_ar_antal` som berördes motsvarande månad `r konkurser_foregaende_ar`.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_konkurser$anstalla_berorda_konkurser_Dalarna)}
 gg_konkurser$anstalla_berorda_konkurser_Dalarna

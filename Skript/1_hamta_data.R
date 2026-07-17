@@ -6,6 +6,9 @@
 # 2: Uppdatera data - sätt variabeln uppdatera_data till FALSE. Då uppdateras data, alla figurer skapas på nytt och en ny enviroment sparas.
 # Tar längre tid (ett par minuter) och medför en risk att text inte längre är aktuell då figurer har ändrats.
 
+# Återstår PXweb2:
+# Arbetslöshet förändring jämfört med samma månad föregående år
+
 if (!require("pacman")) install.packages("pacman")
 p_load(here,
        tidyverse)
@@ -54,6 +57,7 @@ ggplot2::ggsave(
   BNP_senaste_ar <- BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$ar
   BNP_senaste_varde <- gsub("\\.",",",BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Sasongsransad_forandring)
   
+  # Prognoser BNP - ej PXweb
   source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_ek_prognoser_olika_prognosinstitut_ki.R")
   gg_BNP_prognos <- funktion_upprepa_forsok_om_fel( function() {diag_ekonomiska_prognoser_olika_progn_institut_ki(vald_variabel  = "BNP",
                                                                      output_mapp = Output_mapp,
@@ -64,7 +68,7 @@ ggplot2::ggsave(
                                                                      skriv_diagramfil  = spara_figur)
   }, hoppa_over = hoppa_over_felhantering)
   
-  # Konjunkturbarometern - 2 diagram
+  # Konjunkturbarometern - 2 diagram - ej PXweb
   source(here("Skript","diagram_konjunkturbarometern_konj.R"), encoding="UTF-8")
   gg_konjB <- funktion_upprepa_forsok_om_fel( function() {diagram_konjunkturbarometern(spara_figur = spara_figur, 
                                            output_mapp = Output_mapp,
@@ -116,6 +120,7 @@ ggplot2::ggsave(
   inflation_senaste_manad_ar <- paste(KPI_df %>% filter(månad==last(månad)) %>% select(manad_long,ar),collapse = " ")
   inflation_senaste_varde <- gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)
   
+  # Prognoser inflation - ej PXweb
   source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_ek_prognoser_olika_prognosinstitut_ki.R")
   gg_infl_prognos <- funktion_upprepa_forsok_om_fel( function() {diag_ekonomiska_prognoser_olika_progn_institut_ki(vald_variabel  = "KPI med fast bostadsränta (KPIF), årsgenomsnitt",
                                                                       output_mapp = Output_mapp,
@@ -221,7 +226,7 @@ ggplot2::ggsave(
   #                                       returnera_data = TRUE, 
   #                                       returnera_figur = TRUE)
   
-  # Konkurser - 2 figurer - enbart län
+  # Konkurser - 2 figurer - enbart län - ej PXweb
   source(here("Skript","diagram_konkurser_tillvaxtanalys_korrekt.R"), encoding="UTF-8")
   gg_konkurser <- funktion_upprepa_forsok_om_fel( function() {diagram_konkurser_TVA(spara_figur = spara_figur,
                                         variabel_klartext = "Antal anställda berörda av konkurser",
@@ -271,7 +276,7 @@ ggplot2::ggsave(
   #   filter(antal == sort(antal,decreasing = TRUE)[2]) %>% 
   #   .$antal
   
-  # Avregistrerade företag - 1 figur
+  # Avregistrerade företag - 1 figur - Ej PXweb
   source(here("Skript","diagram_avreg_ftg_Bolagsverket.R"), encoding="UTF-8")
   gg_avregistrerade <- funktion_upprepa_forsok_om_fel( function() {diagram_avregistrerade(spara_figur = spara_figur, 
                                               output_mapp = Output_mapp,
@@ -329,7 +334,8 @@ ggplot2::ggsave(
   arbetsloshet_lan_min <- arbetsmarknadsstatus %>% filter(varde==min(varde)) %>% dplyr::pull(region) %>% list_komma_och()
   arbetsloshet_lan_min_varde <- min(arbetsmarknadsstatus$varde) %>% formatC(format = "f", digits = 1) %>%  str_replace("\\.", "\\,")
   
-  source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_bas_arbloshet_jmfr_manad_1ar_tillbaka_region_scb.R")
+  # Arbetslöshet förändring jämfört med samma månad föregående år - 1 figur Inte uppdaterad ännu
+  source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_bas_arbloshet_jmfr_manad_1ar_tillbaka_region_scb.R") 
   gg_arb_ett_ar <- diag_bas_arbloshet_manad_jmfr_1ar_tillbaka_scb(output_mapp = Output_mapp,
                                                                   dela_upp_utrikes = FALSE,
                                                                   returnera_data = TRUE)
@@ -420,7 +426,7 @@ ggplot2::ggsave(
       Region = "20",
       HuvudFoT1m = "ekonomiskt stöd",
       Kon = "*",
-      Alder = "15-74 år",
+      Alder = "15–74 år",
       Fodelseregion = "*",
       ContentsCode = "antal totalt",
       Tid = "9999"
