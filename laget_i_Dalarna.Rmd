@@ -83,12 +83,12 @@ Senast uppdaterad: `r Sys.Date()`</i>
 Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvecklingen. Rapporten uppdateras regelbundet och ett antal viktiga trender och mönster sammanfattas här: 
 
 <ul>
-<li> Konjunkturinstitutets barometerindikator visar på ett normalt stämningsläge i den svenska ekonomin i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar`. Stämningsläget bland hushållen var dock svagare än normalt.</li>
-<li> Inflationen i `r inflation_senaste_manad_ar` var `r inflation_senaste_varde` procent, vilket är lägre än Riksbankens inflationsmål. Riksbankschefen Erik Thedéen varnar dock för att högre drivmedelspriser till följd av kriget i Mellanöstern kan leda till en ökad inflation ([Riksbanken](https://www.riksbank.se/sv/press-och-publicerat/nyheter-och-pressmeddelanden/nyheter/2026/thedeen-buffertar-ska-vara-anvandbara/){target="_blank"}). </li>
-<li> Priserna på småhus i Dalarna har ökat något på sistone, men är fortfarande lägre än de höga nivåerna under inledningen av 2022.</li>
+<li> Konjunkturinstitutets barometerindikator visar på ett starkare stämningsläge än normalt i den svenska ekonomin i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar`. Stämningsläget bland hushållen var dock något svagare än normalt.</li>
+<li> Inflationen i `r inflation_senaste_manad_ar` var `r inflation_senaste_varde` procent, vilket är lägre än Riksbankens inflationsmål. Enligt Riksbanken är osäkerheten om utvecklingen i Mellanöstern dock fortfarande stor och risken för att inflationen skall bli för hög kvarstår ([Riksbanken](https://www.riksbank.se/sv/press-och-publicerat/nyheter-och-pressmeddelanden/pressmeddelanden/2026/styrrantan-oforandrad-pa-175-procent5/)). </li>
+<li> Priserna på småhus i Dalarna har ökat på sistone, men är fortfarande lägre än de höga nivåerna under inledningen av 2022.</li>
 <li> Antalet nystartade företag i Dalarna har ökat på senare tid och låg i kvartal ett 2026 på den högsta nivån sedan 2021.</li>
-<li> Antalet anställda berörda av konkurser i Dalarna minskade tydligt i `r konkurser_senaste_manad` `r konkurser_senaste_ar`, jämfört med motsvarande månad året innan. </li>
-<li> Arbetslösheten i Dalarna, klart under genomsnittet i Sverige, minskade under inledningen av 2026, jämfört med motsvarande månader åren innan.</li>
+<li> Antalet anställda berörda av konkurser i Dalarna i `r konkurser_senaste_manad` `r konkurser_senaste_ar` var oförändrat, jämfört med motsvarande månad året innan. </li>
+<li> Arbetslösheten i Dalarna, klart under genomsnittet i Sverige, har minskat hittills under 2026, jämfört med motsvarande månader åren innan.</li>
 <li> Antalet personer med ekonomiskt stöd som huvudsaklig inkomstkälla har minskat i Dalarna på senare år. Minskningen är framförallt koncentrerad till utrikes födda.</li>
 </ul>
 
@@ -142,7 +142,7 @@ Ett annat sätt att mäta läget i ekonomin är genom de olika enkätundersökni
 </details>
 
 ### Generellt {-}
-I `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` var barometerindikatorn `r konjukturbarometern_senaste_varde`, vilket var en ökning jämfört med månaden innan. Indikatorn visar fortsatt på ett normalt stämningsläge i den svenska ekonomin (se [Konjunkturinstitutet](https://www.konj.se/publikationer/konjunkturbarometern/2026-06-26-tillverkningsindustrin-lyfter-barometerindikatorn/){target="_blank"}).
+I `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` var barometerindikatorn `r konjukturbarometern_senaste_varde`, vilket var en ökning jämfört med månaderna innan. Indikatorn visar på ett starkare stämningsläge än normalt i den svenska ekonomin (se [Konjunkturinstitutet](https://www.konj.se/publikationer/konjunkturbarometern/2026-07-30-barometerindikatorn-nu-starkare-an-normalt/){target="_blank"}).
 
 Att barometerindikatorn under en period hade ett lågt värde kan delvis förklaras av Rysslands invasion av Ukraina och de effekter denna haft på bland annat tillgången på råvaror. Historiskt varierar barometerindikatorn med konjunkturen. Större kriser i samhället, såsom finanskrisen 2008/2009 och coronapandemin 2020/2021, syns tydligt i diagrammet.
 
@@ -156,9 +156,9 @@ gg_konjB$barometern
 
 ### Bransch {-}
 
-Hur läget i ekonomin uppfattas varierar beroende på om det är företagen eller hushållen som tillfrågas. Hushållens syn på ekonomin förbättrades något i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` jämfört med månaden innan (en barometerindikator på `r konj_hushall_senaste`), men eftersom indikatorn understiger 100 är stämningsläget bland hushållen sämre än normalt (se [Konjunkturinstitutet](https://www.konj.se/publikationer/konjunkturbarometern/2026-06-26-tillverkningsindustrin-lyfter-barometerindikatorn/){target="_blank"}). 
+Hur läget i ekonomin uppfattas varierar beroende på om det är företagen eller hushållen som tillfrågas. Hushållens syn på ekonomin förbättrades i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` jämfört med månaden innan (en barometerindikator på `r konj_hushall_senaste`), men eftersom indikatorn understiger 100 är stämningsläget bland hushållen något sämre än normalt (se [Konjunkturinstitutet](https://www.konj.se/publikationer/konjunkturbarometern/2026-07-30-barometerindikatorn-nu-starkare-an-normalt/){target="_blank"}). 
 
-Bland branschgrupperna i diagrammet nedan hade `r konj_bransch_positiv` den mest positiva synen på ekonomin i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` (en barometerindikator på `r konj_bransch_positiv_varde`), medan företag inom `r ifelse(konj_bransch_negativ == "byggverksamhet","byggindustri",konj_bransch_negativ)` uppfattade den ekonomiska utvecklingen som sämre än normalt (en barometerindikator på `r konj_bransch_negativ_varde`).
+Bland branschgrupperna i diagrammet nedan hade `r konj_bransch_positiv` den mest positiva synen på ekonomin i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` (en barometerindikator på `r konj_bransch_positiv_varde`), medan företag inom `r ifelse(konj_bransch_negativ == "byggverksamhet","byggindustri",konj_bransch_negativ)` uppfattade den ekonomiska utvecklingen som mer normal (en barometerindikator på `r konj_bransch_negativ_varde`). Stämningsläget förbättrades i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` i samtliga branscher i diagrammet nedan, jämfört med månaden innan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_konjB$barometern_bransch)}
 gg_konjB$barometern_bransch
@@ -181,7 +181,7 @@ Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i
  
 </details>
 
-Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r inflation_max_manad_ar`, då den i Sverige uppgick till `r inflation_max_varde` procent. Därefter minskade inflationen avsevärt och var som lägst i september 2024 (1,1 procent). I  `r inflation_senaste_manad_ar` var inflationen `r inflation_senaste_varde` procent, vilket var klart högre än månaden innan men fortfarande lägre än Riksbankens inflationsmål. För en mer ingående förklaring av vad som påverkade inflationstakten i `r inflation_senaste_manad_ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/priser-och-ekonomiska-tendenser/priser/konsumentprisindex-kpi/pong/statistiknyhet/konsumentprisindex-kpi-maj-2026/){target="_blank"}. Riksbankschefen Erik Thedéen varnar dock för att högre drivmedelspriser till följd av kriget i Mellanöstern kan leda till en ökad inflation ([Riksbanken](https://www.riksbank.se/sv/press-och-publicerat/nyheter-och-pressmeddelanden/nyheter/2026/thedeen-buffertar-ska-vara-anvandbara/){target="_blank"}).
+Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r inflation_max_manad_ar`, då den i Sverige uppgick till `r inflation_max_varde` procent. Därefter har inflationen minskat avsevärt och var i  `r inflation_senaste_manad_ar` `r inflation_senaste_varde` procent, vilket var klart lägre än månaden innan och även tydligt lägre än Riksbankens inflationsmål. Enligt Riksbanken är osäkerheten om utvecklingen i Mellanöstern dock fortfarande stor och risken för att inflationen skall bli för hög kvarstår ([Riksbanken](https://www.riksbank.se/sv/press-och-publicerat/nyheter-och-pressmeddelanden/pressmeddelanden/2026/styrrantan-oforandrad-pa-175-procent5/){target="_blank"}). För en mer ingående förklaring av vad som påverkade inflationstakten i `r inflation_senaste_manad_ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/priser-och-ekonomiska-tendenser/priser/konsumentprisindex-kpi/pong/statistiknyhet/konsumentprisindex-kpi-juli-2026/){target="_blank"}.
 
 Den höga inflationstakten under framförallt 2022 och 2023 har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter coronapandemin och Rysslands invasion av Ukraina. Läs mer på  [Wikipedia](https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge){target="_blank"}.
 
@@ -196,7 +196,7 @@ Konjunkturinstitutet sammanställer på sin [hemsida](https://www.konj.se/publik
 gg_infl_prognos[[1]]
 ```
 
-Sedan sommaren 2024 har Riksbanken sänkt sin styrränta ett flertal gånger (den ligger nu på 1,75 procent). Detta påverkar räntorna på exempelvis bostadslån ([SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/finansmarknad/finansmarknadsstatistik/finansmarknadsstatistik/pong/statistiknyhet/finansmarknadsstatistik-augusti-2025/){target="_blank"}). I jämförelse med framförallt andra hälften av 2010-talet är dock styrräntan fortfarande relativt hög (se exempelvis [Ekonomifakta](https://www.ekonomifakta.se/sakomraden/finansiell-ekonomi/inflation-och-styrrantor/styrrantan_1208883.html){target="_blank"}). Vid sitt senaste möte (juni 2026) valde Riksbankens direktion att lämna styrräntan oförändrad, men flaggade att sannolikheten att räntan ska höjas till hösten har ökat sedan mötet i mars  ([Riksbanken](https://www.riksbank.se/sv/press-och-publicerat/nyheter-och-pressmeddelanden/pressmeddelanden/2026/styrrantan-oforandrad-pa-175-procent4/){target="_blank"}).
+Sedan sommaren 2024 har Riksbanken sänkt sin styrränta ett flertal gånger (den ligger nu på 1,75 procent). Detta påverkar räntorna på exempelvis bostadslån ([SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/finansmarknad/finansmarknadsstatistik/finansmarknadsstatistik/pong/statistiknyhet/finansmarknadsstatistik-augusti-2025/){target="_blank"}). I jämförelse med framförallt andra hälften av 2010-talet är dock styrräntan fortfarande relativt hög (se exempelvis [Ekonomifakta](https://www.ekonomifakta.se/sakomraden/finansiell-ekonomi/inflation-och-styrrantor/styrrantan_1208883.html){target="_blank"}). Vid sitt senaste möte (augusti 2026) valde Riksbankens direktion att lämna styrräntan oförändrad, men bedömer att sannolikheten för en räntehäjning senare i år kvarstår  ([Riksbanken](https://www.riksbank.se/sv/press-och-publicerat/nyheter-och-pressmeddelanden/pressmeddelanden/2026/styrrantan-oforandrad-pa-175-procent5/){target="_blank"}).
 
 # Bostadsmarknaden
 2010-talet kännetecknades av en bostadsmarknad där det mesta pekade uppåt. Låg inflation och låga räntor i kombination med fördelaktiga skatteregler medförde att såväl byggandet av bostäder, som bostadspriserna ökade kraftigt. Nationellt har bostadslånen ökat under en lång period och uppgick i Sverige 2025 till ungefär 160 procent av hushållens disponibla inkomst, vilket är nästan dubbelt så stor andel som under mitten av 1990-talet. Samtidigt har hushållens finansiella tillgångar ökat, vilket medfört att skulderna i relation till de finansiella tillgångarna minskat något under samma period [(SCB)](https://www.scb.se/hitta-statistik/temaomraden/sveriges-ekonomi/konjunkturindikatorer/finansmarknad/#62307){target="_blank"}. Det kan naturligtvis finnas skillnader regionalt, men vi saknar data för detta i nuläget.
@@ -247,14 +247,14 @@ gg_nybygg_bygglov$nybyggnation_20_arK1_K4
 
 Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige (se diagrammet nedan, där prisutvecklingen visas som ett index med januari 2010 som startvärde 100). Efter toppen i `r priser_max_manad_ar`, då ett småhus i Dalarna kostade ungefär `r priser_max_varde` miljoner kronor, har dock det genomsnittliga priset på småhus i länet minskat avsevärt och en botten nåddes i oktober 2023, när det kostade strax under 2,1 miljoner kronor i genomsnitt. Den tydliga minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medförde en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkade efterfrågan på bostäder. 
 
-Sedan 2023 har priserna på småhus i Dalarna delvis återhämtat sig och var i `r priser_senaste_manad_ar ` knappt `r priser_senaste_varde` miljoner kronor i genomsnitt. Detta var i linje med månaden innan.
+Sedan 2023 har priserna på småhus i Dalarna delvis återhämtat sig och var i `r priser_senaste_manad_ar ` drygt `r priser_senaste_varde` miljoner kronor i genomsnitt. Detta var en ökning jämfört med månaderna innan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_smahuspriser$smahuspriser_tidserie)}
 gg_smahuspriser$smahuspriser_tidserie
 ```
 
 ### Län {-}
-Det genomsnittliga priset på ett småhus varierar mellan Sveriges län och var i `r priser_senaste_manad_ar` högst i `r priser_senaste_max_region`, där ett småhus i genomsnitt kostade `r priser_senaste_max_varde` miljoner kronor. I Dalarna var priset klart lägre, i genomsnitt knappt `r priser_senaste_varde` miljoner kronor, vilket var klart under riksgenomsnittet. Av förklarliga skäl är bostadspriserna i normala fall högst i län med större städer, medan det omvända gäller för län med en mindre befolkning.
+Det genomsnittliga priset på ett småhus varierar mellan Sveriges län och var i `r priser_senaste_manad_ar` högst i `r priser_senaste_max_region`, där ett småhus i genomsnitt kostade `r priser_senaste_max_varde` miljoner kronor. I Dalarna var priset klart lägre, i genomsnitt drygt `r priser_senaste_varde` miljoner kronor, vilket var klart under riksgenomsnittet. Av förklarliga skäl är bostadspriserna i normala fall högst i län med större städer, medan det omvända gäller för län med en mindre befolkning.
 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_smahuspriser$smahuspriser_lan)}
@@ -305,7 +305,7 @@ Statistiken täcker företagskonkurser, det vill säga att ett företag försät
 
 Mönstret är ojämnt: under 2025 var antalet berörda vissa månader högre och andra månader lägre än motsvarande månad föregående år. I januari 2025 berördes närmare 150 personer, medan antalet i februari och mars var lägre än samma period året innan.  
 
-I `r konkurser_senaste_manad` `r konkurser_senaste_ar` berördes `r konkurser_senaste_antal` anställda av konkurser, vilket var `r ifelse(konkurser_senaste_antal > konkurser_foregaende_ar_antal,"fler","färre")` än de `r konkurser_foregaende_ar_antal` som berördes motsvarande månad `r konkurser_foregaende_ar`.
+I `r konkurser_senaste_manad` `r konkurser_senaste_ar` berördes `r konkurser_senaste_antal` anställda av konkurser, vilket var `r ifelse(konkurser_senaste_antal > konkurser_foregaende_ar_antal,"fler än",ifelse(konkurser_senaste_antal == konkurser_foregaende_ar_antal,"lika många som","färre än"))` de `r konkurser_foregaende_ar_antal` som berördes motsvarande månad `r konkurser_foregaende_ar`.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_konkurser$anstalla_berorda_konkurser_Dalarna)}
 gg_konkurser$anstalla_berorda_konkurser_Dalarna
@@ -365,7 +365,7 @@ gg_arb_ett_ar[[1]]
 ### Jämförelse över tid {-}
 Arbetslösheten, såväl i Dalarna som i Sverige, varierar över tid. I samband med coronapandemin ökade arbetslösheten och var som högst i Dalarna i `r arbetsloshet_tidserie_Dalarna_totalt_max_manad`  `r arbetsloshet_tidserie_Dalarna_totalt_max_ar`, då den uppgick till `r  arbetsloshet_tidserie_Dalarna_totalt_max_varde` procent. Därefter har arbetslösheten minskat och var `r arbetsloshet_tidserie_Dalarna_totalt_senaste_varde` procent i Dalarna i `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar`. 
 
-Under stora delar av 2025 var arbetslösheten i Dalarna på ungefär samma nivå som motsvarande månader 2023 och 2024, men mot slutet av året var den något lägre. Denna trend har fortsatt under inledningen av 2026, då arbetslösheten varit lägre än motsvarande månader åren innan.
+Under stora delar av 2025 var arbetslösheten i Dalarna på ungefär samma nivå som motsvarande månader 2023 och 2024, men mot slutet av året var den något lägre. Denna trend har fortsatt under 2026, då arbetslösheten varit lägre än motsvarande månader åren innan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_arbetsloshet_tidsserie$arbetslöshet_tidsserie_totalt_Dalarna)}
 gg_arbetsloshet_tidsserie$arbetslöshet_tidsserie_totalt_Dalarna
@@ -470,7 +470,7 @@ Med ekonomiskt stöd åsyftas försörjningsstöd och bistånd till livsföringe
 
 I Dalarna hade som mest närmare 5 000 personer mellan 15 och 74 år ekonomiskt stöd som huvudsaklig inkomstkälla under 2020, men därefter minskade antalet stadigt under en längre period. Anmärkningsvärt är även att antalet med stöd minskade trots att prisnivån i samhället ökade avsevärt under samma tidsperiod (se avsnittet om inflation). Exakt vad den utvecklingen beror på är oklart, men ett antal tänkbara orsaker diskuteras i följande <a href = "https://www.svt.se/nyheter/inrikes/darfor-minskar-antalet-hushall-som-far-socialbidrag-i-sverige-forskare-forklarar-orsaker-bakom" target="_blank">artikel</a>.
 
-Antalet personer som har ekonomiskt stöd som huvudsaklig inkomstkälla varierar en del mellan månaderna, men under 2025 var trenden nedåtgående jämfört med föregående år. I `r ek_stod_manad_ar_sista` hade drygt `r ek_stod_totalt_sista` personer det, vilket dock var fler än månaderna innan.
+Antalet personer som har ekonomiskt stöd som huvudsaklig inkomstkälla varierar en del mellan månaderna, men under 2025 var trenden nedåtgående jämfört med föregående år. I `r ek_stod_manad_ar_sista` hade färre än `r ek_stod_totalt_sista` personer det, vilket var färre än månaderna innan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_ek_stod$ekonomiskt_bistand_alla_Dalarna)}
 gg_ek_stod$ekonomiskt_bistand_alla_Dalarna
