@@ -73,9 +73,9 @@ ggplot2::ggsave(
   gg_konjB <- funktion_upprepa_forsok_om_fel( function() {diagram_konjunkturbarometern(spara_figur = spara_figur, 
                                            output_mapp = Output_mapp,
                                            diagram_capt = "Källa: Konjunkturinstitutet.\nBearbetning: Samhällsanalys, Region Dalarna.",
-                                           antal_etiketter_barometern = 36, # Intervall mellan visade etiketter (i månader)
+                                           antal_etiketter_barometern = 48, # Intervall mellan visade etiketter (i månader)
                                            legend_byrow = TRUE,
-                                           antal_etiketter_bransch = 36, # Intervall mellan visade etiketter (i månader)
+                                           antal_etiketter_bransch = 48, # Intervall mellan visade etiketter (i månader)
                                            startvarde_bransch = "1996-07",
                                            returnera_data = TRUE, 
                                            returnera_figur = TRUE)

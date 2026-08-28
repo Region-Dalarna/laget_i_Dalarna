@@ -83,7 +83,7 @@ Senast uppdaterad: `r Sys.Date()`</i>
 Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvecklingen. Rapporten uppdateras regelbundet och ett antal viktiga trender och mönster sammanfattas här: 
 
 <ul>
-<li> Konjunkturinstitutets barometerindikator visar på ett starkare stämningsläge än normalt i den svenska ekonomin i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar`. Stämningsläget bland hushållen var dock något svagare än normalt.</li>
+<li> Konjunkturinstitutets barometerindikator visar på ett starkare stämningsläge än normalt i den svenska ekonomin i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar`.</li>
 <li> Inflationen i `r inflation_senaste_manad_ar` var `r inflation_senaste_varde` procent, vilket är lägre än Riksbankens inflationsmål. Enligt Riksbanken är osäkerheten om utvecklingen i Mellanöstern dock fortfarande stor och risken för att inflationen skall bli för hög kvarstår ([Riksbanken](https://www.riksbank.se/sv/press-och-publicerat/nyheter-och-pressmeddelanden/pressmeddelanden/2026/styrrantan-oforandrad-pa-175-procent5/)). </li>
 <li> Priserna på småhus i Dalarna har ökat på sistone, men är fortfarande lägre än de höga nivåerna under inledningen av 2022.</li>
 <li> Antalet nystartade företag i Dalarna har ökat på senare tid och låg i kvartal ett 2026 på den högsta nivån sedan 2021.</li>
@@ -113,7 +113,7 @@ Det allmänna läget i en ekonomi kan beskrivas på flera sätt. I detta första
 
 Genom att titta på förändring i BNP kan man få en uppfattning om hur aktiviteten i den svenska ekonomin förändras över tid. Eftersom Sveriges ekonomi, precis som de flesta andra länders, växer i normala fall, ökar BNP under en majoritet av kvartalen. Vid större kriser i samhället kan dock BNP minska avsevärt, vilket också syns i figuren nedan. Under andra kvartalet 2020 minskade aktiviteten i den svenska ekonomin med nästan 8 procent jämfört med föregående kvartal, vilket kan tillskrivas coronapandemin. Återhämtningen gick dock snabbt, och redan efterföljande kvartal återhämtades en stor del av minskningen. Därefter följde ett par år då läget i Sveriges ekonomi kan beskrivas som gott, innan aktiviteten åter minskade i kvartal ett 2022. Sedan dess var läget länge relativt skakigt, med omväxlande positiva och negativa förändringar i BNP.
 
-I `r BNP_senaste_kvartal` `r BNP_senaste_ar` var förändringen i BNP `r BNP_senaste_varde` procent, dvs. aktiviteten i Sveriges ekonomi minskade jämfört med kvartalet innan. För en diskussion om vad som påverkade BNP under `r BNP_senaste_kvartal` `r BNP_senaste_ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/nationalrakenskaper/nationalrakenskaper/nationalrakenskaper-kvartals-och-arsberakningar/pong/statistiknyhet/nationalrakenskaper-1a-kvartalet-2026/){target="_blank"}.
+I `r BNP_senaste_kvartal` `r BNP_senaste_ar` var förändringen i BNP `r BNP_senaste_varde` procent, dvs. aktiviteten i Sveriges ekonomi ökade tydligt jämfört med kvartalet innan. Det var dessutom den största ökningen under ett enskilt kvartal sedan 2024. För en diskussion om vad som påverkade BNP under `r BNP_senaste_kvartal` `r BNP_senaste_ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/nationalrakenskaper/nationalrakenskaper/nationalrakenskaper-kvartals-och-arsberakningar/pong/statistiknyhet/nationalrakenskaper-2a-kvartalet-2026/){target="_blank"}.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center', fig.alt = make_alt(gg_BNP$BNP)}
 gg_BNP$BNP
@@ -142,7 +142,7 @@ Ett annat sätt att mäta läget i ekonomin är genom de olika enkätundersökni
 </details>
 
 ### Generellt {-}
-I `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` var barometerindikatorn `r konjukturbarometern_senaste_varde`, vilket var en ökning jämfört med månaderna innan. Indikatorn visar på ett starkare stämningsläge än normalt i den svenska ekonomin (se [Konjunkturinstitutet](https://www.konj.se/publikationer/konjunkturbarometern/2026-07-30-barometerindikatorn-nu-starkare-an-normalt/){target="_blank"}).
+I `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` var barometerindikatorn `r konjukturbarometern_senaste_varde`, vilket var en ökning jämfört med månaderna innan. Indikatorn visar på ett starkare stämningsläge än normalt i den svenska ekonomin (se [Konjunkturinstitutet](https://www.konj.se/publikationer/konjunkturbarometern/2026-08-28-stamningen-bland-hushallen-nu-pa-normal-niva/){target="_blank"}).
 
 Att barometerindikatorn under en period hade ett lågt värde kan delvis förklaras av Rysslands invasion av Ukraina och de effekter denna haft på bland annat tillgången på råvaror. Historiskt varierar barometerindikatorn med konjunkturen. Större kriser i samhället, såsom finanskrisen 2008/2009 och coronapandemin 2020/2021, syns tydligt i diagrammet.
 
@@ -156,9 +156,9 @@ gg_konjB$barometern
 
 ### Bransch {-}
 
-Hur läget i ekonomin uppfattas varierar beroende på om det är företagen eller hushållen som tillfrågas. Hushållens syn på ekonomin förbättrades i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` jämfört med månaden innan (en barometerindikator på `r konj_hushall_senaste`), men eftersom indikatorn understiger 100 är stämningsläget bland hushållen något sämre än normalt (se [Konjunkturinstitutet](https://www.konj.se/publikationer/konjunkturbarometern/2026-07-30-barometerindikatorn-nu-starkare-an-normalt/){target="_blank"}). 
+Hur läget i ekonomin uppfattas varierar beroende på om det är företagen eller hushållen som tillfrågas. Hushållens syn på ekonomin förbättrades i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` jämfört med månaden innan (en barometerindikator på `r konj_hushall_senaste`). Det är första gången sedan november 2024 som hushållens syn på ekonomin kan bedömas som normal (se [Konjunkturinstitutet](https://www.konj.se/publikationer/konjunkturbarometern/2026-08-28-stamningen-bland-hushallen-nu-pa-normal-niva/){target="_blank"}). 
 
-Bland branschgrupperna i diagrammet nedan hade `r konj_bransch_positiv` den mest positiva synen på ekonomin i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` (en barometerindikator på `r konj_bransch_positiv_varde`), medan företag inom `r ifelse(konj_bransch_negativ == "byggverksamhet","byggindustri",konj_bransch_negativ)` uppfattade den ekonomiska utvecklingen som mer normal (en barometerindikator på `r konj_bransch_negativ_varde`). Stämningsläget förbättrades i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` i samtliga branscher i diagrammet nedan, jämfört med månaden innan.
+Bland branschgrupperna i diagrammet nedan hade `r konj_bransch_positiv` den mest positiva synen på ekonomin i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar` (en barometerindikator på `r konj_bransch_positiv_varde`), medan företag inom `r ifelse(konj_bransch_negativ == "byggverksamhet","byggindustri",konj_bransch_negativ)` uppfattade den ekonomiska utvecklingen som mer normal (en barometerindikator på `r konj_bransch_negativ_varde`).
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_konjB$barometern_bransch)}
 gg_konjB$barometern_bransch
@@ -356,7 +356,7 @@ I en nationell jämförelse är arbetslösheten i Dalarna relativt låg. I `r ar
 gg_arbetsloshet_lan$arbetslosthet_senastear
 ```
 
-I jämförelse med motsvarande månad året innan har arbetslösheten minskat i en majoritet av Sveriges län. Ett tydligt undantag är `r storst_okning_arb_lan`, där arbetslösheten har ökat med `r storst_okning_arb_varde` procentenheter. Detta beror sannolikt delvis på att batteritillverkaren Northvolt, med betydande verksamhet i Skellefteå, har gått i konkurs, vilket haft påverkan på arbetsmarknaden i länet. I Dalarna `r ifelse(okning_arb_Dalarna_varde>0,"ökade","minskade")` arbetslösheten med `r str_replace(okning_arb_Dalarna_varde,"-","")` procentenheter under samma tidsperiod.
+I jämförelse med motsvarande månad året innan minskade arbetslösheten i `r arbetsloshet_manad_senaste` `r arbetsloshet_ar_senaste` i samtliga av Sveriges län utom Norrbotten, där den var oförändrad. I Dalarna `r ifelse(okning_arb_Dalarna_varde>0,"ökade","minskade")` arbetslösheten med `r str_replace(okning_arb_Dalarna_varde,"-","")` procentenheter.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_arb_ett_ar[[1]])}
 gg_arb_ett_ar[[1]]
@@ -371,7 +371,7 @@ Under stora delar av 2025 var arbetslösheten i Dalarna på ungefär samma nivå
 gg_arbetsloshet_tidsserie$arbetslöshet_tidsserie_totalt_Dalarna
 ```
 
-Om arbetslösheten delas upp i inrikes och utrikes födda framträder en delvis annorlunda bild. Bland inrikes födda (det vänstra diagrammet nedan) var arbetslösheten under stora delar av 2025 något högre än åren innan. I `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar` var arbetslösheten bland inrikes födda `r arbetsloshet_tidserie_Dalarna_inrikes_varde` procent i Dalarna, vilket dock var lägre än motsvarande månad året innan. Bland utrikes födda (det högra diagrammet nedan) har arbetslösheten minskat tydligt under samma tidsperiod, men är klart högre än bland inrikes födda (`r arbetsloshet_tidserie_Dalarna_utrikes_varde` procent i `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar`). 
+Om arbetslösheten delas upp i inrikes och utrikes födda framträder en delvis annorlunda bild. Bland inrikes födda (det vänstra diagrammet nedan) var arbetslösheten under stora delar av 2025 något högre än åren innan. I `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar` uppgick den till `r arbetsloshet_tidserie_Dalarna_inrikes_varde` procent i Dalarna, vilket var något högre än motsvarande månad året innan.. Bland utrikes födda (det högra diagrammet nedan) har arbetslösheten minskat tydligt under samma tidsperiod, men är klart högre än bland inrikes födda (`r arbetsloshet_tidserie_Dalarna_utrikes_varde` procent i `r arbetsloshet_tidsserie_manad` `r arbetsloshet_tidsserie_ar`). 
 
 Totalt var ungefär `r arblosa_inrikes` inrikes födda personer och ungefär `r arblosa_utrikes` utrikes födda personer i åldersgruppen `r arblosa_alder` arbetslösa i Dalarna i `r arblosa_manad` `r arblosa_ar`.
 
@@ -470,7 +470,7 @@ Med ekonomiskt stöd åsyftas försörjningsstöd och bistånd till livsföringe
 
 I Dalarna hade som mest närmare 5 000 personer mellan 15 och 74 år ekonomiskt stöd som huvudsaklig inkomstkälla under 2020, men därefter minskade antalet stadigt under en längre period. Anmärkningsvärt är även att antalet med stöd minskade trots att prisnivån i samhället ökade avsevärt under samma tidsperiod (se avsnittet om inflation). Exakt vad den utvecklingen beror på är oklart, men ett antal tänkbara orsaker diskuteras i följande <a href = "https://www.svt.se/nyheter/inrikes/darfor-minskar-antalet-hushall-som-far-socialbidrag-i-sverige-forskare-forklarar-orsaker-bakom" target="_blank">artikel</a>.
 
-Antalet personer som har ekonomiskt stöd som huvudsaklig inkomstkälla varierar en del mellan månaderna, men under 2025 var trenden nedåtgående jämfört med föregående år. I `r ek_stod_manad_ar_sista` hade färre än `r ek_stod_totalt_sista` personer det, vilket var färre än månaderna innan.
+Antalet personer som har ekonomiskt stöd som huvudsaklig inkomstkälla varierar en del mellan månaderna, men under 2025 var trenden nedåtgående jämfört med föregående år. I `r ek_stod_manad_ar_sista` hade drygt `r ek_stod_totalt_sista` personer det, vilket dock var fler än månaden innan (men färre än motsvarande månad året innan).
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_ek_stod$ekonomiskt_bistand_alla_Dalarna)}
 gg_ek_stod$ekonomiskt_bistand_alla_Dalarna
