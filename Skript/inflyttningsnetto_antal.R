@@ -1,3 +1,6 @@
+# Skript för att leverera data till Junia. Hon vill även ha antal, för att kunna summera flera Regso. Jag har däför valt att backa ut
+# flyttnettot i antal från sambandet: Flyttnetto (% t) = Flyttnetto (antal t)/befolkning (antal t-1)
+
 # test <- hamta_flytt_regso_region_bakgrund_tid_scb(region_vekt = "*",
 #                                                   bakgrund_klartext = c("män","kvinnor"),
 #                                                   cont_klartext = "Inrikes flyttnetto, procent")
@@ -14,22 +17,29 @@ p_load(here,
        openxlsx)
 
 
+#filnamn_utdata <- "G:/skript/jon/Mindre uppdrag/Älvdalen/Arbetsmarknad mm - Oktober 2025/"
+
+
 source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R", encoding = "utf-8", echo = FALSE)
-# Regso/Deso
+
+##############
+# Regso/Deso #
+##############
 
 # Befolkning
-# Kod som används för att kolla om det är möjligt att
 
 source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/refs/heads/main/hamta_bef_deso_region_alder_kon_tid_FolkmDesoAldKon_scb.R")
 test <- hamta_bef_deso_regso(kon_klartext = "totalt",tid_vekt = "*") %>%
-  filter(Antal != 0) # Felaktighet i hämtning av data då ett av Älvdalens regso blir en dublett
+  filter(Antal != 0) %>% # Felaktighet i hämtning av data då ett av Älvdalens regso blir en dublett
+    mutate(region = str_replace_all(region, "\\s+([)])", "\\1"))
   
 
 df_out <- test %>% 
   group_by(regionkod, kommunkod, ålder, kön) %>%  # drop the text fields %>%
   arrange(år, .by_group = TRUE) %>%
   mutate(Antal_1jan = lag(Antal)) %>%
-  ungroup()
+  ungroup() %>% 
+  select(regionkod,region,år,Antal,Antal_1jan)
 
 
 # suspect <- test %>%
@@ -48,8 +58,20 @@ flyttar <- hamta_flytt_regso_region_bakgrund_tid_scb(region_vekt = "20",
 df_bada <- df_out %>% 
   filter(år %in% unique(flyttar$år),
          !(is.na(Antal_1jan))) %>% 
-  left_join(flyttar %>% select(-variabel), by = c("regionkod","år")) %>% 
+  left_join(flyttar %>% select(-variabel), by = c("regionkod","region","år")) %>% 
     mutate(`Inrikes flyttnetto, antal` = round(`Antal_1jan` * `Inrikes flyttnetto, procent` / 100,0))
+
+# df_ut <- df_bada %>%
+#   select(regionkod, kommunkod, år, kön, ålder, Antal_1jan, `Inrikes flyttnetto, procent`, `Inrikes flyttnetto, antal`)
+# 
+# # Här sparas data som ska levereras till Junia om alternativet med att backa ut värden väljs
+# date_string <- format(Sys.Date(), "%Y_%m_%d")
+# # Sparar data
+# fil_ut <- glue("statistik_alvdalen_{date_string}.xlsx")
+# filnamn_utdata <- paste0(filnamn_utdata, fil_ut)
+# 
+# openxlsx::write.xlsx(spara_data,filnamn_utdata)
+
 
 # Data som hämtats för regso från Supercross. För att jämföra resultat med SCB:s officiella statistik.
 data_regso_supercross <- read.xlsx("G:/skript/jon/flyttar_kommun_2023.xlsx")
@@ -79,6 +101,10 @@ df_jamforing_regso <- df_jamforing_regso %>%
   left_join(df_bada_senaste , by = c("År" = "år", "Regionkod" = "regionkod")) 
 
 #  0-5 respektive 6-16 år
+
+###############################################################
+# Nedan användes för att testa om det fungerade på län/kommun #
+###############################################################
 
 # Län
 source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/refs/heads/main/hamta_bef_folkmangd_alder_kon_ar_scb.R")
