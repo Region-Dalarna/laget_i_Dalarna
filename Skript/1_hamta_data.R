@@ -353,6 +353,7 @@ ggplot2::ggsave(
                                                                        returnera_data = TRUE,
                                                                        legend_rader = 1,
                                                                        marginal_yaxis_facet = c(0.02,0.02),
+                                                                       valda_farger = rddiagram::diagramfarger("rus_sex"),
                                                                        diagram_facet = TRUE,
                                                                        start_ar ="2021",
                                                                        returnera_figur = TRUE)
