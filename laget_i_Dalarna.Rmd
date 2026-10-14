@@ -84,8 +84,8 @@ Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvec
 
 <ul>
 <li> Konjunkturinstitutets barometerindikator visar på ett starkare stämningsläge än normalt i den svenska ekonomin i `r konjukturbarometern_senaste_manad` `r konjukturbarometern_senaste_ar`.</li>
-<li> Inflationen i `r inflation_senaste_manad_ar` var `r inflation_senaste_varde` procent, vilket är lägre än Riksbankens inflationsmål. Riksbanken förväntar sig dock att inflationen kommer att stiga den närmaste tiden ([Riksbanken](https://www.riksbank.se/sv/press-och-publicerat/nyheter-och-pressmeddelanden/pressmeddelanden/2026/styrrantan-oforandrad-pa-175-procent6/){target="_blank"}). </li>
-<li> Priserna på småhus i Dalarna minskade något i augusti 2026, jämfört med månaderna innan.</li>
+<li> Inflationen i `r inflation_senaste_manad_ar` var `r inflation_senaste_varde` procent, vilket var en tydlig ökning jämfört med månaderna innan. Inflationen är dock fortfarande lägre än Riksbankens inflationsmål.</li>
+<li> Priserna på småhus i Dalarna ökade något i september 2026, jämfört med månaden innan.</li>
 <li> Antalet nystartade företag i Dalarna var något lägre under andra kvartalet 2026 än kvartalet innan, men klart högre än under kvartalen dessförinnan.</li>
 <li> Antalet anställda berörda av konkurser i Dalarna minskade i `r konkurser_senaste_manad` `r konkurser_senaste_ar` , jämfört med motsvarande månad året innan.</li>
 <li> Arbetslösheten i Dalarna, klart under genomsnittet i Sverige, har minskat hittills under 2026, jämfört med motsvarande månader åren innan.</li>
@@ -181,7 +181,7 @@ Ytterligare en faktor som är viktig för ett lands ekonomi är förändringen i
  
 </details>
 
-Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r inflation_max_manad_ar`, då den i Sverige uppgick till `r inflation_max_varde` procent. Därefter har inflationen minskat avsevärt och var i  `r inflation_senaste_manad_ar` `r inflation_senaste_varde` procent, vilket var i linje med månaden innan men tydligt lägre än Riksbankens inflationsmål. Enligt Riksbanken beror dock den låga inflationen till stor del på direkta effekter av tillfälliga finanspolitikska åtgärder och banken förväntar sig att inflationen kommer att stiga den närmaste tiden ([Riksbanken](https://www.riksbank.se/sv/press-och-publicerat/nyheter-och-pressmeddelanden/pressmeddelanden/2026/styrrantan-oforandrad-pa-175-procent6/){target="_blank"}). För en mer ingående förklaring av vad som påverkade inflationstakten i `r inflation_senaste_manad_ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/priser-och-ekonomiska-tendenser/priser/konsumentprisindex-kpi/pong/statistiknyhet/konsumentprisindex-kpi-augusti-2026/){target="_blank"}.
+Sedan Riksbankens inflationsmål infördes 1993 har inflationen, mätt som årsförändring i KPIF, legat klart under inflationsmålet på 2 procent under långa perioder. Från sin bottennivå i april 2020 ökade dock inflationen väldigt mycket och var som högst i `r inflation_max_manad_ar`, då den i Sverige uppgick till `r inflation_max_varde` procent. Därefter har inflationen minskat avsevärt och var i  `r inflation_senaste_manad_ar` `r inflation_senaste_varde` procent, vilket dock var tydligt högre än månaderna innan. För en mer ingående förklaring av vad som påverkade inflationstakten i `r inflation_senaste_manad_ar`, se [SCB](https://www.scb.se/hitta-statistik/statistik-efter-amne/priser-och-ekonomiska-tendenser/priser/konsumentprisindex-kpi/pong/statistiknyhet/konsumentprisindex-kpi-september-2026/){target="_blank"}.
 
 Den höga inflationstakten under framförallt 2022 och 2023 har ett antal olika förklaringar, däribland begränsningar i utbudet av varor när världen öppnade upp efter coronapandemin och Rysslands invasion av Ukraina. Läs mer på  [Wikipedia](https://en.wikipedia.org/wiki/2021%E2%80%932023_inflation_surge){target="_blank"}.
 
@@ -247,14 +247,14 @@ gg_nybygg_bygglov$nybyggnation_20_arK1_K4
 
 Priserna på småhus ökade stadigt under en lång period, såväl i Dalarna som i Sverige (se diagrammet nedan, där prisutvecklingen visas som ett index med januari 2010 som startvärde 100). Efter toppen i `r priser_max_manad_ar`, då ett småhus i Dalarna kostade ungefär `r priser_max_varde` miljoner kronor, har dock det genomsnittliga priset på småhus i länet minskat avsevärt och en botten nåddes i oktober 2023, när det kostade strax under 2,1 miljoner kronor i genomsnitt. Den tydliga minskningen kan delvis förklaras av Rysslands invasion av Ukraina, vilken bland annat medförde en kraftigt ökad inflation med efterföljande räntehöjningar, något som påverkade efterfrågan på bostäder. 
 
-Sedan 2023 har priserna på småhus i Dalarna delvis återhämtat sig och var i `r priser_senaste_manad_ar ` drygt `r priser_senaste_varde` miljoner kronor i genomsnitt. Detta var dock en minskning jämfört med månaderna innan.
+Sedan 2023 har priserna på småhus i Dalarna delvis återhämtat sig och var i `r priser_senaste_manad_ar ` drygt `r priser_senaste_varde` miljoner kronor i genomsnitt, vilket var något högre än månaden innan. 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_smahuspriser$smahuspriser_tidserie)}
 gg_smahuspriser$smahuspriser_tidserie
 ```
 
 ### Län {-}
-Det genomsnittliga priset på ett småhus varierar mellan Sveriges län och var i `r priser_senaste_manad_ar` högst i `r priser_senaste_max_region`, där ett småhus i genomsnitt kostade `r priser_senaste_max_varde` miljoner kronor. I Dalarna var priset klart lägre, i genomsnitt drygt `r priser_senaste_varde` miljoner kronor, vilket var klart under riksgenomsnittet. Av förklarliga skäl är bostadspriserna i normala fall högst i län med större städer, medan det omvända gäller för län med en mindre befolkning.
+Det genomsnittliga priset på ett småhus varierar mellan Sveriges län och var i `r priser_senaste_manad_ar` högst i `r priser_senaste_max_region`, där ett småhus i genomsnitt kostade `r priser_senaste_max_varde` miljoner kronor. I Dalarna var priset klart lägre, i genomsnitt drygt `r priser_senaste_varde` miljoner kronor, vilket också var klart under riksgenomsnittet. Av förklarliga skäl är bostadspriserna i normala fall högst i län med större städer, medan det omvända gäller för län med en mindre befolkning.
 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_smahuspriser$smahuspriser_lan)}
@@ -452,6 +452,14 @@ Arbetslösheten i Dalarnas kommuner är låg på många håll, där en majoritet
 karta
 
 ```
+
+I jämförelse med motsvarande månad året innan minskade arbetslösheten i `r arbetsloshet_manad_senaste` `r arbetsloshet_ar_senaste` i en majoritet av Dalarnas kommuner. Arbetslösheten minskade mest i `r storst_minskning_arb_kommun` (`r storst_minskning_arb_kommun_varde` procentenheter), men även i flera andra kommuner minskade arbetslösheten relativt mycket. Arbetslösheten ökade klart mest i `r storst_okning_arb_kommun` (`r storst_okning_arb_kommun_varde` procentenheter).
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_arb_ett_ar[[1]])}
+gg_arb_ett_ar_kommun[[1]]
+```
+
+
 
 # Befolkningens ekonomi
 

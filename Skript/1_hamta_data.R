@@ -18,7 +18,7 @@ p_load(here,
 hoppa_over_felhantering = TRUE
 
 # Skall data uppdateras? Annars läses data in från en sparad global environment-fil och rapporten knittas baserat på senast sparade data.
-uppdatera_data = FALSE
+uppdatera_data = TRUE
 
 if(uppdatera_data == TRUE){
 
@@ -345,6 +345,17 @@ ggplot2::ggsave(
   storst_okning_arb_varde <- forandring_arbetsloshet_df %>% filter(födelseregion == "totalt") %>% filter(diff == max(diff)) %>% .$diff %>% gsub("\\.",",",.)
   
   okning_arb_Dalarna_varde <- round(forandring_arbetsloshet_df %>% filter(region == "Dalarna", födelseregion == "totalt") %>% .$diff,1) %>% gsub("\\.",",",.)
+  
+  gg_arb_ett_ar_kommun <- diag_bas_arbloshet_manad_jmfr_1ar_tillbaka_scb(vald_region = "20",
+                                                                  output_mapp = Output_mapp,
+                                                                  dela_upp_utrikes = FALSE,
+                                                                  returnera_data = TRUE)
+  
+  storst_okning_arb_kommun <- forandring_arbetsloshet_df %>% filter(födelseregion == "totalt") %>% filter(diff == max(diff)) %>% .$region
+  storst_okning_arb_kommun_varde <- forandring_arbetsloshet_df %>% filter(födelseregion == "totalt") %>% filter(diff == max(diff)) %>% .$diff %>% gsub("\\.",",",.)
+  
+  storst_minskning_arb_kommun <- forandring_arbetsloshet_df %>% filter(födelseregion == "totalt") %>% filter(diff == min(diff)) %>% .$region
+  storst_minskning_arb_kommun_varde <- forandring_arbetsloshet_df %>% filter(födelseregion == "totalt") %>% filter(diff == min(diff)) %>% .$diff %>% gsub("\\.",",",.)
   
   # Arbetslöshet tidsserie - 1 figur - upp med nya pxweb
   source("https://raw.githubusercontent.com/Region-Dalarna/diagram/main/diagram_arbetsmarknadsstatus_tidsserie_SCB.R")
