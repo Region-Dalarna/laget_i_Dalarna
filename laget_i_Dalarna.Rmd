@@ -87,7 +87,7 @@ Denna rapport ger en bild av läget i Dalarna med fokus på den ekonomiska utvec
 <li> Inflationen i `r inflation_senaste_manad_ar` var `r inflation_senaste_varde` procent, vilket var en tydlig ökning jämfört med månaderna innan. Inflationen är dock fortfarande lägre än Riksbankens inflationsmål.</li>
 <li> Priserna på småhus i Dalarna ökade något i september 2026, jämfört med månaden innan.</li>
 <li> Antalet nystartade företag i Dalarna var något lägre under andra kvartalet 2026 än kvartalet innan, men klart högre än under kvartalen dessförinnan.</li>
-<li> Antalet anställda berörda av konkurser i Dalarna minskade i `r konkurser_senaste_manad` `r konkurser_senaste_ar` , jämfört med motsvarande månad året innan.</li>
+<li> Antalet konkurser i Dalarna minskade i `r konkurser_senaste_manad` `r konkurser_senaste_ar` , jämfört med motsvarande månad året innan.</li>
 <li> Arbetslösheten i Dalarna, klart under genomsnittet i Sverige, har minskat hittills under 2026, jämfört med motsvarande månader åren innan.</li>
 <li> Antalet personer med ekonomiskt stöd som huvudsaklig inkomstkälla har minskat i Dalarna på senare år. Minskningen är framförallt koncentrerad till utrikes födda.</li>
 </ul>
@@ -123,7 +123,7 @@ gg_BNP$BNP
 #knitr::include_graphics(here("Figurer", "BNP.png"))
 ```
 
-Konjunkturinstitutet sammanställer på sin [hemsida](https://www.konj.se/publikationer/prognosjamforelse/){target="_blank"} ett urval av aktuella prognoser för bland annat BNP (på helårsbasis). För år 2026 tror prognosinstituten i genomsnitt på en ökning av aktiviteten i Sveriges ekonomi på ungefär `r prognos_BNP_2026` procent, medan förväntningarna för år 2027 är något högre (en ökning med cirka `r prognos_BNP_2027` procent). 
+Konjunkturinstitutet sammanställer på sin [hemsida](https://www.konj.se/publikationer/prognosjamforelse/){target="_blank"} ett urval av aktuella prognoser för bland annat BNP (på helårsbasis). För år 2026 tror prognosinstituten i genomsnitt på en ökning av aktiviteten i Sveriges ekonomi på ungefär `r prognos_BNP_2026` procent, medan förväntningarna för år 2027 är något lägre (en ökning med cirka `r prognos_BNP_2027` procent). 
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_BNP_prognos[[1]])}
 gg_BNP_prognos[[1]]
@@ -301,14 +301,17 @@ k = k+1
 
 ### Månad {-}
 
-Statistiken täcker företagskonkurser, det vill säga att ett företag försätts i konkurs, oavsett företagsform (inklusive enskilda näringsidkare). Antalet anställda som berörs av konkurser varierar relativt mycket från månad till månad. Det gör det svårt att urskilja någon tydlig trend på månadsbasis, exempelvis kopplad till Rysslands invasion av Ukraina och dess effekter på Dalarnas ekonomi. 
+Konkurserna redovisas både per månad och per år (se flikarna ovan). Månadsdiagrammet visar den kortsiktiga rörelsen med en utjämnad trend, medan årsdiagrammet ger en tydligare bild av de långsiktiga svängningarna kopplade till konjunktur och kriser.
 
-Mönstret är ojämnt: under 2025 var antalet berörda vissa månader högre och andra månader lägre än motsvarande månad föregående år. I januari 2025 berördes närmare 150 personer, medan antalet i februari och mars var lägre än samma period året innan.  
+Statistiken täcker företagskonkurser, det vill säga att ett företag försätts i konkurs, oavsett företagsform (inklusive enskilda näringsidkare). Antalet konkurser i Dalarna varierar relativt mycket från månad till månad, vilket gör det svårt att utläsa någon tydlig utveckling från enskilda månader. Den utjämnade trendlinjen i diagrammet visar däremot hur den underliggande nivån har rört sig över tid. 
 
-I `r konkurser_senaste_manad` `r konkurser_senaste_ar` berördes `r konkurser_senaste_antal` anställda av konkurser, vilket var `r ifelse(konkurser_senaste_antal > konkurser_foregaende_ar_antal,"fler än",ifelse(konkurser_senaste_antal == konkurser_foregaende_ar_antal,"lika många som","färre än"))` de `r konkurser_foregaende_ar_antal` som berördes motsvarande månad `r konkurser_foregaende_ar`.
+Sett över hela perioden har antalet konkurser rört sig i tydliga vågor som följer konjunkturen, med högre nivåer i svagare tider och lägre i starkare. Trenden sjönk under mitten av 2000-talet, steg efter finanskrisen och har de senaste åren vänt uppåt igen.  
+
+I `r konkurser_senaste_manad` `r konkurser_senaste_ar` inträffade `r konkurser_senaste_antal` konkurser, vilket var `r ifelse(konkurser_senaste_antal > konkurser_foregaende_ar_antal,"fler än",ifelse(konkurser_senaste_antal == konkurser_foregaende_ar_antal,"lika många som","färre än"))` de `r konkurser_foregaende_ar_antal` som inträffade motsvarande månad `r konkurser_foregaende_ar`.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_konkurser$anstalla_berorda_konkurser_Dalarna)}
-gg_konkurser$anstalla_berorda_konkurser_Dalarna
+#gg_konkurser[[1]]
+gg_konkurser
 
 # Hittills i år har `r konkurser_df %>% filter(år==first(år)) %>% group_by(region,år) %>% .$antal %>% sum()` anställda berörts av konkurser i Dalarna, vilket är färre än de `r konkurser_df  %>% filter(år==(as.numeric(first(år))-1),månad%in%unique(konkurser_df  %>% filter(år==first(år)) %>% .$månad)) %>% group_by(region,år) %>% .$antal %>% sum()` som berördes under motsvarande period föregående år.
 
@@ -316,12 +319,12 @@ gg_konkurser$anstalla_berorda_konkurser_Dalarna
 
 ### År {-}
 
-Antalet anställda som berörs av konkurser varierar relativt mycket även från år till år, men tenderar att öka till följd av större ekonomiska kriser i samhället. Efter IT-bubblan runt millennieskiftet ökade antalet anställda berörda av konkurser tydligt och som mest berördes mer än 800 personer år 2003. Även under åren efter finanskraschen (2008–2009) berördes relativt många. På senare år har antalet ökat, framförallt sedan 2022. Detta hänger sannolikt delvis samman med Rysslands invasion av Ukraina och de effekter denna haft på Sveriges ekonomi (se avsnitt 1, "Det allmänna läget i ekonomin", ovan). En annan potentiell förklaring är att företag under coronapandemin (2020–2021) gavs möjlighet att skjuta upp sin betalning av skatter, ett anstånd som förlängdes under energikrisen. När de uppskjutna skatterna ska betalas, riskerar det leda till att företag går i konkurs [(SVT)](https://www.svt.se/nyheter/ekonomi/staten-kan-ga-miste-om-24-miljarder-efter-pandemin-allt-storre-foretag-gar-i-konkurs){target="_blank"}.
+Antalet konkurser i Dalarna varierar relativt mycket även från år till år, men tenderar att öka till följd av större ekonomiska kriser i samhället. Antalet var som högst i början av perioden, med 289 konkurser 1996 och 291 år 1997. Detta speglar sannolikt efterverkningarna av den djupa ekonomiska kris som drabbade Sverige i början av 1990-talet, även om statistiken inte sträcker sig längre tillbaka än 1996. En mindre uppgång syns kring 2002–2003 i samband med IT-bubblan, och antalet var förhöjt även under åren efter finanskraschen 2008–2009. På senare år har antalet ökat, framförallt sedan 2022. Detta hänger sannolikt delvis samman med Rysslands invasion av Ukraina och de effekter denna haft på Sveriges ekonomi (se avsnitt 1, “Det allmänna läget i ekonomin”, ovan). En annan potentiell förklaring är att företag under coronapandemin (2020–2021) gavs möjlighet att skjuta upp sin betalning av skatter, ett anstånd som förlängdes under energikrisen. När de uppskjutna skatterna ska betalas, riskerar det leda till att företag går i konkurs [(SVT)](https://www.svt.se/nyheter/ekonomi/staten-kan-ga-miste-om-24-miljarder-efter-pandemin-allt-storre-foretag-gar-i-konkurs){target="_blank"}.
 
-Hittills under `r konkurser_senaste_ar` har `r konkurser_hittils_i_ar` anställda berörts av konkurser i Dalarna, vilket är klart `r ifelse(konkurser_hittils_i_ar > konkurser_motsvarande_foregaende_ar,"fler","färre")` än de `r konkurser_motsvarande_foregaende_ar` som berördes under motsvarande period 2025.
+Hittills under `r konkurser_senaste_ar` har `r konkurser_hittils_i_ar` konkurser inträffat i Dalarna, vilket är klart `r ifelse(konkurser_hittils_i_ar > konkurser_motsvarande_foregaende_ar,"fler","färre")` än de `r konkurser_motsvarande_foregaende_ar` som inträffade under motsvarande period 2025.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_konkurser_ar$anstalla_berorda_konkurser_arDalarna)}
- gg_konkurser_ar$anstalla_berorda_konkurser_arDalarna
+ gg_konkurser_ar[[1]]
 
 ```
 

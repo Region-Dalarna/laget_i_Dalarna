@@ -226,14 +226,38 @@ ggplot2::ggsave(
   #                                       returnera_data = TRUE, 
   #                                       returnera_figur = TRUE)
   
-  # Konkurser - 2 figurer - enbart län - ej PXweb
-  source(here("Skript","diagram_konkurser_tillvaxtanalys_korrekt.R"), encoding="UTF-8")
-  gg_konkurser <- funktion_upprepa_forsok_om_fel( function() {diagram_konkurser_TVA(spara_figur = spara_figur,
-                                        variabel_klartext = "Antal anställda berörda av konkurser",
-                                        output_mapp = Output_mapp,
-                                        returnera_data = TRUE,
-                                        returnera_figur = TRUE)
-  }, hoppa_over = hoppa_over_felhantering)
+  # Konkurser månadsbasis med trend
+  
+  # source(here("Skript","diagram_konkurser_tillvaxtanalys_korrekt.R"), encoding="UTF-8")
+  # gg_konkurser <- funktion_upprepa_forsok_om_fel( function() {diagram_konkurser_TVA(spara_figur = spara_figur,
+  #                                       variabel_klartext = "Antal konkurser",
+  #                                       output_mapp = Output_mapp,
+  #                                       returnera_data = TRUE,
+  #                                       returnera_figur = TRUE)
+  # }, hoppa_over = hoppa_over_felhantering)
+  
+  source(here("Skript","func_plotta_med_trend.R"), encoding="UTF-8")
+  source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/refs/heads/main/hamta_konkurser_manad_lan_variabel_konk_1996_tva.R")
+  
+  konkurser_df <- hamta_konkurser_manad_lan_variabel_tva(
+    region_vekt = "20", 
+    variabel_klartext = "Antal konkurser",
+    manad_klartext = "*") |>  
+    rename(tid = månad,
+           antal = matches("konkurser", ignore.case = TRUE)) |>
+    mutate(år = str_sub(tid, 1, 4),
+           månad = format(as.Date(paste(år, str_sub(tid, 6,7), "1", sep = "-")), "%b"),
+           manad_long=format(as.Date(paste(år, str_sub(tid, 6,7),"1", sep = "-")), "%B")) 
+  
+  
+  gg_konkurser <-  plotta_med_trend(konkurser_df, tid, antal,
+                                titel = "Antal konkurser i Dalarna per månad",
+                                y_titel = "Antal",
+                                enhet_txt = "Konkurser",
+                                span = 0.3,            # slätare trend för en redan jämn serie
+                                fran_noll = TRUE,
+                                x_format = "manad", intervall = 48,   # etikett var 6:e månad
+                                kalla_txt = "Källa: Tillväxtverket\nBearbetning: Samhällsanalys, Region Dalarna")
   
   konkurser_senaste_manad <- last(konkurser_df$manad_long)
   konkurser_senaste_ar <- last(konkurser_df$år)
@@ -248,7 +272,7 @@ ggplot2::ggsave(
   
   source(here("Skript","diagram_konkurser_tillvaxtanalys_korrekt_ar.R"), encoding="UTF-8")
   gg_konkurser_ar <- funktion_upprepa_forsok_om_fel( function() {diagram_konkurser_TVA_ar(spara_figur = spara_figur,
-                                           variabel_klartext = "Antal anställda berörda av konkurser",
+                                           variabel_klartext = "Antal konkurser",
                                            output_mapp = Output_mapp,
                                            returnera_data = TRUE,
                                            returnera_figur = TRUE)
