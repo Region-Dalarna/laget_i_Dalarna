@@ -300,27 +300,71 @@ ggplot2::ggsave(
   #   filter(antal == sort(antal,decreasing = TRUE)[2]) %>% 
   #   .$antal
   
-  # Avregistrerade företag - 1 figur - Ej PXweb
-  source(here("Skript","diagram_avreg_ftg_Bolagsverket.R"), encoding="UTF-8")
-  gg_avregistrerade <- funktion_upprepa_forsok_om_fel( function() {diagram_avregistrerade(spara_figur = spara_figur, 
-                                              output_mapp = Output_mapp,
-                                              legend_rader = 1,
-                                              returnera_data = TRUE, 
-                                              returnera_figur = TRUE)
+  # Avregistrerade företag - 1 figur - Ej i rapporten längre. 
+  # source(here("Skript","diagram_avreg_ftg_Bolagsverket.R"), encoding="UTF-8")
+  # gg_avregistrerade <- funktion_upprepa_forsok_om_fel( function() {diagram_avregistrerade(spara_figur = spara_figur, 
+  #                                             output_mapp = Output_mapp,
+  #                                             legend_rader = 1,
+  #                                             returnera_data = TRUE, 
+  #                                             returnera_figur = TRUE)
+  # }, hoppa_over = hoppa_over_felhantering)
+  # 
+  # avregistrerade_senaste_ar <- max(antal_avregistreringar_df$ar)
+  # avregistrerade_senaste_manad <- tolower(last(antal_avregistreringar_df$manad))
+  # avregisterade_senaste_varde <- last(antal_avregistreringar_df$antal)
+  # avregistrerade_foregaende_ar_varde <- antal_avregistreringar_df %>% filter(manad == last(manad), ar == sort(unique(ar), decreasing = TRUE)[2]) %>% dplyr::pull(antal)
+  # 
+  # antal_avregistreringar_foregaende_ar <- sum(antal_avregistreringar_df %>% filter(ar == sort(unique(ar), decreasing = TRUE)[2]) %>% dplyr::pull(antal))
+  # antal_avregistreringar_innevarande_ar <- sum(antal_avregistreringar_df %>% filter(ar == sort(unique(ar), decreasing = TRUE)[1]) %>% dplyr::pull(antal))
+  # 
+  # # Summerar antal avregristeringar föregående år (upp till den senaste månaden)
+  # manader_hittils_i_ar_avreg <- antal_avregistreringar_df %>% filter(ar == sort(unique(ar), decreasing = TRUE)[1]) %>% .$manad
+  # antal_avregistreringar_motsvarande_foregaende_ar <- sum(antal_avregistreringar_df %>% filter(ar == sort(unique(ar), decreasing = TRUE)[2], manad %in% manader_hittils_i_ar_avreg) %>% dplyr::pull(antal))
+  # 
+  
+  # Nyregistrerade personbilar 2 figurer
+  fordon_df <- pxweb2r::pxweb2_get_data(
+    table = "TAB3277",
+    query = list(
+      Region       = "20",
+      Drivmedel    = NA,      # alla drivmedel -> summeras till total nedan
+      ContentsCode = "*",
+      Tid          = "*"
+    ), quiet = TRUE) |>
+    rename(tid = månad,
+           antal = value) |>
+    mutate(år = str_sub(tid, 1, 4),
+           månad = format(as.Date(paste(år, str_sub(tid, 6,7), "1", sep = "-")), "%b"),
+           manad_long=format(as.Date(paste(år, str_sub(tid, 6,7),"1", sep = "-")), "%B")) 
+  
+  gg_fordon <- funktion_upprepa_forsok_om_fel( function() {plotta_med_trend(fordon_df, tid, antal,
+                                titel = "Nyregistrerade personbilar i Dalarna per månad",
+                                y_titel = "Antal",
+                                enhet_txt = "Personbilar",
+                                span = 0.3,
+                                fran_noll = TRUE,
+                                x_format = "manad", intervall = 24, gles_slut = TRUE,
+                                kalla_txt = "Källa: SCB (Trafikanalys)\nBearbetning: Samhällsanalys, Region Dalarna")
   }, hoppa_over = hoppa_over_felhantering)
   
-  avregistrerade_senaste_ar <- max(antal_avregistreringar_df$ar)
-  avregistrerade_senaste_manad <- tolower(last(antal_avregistreringar_df$manad))
-  avregisterade_senaste_varde <- last(antal_avregistreringar_df$antal)
-  avregistrerade_foregaende_ar_varde <- antal_avregistreringar_df %>% filter(manad == last(manad), ar == sort(unique(ar), decreasing = TRUE)[2]) %>% dplyr::pull(antal)
+  fordon_senaste_manad <- last(fordon_df$manad_long)
+  fordon_senaste_ar <- last(fordon_df$år)
+  fordon_senaste_antal <- fordon_df %>% filter(år==last(år),manad_long == last(manad_long)) %>% group_by(region,år) %>% .$antal %>% sum()
   
-  antal_avregistreringar_foregaende_ar <- sum(antal_avregistreringar_df %>% filter(ar == sort(unique(ar), decreasing = TRUE)[2]) %>% dplyr::pull(antal))
-  antal_avregistreringar_innevarande_ar <- sum(antal_avregistreringar_df %>% filter(ar == sort(unique(ar), decreasing = TRUE)[1]) %>% dplyr::pull(antal))
+  fordon_hittils_i_ar <- fordon_df %>% filter(år==last(år)) %>% group_by(region,år) %>% .$antal %>% sum()
+  manader_hittils_i_ar <- fordon_df %>% filter(år==last(år)) %>% .$månad
+  fordon_motsvarande_foregaende_ar <- fordon_df %>% filter(år==(as.numeric(last(år))-1),månad %in%manader_hittils_i_ar) %>% group_by(region,år) %>% .$antal %>% sum()
   
-  # Summerar antal avregristeringar föregående år (upp till den senaste månaden)
-  manader_hittils_i_ar_avreg <- antal_avregistreringar_df %>% filter(ar == sort(unique(ar), decreasing = TRUE)[1]) %>% .$manad
-  antal_avregistreringar_motsvarande_foregaende_ar <- sum(antal_avregistreringar_df %>% filter(ar == sort(unique(ar), decreasing = TRUE)[2], manad %in% manader_hittils_i_ar_avreg) %>% dplyr::pull(antal))
- 
+  fordon_foregaende_ar <- as.character(as.numeric(last(fordon_df$år))-1)
+  fordon_foregaende_ar_antal <- fordon_df  %>% filter(år==(as.numeric(last(år))-1),manad_long == last(manad_long)) %>% group_by(region,år) %>% .$antal %>% sum()
+  
+  source(here("Skript","diagram_nyreg_bil_trafikanalys.R"), encoding="UTF-8")
+  gg_fordon_ar <- funktion_upprepa_forsok_om_fel( function() {diagram_nyreg_bil_TV_ar(spara_figur = spara_figur,
+                                                                                      output_mapp = Output_mapp,
+                                                                                      returnera_data = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
+  
+  
   # Nystartade företag - 2 figurer
   source(here("Skript","diagram_nystartade_ftg_tillvaxtanalys_korrekt.R"), encoding="UTF-8")
   gg_nystartade <- funktion_upprepa_forsok_om_fel( function() {diagram_nystartade(spara_figur = spara_figur, 

@@ -31,7 +31,7 @@ plotta_med_trend <- function(data, tidskol, vardekol,
                              intervall = 1,
                              gles_slut = FALSE,
                              enhet_txt = "Observerat värde",
-                             farg_data  = rddiagram::diagramfarger("rus_sex")[4],
+                             farg_data  = rddiagram::diagramfarger("rus_sex")[1],
                              farg_trend = "black",
                              kalla_txt = "Källa: ...\nBearbetning: Samhällsanalys, Region Dalarna") {
   

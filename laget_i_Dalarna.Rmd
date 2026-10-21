@@ -262,13 +262,13 @@ gg_smahuspriser$smahuspriser_lan
 
 ```
 
-# Företagandet
+# Företagande och ekonomisk aktivitet
 ```{r, include = FALSE}
 k=1
 ```
-Läget för företagen i länet hänger naturligtvis samman med läget i ekonomin i stort. Vid sämre tider konsumerar hushållen mindre och efterfrågan på många företags produkter och tjänster minskar, vilket i förlängningen kan leda till att företag begärs i konkurs eller avregistreras. Det är även möjligt att sämre tider medför att det blir mindre attraktivt att starta nya företag.
+Läget för företagen i länet hänger naturligtvis samman med läget i ekonomin i stort. Vid sämre tider konsumerar hushållen mindre och efterfrågan på många företags produkter och tjänster minskar, vilket i förlängningen kan leda till att företag begärs i konkurs eller avregistreras. Det är även möjligt att sämre tider medför att det blir mindre attraktivt att starta nya företag. En annan indikator som brukr följa konjunkturen relativt väl är nyregistrerade personbilar. När hushåll och företag känner sig ekonomiskt trygga tenderar de att investera i nya fordon, medan bilköp ofta skjuts upp i osäkra tider. Nyregistreringar ger därför en bild av den ekonomiska aktiviteten och framtidstron i länet. SCB använder av samma skäl nyregistrerade fordon som en av indikatorerna i sin nationella konjunkturklocka.
 
-I det här avsnittet undersöks först hur många nya företag som startas i Dalarna, därefter analyseras hur många anställda som berörs av konkurser i länet och hur många företag som avregistreras.
+I det här avsnittet undersöks först hur många nya företag som startas i Dalarna, därefter analyseras hur många anställda som berörs av konkurser i länet och hur många nya personbilar som registreras.
 
 ## Nystartade företag
 
@@ -329,15 +329,30 @@ Hittills under `r konkurser_senaste_ar` har `r konkurser_hittils_i_ar` konkurser
 ```
 
 
-## Avregistrerade företag
+## Nyregistrering av personbilar {.tabset}
 
-Ett potentiellt alternativ till att begära ett företag i konkurs är att istället avregistrera det. Antalet avregistrerade företag tenderar att följa ett visst säsongsmönster, med fler avregistreringar i början och slutet av året. Det är dock svårt att se någon långsiktig trend, då ungefär lika många företag (drygt 1000) avregistreras varje år. Undantaget var 2021, när drygt 1200 företag avregistrerades. Detta verkar i första hand bero på att många avregistrerades i januari 2021, av oklar anledning.
+### Månad {-}
 
-I `r avregistrerade_senaste_manad` `r avregistrerade_senaste_ar` avregistrerades `r avregisterade_senaste_varde` företag i Dalarna, jämfört med `r avregistrerade_foregaende_ar_varde` samma månad året innan. Hittills under `r avregistrerade_senaste_ar` har `r antal_avregistreringar_innevarande_ar` företag i Dalarna avregistrerats, att jämföra med `r antal_avregistreringar_motsvarande_foregaende_ar` under motsvarande period föregående år.
+Antalet nyregistrerade personbilar i Dalarna varierar mycket från månad till månad, vilket gör det svårt att utläsa någon tydlig utveckling från enskilda månader. Den utjämnade trendlinjen i diagrammet visar däremot hur den underliggande nivån har rört sig över tid.
 
-```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_avregistrerade$avreg_manad)}
-gg_avregistrerade$avreg_manad
+Sett över hela perioden steg antalet nyregistreringar efter finanskrisen och nådde en topp omkring 2016-2017, för att därefter sjunka tillbaka. På senare år har nivån legat lägre än under mitten av 2010-talet, men en viss ökning kan skönjas på sistone. De kraftiga topparna 2018 och 2020 beror på regeländringar i det så kallade bonus malus-systemet, som ledde till att många bilar registrerades strax innan skatteförändringar trädde i kraft. Dessa toppar speglar alltså inte den underliggande efterfrågan.En tydlig ökning i försäljningen syns även i samband med att bonusen på elbilar togs bort i november 2022.
+
+I `r fordon_senaste_manad` `r fordon_senaste_ar` nyregistrerades `r fordon_senaste_antal` personbilar i Dalarna, vilket var fler än de `r fordon_foregaende_ar_antal` som registrerades motsvarande månad `r fordon_foregaende_ar`.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_konkurser_ar$anstalla_berorda_konkurser_arDalarna)}
+gg_fordon
 ```
+
+### År {-}
+
+Antalet nyregistrerade personbilar var som högst i början av den undersökta tidsperioden (2005-2006) samt 2015-2017, med 8000 - 9000 registreringar per år. En tydlig minskning skedde i samband med finanskrisen 2008-2009 och även efter 2019 har nivån sjunkit märkbart och legat kring 4000 nyregistreringar per år de senaste åren. Nedgången speglar bland annat [svagare konjunktur / högre priser och räntor / förändrade resevanor – välj det som stämmer].
+
+Hittills under 2026 har `r fordon_hittils_i_ar` personbilar nyregistrerats i Dalarna, vilket är klart fler än de `r fordon_motsvarande_foregaende_ar` som registrerades under motsvarande period 2025.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_konkurser_ar$anstalla_berorda_konkurser_arDalarna)}
+gg_fordon_ar$antal_nyregistrerade_personbilar_ar_Dalarna
+```
+
 
 # Arbetsmarknaden
 Som mått på läget i Dalarna är arbetslösheten sannolikt en relativt trögrörlig indikator. Detta eftersom företag i första läget varslar personal, för att därefter eventuellt göra större uppsägningar. Det är även viktigt att notera att arbetslösheten varierar mellan olika grupper i samhället, exempelvis baserat på personers kön, utbildningsbakgrund eller huruvida de är födda i Sverige. För en fördjupad diskussion om detta, se exempelvis Region Dalarnas rapport ["Kvinnor och män i Dalarna"](https://samhallsanalys.regiondalarna.se/kvinnor_man){target="_blank"}.
