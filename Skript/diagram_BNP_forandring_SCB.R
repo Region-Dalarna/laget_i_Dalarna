@@ -3,7 +3,9 @@ diagram_BNP_SCB <- function(output_mapp = "G:/Samhällsanalys/Statistik/Närings
                                   returnera_data = FALSE, # Skall data returneras
                                   returnera_figur = TRUE, # Skall diagram returneras
                                   valda_farger = diagramfarger("rus_sex"),
-                                  startar = "2016"){# Startvärde för diagrammet.Finns från 1980
+                                  startar = "2016", # Startvärde för diagrammet.Finns från 1980
+                                  visa_etikett = 8, # Hur många etiketter skall visas. 8 ger vartannat år
+                                  x_axis_lutning = 45){ # Vilken lutning skall vi ha på x-axelsn "ticks"
 
   if (!require("pacman")) install.packages("pacman")
   p_load(tidyverse)
@@ -67,14 +69,15 @@ diagram_BNP_SCB <- function(output_mapp = "G:/Samhällsanalys/Statistik/Närings
                                      filter(ar>=startar) ,
                                    skickad_x_var = "kvartal_ar", 
                                    skickad_y_var = "Sasongsransad_forandring",
-                                   manual_x_axis_text_vjust=1,
-                                   manual_x_axis_text_hjust=1,
+                                   # manual_x_axis_text_vjust=1,
+                                   # manual_x_axis_text_hjust=1,
                                    stodlinjer_avrunda_fem = TRUE,
                                    manual_color = valda_farger,
                                    diagram_titel = diagramtitel,
                                    x_axis_sort_value = FALSE,
                                    manual_y_axis_title = "procent",
-                                   x_axis_visa_var_xe_etikett = 8,
+                                   x_axis_lutning = x_axis_lutning,
+                                   x_axis_visa_var_xe_etikett = visa_etikett,
                                    diagram_capt =  diagram_capt,
                                    output_mapp = output_mapp,
                                    filnamn_diagram = diagramfilnamn,

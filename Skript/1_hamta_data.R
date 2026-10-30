@@ -40,7 +40,10 @@ if(uppdatera_data == TRUE){
   gg_BNP <- funktion_upprepa_forsok_om_fel( function() {diagram_BNP_SCB(spara_figur = spara_figur, 
                             output_mapp = Output_mapp,
                             returnera_data = TRUE, 
-                            returnera_figur = TRUE)
+                            returnera_figur = TRUE,
+                            startar = "2000",
+                            visa_etikett = 16,
+                            x_axis_lutning = 90)
   }, hoppa_over = hoppa_over_felhantering)
 
 ggplot2::ggsave(
@@ -82,11 +85,11 @@ ggplot2::ggsave(
   }, hoppa_over = hoppa_over_felhantering)
     
   
-  ggplot2::ggsave(
-    filename = here("Figurer", "barometern.svg"),  # for HTML
-    plot = gg_konjB$barometern,
-    width = 8, height = 5, units = "in"
-  )
+  # ggplot2::ggsave(
+  #   filename = here("Figurer", "barometern.svg"),  # for HTML
+  #   plot = gg_konjB$barometern,
+  #   width = 8, height = 5, units = "in"
+  # )
   
   konjukturbarometern_senaste_manad <- last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$manad_long
   konjukturbarometern_senaste_ar <- last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$ar
@@ -358,8 +361,31 @@ ggplot2::ggsave(
   fordon_foregaende_ar <- as.character(as.numeric(last(fordon_df$år))-1)
   fordon_foregaende_ar_antal <- fordon_df  %>% filter(år==(as.numeric(last(år))-1),manad_long == last(manad_long)) %>% group_by(region,år) %>% .$antal %>% sum()
   
+  # Tar ut data för elbilar
+  alla_tid   <- sort(unique(fordon_df$tid))
+  sista      <- alla_tid[length(alla_tid)]
+  for_12man  <- alla_tid[length(alla_tid) - 12]
+  
+  fordon_df_el <- pxweb2r::pxweb2_get_data(
+    table = "TAB3277",
+    query = list(
+      Region       = "20",
+      Drivmedel    = "*",      # alla drivmedel -> summeras till total nedan
+      ContentsCode = "*",
+      Tid          = c(for_12man,sista)
+    ), quiet = TRUE) %>%
+    group_by(månad) %>%
+    summarise(
+      totalt     = sum(value),
+      el   = sum(value[drivmedel %in% c("el")]),
+      andel      = el / totalt,
+      .groups = "drop"
+    ) %>%
+    mutate(andel_proc = round(100 * andel, 0))
+  
   source(here("Skript","diagram_nyreg_bil_trafikanalys.R"), encoding="UTF-8")
-  gg_fordon_ar <- funktion_upprepa_forsok_om_fel( function() {diagram_nyreg_bil_TV_ar(spara_figur = spara_figur,
+  gg_fordon_ar <- funktion_upprepa_forsok_om_fel( function() {diagram_nyreg_bil_TV_ar(region_vekt = "20",
+                                                                                      spara_figur = spara_figur,
                                                                                       output_mapp = Output_mapp,
                                                                                       returnera_data = TRUE)
   }, hoppa_over = hoppa_over_felhantering)
