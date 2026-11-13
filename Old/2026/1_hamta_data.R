@@ -1,0 +1,593 @@
+# Skript som hämtar data och skapar figurer/variabler som används för att skapa markdown-rapporten. Det finns två alternativ för skriptet:
+
+# 1: Kör skriptet utan att uppdatera data - sätt variabeln uppdatera_data till FALSE. Då läses den senast sparade versionen av R-studio global environment in.
+# Detta är ett bra alternativ om man enbart vill ändra text eller liknande, men inte uppdatera data.
+
+# 2: Uppdatera data - sätt variabeln uppdatera_data till FALSE. Då uppdateras data, alla figurer skapas på nytt och en ny enviroment sparas.
+# Tar längre tid (ett par minuter) och medför en risk att text inte längre är aktuell då figurer har ändrats.
+
+# Återstår PXweb2:
+# Arbetslöshet förändring jämfört med samma månad föregående år
+
+if (!require("pacman")) install.packages("pacman")
+p_load(here,
+       tidyverse)
+
+# OBS! Ska sättas till FALSE när skriptet går i produktion - men kan stängas av genom att sätta till TRUE för att se att alla skript fungerar som de ska
+# skriptet är till för att hantera rcurl-fel och inte vanliga fel som ju inte blir bättre av att man försöker flera gånger. =)
+hoppa_over_felhantering = TRUE
+
+# Skall data uppdateras? Annars läses data in från en sparad global environment-fil och rapporten knittas baserat på senast sparade data.
+uppdatera_data = TRUE
+
+if(uppdatera_data == TRUE){
+
+  cat("Hämtning av data påbörjad\n\n")
+  start_time <- Sys.time()
+  
+  source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R")
+  source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_pxweb2.R")
+  
+  Output_mapp = here("Figurer","/")
+  spara_figur = TRUE
+  
+  ######################################################
+  ### Uppdateras automatiskt vid körning av skript   ###
+  ######################################################
+  
+  # BNP - 1 diagram - upp med nya PXweb
+  source(here("Skript","diagram_BNP_forandring_SCB.R"), encoding="UTF-8")
+  gg_BNP <- funktion_upprepa_forsok_om_fel( function() {diagram_BNP_SCB(spara_figur = spara_figur, 
+                            output_mapp = Output_mapp,
+                            returnera_data = TRUE, 
+                            returnera_figur = TRUE,
+                            startar = "2000",
+                            visa_etikett = 16,
+                            x_axis_lutning = 90)
+  }, hoppa_over = hoppa_over_felhantering)
+
+ggplot2::ggsave(
+  here::here("Figurer", "BNP.png"),
+  plot = gg_BNP$BNP,
+  width = 8, height = 5, units = "in", dpi = 96 # matches HTML CSS pixel density
+)
+
+
+  
+  #rm(gg_BNP)
+  
+  BNP_senaste_kvartal <- BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$kvartal
+  BNP_senaste_ar <- BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$ar
+  BNP_senaste_varde <- gsub("\\.",",",BNP_df %>% filter(ar>"2015") %>% filter(användning =="- BNP till marknadspris") %>% filter(ar_kvartal==last(ar_kvartal)) %>% .$Sasongsransad_forandring)
+  
+  # Prognoser BNP - ej PXweb
+  gg_BNP_prognos <- funktion_upprepa_forsok_om_fel( function() {
+    rddiagramkatalog::diag_ekonomiska_prognoser_olika_progn_institut_ki(
+      vald_variabel = "BNP",
+      utmapp  = Output_mapp,
+      diagram_capt = "Källa: Konjunkturinstitutet.\nBearbetning: Samhällsanalys, Region Dalarna.\nObservera att prognoserna är gjorda vid olika tidpunkter, vilket bör beaktas vid jämförelse mellan prognosinstitut.",
+      valda_prognos_ar = "+1",
+      x_axis_lutning = 45,
+      manual_y_axis_title = "procent",
+      skriv_diagramfil = spara_figur)
+  }, hoppa_over = hoppa_over_felhantering)
+  
+  # Konjunkturbarometern - 2 diagram - ej PXweb
+  source(here("Skript","diagram_konjunkturbarometern_konj.R"), encoding="UTF-8")
+  gg_konjB <- funktion_upprepa_forsok_om_fel( function() {diagram_konjunkturbarometern(spara_figur = spara_figur, 
+                                           output_mapp = Output_mapp,
+                                           diagram_capt = "Källa: Konjunkturinstitutet.\nBearbetning: Samhällsanalys, Region Dalarna.",
+                                           antal_etiketter_barometern = 48, # Intervall mellan visade etiketter (i månader)
+                                           legend_byrow = TRUE,
+                                           antal_etiketter_bransch = 48, # Intervall mellan visade etiketter (i månader)
+                                           startvarde_bransch = "1996-07",
+                                           returnera_data = TRUE, 
+                                           returnera_figur = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
+    
+  
+  # ggplot2::ggsave(
+  #   filename = here("Figurer", "barometern.svg"),  # for HTML
+  #   plot = gg_konjB$barometern,
+  #   width = 8, height = 5, units = "in"
+  # )
+  
+  konjukturbarometern_senaste_manad <- last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$manad_long
+  konjukturbarometern_senaste_ar <- last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$ar
+  konjukturbarometern_senaste_varde <- gsub("\\.",",",last(barometern_df %>% filter(Indikator=="Barometerindikatorn")) %>% .$varde)
+  
+  konj_hushall_senaste <- gsub("\\.",",",last(barometern_df$varde[barometern_df$Indikator=="Konfidensindikator hushåll"])) 
+  konj_bransch_positiv <- tolower(gsub( " .*$", "", barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(varde==max(varde)) %>% .$Indikator))
+  konj_bransch_positiv_varde <- gsub("\\.",",",barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(varde==max(varde)) %>% .$varde)
+  konj_bransch_negativ <- tolower(gsub( " .*$", "", barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(varde==min(varde)) %>% .$Indikator))
+  konj_bransch_negativ_varde <- gsub("\\.",",",barometern_df %>%filter(Indikator!="Konfidensindikator hushåll",Indikator!="Barometerindikatorn",Period==last(Period)) %>%  filter(varde==min(varde)) %>% .$varde)
+  
+  konj_bygg_senaste_varde <- gsub("\\.",",",barometern_df %>%filter(Indikator=="Byggverksamhet (SNI 41-43)",Period==last(Period)) %>% .$varde)
+  
+  # source(here("Skript","diagram_konjunkturbarometern_konj_alt.R"), encoding="UTF-8")
+  # konj_test = diagram_konjunkturbarometern_alt(spara_figur=FALSE,antal_etiketter_bransch = 36)
+  
+  
+  
+  # KPI - 1 diagram - upp med nya PXweb
+  source(here("Skript","diagram_inflation_SCB.R"), encoding="UTF-8")
+  gg_infl <- funktion_upprepa_forsok_om_fel( function() {diagram_inflation_SCB(spara_figur = spara_figur, 
+                                   antal_etiketter = 24,
+                                   output_mapp = Output_mapp,
+                                   returnera_data = TRUE, 
+                                   returnera_figur = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
+  
+  inflation_max_manad_ar <- paste(KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% select(manad_long,ar),collapse = " ")
+  inflation_max_varde <- gsub("\\.",",",KPI_df %>%filter(Period>"1993-01") %>% filter(KPIF==max(KPIF,na.rm=TRUE)) %>% .$KPIF)
+  
+  inflation_senaste_manad_ar <- paste(KPI_df %>% filter(månad==last(månad)) %>% select(manad_long,ar),collapse = " ")
+  inflation_senaste_varde <- gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)
+  
+  # Prognoser inflation - ej PXweb
+  source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_ek_prognoser_olika_prognosinstitut_ki.R")
+  gg_infl_prognos <- funktion_upprepa_forsok_om_fel( function() {diag_ekonomiska_prognoser_olika_progn_institut_ki(vald_variabel  = "KPI med fast bostadsränta (KPIF), årsgenomsnitt",
+                                                                      output_mapp = Output_mapp,
+                                                                      valda_prognos_ar = "+1",
+                                                                      diagram_capt = "Källa: Konjunkturinstitutet.\nBearbetning: Samhällsanalys, Region Dalarna.\nObservera att prognoserna är gjorda vid olika tidpunkter, vilket bör beaktas vid jämförelse mellan prognosinstitut.",
+                                                                      x_axis_lutning = 45,
+                                                                      manual_y_axis_title = "procent",
+                                                                      skriv_diagramfil  = spara_figur)
+  }, hoppa_over = hoppa_over_felhantering)
+  
+  # Styrränta - prognos - används för tillfället inte
+  source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/refs/heads/main/hamta_ek_prognoser_fran_prognosinstitut_ki.R")
+  prognos_styrranta_df <- funktion_upprepa_forsok_om_fel( function() {hamta_ek_prognoser_fran_prognosinstitut_ki() %>% 
+    filter(variabel == "Styrränta, vid årets slut, procent**",
+           prognos_for_ar == min(prognos_for_ar))
+  }, hoppa_over = hoppa_over_felhantering)
+  
+  prognos_styrranta_ar <- unique(prognos_styrranta_df$prognos_for_ar)
+  prognos_styrranta_antal_institut <- length(prognos_styrranta_df$Prognosinstitut)
+  
+  vanligaste <- prognos_styrranta_df %>%
+    filter(!is.na(varde)) %>%             # drop missing values
+      count(varde, name = "n", sort = TRUE) %>%
+        slice_max(n, n = 1, with_ties = TRUE) # keep all modes if tied
+  
+  vanligaste_antal <- vanligaste$n
+  vanligaste_varde <- gsub(".", ",", vanligaste$varde, fixed = TRUE)
+  
+  # Styrränta - prognos
+  prognos_BNP_df <- funktion_upprepa_forsok_om_fel( function() {hamta_ek_prognoser_fran_prognosinstitut_ki() %>% 
+    filter(variabel == "BNP")
+  }, hoppa_over = hoppa_over_felhantering)
+  
+  prognos_BNP_2026 <- gsub(".", ",", round(mean(prognos_BNP_df %>% filter(prognos_for_ar == "2026") %>% .$varde),1), fixed = TRUE)
+  prognos_BNP_2026_antal <- length(unique(prognos_BNP_df %>% filter(prognos_for_ar == "2026") %>% .$Prognosinstitut))
+  prognos_BNP_2027<- gsub(".", ",", round(mean(prognos_BNP_df %>% filter(prognos_for_ar == "2027") %>% .$varde),1), fixed = TRUE)
+  prognos_BNP_2027_antal <- length(unique(prognos_BNP_df %>% filter(prognos_for_ar == "2027") %>% .$Prognosinstitut))
+  prognos_BNP_2028 <- gsub(".", ",", round(mean(prognos_BNP_df %>% filter(prognos_for_ar == "2028") %>% .$varde),1), fixed = TRUE)
+  prognos_BNP_2028_antal <- length(unique(prognos_BNP_df %>% filter(prognos_for_ar == "2028") %>% .$Prognosinstitut))
+  
+  
+  # Småhuspriser - 2 diagram - upp med nya PXweb
+  source(here("Skript","diagram_smahuspriser_SCB.R"), encoding="UTF-8")
+  gg_smahuspriser <- funktion_upprepa_forsok_om_fel( function() {diagram_smahuspriser(spara_figur = spara_figur, 
+                                          output_mapp = Output_mapp,
+                                          stodlinjer_avrunda_fem = FALSE,
+                                          returnera_data = TRUE, 
+                                          returnera_figur = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
+  
+  priser_max_manad_ar <- paste(priser_df %>% filter(ar>2009,region == "Dalarna") %>%  filter(Medelpris==max(Medelpris)) %>% select(manad_long,ar),collapse = " ")
+  priser_max_varde <- round(priser_df %>% filter(ar>2009,region == "Dalarna") %>%  filter(Medelpris==max(Medelpris)) %>% select(Medelpris) %>% .$Medelpris/1000,1)
+  priser_senaste_manad_ar <- paste(priser_df %>% filter(Period==last(Period),region == "Dalarna") %>% select(manad_long,ar),collapse = " ")
+  priser_senaste_varde <- gsub("\\.",",",(round(priser_df %>% filter(Period==last(Period),region == "Dalarna") %>% select(Medelpris)/1000,1)))
+  priser_senaste_max_region <- paste(priser_df %>%filter(Period==max(Period)) %>% filter(Medelpris==max(Medelpris)) %>% .$region,collapse = " ")
+  priser_senaste_max_varde <- gsub("\\.",",", round(priser_df %>%filter(Period==max(Period)) %>% filter(Medelpris==max(Medelpris)) %>% select(Medelpris)/1000,1))
+  
+  
+  # Byggande - 2 figurer - upp med nya PXweb
+  source(here("Skript","diagram_nybygg_bygglov_SCB.R"), encoding="UTF-8")
+  gg_nybygg_bygglov <- funktion_upprepa_forsok_om_fel( function() {diagram_nybyggnation_bygglov(spara_figur = spara_figur, 
+                                                    output_mapp = Output_mapp,
+                                                    hustyp_klartext = "småhus",
+                                                    returnera_data = TRUE, 
+                                                    returnera_figur = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
+  
+  Bygglov_df <- Bygglov_df %>% 
+    mutate(kvartal=case_when(
+      kvartal=="K1" ~ "kvartal ett",
+      kvartal=="K2" ~ "kvartal två",
+      kvartal=="K3" ~ "kvartal tre",
+      kvartal=="K4" ~ "kvartal fyra",
+      TRUE ~ kvartal
+    ))
+  
+  bygglov_smahus_max_manad_ar <- paste(Bygglov_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Antal==max(Antal)) %>% select(kvartal,ar),collapse = " ")
+  bygglov_smahus_max_varde <- Bygglov_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(Antal==max(Antal)) %>% .$Antal
+  
+  bygglov_smahus_senaste_manad_ar <- paste(Bygglov_df %>%filter(hustyp=="småhus")  %>% select(kvartal,ar) %>% last(),collapse = " ")
+  bygglov_smahus_senaste_varde <- Bygglov_df %>%filter(hustyp=="småhus") %>% select(Antal) %>% last() %>% .$Antal
+  #bygglov_flerbostadshus_senaste_varde <-Bygglov_df %>%filter(ar>"2009",hustyp=="flerbostadshus exkl. specialbostäder") %>% .$Antal %>% last()
+  
+  Husbyggande_df <- Husbyggande_df %>% 
+    mutate(kvartal=case_when(
+      kvartal=="K1" ~ "kvartal ett",
+      kvartal=="K2" ~ "kvartal två",
+      kvartal=="K3" ~ "kvartal tre",
+      kvartal=="K4" ~ "kvartal fyra",
+      TRUE ~ kvartal
+    ))
+  
+  husbyggande_smahus_max_manad_ar <- paste(Husbyggande_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(varde==max(varde)) %>% select(kvartal,ar),collapse = " ")
+  husbyggande_smahus_max_varde <- Husbyggande_df %>%filter(ar>"2019",hustyp=="småhus") %>% filter(varde==max(varde)) %>% .$varde
+  husbyggande_smahus_senaste_manad_ar <- paste(Husbyggande_df %>%filter(hustyp=="småhus")  %>% select(kvartal,ar) %>% last(),collapse = " ")
+  husbyggande_smahus_senaste_varde <- Husbyggande_df %>%filter(hustyp=="småhus") %>% select(varde) %>% last() %>% .$varde
+ # husbyggande_flerbostadshus_senaste_varde <- Husbyggande_df %>%filter(hustyp=="flerbostadshus") %>% .$varde %>%  last()
+  
+  # # Konkurser - 2 figurer - SCB har inte längre data för konkurser, så vi använder Tillväxtanalys data istället (se längre ned)
+  # source(here("Skript","diagram_konkurser_SCB.R"), encoding="UTF-8")
+  # gg_konkurser <- diagram_konkurser_SCB(spara_figur = spara_figur, 
+  #                                       output_mapp = Output_mapp,
+  #                                       returnera_data = TRUE, 
+  #                                       returnera_figur = TRUE)
+  
+  # Konkurser månadsbasis med trend
+  
+  # source(here("Skript","diagram_konkurser_tillvaxtanalys_korrekt.R"), encoding="UTF-8")
+  # gg_konkurser <- funktion_upprepa_forsok_om_fel( function() {diagram_konkurser_TVA(spara_figur = spara_figur,
+  #                                       variabel_klartext = "Antal konkurser",
+  #                                       output_mapp = Output_mapp,
+  #                                       returnera_data = TRUE,
+  #                                       returnera_figur = TRUE)
+  # }, hoppa_over = hoppa_over_felhantering)
+  
+  source(here("Skript","func_plotta_med_trend.R"), encoding="UTF-8")
+  source("https://raw.githubusercontent.com/Region-Dalarna/hamta_data/refs/heads/main/hamta_konkurser_manad_lan_variabel_konk_1996_tva.R")
+  
+  konkurser_df <- hamta_konkurser_manad_lan_variabel_tva(
+    region_vekt = "20", 
+    variabel_klartext = "Antal konkurser",
+    manad_klartext = "*") |>  
+    rename(tid = månad,
+           antal = matches("konkurser", ignore.case = TRUE)) |>
+    mutate(år = str_sub(tid, 1, 4),
+           månad = format(as.Date(paste(år, str_sub(tid, 6,7), "1", sep = "-")), "%b"),
+           manad_long=format(as.Date(paste(år, str_sub(tid, 6,7),"1", sep = "-")), "%B")) 
+  
+  
+  gg_konkurser <-  plotta_med_trend(konkurser_df, tid, antal,
+                                titel = "Antal konkurser i Dalarna per månad",
+                                y_titel = "Antal",
+                                enhet_txt = "Konkurser",
+                                span = 0.3,            # slätare trend för en redan jämn serie
+                                fran_noll = TRUE,
+                                x_format = "manad", intervall = 48,   # etikett var 6:e månad
+                                kalla_txt = "Källa: Tillväxtverket\nBearbetning: Samhällsanalys, Region Dalarna")
+  
+  konkurser_senaste_manad <- last(konkurser_df$manad_long)
+  konkurser_senaste_ar <- last(konkurser_df$år)
+  konkurser_senaste_antal <- konkurser_df %>% filter(år==last(år),manad_long == last(manad_long)) %>% group_by(region,år) %>% .$antal %>% sum()
+  
+  konkurser_hittils_i_ar <- konkurser_df %>% filter(år==last(år)) %>% group_by(region,år) %>% .$antal %>% sum()
+  manader_hittils_i_ar <- konkurser_df %>% filter(år==last(år)) %>% .$månad
+  konkurser_motsvarande_foregaende_ar <- konkurser_df %>% filter(år==(as.numeric(last(år))-1),månad %in%manader_hittils_i_ar) %>% group_by(region,år) %>% .$antal %>% sum()
+  
+  konkurser_foregaende_ar <- as.character(as.numeric(last(konkurser_df$år))-1)
+  konkurser_foregaende_ar_antal <- konkurser_df  %>% filter(år==(as.numeric(last(år))-1),manad_long == last(manad_long)) %>% group_by(region,år) %>% .$antal %>% sum()
+  
+  source(here("Skript","diagram_konkurser_tillvaxtanalys_korrekt_ar.R"), encoding="UTF-8")
+  gg_konkurser_ar <- funktion_upprepa_forsok_om_fel( function() {diagram_konkurser_TVA_ar(spara_figur = spara_figur,
+                                           variabel_klartext = "Antal konkurser",
+                                           output_mapp = Output_mapp,
+                                           returnera_data = TRUE,
+                                           returnera_figur = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
+  
+  # # Konkurser - 1 figur - tre största branscher
+  # source(here("Skript","diagram_konkurser_tillvaxtanalys_bransch.R"), encoding="UTF-8")
+  # gg_konkurser_bransch <- diagram_konkurser_bransch_TVA(antal_branscher = 3,
+  #                                                       output_mapp = Output_mapp,
+  #                                                       spara_figur = spara_figur,
+  #                                                       returnera_dataframe_global_environment = TRUE)
+  # 
+  # konk_bransch_ar <- unique(konkurser_bransch_df$ar)
+  # konk_bransch_manad <- unique(konkurser_bransch_df$manad_namn)
+  # storsta_bransch <- konkurser_bransch_df %>% 
+  #   filter(antal == max(antal)) %>% 
+  #   .$bransch
+  # storsta_bransch_antal <- konkurser_bransch_df %>% 
+  #   filter(antal == max(antal)) %>% 
+  #   .$antal
+  # nast_storsta_bransch <- konkurser_bransch_df %>% 
+  #   filter(antal == sort(antal,decreasing = TRUE)[2]) %>% 
+  #   .$bransch
+  # nast_storsta_bransch_antal <- konkurser_bransch_df %>%
+  #   filter(antal == sort(antal,decreasing = TRUE)[2]) %>% 
+  #   .$antal
+  
+  # Avregistrerade företag - 1 figur - Ej i rapporten längre. 
+  # source(here("Skript","diagram_avreg_ftg_Bolagsverket.R"), encoding="UTF-8")
+  # gg_avregistrerade <- funktion_upprepa_forsok_om_fel( function() {diagram_avregistrerade(spara_figur = spara_figur, 
+  #                                             output_mapp = Output_mapp,
+  #                                             legend_rader = 1,
+  #                                             returnera_data = TRUE, 
+  #                                             returnera_figur = TRUE)
+  # }, hoppa_over = hoppa_over_felhantering)
+  # 
+  # avregistrerade_senaste_ar <- max(antal_avregistreringar_df$ar)
+  # avregistrerade_senaste_manad <- tolower(last(antal_avregistreringar_df$manad))
+  # avregisterade_senaste_varde <- last(antal_avregistreringar_df$antal)
+  # avregistrerade_foregaende_ar_varde <- antal_avregistreringar_df %>% filter(manad == last(manad), ar == sort(unique(ar), decreasing = TRUE)[2]) %>% dplyr::pull(antal)
+  # 
+  # antal_avregistreringar_foregaende_ar <- sum(antal_avregistreringar_df %>% filter(ar == sort(unique(ar), decreasing = TRUE)[2]) %>% dplyr::pull(antal))
+  # antal_avregistreringar_innevarande_ar <- sum(antal_avregistreringar_df %>% filter(ar == sort(unique(ar), decreasing = TRUE)[1]) %>% dplyr::pull(antal))
+  # 
+  # # Summerar antal avregristeringar föregående år (upp till den senaste månaden)
+  # manader_hittils_i_ar_avreg <- antal_avregistreringar_df %>% filter(ar == sort(unique(ar), decreasing = TRUE)[1]) %>% .$manad
+  # antal_avregistreringar_motsvarande_foregaende_ar <- sum(antal_avregistreringar_df %>% filter(ar == sort(unique(ar), decreasing = TRUE)[2], manad %in% manader_hittils_i_ar_avreg) %>% dplyr::pull(antal))
+  # 
+  
+  # Nyregistrerade personbilar 2 figurer
+  fordon_df <- pxweb2r::pxweb2_get_data(
+    table = "TAB3277",
+    query = list(
+      Region       = "20",
+      Drivmedel    = NA,      # alla drivmedel -> summeras till total nedan
+      ContentsCode = "*",
+      Tid          = "*"
+    ), quiet = TRUE) |>
+    rename(tid = månad,
+           antal = value) |>
+    mutate(år = str_sub(tid, 1, 4),
+           månad = format(as.Date(paste(år, str_sub(tid, 6,7), "1", sep = "-")), "%b"),
+           manad_long=format(as.Date(paste(år, str_sub(tid, 6,7),"1", sep = "-")), "%B")) 
+  
+  gg_fordon <- funktion_upprepa_forsok_om_fel( function() {plotta_med_trend(fordon_df, tid, antal,
+                                titel = "Nyregistrerade personbilar i Dalarna per månad",
+                                y_titel = "Antal",
+                                enhet_txt = "Personbilar",
+                                span = 0.3,
+                                fran_noll = TRUE,
+                                x_format = "manad", intervall = 24, gles_slut = TRUE,
+                                kalla_txt = "Källa: SCB (Trafikanalys)\nBearbetning: Samhällsanalys, Region Dalarna")
+  }, hoppa_over = hoppa_over_felhantering)
+  
+  fordon_senaste_manad <- last(fordon_df$manad_long)
+  fordon_senaste_ar <- last(fordon_df$år)
+  fordon_senaste_antal <- fordon_df %>% filter(år==last(år),manad_long == last(manad_long)) %>% group_by(region,år) %>% .$antal %>% sum()
+  
+  fordon_hittils_i_ar <- fordon_df %>% filter(år==last(år)) %>% group_by(region,år) %>% .$antal %>% sum()
+  manader_hittils_i_ar <- fordon_df %>% filter(år==last(år)) %>% .$månad
+  fordon_motsvarande_foregaende_ar <- fordon_df %>% filter(år==(as.numeric(last(år))-1),månad %in%manader_hittils_i_ar) %>% group_by(region,år) %>% .$antal %>% sum()
+  
+  fordon_foregaende_ar <- as.character(as.numeric(last(fordon_df$år))-1)
+  fordon_foregaende_ar_antal <- fordon_df  %>% filter(år==(as.numeric(last(år))-1),manad_long == last(manad_long)) %>% group_by(region,år) %>% .$antal %>% sum()
+  
+  # Tar ut data för elbilar
+  alla_tid   <- sort(unique(fordon_df$tid))
+  sista      <- alla_tid[length(alla_tid)]
+  for_12man  <- alla_tid[length(alla_tid) - 12]
+  
+  fordon_df_el <- pxweb2r::pxweb2_get_data(
+    table = "TAB3277",
+    query = list(
+      Region       = "20",
+      Drivmedel    = "*",      # alla drivmedel -> summeras till total nedan
+      ContentsCode = "*",
+      Tid          = c(for_12man,sista)
+    ), quiet = TRUE) %>%
+    group_by(månad) %>%
+    summarise(
+      totalt     = sum(value),
+      el   = sum(value[drivmedel %in% c("el")]),
+      andel      = el / totalt,
+      .groups = "drop"
+    ) %>%
+    mutate(andel_proc = round(100 * andel, 0))
+  
+  source(here("Skript","diagram_nyreg_bil_trafikanalys.R"), encoding="UTF-8")
+  gg_fordon_ar <- funktion_upprepa_forsok_om_fel( function() {diagram_nyreg_bil_TV_ar(region_vekt = "20",
+                                                                                      spara_figur = spara_figur,
+                                                                                      output_mapp = Output_mapp,
+                                                                                      returnera_data = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
+  
+  
+  # Nystartade företag - 2 figurer
+  source(here("Skript","diagram_nystartade_ftg_tillvaxtanalys_korrekt.R"), encoding="UTF-8")
+  gg_nystartade <- funktion_upprepa_forsok_om_fel( function() {diagram_nystartade(spara_figur = spara_figur, 
+                                      output_mapp = Output_mapp,
+                                      returnera_data = TRUE, 
+                                      returnera_figur = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
+  
+  nystartade_max_ar <- nystartade_df %>% filter(antal == max(antal)) %>% .$ar
+  nystartade_max_kvartal <- nystartade_df %>% filter(antal == max(antal)) %>% .$kvartal_namn
+  nystartade_max_varde <- nystartade_df %>% filter(antal == max(antal)) %>% .$antal
+  
+  nystartade_senaste_ar <- nystartade_df %>% filter(tid == last(tid)) %>% .$ar
+  nystartade_senaste_kvartal <- nystartade_df %>% filter(tid == last(tid)) %>% .$kvartal_namn
+  nystartade_senaste_varde <- nystartade_df %>% filter(tid == last(tid)) %>% .$antal
+  
+  nystartade_jmf <- nystartade_df %>% filter(tid == last(tid)) %>% .$antal - last(nystartade_df %>% filter(tid != last(tid)) %>% .$antal)
+  
+  # Arbetslöshet län - 1 figur - upp med nya PXweb
+  source("https://raw.githubusercontent.com/Region-Dalarna/diagram/main/diagram_arbetsmarknadsstatus_senastear.R")
+  gg_arbetsloshet_lan <- funktion_upprepa_forsok_om_fel( function() {diagram_arbetsmarknadsstatus(region_vekt = hamtaAllaLan(),
+                                                      spara_figur = spara_figur, 
+                                                      output_mapp_figur = Output_mapp,
+                                                      diag_arbetskraftsdeltagande = FALSE, 
+                                                      diag_sysselsattningsgrad = FALSE, 
+                                                      returnera_data = TRUE, 
+                                                      returnera_figur = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
+  
+  arbetsloshet_ar_senaste <- unique(arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$ar)
+  arbetsloshet_manad_senaste <- unique(arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$manad_long)
+  arbetsloshet_dalarna_senaste <- gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$varde)
+  arbetsloshet_Sverige_senaste <- gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Sverige") %>% .$varde)
+  arbetsloshet_gavleborg_senaste <- gsub("\\.",",",arbetsmarknadsstatus %>% filter(region=="Gävleborg") %>% .$varde)
+  arbetsloshet_lan_min <- arbetsmarknadsstatus %>% filter(varde==min(varde)) %>% dplyr::pull(region) %>% list_komma_och()
+  arbetsloshet_lan_min_varde <- min(arbetsmarknadsstatus$varde) %>% formatC(format = "f", digits = 1) %>%  str_replace("\\.", "\\,")
+  
+  # Arbetslöshet förändring jämfört med samma månad föregående år - 1 figur Inte uppdaterad ännu
+  source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_bas_arbloshet_jmfr_manad_1ar_tillbaka_region_scb.R") 
+  gg_arb_ett_ar <- diag_bas_arbloshet_manad_jmfr_1ar_tillbaka_scb(output_mapp = Output_mapp,
+                                                                  dela_upp_utrikes = FALSE,
+                                                                  returnera_data = TRUE)
+  
+
+  storst_okning_arb_lan <- forandring_arbetsloshet_df %>% filter(födelseregion == "totalt") %>% filter(diff == max(diff)) %>% .$region
+  storst_okning_arb_varde <- forandring_arbetsloshet_df %>% filter(födelseregion == "totalt") %>% filter(diff == max(diff)) %>% .$diff %>% gsub("\\.",",",.)
+  
+  okning_arb_Dalarna_varde <- round(forandring_arbetsloshet_df %>% filter(region == "Dalarna", födelseregion == "totalt") %>% .$diff,1) %>% gsub("\\.",",",.)
+  
+  gg_arb_ett_ar_kommun <- diag_bas_arbloshet_manad_jmfr_1ar_tillbaka_scb(vald_region = "20",
+                                                                  output_mapp = Output_mapp,
+                                                                  dela_upp_utrikes = FALSE,
+                                                                  returnera_data = TRUE)
+  
+  storst_okning_arb_kommun <- forandring_arbetsloshet_df %>% filter(födelseregion == "totalt") %>% filter(diff == max(diff)) %>% .$region
+  storst_okning_arb_kommun_varde <- forandring_arbetsloshet_df %>% filter(födelseregion == "totalt") %>% filter(diff == max(diff)) %>% .$diff %>% gsub("\\.",",",.)
+  
+  storst_minskning_arb_kommun <- forandring_arbetsloshet_df %>% filter(födelseregion == "totalt") %>% filter(diff == min(diff)) %>% .$region
+  storst_minskning_arb_kommun_varde <- forandring_arbetsloshet_df %>% filter(födelseregion == "totalt") %>% filter(diff == min(diff)) %>% .$diff %>% gsub("\\.",",",.)
+  
+  # Arbetslöshet tidsserie - 1 figur - upp med nya pxweb
+  source("https://raw.githubusercontent.com/Region-Dalarna/diagram/main/diagram_arbetsmarknadsstatus_tidsserie_SCB.R")
+  gg_arbetsloshet_tidsserie <- funktion_upprepa_forsok_om_fel( function() {diagram_arbetsmarknadsstatus_tidsserie (spara_figur = spara_figur, 
+                                                                       output_mapp_figur = Output_mapp,
+                                                                       returnera_data = TRUE,
+                                                                       legend_rader = 1,
+                                                                       marginal_yaxis_facet = c(0.02,0.02),
+                                                                       valda_farger = rddiagram::diagramfarger("rus_sex"),
+                                                                       diagram_facet = TRUE,
+                                                                       start_ar ="2021",
+                                                                       returnera_figur = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
+  
+  arbetsloshet_tidsserie_ar <-  unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="inrikes född") %>% .$ar))
+  arbetsloshet_tidsserie_manad <- unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="inrikes född") %>% .$manad_long))
+  
+  # Totalt
+  arbetsloshet_tidserie_Dalarna_totalt_max_ar <- arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="totalt") %>% filter(varde==max(varde)) %>%  .$ar %>% .[1]
+  arbetsloshet_tidserie_Dalarna_totalt_max_manad <- arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="totalt") %>% filter(varde==max(varde)) %>%  .$manad_long %>% .[1]
+  arbetsloshet_tidserie_Dalarna_totalt_max_varde <- gsub("\\.",",", arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="totalt") %>% filter(varde==max(varde)) %>%  .$varde %>% .[1])
+  
+  arbetsloshet_tidserie_Dalarna_totalt_senaste_varde <- gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="totalt") %>% .$varde))
+  
+  # Inrikes/utrikes födda
+  arbetsloshet_tidserie_Dalarna_inrikes_varde <- gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="inrikes född") %>% .$varde))
+  arbetsloshet_tidserie_Dalarna_utrikes_varde <- gsub("\\.",",",last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="utrikes född") %>% .$varde))
+  
+  
+  # Hämta antal arbetslösa (till texten enbart)
+  arbstatus_df <- pxweb2_hamta_data(
+    tabell = "TAB6260",
+    query = list(
+      Region = "20",
+      Kon = "totalt",
+      Alder = unique(arbetsmarknadsstatus_tidsserie$ålder),
+      Fodelseregion = unique(arbetsmarknadsstatus_tidsserie$födelseregion),
+      ContentsCode = "antal arbetslösa",
+      Tid = "9999"
+    )) %>% 
+    rename(varde = value,
+           regionkod = region_kod,
+           variabel = tabellinnehåll) %>% 
+      manader_bearbeta_scbtabeller()
+  
+  arblosa_utrikes <- format(plyr::round_any(arbstatus_df %>% filter(födelseregion == "utrikes född") %>% .$varde,10),big.mark = " ")
+  arblosa_inrikes <- format(plyr::round_any(arbstatus_df %>% filter(födelseregion == "inrikes född") %>% .$varde,10),big.mark = " ")
+  arblosa_manad <- unique(arbstatus_df$månad)
+  arblosa_ar <- unique(arbstatus_df$år)
+  arblosa_alder <- unique(arbstatus_df$ålder)
+  
+  # Arbetslöshet kommun - Karta, ej diagramskript (ännu) - upp med nya PXweb
+  source(here("Skript","arbetsloshet_kommun_ny.R"), encoding="UTF-8")
+  funktion_upprepa_forsok_om_fel( function() {hamta_data_arbetsloshet(vald_region="20",
+                          spara_data = TRUE,
+                          output_mapp_excel = here("Data"))
+  }, hoppa_over = hoppa_over_felhantering)
+  
+  
+  # Ekonomiskt bistånd - 2 figurer - upp med nya PXweb
+  source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_ek_stod_bakgrund.R")
+  gg_ek_stod <- funktion_upprepa_forsok_om_fel( function() {diagram_ek_stod_bakgrund_SCB (output_mapp = Output_mapp,
+                                              skriv_diagrambildfil = spara_figur,
+                                              stodlinjer_avrunda_fem = FALSE,
+                                              returnera_data_rmarkdown = TRUE)
+  }, hoppa_over = hoppa_over_felhantering)
+  
+  ek_stod_manad_ar_forsta <- first(ekonomiskt_stod_df$månad_år)
+  ek_stod_manad_ar_sista <- last(ekonomiskt_stod_df$månad_år)
+  
+  ek_stod_totalt_sista <- format(plyr::round_any(ekonomiskt_stod_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="totalt") %>% .$antal,100),big.mark = " ")
+  
+  ek_stod_skillnad_forsta <- plyr::round_any(ekonomiskt_stod_df %>% filter(månad_år==first(månad_år)) %>% filter(födelseregion=="utrikes född") %>% .$antal - ekonomiskt_stod_df %>% filter(månad_år==first(månad_år)) %>% filter(födelseregion=="inrikes född") %>% .$antal,10)
+  ek_stod_skillnad_senaste <- abs(plyr::round_any(ekonomiskt_stod_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="utrikes född") %>% .$antal - ekonomiskt_stod_df %>% filter(månad_år==last(månad_år)) %>% filter(födelseregion=="inrikes född") %>% .$antal,10))
+  
+  # Enbart för data - Används inte för tillfället då CKM gör det lite vanskligt att använda exakta siffror - upp med nya PXweb
+  ekonomiskt_bistand_df <- pxweb2_hamta_data(
+    tabell = "TAB1784",
+    query = list(
+      Region = "20",
+      HuvudFoT1m = "ekonomiskt stöd",
+      Kon = "*",
+      Alder = "15–74 år",
+      Fodelseregion = "*",
+      ContentsCode = "antal totalt",
+      Tid = "9999"
+    )) %>% 
+    rename(`antal totalt` = value,
+           regionkod = region_kod) %>% 
+      select(-tabellinnehåll)
+  
+  antal_kvinnor_stod_inrikes <- plyr::round_any(ekonomiskt_bistand_df %>% filter(kön == "kvinnor",födelseregion == "inrikes född") %>% .$`antal totalt`,5)
+  antal_man_stod_inrikes <- plyr::round_any(ekonomiskt_bistand_df %>% filter(kön == "män",födelseregion == "inrikes född") %>% .$`antal totalt`,5)
+  antal_kvinnor_stod_utrikes <- plyr::round_any(ekonomiskt_bistand_df %>% filter(kön == "kvinnor",födelseregion == "utrikes född") %>% .$`antal totalt`,5)
+  antal_man_stod_utrikes <- plyr::round_any(ekonomiskt_bistand_df %>% filter(kön == "män",födelseregion == "utrikes född") %>% .$`antal totalt`,5)
+  
+  
+  # # Ekonomiskt bistånd SCB - 1 figur
+  # source(here("Skript","diagram_ek_bistand_SCB.R"), encoding="UTF-8")
+  # gg_ek_bistand_SCB = diagram_ek_bistand_SCB(spara_figur = spara_figur, 
+  #                                            output_mapp = Output_mapp,
+  #                                            returnera_data = TRUE, 
+  #                                            returnera_figur = TRUE)
+  # 
+  # # Ekonomiskt bistånd SCB bakgrund - 1 figur
+  # source(here("Skript","diagram_ek_bistand_SCB_bakgrund.R"), encoding="UTF-8")
+  # gg_ek_bistand_bakgrund_SCB = diagram_ek_bistand_bakgrund_SCB(spara_figur = spara_figur, 
+  #                                                              output_mapp = Output_mapp,
+  #                                                              returnera_data = TRUE, 
+  #                                                              returnera_figur = TRUE)
+  
+  ###########################################
+  ### Kräver manuell nedladdning av data #### - Tidigare datahämtning, ej relevant längre
+  ###########################################
+  
+  ## OBS! Se respektive skript för mer information om hur data hämtas OBS!
+  
+  
+  # Ekonomiskt bistånd - 1 figur
+  # source(here("Skript","diagram_ek_bistand_Socialstyrelsen.R"), encoding="UTF-8")
+  # gg_ek_bistand <- diagram_ek_bistand(spara_figur = spara_figur, 
+  #                                     output_mapp = Output_mapp,
+  #                                     returnera_data = TRUE, 
+  #                                     returnera_figur = TRUE)
+
+  # Sparar global environment i R. Detta för att man skall slippa hämta data varje gång
+  save.image(file = "G:/skript/projekt/environments/samhallsekonomiska_laget.RData")
+  
+  end_time <- Sys.time()
+  elapsed_time <- as.numeric(difftime(end_time, start_time, units = "secs"))
+  cat(sprintf("Hämtning av data klar: Det tog %.2f sekunder.", elapsed_time))
+  cat("\n\n")
+  
+  
+}else{
+  load("G:/skript/projekt/environments/samhallsekonomiska_laget.RData")
+}
+
+
+
