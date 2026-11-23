@@ -228,7 +228,7 @@ gg_nybygg_bygglov$bygglov_20_arK1_K4
 ```
 
 ### Nybyggnation {-}
-Precis som för byggloven varierar byggandet av småhus mellan kvartalen, men en långsiktig trend är att byggandet har minskat tydligt från toppen i  `r husbyggande_smahus_max_manad_ar`, då `r husbyggande_smahus_max_varde` småhus påbörjades. I  `r husbyggande_smahus_senaste_manad_ar` påbörjades `r husbyggande_smahus_senaste_varde` småhus, vilket dock var fler än kvartalet innan. Notera dock att det finns en eftersläpning i statistiken, vilket medför att de senaste kvartalens siffror sannolikt kommer att revideras upp. Se 'Mer information om statistiken' ovan.
+Precis som för byggloven varierar byggandet av småhus mellan kvartalen, men en långsiktig trend är att byggandet har minskat tydligt från toppen i  `r husbyggande_smahus_max_manad_ar`, då `r husbyggande_smahus_max_varde` småhus påbörjades. I  `r husbyggande_smahus_senaste_manad_ar` påbörjades `r husbyggande_smahus_senaste_varde` småhus. Notera dock att det finns en eftersläpning i statistiken, vilket medför att de senaste kvartalens siffror sannolikt kommer att revideras upp. Se 'Mer information om statistiken' ovan.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height=5, fig.width=8, fig.align='center',fig.alt = make_alt(gg_nybygg_bygglov$nybyggnation_20_arK1_K4)}
 gg_nybygg_bygglov$nybyggnation_20_arK1_K4

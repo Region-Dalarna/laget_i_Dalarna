@@ -19,4 +19,13 @@ sokvag_lokal_repo <- "c:/gh/"
 file.copy(from = here(senaste_html_filen), to = paste0(sokvag_lokal_repo, "publicera_rapporter/docs/"), overwrite = TRUE)
 
 # commit + push till publicera rapporter
-github_commit_push(repo = "publicera_rapporter", commit_txt = "Publicera rapport")
+#github_commit_push(repo = "publicera_rapporter", commit_txt = "Publicera rapport")
+
+# Publicera till Shiny-servern också
+
+if (!requireNamespace("rddeploy", quietly = TRUE)) {
+  remotes::install_github("Region-Dalarna/rdpaket", subdir = "packages/rddeploy")
+}
+
+rddeploy::analysrapport_publicera("laget_i_Dalarna")
+

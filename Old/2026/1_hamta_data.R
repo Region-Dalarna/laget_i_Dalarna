@@ -10,8 +10,7 @@
 # Arbetslöshet förändring jämfört med samma månad föregående år
 
 if (!require("pacman")) install.packages("pacman")
-p_load(here,
-       tidyverse)
+p_load(here, dplyr, tidyr, stringr)
 
 # OBS! Ska sättas till FALSE när skriptet går i produktion - men kan stängas av genom att sätta till TRUE för att se att alla skript fungerar som de ska
 # skriptet är till för att hantera rcurl-fel och inte vanliga fel som ju inte blir bättre av att man försöker flera gånger. =)
@@ -25,8 +24,12 @@ if(uppdatera_data == TRUE){
   cat("Hämtning av data påbörjad\n\n")
   start_time <- Sys.time()
   
-  source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R")
-  source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_pxweb2.R")
+  source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_API.R") # Används till funktionen "funktion_upprepa_forsok_om_fel"
+  #source("https://raw.githubusercontent.com/Region-Dalarna/funktioner/main/func_pxweb2.R")
+  
+  if (!requireNamespace("rddiagramkatalog", quietly = TRUE)) {
+    remotes::install_github("Region-Dalarna/rdpaket", subdir = "packages/rddiagramkatalog")
+  }
   
   Output_mapp = here("Figurer","/")
   spara_figur = TRUE
@@ -45,12 +48,12 @@ if(uppdatera_data == TRUE){
                             visa_etikett = 16,
                             x_axis_lutning = 90)
   }, hoppa_over = hoppa_over_felhantering)
-
-ggplot2::ggsave(
-  here::here("Figurer", "BNP.png"),
-  plot = gg_BNP$BNP,
-  width = 8, height = 5, units = "in", dpi = 96 # matches HTML CSS pixel density
-)
+# 
+# ggplot2::ggsave(
+#   here::here("Figurer", "BNP.png"),
+#   plot = gg_BNP$BNP,
+#   width = 8, height = 5, units = "in", dpi = 96 # matches HTML CSS pixel density
+# )
 
 
   
@@ -125,14 +128,15 @@ ggplot2::ggsave(
   inflation_senaste_varde <- gsub("\\.",",",KPI_df %>% filter(månad==last(månad)) %>% .$KPIF)
   
   # Prognoser inflation - ej PXweb
-  source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_ek_prognoser_olika_prognosinstitut_ki.R")
-  gg_infl_prognos <- funktion_upprepa_forsok_om_fel( function() {diag_ekonomiska_prognoser_olika_progn_institut_ki(vald_variabel  = "KPI med fast bostadsränta (KPIF), årsgenomsnitt",
-                                                                      output_mapp = Output_mapp,
-                                                                      valda_prognos_ar = "+1",
-                                                                      diagram_capt = "Källa: Konjunkturinstitutet.\nBearbetning: Samhällsanalys, Region Dalarna.\nObservera att prognoserna är gjorda vid olika tidpunkter, vilket bör beaktas vid jämförelse mellan prognosinstitut.",
-                                                                      x_axis_lutning = 45,
-                                                                      manual_y_axis_title = "procent",
-                                                                      skriv_diagramfil  = spara_figur)
+  gg_infl_prognos <- funktion_upprepa_forsok_om_fel( function() {
+    rddiagramkatalog::diag_ekonomiska_prognoser_olika_progn_institut_ki(
+      vald_variabel = "KPI med fast bostadsränta (KPIF), årsgenomsnitt",
+      utmapp = Output_mapp,
+      valda_prognos_ar = "+1",
+      diagram_capt = "Källa: Konjunkturinstitutet.\nBearbetning: Samhällsanalys, Region Dalarna.\nObservera att prognoserna är gjorda vid olika tidpunkter, vilket bör beaktas vid jämförelse mellan prognosinstitut.",
+      x_axis_lutning = 45,
+      manual_y_axis_title = "procent",
+      skriv_diagramfil = spara_figur)
   }, hoppa_over = hoppa_over_felhantering)
   
   # Styrränta - prognos - används för tillfället inte
@@ -411,14 +415,15 @@ ggplot2::ggsave(
   nystartade_jmf <- nystartade_df %>% filter(tid == last(tid)) %>% .$antal - last(nystartade_df %>% filter(tid != last(tid)) %>% .$antal)
   
   # Arbetslöshet län - 1 figur - upp med nya PXweb
-  source("https://raw.githubusercontent.com/Region-Dalarna/diagram/main/diagram_arbetsmarknadsstatus_senastear.R")
-  gg_arbetsloshet_lan <- funktion_upprepa_forsok_om_fel( function() {diagram_arbetsmarknadsstatus(region_vekt = hamtaAllaLan(),
-                                                      spara_figur = spara_figur, 
-                                                      output_mapp_figur = Output_mapp,
-                                                      diag_arbetskraftsdeltagande = FALSE, 
-                                                      diag_sysselsattningsgrad = FALSE, 
-                                                      returnera_data = TRUE, 
-                                                      returnera_figur = TRUE)
+  gg_arbetsloshet_lan <- funktion_upprepa_forsok_om_fel( function() {
+    rddiagramkatalog::diag_arbetsmarknadsstatus_senastear_scb(
+      region_vekt = hamtaAllaLan(),
+      skriv_diagramfil  = spara_figur, 
+      utmapp = Output_mapp,
+      diag_arbetskraftsdeltagande = FALSE, 
+      diag_sysselsattningsgrad = FALSE, 
+      returnera_data = TRUE, 
+      returnera_figur = TRUE)
   }, hoppa_over = hoppa_over_felhantering)
   
   arbetsloshet_ar_senaste <- unique(arbetsmarknadsstatus %>% filter(region=="Dalarna") %>% .$ar)
@@ -430,8 +435,7 @@ ggplot2::ggsave(
   arbetsloshet_lan_min_varde <- min(arbetsmarknadsstatus$varde) %>% formatC(format = "f", digits = 1) %>%  str_replace("\\.", "\\,")
   
   # Arbetslöshet förändring jämfört med samma månad föregående år - 1 figur Inte uppdaterad ännu
-  source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_bas_arbloshet_jmfr_manad_1ar_tillbaka_region_scb.R") 
-  gg_arb_ett_ar <- diag_bas_arbloshet_manad_jmfr_1ar_tillbaka_scb(output_mapp = Output_mapp,
+  gg_arb_ett_ar <- rddiagramkatalog::diag_bas_arbloshet_manad_jmfr_1ar_tillbaka_scb(utmapp = Output_mapp,
                                                                   dela_upp_utrikes = FALSE,
                                                                   returnera_data = TRUE)
   
@@ -441,8 +445,8 @@ ggplot2::ggsave(
   
   okning_arb_Dalarna_varde <- round(forandring_arbetsloshet_df %>% filter(region == "Dalarna", födelseregion == "totalt") %>% .$diff,1) %>% gsub("\\.",",",.)
   
-  gg_arb_ett_ar_kommun <- diag_bas_arbloshet_manad_jmfr_1ar_tillbaka_scb(vald_region = "20",
-                                                                  output_mapp = Output_mapp,
+  gg_arb_ett_ar_kommun <- rddiagramkatalog::diag_bas_arbloshet_manad_jmfr_1ar_tillbaka_scb(region_vekt = "20",
+                                                                  utmapp = Output_mapp,
                                                                   dela_upp_utrikes = FALSE,
                                                                   returnera_data = TRUE)
   
@@ -453,16 +457,18 @@ ggplot2::ggsave(
   storst_minskning_arb_kommun_varde <- forandring_arbetsloshet_df %>% filter(födelseregion == "totalt") %>% filter(diff == min(diff)) %>% .$diff %>% gsub("\\.",",",.)
   
   # Arbetslöshet tidsserie - 1 figur - upp med nya pxweb
-  source("https://raw.githubusercontent.com/Region-Dalarna/diagram/main/diagram_arbetsmarknadsstatus_tidsserie_SCB.R")
-  gg_arbetsloshet_tidsserie <- funktion_upprepa_forsok_om_fel( function() {diagram_arbetsmarknadsstatus_tidsserie (spara_figur = spara_figur, 
-                                                                       output_mapp_figur = Output_mapp,
-                                                                       returnera_data = TRUE,
-                                                                       legend_rader = 1,
-                                                                       marginal_yaxis_facet = c(0.02,0.02),
-                                                                       valda_farger = rddiagram::diagramfarger("rus_sex"),
-                                                                       diagram_facet = TRUE,
-                                                                       start_ar ="2021",
-                                                                       returnera_figur = TRUE)
+  gg_arbetsloshet_tidsserie <- funktion_upprepa_forsok_om_fel( function() {
+    rddiagramkatalog::diag_arbetsmarknadsstatus_tidsserie_scb(
+      skriv_diagramfil = spara_figur, 
+      utmapp = Output_mapp,
+      returnera_data = TRUE,
+      legend_rader = 1,
+      marginal_yaxis_facet = c(0.02,0.02),
+      diag_fargvekt  = rddiagram::diagramfarger("rus_sex"),
+      diagram_facet = TRUE,
+      tid_koder = "2021:9999",
+      #start_ar = "2021",
+      returnera_figur = TRUE)
   }, hoppa_over = hoppa_over_felhantering)
   
   arbetsloshet_tidsserie_ar <-  unique(last(arbetsmarknadsstatus_tidsserie %>% filter(region=="Dalarna",födelseregion=="inrikes född") %>% .$ar))
@@ -511,11 +517,12 @@ ggplot2::ggsave(
   
   
   # Ekonomiskt bistånd - 2 figurer - upp med nya PXweb
-  source("https://raw.githubusercontent.com/Region-Dalarna/diagram/refs/heads/main/diag_ek_stod_bakgrund.R")
-  gg_ek_stod <- funktion_upprepa_forsok_om_fel( function() {diagram_ek_stod_bakgrund_SCB (output_mapp = Output_mapp,
-                                              skriv_diagrambildfil = spara_figur,
-                                              stodlinjer_avrunda_fem = FALSE,
-                                              returnera_data_rmarkdown = TRUE)
+  gg_ek_stod <- funktion_upprepa_forsok_om_fel( function() {
+    rddiagramkatalog::diag_ek_stod_bakgrund_scb(
+      utmapp = Output_mapp,
+      skriv_diagramfil = spara_figur,
+      stodlinjer_avrunda_fem = FALSE,
+      returnera_data = TRUE)
   }, hoppa_over = hoppa_over_felhantering)
   
   ek_stod_manad_ar_forsta <- first(ekonomiskt_stod_df$månad_år)
@@ -588,6 +595,3 @@ ggplot2::ggsave(
 }else{
   load("G:/skript/projekt/environments/samhallsekonomiska_laget.RData")
 }
-
-
-
